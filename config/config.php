@@ -10,4 +10,3 @@ define("PASSWORD", "armijo123.");
 define("CONTROLADOR_PRINCIPAL","Index");
 define("ACCION_PRINCIPAL", "index");
 ?>
-//sadsa

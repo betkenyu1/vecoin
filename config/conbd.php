@@ -1,8 +1,8 @@
 <?php 
 class Conexion{
     public static function getConexion(){
-        $database_username = 'root';
-        $database_password = '';
+        $database_username = 'desarrollo';
+        $database_password = 'armijo123.';
         $dbname="vecoin_bd";
         $dsn = 'mysql:host=localhost;dbname=' . $dbname;
         $conexion = null;   

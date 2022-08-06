@@ -25,11 +25,8 @@ class InventarioController
     }
     public function save_new_orden_entrada()
     {
-        /*
-        data: "Fecha=" + freg + "&NroFactura=" + nrofac +
-                        "&IdProducto=" + prod + "&IdProveedor=" + prov +
-                        "&Cantidad=" + cant + "&Precio=" + prec + "&Observacion=" + obs,
-        */
+        date_default_timezone_set('America/Guayaquil');
+        $Updated_At = date('m-d-Y h:i:s a', time());
         $Fecha = date('Y-m-d');
         $FechaCompra = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
         $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
@@ -42,22 +39,19 @@ class InventarioController
         $exito = $this->inv->RegistroOrdenEntrada($Fecha, $FechaCompra ,$NroFactura, $IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion, $IdUsuario);
         if ($exito) {
             echo 1;
+            $act = $this->inv->getBuscarCantidadProducto($IdProducto);
+            if($act){
+                foreach($act as $cant){
+                    $CantAct = $cant['cantidad'];
+                    $CantAct = ($CantAct + $Cantidad);
+                }
+            }
+            $act = $this->inv->ActualizaCantidadProducto($IdProducto, $CantAct, $IdUsuario, $Updated_At);
         } else {
             echo 2;
         }
     }
-    
-    public function get_mod_item()
-    {
-        $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
-        $exito = $this->inv->getPModificarItemCatalogo($IdCatalogo);
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
-    }
+
     public function get_mod_catalogo()
     {
         $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';

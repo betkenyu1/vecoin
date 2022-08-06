@@ -296,7 +296,7 @@ function CerrarModificarProducto() {
     getListaProductos();
 }
 function setModificarProducto(id_producto) {
-    CerrarListaProducto();
+    //CerrarListaProducto();
     $(".cerrar-np").hide();
     var html = '';
     html += '<div class="cerrar-mp">';

@@ -147,11 +147,11 @@ DROP TABLE IF EXISTS `ordenes_entrada`;
 
 CREATE TABLE `ordenes_entrada` (
   `id_ord_entrada` int(11) NOT NULL AUTO_INCREMENT,
-  `id_producto` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `fecha_compra` date DEFAULT NULL,
   `nro_factura` varchar(9) DEFAULT NULL,
-  `secuencial` varchar(9) DEFAULT NULL,
+  `id_producto` int(11) DEFAULT NULL,
+  `id_proveedor` int(11) DEFAULT NULL,
   `cantidad` int(11) DEFAULT NULL,
   `precio` double(12,2) DEFAULT NULL,
   `observacion` text,
@@ -162,8 +162,8 @@ CREATE TABLE `ordenes_entrada` (
 
 /*Data for the table `ordenes_entrada` */
 
-insert  into `ordenes_entrada`(`id_ord_entrada`,`id_producto`,`fecha`,`fecha_compra`,`nro_factura`,`secuencial`,`cantidad`,`precio`,`observacion`,`id_usuario`,`id_estado`) values 
-(1,1,'2022-07-31',NULL,'000045782','000000001',10,12.35,'Se registra productos de proveedores',1,1);
+insert  into `ordenes_entrada`(`id_ord_entrada`,`fecha`,`fecha_compra`,`nro_factura`,`id_producto`,`id_proveedor`,`cantidad`,`precio`,`observacion`,`id_usuario`,`id_estado`) values 
+(1,'2022-08-06','2022-08-03','974897',1,1,550,73.41,'Compra del exterior',3,1);
 
 /*Table structure for table `perchas` */
 
@@ -189,7 +189,6 @@ DROP TABLE IF EXISTS `productos`;
 CREATE TABLE `productos` (
   `id_producto` int(11) NOT NULL AUTO_INCREMENT,
   `id_catalogo` int(11) DEFAULT NULL,
-  `id_proveedor` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `id_bodega` int(11) DEFAULT NULL,
   `id_umedida` int(11) DEFAULT NULL,
@@ -206,8 +205,8 @@ CREATE TABLE `productos` (
 
 /*Data for the table `productos` */
 
-insert  into `productos`(`id_producto`,`id_catalogo`,`id_proveedor`,`fecha`,`id_bodega`,`id_umedida`,`cantidad`,`precio`,`prc_utl`,`pvp`,`id_usuario`,`updated_at`,`deleted_at`,`id_estado`) values 
-(1,1,1,'2022-07-31',1,1,10000,5.32,60,8.51,3,'07-31-2022 05:52:21 pm','07-31-2022 05:52:07 pm',1);
+insert  into `productos`(`id_producto`,`id_catalogo`,`fecha`,`id_bodega`,`id_umedida`,`cantidad`,`precio`,`prc_utl`,`pvp`,`id_usuario`,`updated_at`,`deleted_at`,`id_estado`) values 
+(1,1,'2022-07-31',1,1,10,5.32,60,8.51,3,'07-31-2022 05:52:21 pm','07-31-2022 05:52:07 pm',1);
 
 /*Table structure for table `proveedores` */
 

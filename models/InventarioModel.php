@@ -14,7 +14,6 @@ class InventarioModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    //$exito = $this->inv->RegistroOrdenEntrada($Fecha, $FechaCompra ,$IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion);
     public function RegistroOrdenEntrada($Fecha, $FechaCompra ,$NroFactura, $IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion,$IdUsuario)
     {
         $consulta = "INSERT INTO ordenes_entrada (fecha,fecha_compra,nro_factura,id_producto,id_proveedor,cantidad,precio,observacion,id_usuario)
@@ -35,19 +34,19 @@ class InventarioModel{
         }
         return true;
     }
-    public function getPModificarItemCatalogo($IdCatalogo){
-        $consulta = "SELECT id_catalogo,codigo,producto FROM catalogo
-        WHERE id_catalogo = '$IdCatalogo'";
+    public function getBuscarCantidadProducto($IdProducto){
+        $consulta = "SELECT cantidad FROM productos
+        WHERE id_producto = '$IdProducto'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getModificarItemCatalogo($IdCatalogo, $IdEmpresa, $Codigo ,$Descripcion, $IdEstado)
+    public function ActualizaCantidadProducto($IdProducto, $Cantidad, $IdUsuario, $Updated_At)
     {
-        $consulta = "UPDATE catalogo SET id_empresa = '$IdEmpresa',
-            codigo = '$Codigo',producto = '$Descripcion',id_estado = '$IdEstado'
-            WHERE id_catalogo = '$IdCatalogo'";
+        $consulta = "UPDATE productos SET cantidad = '$Cantidad',updated_at = '$Updated_At',
+        id_usuario = '$IdUsuario'
+        WHERE id_producto = '$IdProducto'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {

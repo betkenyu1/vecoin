@@ -112,25 +112,33 @@ function setNuevaOrdenEntrada() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Proveedores:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdProveedor"></select>';
+    html += '<b style="color: #000000;">Fecha:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdFecha">';
+    html += '<div id="alert-cact"></div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="col-md-6">';
+    html += '<div class="mb-10px">';
+    html += '<b style="color: #000000;">Nro Factura:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdNroFactura">';
+    html += '<div id="alert-cact"></div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="col-md-6">';
+    html += '<div class="mb-10px">';
+    html += '<b style="color: #000000;">Producto:</b> </br>';
+    html += '<select class="default-select2 form-control" id="IdProducto"></select>';
     html += '<div id="alert-prov"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Productos:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdProducto"></select>';
+    html += '<b style="color: #000000;">Proveedor:</b> </br>';
+    html += '<select class="default-select2 form-control" id="IdProveedor"></select>';
     html += '<div id="alert-prod"></div>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Cantidad actual:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdCant_act">';
-    html += '<div id="alert-cact"></div>';
     html += '</div>';
     html += '</div>';
 

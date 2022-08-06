@@ -1,5 +1,5 @@
 /*
-SQLyog Community v13.1.9 (64 bit)
+SQLyog Community v13.1.7 (64 bit)
 MySQL - 5.7.33 : Database - vecoin_bd
 *********************************************************************
 */
@@ -149,6 +149,7 @@ CREATE TABLE `ordenes_entrada` (
   `id_ord_entrada` int(11) NOT NULL AUTO_INCREMENT,
   `id_producto` int(11) DEFAULT NULL,
   `fecha` date DEFAULT NULL,
+  `fecha_compra` date DEFAULT NULL,
   `nro_factura` varchar(9) DEFAULT NULL,
   `secuencial` varchar(9) DEFAULT NULL,
   `cantidad` int(11) DEFAULT NULL,
@@ -161,8 +162,8 @@ CREATE TABLE `ordenes_entrada` (
 
 /*Data for the table `ordenes_entrada` */
 
-insert  into `ordenes_entrada`(`id_ord_entrada`,`id_producto`,`fecha`,`nro_factura`,`secuencial`,`cantidad`,`precio`,`observacion`,`id_usuario`,`id_estado`) values 
-(1,1,'2022-07-31','000045782','000000001',10,12.35,'Se registra productos de proveedores',1,1);
+insert  into `ordenes_entrada`(`id_ord_entrada`,`id_producto`,`fecha`,`fecha_compra`,`nro_factura`,`secuencial`,`cantidad`,`precio`,`observacion`,`id_usuario`,`id_estado`) values 
+(1,1,'2022-07-31',NULL,'000045782','000000001',10,12.35,'Se registra productos de proveedores',1,1);
 
 /*Table structure for table `perchas` */
 

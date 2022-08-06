@@ -1,0 +1,5 @@
+orden de entrada: alimenta cantidades de productos en bodega
+orden de salida: disminuye cantidades de productos en bodega y 
+alimenta cantidades de productos en stock
+venta: disminuye cantidades de productos en stock
+http://www.mailxmail.com/curso-empresa-costo-materiales/departamento-recepcion-formato-entrada-materiales  **formato de entrada a bodega

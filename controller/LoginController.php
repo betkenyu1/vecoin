@@ -19,10 +19,8 @@ class LoginController
         $existe = $this->usr->getUsuarios($usr);
         if ($existe) {
             foreach ($existe as $dat) {
-                
                 $passcifrada=password_verify($pass,$dat['password']);
                 if($passcifrada!=$pass){
-                    
                 }else{
                     $_SESSION["idempresa"] =  $dat['id_empresa'];
                     $_SESSION["n_comercial"] =  $dat['nombre_comercial'];

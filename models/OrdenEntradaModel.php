@@ -22,14 +22,12 @@ class OrdenEntradaModel{
         return $resultados;
     }
     public function getOrdenesEntrada(){
-        $consulta = "SELECT OE.id_ord_entrada,OE.fecha,B.bodega,U.umedida,C.codigo,C.producto,OE.nro_factura,OE.secuencial,OE.cantidad,
-        OE.precio,E.estado FROM ordenes_entrada OE
+        $consulta = "SELECT OE.id_ord_entrada,OE.fecha,OE.nro_factura,OE.cantidad,U.umedida,C.producto,
+        OE.precio,(OE.cantidad*OE.precio) AS monto FROM ordenes_entrada OE
         INNER JOIN productos P ON (OE.id_producto = P.id_producto)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
         INNER JOIN unidad_medida U ON (P.id_umedida = U.id_umedida)
-        INNER JOIN estados E ON (P.id_estado = E.id_estado)
-        WHERE P.id_estado =1";
+        WHERE OE.id_estado =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

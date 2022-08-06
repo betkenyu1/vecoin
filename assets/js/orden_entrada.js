@@ -1,8 +1,4 @@
-function CerrarListaProducto() {
-	$(".cerrar-lp").hide();
-}
-
-function CerrarListaProducto() {
+function CerrarListaOrdenEntrada() {
     $(".cerrar-lp").hide();
 }
 function getListaOrdenEntrada() {
@@ -15,14 +11,12 @@ function getListaOrdenEntrada() {
     html += '<tr>';
     html += '<th width="1%"></th>';
     html += '<th class="text-nowrap">Fecha</th>';
-    html += '<th class="text-nowrap">Bodega</th>';
-    html += '<th class="text-nowrap">U.Medida</th>';
-    html += '<th class="text-nowrap">Código</th>';
-    html += '<th class="text-nowrap">Producto</th>';
     html += '<th class="text-nowrap">Nro Factura</th>';
-    html += '<th class="text-nowrap">Secuencial</th>';
     html += '<th class="text-nowrap">Cantidad</th>';
+    html += '<th class="text-nowrap">U.Medida</th>';
+    html += '<th class="text-nowrap">Producto</th>';
     html += '<th class="text-nowrap">Precio</th>';
+    html += '<th class="text-nowrap">Monto</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
     html += '</thead>';
@@ -31,20 +25,17 @@ function getListaOrdenEntrada() {
         type: "GET",
         dataType: 'json',
         url: 'index.php?c=OrdenEntrada&a=get_ord_entrda',
-        success: function (response) {//OE.id_ord_entrada,OE.fecha,B.bodega,U.umedida,C.codigo,C.producto,OE.nro_factura,OE.secuencial,OE.cantidad,OE.precio,E.estado
+        success: function (response) {//OE.id_ord_entrada,OE.fecha,OE.nro_factura,OE.cantidad,U.umedida,C.producto,
             $.each(response, function (key, value) {
                 html += '<tr class="odd gradeX">';
                 html += '<td width="1%" class="fw-bold text-dark">' + value.id_ord_entrada + '</td>';
                 html += '<td>' + value.fecha + '</td>';
-                html += '<td>' + value.bodega + '</td>';
-                html += '<td>' + value.umedida + '</td>';
-                html += '<td>' + value.codigo + '</td>';
-                html += '<td>' + value.producto + '</td>';
                 html += '<td>' + value.nro_factura + '</td>';
-                html += '<td>' + value.secuencial + '</td>';
                 html += '<td>' + value.cantidad + '</td>';
+                html += '<td>' + value.umedida + '</td>';
+                html += '<td>' + value.producto + '</td>';
                 html += '<td>' + value.precio + '</td>';
-                html += '<td>' + value.estado + '</td>';
+                html += '<td>' + Number(value.monto).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</td>';
                 html += '<td>';
                 html += '<a class="btn btn-outline-warning" onclick="setModificarProducto(' + value.id_ord_entrada + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
                 html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_ord_entrada + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
@@ -70,37 +61,22 @@ function getProductos() {
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: "index.php?c=Catalogo&a=get_productos",
+        url: "index.php?c=Inventario&a=get_productos",
         success: function (response) {
             var $select = $('#IdProducto');
             $select.append('<option value="0">Seleccione...</option>');
             $.each(response, function (key, value) {
-                $select.append('<option value=' + value.id_producto + '>' + value.descripcion + '</option>');
-            });
-        }
-    });
-}
-function getUMedidas() {
-    $("#IdUMedida").empty();
-    $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: "index.php?c=Catalogo&a=get_umedidas",
-        success: function (response) {
-            var $select = $('#IdUMedida');
-            $select.append('<option value="0">Seleccione...</option>');
-            $.each(response, function (key, value) {
-                $select.append('<option value=' + value.id_umedida + '>' + value.descripcion + '</option>');
+                $select.append('<option value=' + value.id_producto + '>' + value.producto + '</option>');
             });
         }
     });
 }
 function CerrarNuevaOrdenEntrada() {
     $(".cerrar-noe").hide();
-    //getListaProductos();
+    getListaOrdenEntrada();
 }
 function setNuevaOrdenEntrada() {
-    CerrarListaProducto();
+    CerrarListaOrdenEntrada();
     $(".cerrar-mp").hide();
     var html = '';
     html += '<div class="cerrar-noe">';
@@ -113,8 +89,8 @@ function setNuevaOrdenEntrada() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Fecha:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdFecha">';
-    html += '<div id="alert-cact"></div>';
+    html += '<input type="date" class="form-control" id="IdFecha">';
+    html += '<div id="alert-freg"></div>';
     html += '</div>';
     html += '</div>';
 
@@ -122,15 +98,15 @@ function setNuevaOrdenEntrada() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Nro Factura:</b> </br>';
     html += '<input type="text" class="form-control" id="IdNroFactura">';
-    html += '<div id="alert-cact"></div>';
+    html += '<div id="alert-nrofac"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Producto:</b> </br>';
+    html += '<b style="color: #000000;">Productos:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdProducto"></select>';
-    html += '<div id="alert-prov"></div>';
+    html += '<div id="alert-prod"></div>';
     html += '</div>';
     html += '</div>';
 
@@ -138,43 +114,35 @@ function setNuevaOrdenEntrada() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Proveedor:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdProveedor"></select>';
-    html += '<div id="alert-prod"></div>';
+    html += '<div id="alert-prov"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Precio actual:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdPrecio_act">';
-    html += '<div id="alert-pact"></div>';
+    html += '<b style="color: #000000;">Cantidad:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdCantidad">';
+    html += '<div id="alert-cant"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">% Utilidad:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdUtilidad" onkeyup="CalcularUtilidad();">';
-    html += '<div id="alert-utl"></div>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">PVP:</b> </br>';
+    html += '<b style="color: #000000;">Precio:</b> </br>';
     html += '<input type="text" class="form-control" id="IdPrecio">';
-    html += '<div id="alert-nprec"></div>';
+    html += '<div id="alert-prec"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div>';
     html += '<b style="color: #000000;">Observación:</b> </br>';
     html += '<textarea type="text" row="3" class="form-control" id="IdObs"></textarea>';
-    html += '<div id="alert-cp"></div>';
+    html += '<div id="alert-obs"></div>';
     html += '</div>';
    
     html += '<div class="text-center">';
     html += '<br>';
-    html += '<a class="btn btn-outline-danger" onclick="CerrarNuevoProducto();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
+    html += '<a class="btn btn-outline-danger" onclick="CerrarNuevaOrdenEntrada();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
     html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarOrdenEntrada();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
     html += '</div>';
 
@@ -189,46 +157,26 @@ function setNuevaOrdenEntrada() {
     getProductos();
     getProveedor();
 }
-
-$(document).on('change', '#IdProducto', function () {
-    var html = "";
-	if ($('#IdProducto').val() == 0) {
-		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
-		html += '</div>';
-		$("#alert-prod").html(html);
-		$('#IdProducto').focus();
-		setTimeout(function () {
-			$("#alert-prod").fadeOut(1500);
-		}, 3000);
-		return false;
-	} else {
-		var idp = $('#IdProducto').val();
-		$.ajax({
-			type: "GET",
-			dataType: 'json',
-			url: "index.php?c=Catalogo&a=get_producto_id",
-			data: "IdProducto=" + idp,
-			success: function (response) {
-				$.each(response, function (key, value) {
-					$("#IdCant_act").val(value.cantidad);
-                    var resultado = Number(value.precio).toFixed(2);
-                    $("#IdPrecio_act").val(resultado)
-				});
-			}
-		});
-	}
-});
 function getGuardarOrdenEntrada() {
     var html = '';
-    if ($('#IdProveedor').val() == 0) {
+    if ($('#IdFecha').val() == '') {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
-        $("#alert-prov").html(html);
-        $('#IdProveedor').focus();
+        $("#alert-freg").html(html);
+        $('#IdFecha').focus();
         setTimeout(function () {
-            $("#alert-prov").fadeOut(1500);
+            $("#alert-freg").fadeOut(1500);
+        }, 3000);
+        return false;
+    } if ($('#IdNroFactura').val() == "") {
+        html += '<div class="alert alert-danger">';
+        html += 'Este campo es obligatorio!.';
+        html += '</div>';
+        $("#alert-nrofac").html(html);
+        $('#IdNroFactura').focus();
+        setTimeout(function () {
+            $("#alert-nrofac").fadeOut(1500);
         }, 3000);
         return false;
     } if ($('#IdProducto').val() == 0) {
@@ -241,53 +189,44 @@ function getGuardarOrdenEntrada() {
             $("#alert-prod").fadeOut(1500);
         }, 3000);
         return false;
-    } if ($('#IdCant_act').val() == "") {
+    } if ($('#IdProveedor').val() == 0) {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
-        $("#alert-cact").html(html);
-        $('#IdCant_act').focus();
+        $("#alert-prov").html(html);
+        $('#IdProveedor').focus();
         setTimeout(function () {
-            $("#alert-cact").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdPrecio_act').val() == "") {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-pact").html(html);
-        $('#IdPrecio_act').focus();
-        setTimeout(function () {
-            $("#alert-pact").fadeOut(1500);
+            $("#alert-prov").fadeOut(1500);
         }, 3000);
         return false;
     } if ($('#IdCantidad').val() == '') {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
-        $("#alert-ncant").html(html);
+        $("#alert-cant").html(html);
         $('#IdCantidad').focus();
         setTimeout(function () {
-            $("#alert-ncant").fadeOut(1500);
+            $("#alert-cant").fadeOut(1500);
         }, 3000);
         return false;
     } if ($('#IdPrecio').val() == '') {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
-        $("#alert-nprec").html(html);
+        $("#alert-prec").html(html);
         $('#IdPrecio').focus();
         setTimeout(function () {
-            $("#alert-nprec").fadeOut(1500);
+            $("#alert-prec").fadeOut(1500);
         }, 3000);
         return false;
     } else {
-        var ep = $("#IdEmpresa").val();
-        var bp = $("#IdBodega").val();
-        var ump = $("#IdUMedida").val();
-        var codp = $("#IdCodigo").val();
-        var dp = $("#IdDescripcionP").val();
-        var cp = $("#IdCantidad").val();
+        var freg = $("#IdFecha").val();
+        var nrofac = $("#IdNroFactura").val();
+        var prod = $("#IdProducto").val();
+        var prov = $("#IdProveedor").val();
+        var cant = $("#IdCantidad").val();
+        var prec = $("#IdPrecio").val();
+        var obs = $("#IdObs").val();
         Swal.fire({
             title: "CONFIRMACION!",
             icon: "warning",
@@ -300,17 +239,16 @@ function getGuardarOrdenEntrada() {
                 $.ajax({
                     type: "GET",
                     dataType: 'json',
-                    url: "index.php?c=Catalogo&a=save_new_producto",
-                    data: "IdEmpresa=" + ep + "&IdBodega=" + bp +
-                        "&IdUMedida=" + ump + "&Codigo=" + codp +
-                        "&Descripcion=" + dp + "&Cantidad=" + cp,
+                    url: "index.php?c=Inventario&a=save_new_orden_entrada",
+                    data: "Fecha=" + freg + "&NroFactura=" + nrofac +
+                        "&IdProducto=" + prod + "&IdProveedor=" + prov +
+                        "&Cantidad=" + cant + "&Precio=" + prec + "&Observacion=" + obs,
                     success: function (response) {
-                        response = JSON.stringify(response);
                         if (response == 1) {
                             Swal.fire({
                                 html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
                             });
-                            CerrarNuevoProducto();
+                            CerrarNuevaOrdenEntrada();
                         } if (response == 2) {
                             Swal.fire({
                                 html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
@@ -418,7 +356,7 @@ function setModificarProducto(id_producto) {
     html += '</div>';
 
     html += '<div class="text-center">';
-    html += '<a class="btn btn-outline-danger" onclick="CerrarModificarProducto();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
+    html += '<a class="btn btn-outline-danger" onclick="CerrarListaOrdenEntrada();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
     html += '&nbsp;<a class="btn btn-outline-warning" title="Modificar" onclick="getModificarProducto();"><i class="fa-solid fa-pencil" aria-hidden="true"></i> Modificar</a>';
     html += '</div>';
 

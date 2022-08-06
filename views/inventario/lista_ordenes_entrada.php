@@ -19,11 +19,11 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
-            <a href="#new?1" onclick="setNuevoOrdenEntrada();" class="btn btn-success"><i class="fa fa-plus"
+            <a href="#new?1" onclick="setNuevaOrdenEntrada();" class="btn btn-success"><i class="fa fa-plus"
                     aria-hidden="true"></i> Nuevo</a>
             <hr>
             <div id="lista-ord_entrada"></div>
-            <div id="new-prod"></div>
+            <div id="new-ord-entrada"></div>
             <div id="mod-prod"></div>
         </div>
     </div>

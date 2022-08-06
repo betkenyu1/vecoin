@@ -4,7 +4,7 @@ class Conexion{
         $database_username = 'desarrollo';
         $database_password = 'armijo123.';
         $dbname="vecoin_bd";
-        $dsn = 'mysql:host=localhost;dbname=' . $dbname;
+        $dsn = 'mysql:host=88.99.30.217;dbname=' . $dbname;
         $conexion = null;   
         try{
             $conexion = new PDO($dsn, $database_username, $database_password ); 

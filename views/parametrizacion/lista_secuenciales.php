@@ -25,7 +25,7 @@ include_once 'views/layout/header.php';
                     aria-hidden="true"></i> Nuevo</a>
             <hr>
             <div id="new-empresa"></div>
-            <div id="lista-empresas"></div>
+            <div id="lista-secuenciales"></div>
             <div id="panel-mod-empresa"></div>
         </div>
     </div>
@@ -34,4 +34,4 @@ include_once 'views/layout/header.php';
 <?php
 include_once 'views/layout/footer.php';
 ?>
-<script src="assets/js/empresa.js"></script>
+<script src="assets/js/secuenciales.js"></script>

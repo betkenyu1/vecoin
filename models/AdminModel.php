@@ -26,6 +26,14 @@ class AdminModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getSecuenciales(){
+        $consulta = "SELECT id_secuencial,secuencial FROM secuenciales
+        WHERE id_estado = 1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function getEmpresas(){
         $consulta = "SELECT id_empresa,razon_social,ruc,telefono,email FROM empresas
         WHERE id_estado = 1";

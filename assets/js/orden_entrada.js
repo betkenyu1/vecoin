@@ -156,6 +156,7 @@ function setNuevaOrdenEntrada() {
     $('.default-select2').select2();
     getProductos();
     getProveedor();
+    getSecuencial();
 }
 function getGuardarOrdenEntrada() {
     var html = '';
@@ -527,4 +528,5 @@ function getEliminarProducto(id_producto) {
 }
 $(document).ready(function () {
     getListaOrdenEntrada();
+    getSecuencial();
 });

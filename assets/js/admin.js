@@ -1,3 +1,18 @@
+function getSecuencial() {
+	$.ajax({
+		type: "GET",
+		url: 'index.php?c=Admin&a=get_secuencial',
+		success: function (response) {
+			response = JSON.parse(response);
+			$.each(response, function (key, value) {
+				//var id = (value.id_ecuencial);
+				var n = ('000000000' + value.id_secuencial).slice(-9);
+				$('#IdNroFactura').val(n);
+        alert(n);
+			});
+		}
+	});
+}
 function getEmpresasMod() {
   $("#IdEmpresaM").empty();
   $.ajax({

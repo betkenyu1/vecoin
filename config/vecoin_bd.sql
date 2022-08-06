@@ -163,7 +163,7 @@ CREATE TABLE `ordenes_entrada` (
 /*Data for the table `ordenes_entrada` */
 
 insert  into `ordenes_entrada`(`id_ord_entrada`,`fecha`,`fecha_compra`,`nro_factura`,`id_producto`,`id_proveedor`,`cantidad`,`precio`,`observacion`,`id_usuario`,`id_estado`) values 
-(1,'2022-08-06','2022-08-03','974897',1,1,550,73.41,'Compra del exterior',3,1);
+(1,'2022-08-06','2022-08-02','974897',1,1,550,73.41,'Productos desde el exterior',3,1);
 
 /*Table structure for table `perchas` */
 
@@ -206,7 +206,7 @@ CREATE TABLE `productos` (
 /*Data for the table `productos` */
 
 insert  into `productos`(`id_producto`,`id_catalogo`,`fecha`,`id_bodega`,`id_umedida`,`cantidad`,`precio`,`prc_utl`,`pvp`,`id_usuario`,`updated_at`,`deleted_at`,`id_estado`) values 
-(1,1,'2022-07-31',1,1,10,5.32,60,8.51,3,'07-31-2022 05:52:21 pm','07-31-2022 05:52:07 pm',1);
+(1,1,'2022-07-31',1,1,650,5.32,60,8.51,3,'08-06-2022 03:50:55 pm','07-31-2022 05:52:07 pm',1);
 
 /*Table structure for table `proveedores` */
 
@@ -245,6 +245,24 @@ insert  into `roles`(`id_rol`,`rol`) values
 (3,'Ventas'),
 (4,'Cobranzas');
 
+/*Table structure for table `secuenciales` */
+
+DROP TABLE IF EXISTS `secuenciales`;
+
+CREATE TABLE `secuenciales` (
+  `id_secuencial` int(11) NOT NULL AUTO_INCREMENT,
+  `id_tipo` int(11) DEFAULT NULL,
+  `secuencial` varchar(10) DEFAULT NULL,
+  `id_estado` int(1) DEFAULT '1',
+  PRIMARY KEY (`id_secuencial`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+/*Data for the table `secuenciales` */
+
+insert  into `secuenciales`(`id_secuencial`,`id_tipo`,`secuencial`,`id_estado`) values 
+(1,1,'0000000001',2),
+(2,1,'0000000002',1);
+
 /*Table structure for table `stock` */
 
 DROP TABLE IF EXISTS `stock`;
@@ -260,6 +278,24 @@ CREATE TABLE `stock` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `stock` */
+
+/*Table structure for table `tipos_documento` */
+
+DROP TABLE IF EXISTS `tipos_documento`;
+
+CREATE TABLE `tipos_documento` (
+  `id_tipo` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id_tipo`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+/*Data for the table `tipos_documento` */
+
+insert  into `tipos_documento`(`id_tipo`,`tipo`) values 
+(1,'ORDEN DE ENTRADA'),
+(2,'ORDEN DE SALIDA'),
+(3,'FACTURA'),
+(4,'NOTA DE CREDITO');
 
 /*Table structure for table `unidad_medida` */
 

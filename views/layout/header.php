@@ -153,6 +153,9 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-caret"></div>
 									</a>
 									<div class="menu-submenu">
+									<div class="menu-item"><a href="index.php?c=Admin&a=lista_secuenciales" class="menu-link">
+												<div class="menu-text">Secuenciales</div>
+											</a></div>
 										<div class="menu-item"><a href="index.php?c=Catalogo&a=lista_catalogo" class="menu-link">
 												<div class="menu-text">Catálogo general</div>
 											</a></div>

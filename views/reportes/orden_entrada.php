@@ -62,7 +62,7 @@ class PDF extends FPDF
 
 date_default_timezone_set('America/Guayaquil');
 $DateAndTime = date('m-d-Y h:i:s a', time());
-$sf = 'SOLICITUD_CREDITO';
+$sf = 'VECOIN_ORDENE DE ENTRADA';
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
@@ -104,7 +104,7 @@ if ($sol_cred) {
     $pdf->Ln(5);
     $pdf->Close();
     $ext = '.pdf';
-    $sb = ' ';
+    $sb = '_';
     date_default_timezone_set('America/Guayaquil');
     $DateAndTime = date('m-d-Y h:i:s a', time());
     $pdf->Output('I', $sf . $sb. $sc["proveedor"] . $sb . $DateAndTime . $ext);

@@ -6,7 +6,7 @@ class ReporteModel  {
         $this->db= Conexion::getConexion();
     }
     public function ReporteCabOrdenEntrada($IdSecuencial){
-        $consulta = "SELECT OE.id_cabentrada,OE.fecha,OE.secuencial,OE.nro_factura,E.razon_social,P.proveedor,
+        $consulta = "SELECT OE.id_secuencial,OE.fecha,OE.secuencial,OE.nro_factura,E.razon_social,P.proveedor,
         CONCAT(EP.nombres,' ',EP.apellidos) AS responsable,E.direccion,E.telefono
         FROM cab_oentrada OE
         INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
@@ -15,6 +15,18 @@ class ReporteModel  {
         INNER JOIN empleados EP ON (US.id_empleado = EP.id_empleado)
         INNER JOIN empresas E ON (EP.id_empresa = E.id_empresa)
         WHERE OE.id_secuencial = '$IdSecuencial'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function ReporteDetOrdenEntrada($IdSecuencial){
+        $consulta = "SELECT DOE.id_det_oentrada,DOE.cantidad,U.umedida,C.producto,DOE.precio,(DOE.cantidad*DOE.precio) AS monto
+        FROM det_oentrada DOE
+        INNER JOIN unidad_medida U ON (DOE.id_umedida = U.id_umedida)
+        INNER JOIN productos P ON (DOE.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        WHERE DOE.id_secuencial = '$IdSecuencial'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

@@ -23,6 +23,32 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
+    public function save_new_producto()
+    {
+        /*
+
+data: "IdProveedor=" + prov + "&IdBodega=" + bp +
+						"&IdUMedida=" + um + "&IdCatalogo=" + ct +
+						"&Cantidad=" + cact + "&Precio=" + pact + "&Prc_Utl=" + utl + "&PVP=" + pvp,
+        */
+        $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
+        $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
+        $Fecha = date('Y-m-d');
+        $IdBodega = (isset($_REQUEST['IdBodega'])) ? $_REQUEST['IdBodega'] : '';
+        $IdUMedida = (isset($_REQUEST['IdUMedida'])) ? $_REQUEST['IdUMedida'] : '';
+        $Cantidad = strtoupper((isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '');
+        $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
+        $Prc_Utl = (isset($_REQUEST['Prc_Utl'])) ? $_REQUEST['Prc_Utl'] : '';
+        $PVP = (isset($_REQUEST['PVP'])) ? $_REQUEST['PVP'] : '';
+        $IdUsuario = $_SESSION["idusuario"];
+        $exito = $this->inv->RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+    
     public function save_new_orden_entrada()
     {
         date_default_timezone_set('America/Guayaquil');
@@ -35,6 +61,7 @@ class InventarioController
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
         $IdProveedor = strtoupper((isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '');
         $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
+        $IdUMedida = (isset($_REQUEST['IdUMedida'])) ? $_REQUEST['IdUMedida'] : '';
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Observacion = (isset($_REQUEST['Observacion'])) ? $_REQUEST['Observacion'] : '';
         $IdUsuario = $_SESSION['idusuario'];
@@ -46,9 +73,9 @@ class InventarioController
         $existe = $this->inv->ExisteRegistroOrdenEntrada($IdSecuencial);
         if ($existe) {
             foreach($existe as $ex){
-                $CabOrdenEntrada = $ex['id_cabentrada'];
+                $CabIdSecuencial = $ex['id_secuencial'];
             }
-            $exito = $this->inv->RegistroDetOrdenEntrada($CabOrdenEntrada, $IdProducto, $Cantidad, $Precio);
+            $exito = $this->inv->RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $IdUMedida, $Cantidad, $Precio);
             if ($exito) {
                 echo 1;
                 $act = $this->inv->getBuscarCantidadProducto($IdProducto);

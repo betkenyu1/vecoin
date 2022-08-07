@@ -57,26 +57,7 @@ class ProductoModel{
         return $resultados;
     }
 
-    public function RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario){
-        $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,fecha,id_bodega,id_umedida,cantidad,precio,prc_utl,pvp,id_usuario)
-        Values(:id_catalogo,:id_proveedor,:fecha,:id_bodega,:id_umedida,:cantidad,:precio,:prc_utl,:pvp,:id_usuario)";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_catalogo', $IdCatalogo);
-        $sentencia->bindParam(':id_proveedor', $IdProveedor);
-        $sentencia->bindParam(':fecha', $Fecha);
-        $sentencia->bindParam(':id_bodega', $IdBodega);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
-        $sentencia->bindParam(':cantidad', $Cantidad);
-        $sentencia->bindParam(':precio', $Precio);
-        $sentencia->bindParam(':prc_utl', $Prc_Utl);
-        $sentencia->bindParam(':pvp', $PVP);
-        $sentencia->bindParam(':id_usuario', $IdUsuario);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
+    
     public function getPModificarProductos($IdProducto){
         $consulta = "SELECT id_producto,cantidad,precio,prc_utl,pvp FROM productos
         WHERE id_producto = '$IdProducto'";

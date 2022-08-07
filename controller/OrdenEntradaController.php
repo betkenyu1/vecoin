@@ -36,36 +36,7 @@ class OrdenEntradaController
             echo json_encode($vacio);
         }
     }
-    public function get_productos()
-    {
-        $exito = $this->prod->getProductos();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
-    }
-    public function get_bodegas()
-    {
-        $exito = $this->prod->getBodegas();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
-    }
-    public function get_umedidas()
-    {
-        $exito = $this->prod->getUmedidas();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
-    }
+    
     public function save_new_producto()
     {
         $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';

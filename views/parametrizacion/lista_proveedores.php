@@ -21,7 +21,7 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
-            <a href="#new?1" onclick="setEmpresa();" class="btn btn-success"><i class="fa fa-plus"
+            <a href="#new?1" onclick="setProveedor();" class="btn btn-success"><i class="fa fa-plus"
                     aria-hidden="true"></i> Nuevo</a>
             <hr>
             <div id="new-proveedor"></div>

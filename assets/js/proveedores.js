@@ -193,7 +193,7 @@ function setProveedor() {
     $.ajax({
       type: "GET",
       dataType: 'json',
-      url: 'index.php?c=Admin&a=get_proveedores',
+      url: 'index.php?c=Admin&a=get_proveedor',
       success: function (response) {
         $.each(response, function (key, value) {
           html += '<tr class="odd gradeX">';

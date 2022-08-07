@@ -38,19 +38,30 @@ class InventarioController
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Observacion = (isset($_REQUEST['Observacion'])) ? $_REQUEST['Observacion'] : '';
         $IdUsuario = $_SESSION['idusuario'];
-        $exito = $this->inv->RegistroOrdenEntrada($Fecha, $FechaCompra ,$IdSecuencial, $IdSecu, $NroFactura, $IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion, $IdUsuario);
-        if ($exito) {
-            echo 1;
-            $act = $this->inv->getBuscarCantidadProducto($IdProducto);
-            if($act){
-                foreach($act as $cant){
-                    $CantAct = $cant['cantidad'];
-                    $CantAct = ($CantAct + $Cantidad);
-                }
-            }
-            $act = $this->inv->ActualizaCantidadProducto($IdProducto, $CantAct, $IdUsuario, $Updated_At);
+        $existe = $this->inv->ExisteRegistroOrdenEntrada($IdSecuencial);
+        if ($existe) {
         } else {
-            echo 2;
+            $reg_cab = $this->inv->RegistroCabOrdenEntrada($Fecha, $FechaCompra, $IdSecuencial, $IdSecu, $NroFactura, $IdProveedor, $Observacion, $IdUsuario);
+        }
+        $existe = $this->inv->ExisteRegistroOrdenEntrada($IdSecuencial);
+        if ($existe) {
+            foreach($existe as $ex){
+                $CabOrdenEntrada = $ex['id_cabentrada'];
+            }
+            $exito = $this->inv->RegistroDetOrdenEntrada($CabOrdenEntrada, $IdProducto, $Cantidad, $Precio);
+            if ($exito) {
+                echo 1;
+                $act = $this->inv->getBuscarCantidadProducto($IdProducto);
+                if ($act) {
+                    foreach ($act as $cant) {
+                        $CantAct = $cant['cantidad'];
+                        $CantAct = ($CantAct + $Cantidad);
+                    }
+                }
+                $act = $this->inv->ActualizaCantidadProducto($IdProducto, $CantAct, $IdUsuario, $Updated_At);
+            } else {
+                echo 2;
+            }
         }
     }
 

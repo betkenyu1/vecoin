@@ -11,11 +11,9 @@ function getListaOrdenEntrada() {
     html += '<tr>';
     html += '<th width="1%"></th>';
     html += '<th class="text-nowrap">Fecha</th>';
+    html += '<th class="text-nowrap">Secuencial</th>';
     html += '<th class="text-nowrap">Nro Factura</th>';
-    html += '<th class="text-nowrap">Cantidad</th>';
-    html += '<th class="text-nowrap">U.Medida</th>';
-    html += '<th class="text-nowrap">Producto</th>';
-    html += '<th class="text-nowrap">Precio</th>';
+    html += '<th class="text-nowrap">Proveedor</th>';
     html += '<th class="text-nowrap">Monto</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
@@ -25,20 +23,18 @@ function getListaOrdenEntrada() {
         type: "GET",
         dataType: 'json',
         url: 'index.php?c=OrdenEntrada&a=get_ord_entrda',
-        success: function (response) {//OE.id_ord_entrada,OE.fecha,OE.nro_factura,OE.cantidad,U.umedida,C.producto,
+        success: function (response) {//OE.id_cabentrada,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor
             $.each(response, function (key, value) {
                 html += '<tr class="odd gradeX">';
-                html += '<td width="1%" class="fw-bold text-dark">' + value.id_ord_entrada + '</td>';
+                html += '<td width="1%" class="fw-bold text-dark">' + value.id_cabentrada + '</td>';
                 html += '<td>' + value.fecha + '</td>';
+                html += '<td>' + value.secuencial + '</td>';
                 html += '<td>' + value.nro_factura + '</td>';
-                html += '<td>' + value.cantidad + '</td>';
-                html += '<td>' + value.umedida + '</td>';
-                html += '<td>' + value.producto + '</td>';
-                html += '<td>' + value.precio + '</td>';
+                html += '<td>' + value.proveedor + '</td>';
                 html += '<td>' + Number(value.monto).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-outline-warning" onclick="setModificarProducto(' + value.id_ord_entrada + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
-                html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_ord_entrada + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                html += '<a class="btn btn-outline-danger" onclick="setModificarProducto(' + value.id_cabentrada + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
+                html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_cabentrada + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                 html += '</td>';
                 html += '</tr>';
             });

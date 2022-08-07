@@ -22,11 +22,11 @@ class OrdenEntradaModel{
         return $resultados;
     }
     public function getOrdenesEntrada(){
-        $consulta = "SELECT OE.id_ord_entrada,OE.fecha,OE.nro_factura,OE.cantidad,U.umedida,C.producto,
-        OE.precio,(OE.cantidad*OE.precio) AS monto FROM ordenes_entrada OE
-        INNER JOIN productos P ON (OE.id_producto = P.id_producto)
-        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        INNER JOIN unidad_medida U ON (P.id_umedida = U.id_umedida)
+        $consulta = "SELECT OE.id_cabentrada,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor,
+        SUM(DOE.cantidad*DOE.precio) AS monto,E.estado FROM cab_oentrada OE
+        INNER JOIN det_oentrada DOE ON (OE.id_cabentrada = DOE.id_cabentrada)
+        INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
+        INNER JOIN estados E ON (OE.id_estado = E.id_estado)
         WHERE OE.id_estado =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

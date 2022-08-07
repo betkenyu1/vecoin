@@ -156,7 +156,7 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-item"><a href="index.php?c=Catalogo&a=lista_catalogo" class="menu-link">
 												<div class="menu-text">Catálogo general</div>
 											</a></div>
-										<div class="menu-item"><a href="javascript:;" class="menu-link">
+										<div class="menu-item"><a href="index.php?c=Admin&a=lista_clientes" class="menu-link">
 												<div class="menu-text">Clientes</div>
 											</a></div>
 										<div class="menu-item"><a href="index.php?c=Admin&a=lista_proveedores" class="menu-link">

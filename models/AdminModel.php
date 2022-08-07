@@ -64,6 +64,16 @@ class AdminModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+
+    public function getClientes(){
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,id_estado FROM clientes
+        WHERE id_estado = 1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function getEmpresaId($IdEmpresa){
         $consulta = "SELECT id_empresa,razon_social,nombre_comercial,direccion,ruc,telefono,email FROM empresas
         WHERE id_empresa = '$IdEmpresa' AND id_estado = 1";

@@ -35,6 +35,10 @@ class AdminController
     {
          require_once 'views/parametrizacion/lista_empresas.php';
     }
+    public function lista_clientes()
+    {
+         require_once 'views/parametrizacion/lista_clientes.php';
+    }
 
     public function lista_empleados()
     {
@@ -75,6 +79,16 @@ class AdminController
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
         $exito = $this->adm->getEmpresaId($IdEmpresa);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_clientes()
+    {
+        $exito = $this->adm->getClientes();
         if ($exito) {
             echo json_encode($exito);
         } else {

@@ -168,9 +168,9 @@ function setNuevaOrdenEntrada() {
     html += '</div>';
     $("#new-ord-entrada").html(html);
     $('.default-select2').select2();
+    getSecuencial();
     getProductos();
     getProveedor();
-    getSecuencial();
 }
 function getAgregarOrdenEntrada() {
     var html = '';

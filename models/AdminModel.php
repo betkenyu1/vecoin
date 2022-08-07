@@ -261,7 +261,7 @@ class AdminModel{
         return $resultados;
     }
     public function getProveedorId($IdProveedor){
-        $consulta = "SELECT id_proveedor,ruc,razon_social,direccion,telefono,email FROM proveedores
+        $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email FROM proveedores
         WHERE id_proveedor = '$IdProveedor' AND id_estado = 1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

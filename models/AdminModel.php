@@ -66,8 +66,10 @@ class AdminModel{
     }
 
     public function getClientes(){
-        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,id_estado FROM clientes
-        WHERE id_estado = 1";
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,CASE WHEN id_estado = '1' 
+        THEN 'Activo' 
+        ELSE 'Inactivo' 
+    END AS id_estado FROM clientes";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -99,6 +101,37 @@ class AdminModel{
         }
         return true;
     }
+
+    public function RegistroCliente($Ruc,$RazonSocial,$Direccion,$Telefono,$Email,$Tiempocredito)
+    {
+        $consulta = "INSERT INTO clientes (ruc,razon_social,direccion,telefono,email,tiempo_credito)
+        VALUES(:ruc,:razon_social,:direccion,:telefono,:email,:tiempocredito)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':ruc', $Ruc);
+        $sentencia->bindParam(':razon_social', $RazonSocial);
+        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':telefono', $Telefono);
+        $sentencia->bindParam(':email', $Email);
+        $sentencia->bindParam(':tiempocredito', $Tiempocredito);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+
+    public function EliminarCliente($IdCliente)
+    {
+        $consulta = "UPDATE clientes SET id_estado = 2
+        WHERE id_cliente = '$IdCliente'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+
     public function ModificarEmpresa($IdEmpresa,$RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email)
     {
         $consulta = "UPDATE empresas SET razon_social = '$RazonSocial', 

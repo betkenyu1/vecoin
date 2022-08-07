@@ -121,6 +121,30 @@ class AdminController
             echo 2;
         }
     }
+
+    public function save_new_cliente(){
+        $Ruc = (isset($_REQUEST['Ruc'])) ? $_REQUEST['Ruc'] : '';
+        $RazonSocial = (isset($_REQUEST['RazonSocial'])) ? $_REQUEST['RazonSocial'] : '';
+        $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
+        $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
+        $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
+        $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
+        $exito = $this->adm->RegistroCliente($Ruc,$RazonSocial,$Direccion,$Telefono,$Email,$Tiempocredito);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+    public function get_elim_cliente(){
+        $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
+        $exito = $this->adm->EliminarCliente($IdCliente);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
     public function save_new_proveedor(){
         $Ruc = (isset($_REQUEST['Ruc'])) ? $_REQUEST['Ruc'] : '';
         $RazonSocial = (isset($_REQUEST['RazonSocial'])) ? $_REQUEST['RazonSocial'] : '';             

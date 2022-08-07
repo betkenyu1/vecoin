@@ -1,36 +1,28 @@
-function setEmpresa() {
+function setCliente() {
     //desarrollo de interfaz vacia
-    $(".cerrar-lemp").hide();
-    $(".cerrar-emp").hide();
+    $(".cerrar-lclie").hide();
+    $(".cerrar-clie").hide();
     var html = "";
-    html += '<div class="cerrar-emp">';
+    html += '<div class="cerrar-clie">';
     html += '<div class="note note-info">';
     html += '<div class="note-content">';
     html += "<form>";
     html += '<div class="form-group">';
     html += '<div class="row">';
-  
+
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Razon Social:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdRazonSocial">';
-    html += '<div id="alert-rs"></div>';
-    html += "</div>";
-    html += "</div>";
-  
-    html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Nombre Comercial:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdNombreComercial">';
+    html += '<b style="color: #000000;">Ruc:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdRuc">';
     html += '<div id="alert-nc"></div>';
     html += "</div>";
     html += "</div>";
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Ruc:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdRuc">';
-    html += '<div id="alert-rc"></div>';
+    html += '<b style="color: #000000;">Razon Social:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdRazonSocial">';
+    html += '<div id="alert-rs"></div>';
     html += "</div>";
     html += "</div>";
   
@@ -57,12 +49,20 @@ function setEmpresa() {
     html += '<div id="alert-em"></div>';
     html += "</div>";
     html += "</div>";
+
+    html += '<div class="col-md-6">';
+    html += '<div class="mb-10px">';
+    html += '<b style="color: #000000;">Tiempo de crédito:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdTiempocredito">';
+    html += '<div id="alert-em"></div>';
+    html += "</div>";
+    html += "</div>";
   
     html += '<div class="text-center">';
     html +=
-      '<a class="btn btn-outline-danger" onclick="CerrarNuevoEmpresa();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
+      '<a class="btn btn-outline-danger" onclick="CerrarNuevoCliente();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
     html +=
-      '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarEmpresa();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
+      '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarCliente();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
     html += "</div>";
   
     html += "</div>";
@@ -71,35 +71,15 @@ function setEmpresa() {
     html += "</div>";
     html += "</div>";
     html += "</div>";
-    $("#new-empresa").html(html); //enlace de interfaz con la principal
+    $("#new-cliente").html(html); //enlace de interfaz con la principal
   }
-  function CerrarNuevoEmpresa() {
-    $(".cerrar-emp").hide();
-    getListaEmpresas();
+  function CerrarNuevoCliente() {
+    $(".cerrar-clie").hide();
+    getListaClientes();
   }
-  function getGuardarEmpresa() {
+  function getGuardarCliente() {
     var html = '';
-    if ($('#IdRazonSocial').val() == 0) {
-      html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
-      html += '</div>';
-      $("#alert-rs").html(html);
-      $('#IdRazonSocial').focus();
-      setTimeout(function () {
-        $("#alert-rs").fadeOut(1500);
-      }, 3000);
-      return false;
-    } if ($('#IdNombreComercial').val() == 0) {
-      html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
-      html += '</div>';
-      $("#alert-ump").html(html);
-      $('#IdNombreComercial').focus();
-      setTimeout(function () {
-        $("#alert-ump").fadeOut(1500);
-      }, 3000);
-      return false;
-    } if ($('#IdRuc').val() == '') {
+    if ($('#IdRuc').val() == '') {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
@@ -109,7 +89,19 @@ function setEmpresa() {
         $("#alert-rc").fadeOut(1500);
       }, 3000);
       return false;
-    } if ($('#IdDireccion').val() == '') {
+    } 
+    if ($('#IdRazonSocial').val() == 0) {
+      html += '<div class="alert alert-danger">';
+      html += 'Este campo es obligatorio!.';
+      html += '</div>';
+      $("#alert-re").html(html);
+      $('#IdRazonSocial').focus();
+      setTimeout(function () {
+        $("#alert-re").fadeOut(1500);
+      }, 3000);
+      return false;
+    } 
+    if ($('#IdDireccion').val() == '') {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
@@ -119,7 +111,8 @@ function setEmpresa() {
         $("#alert-dr").fadeOut(1500);
       }, 3000);
       return false;
-    } if ($('#IdTelefono').val() == '') {
+    } 
+    if ($('#IdTelefono').val() == '') {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
@@ -129,7 +122,8 @@ function setEmpresa() {
         $("#alert-tl").fadeOut(1500);
       }, 3000);
       return false;
-    } if ($('#IdEmail').val() == '') {
+    } 
+    if ($('#IdEmail').val() == '') {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
@@ -139,13 +133,24 @@ function setEmpresa() {
         $("#alert-em").fadeOut(1500);
       }, 3000);
       return false;
+    } 
+    if ($('#IdTiempocredito').val() == '') {
+      html += '<div class="alert alert-danger">';
+      html += 'Este campo es obligatorio!.';
+      html += '</div>';
+      $("#alert-tcr").html(html);
+      $('#IdTiempocredito').focus();
+      setTimeout(function () {
+        $("#alert-tcr").fadeOut(1500);
+      }, 3000);
+      return false;
     } else {
-      var re = $("#IdRazonSocial").val();
-      var nc = $("#IdNombreComercial").val();
       var rc = $("#IdRuc").val();
+      var re = $("#IdRazonSocial").val();
       var dr = $("#IdDireccion").val();
       var tl = $("#IdTelefono").val();
       var em = $("#IdEmail").val();
+      var tcr = $("#IdTiempocredito").val();
       Swal.fire({
         title: "CONFIRMACION!",
         icon: "warning",
@@ -158,17 +163,20 @@ function setEmpresa() {
           $.ajax({
             type: "GET",
             dataType: 'json',
-            url: "index.php?c=Admin&a=save_new_empresa",
-            data: "RazonSocial=" + re + "&NombreComercial=" + nc +
-              "&Ruc=" + rc + "&Direccion=" + dr +
-              "&Telefono=" + tl + "&Email=" + em,
+            url: "index.php?c=Admin&a=save_new_cliente",
+            data: "Ruc=" + rc 
+            + "&RazonSocial=" + re
+            + "&Direccion=" + dr 
+            + "&Telefono=" + tl 
+            + "&Email=" + em
+            + "&Tiempocredito=" + tcr ,
             success: function (response) {
               response = JSON.stringify(response);
               if (response == 1) {
                 Swal.fire({
                   html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
                 });
-                CerrarNuevoEmpresa();
+                CerrarNuevoCliente();
               } if (response == 2) {
                 Swal.fire({
                   html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
@@ -214,7 +222,7 @@ function setEmpresa() {
           html += '<td>' + value.telefono + '</td>';
           html += '<td>' + value.email + '</td>';
           html += '<td>' + value.tiempo_credito + '</td>';
-          html += '<td>' + value.estado + '</td>';
+          html += '<td>' + value.id_estado + '</td>';
           html += '<td>';
           html += '<a class="btn btn-outline-warning" onclick="setModificarCliente(' + value.id_cliente + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
           html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarCliente(' + value.id_cliente + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
@@ -234,9 +242,9 @@ function setEmpresa() {
       }
     });
   }
-  function CerrarModificarEmpresa() {
-      $(".cerrar-emp").hide();
-      getListaEmpresas();
+  function CerrarModificarCliente() {
+      $(".cerrar-clie").hide();
+      getListaClientes();
   }
   function CerrarListaEmpresa(){
     $(".cerrar-lemp").hide();
@@ -439,7 +447,7 @@ function setEmpresa() {
           });
       }
   }
-  function getEliminarEmpresa(id_empresa) {
+  function getEliminarCliente(id_cliente) {
       Swal.fire({
           title: "CONFIRMACION!",
           icon: "warning",
@@ -452,15 +460,15 @@ function setEmpresa() {
               $.ajax({
                   type: "GET",
                   dataType: 'json',
-                  url: "index.php?c=Admin&a=get_elim_empresa",
-                  data: "IdEmpresa=" + id_empresa,
+                  url: "index.php?c=Admin&a=get_elim_cliente",
+                  data: "IdCliente=" + id_cliente,
                   success: function (response) {
                       response = JSON.stringify(response);
                       if (response == 1) {
                           Swal.fire({
                               html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>Eliminado OK!.</b></div></div>',
                           });
-                          CerrarModificarEmpresa();
+                          CerrarModificarCliente();
                       } if (response == 2) {
                           Swal.fire({
                               html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',

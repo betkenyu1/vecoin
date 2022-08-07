@@ -26,15 +26,15 @@ function getListaOrdenEntrada() {
         success: function (response) {//OE.id_cabentrada,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor
             $.each(response, function (key, value) {
                 html += '<tr class="odd gradeX">';
-                html += '<td width="1%" class="fw-bold text-dark">' + value.id_cabentrada + '</td>';
+                html += '<td width="1%" class="fw-bold text-dark">' + value.id_secuencial + '</td>';
                 html += '<td>' + value.fecha + '</td>';
                 html += '<td>' + value.secuencial + '</td>';
                 html += '<td>' + value.nro_factura + '</td>';
                 html += '<td>' + value.proveedor + '</td>';
                 html += '<td>' + Number(value.monto).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-outline-danger" onclick="setModificarProducto(' + value.id_cabentrada + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
-                html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_cabentrada + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                html += '<a class="btn btn-outline-danger" onclick="getReporteOrdenEntrada(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
+                html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_secuencial + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                 html += '</td>';
                 html += '</tr>';
             });

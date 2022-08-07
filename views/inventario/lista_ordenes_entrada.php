@@ -34,3 +34,4 @@ include_once 'views/layout/footer.php';
 ?>
 <script src="assets/js/orden_entrada.js"></script>
 <script src="assets/js/admin.js"></script>
+<script src="assets/js/reportes.js"></script>

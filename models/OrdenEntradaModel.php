@@ -23,8 +23,7 @@ class OrdenEntradaModel{
     }
     public function getOrdenesEntrada(){
         $consulta = "SELECT OE.id_secuencial,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor,
-        SUM(DOE.cantidad*DOE.precio) AS monto,E.estado FROM cab_oentrada OE
-        INNER JOIN det_oentrada DOE ON (OE.id_secuencial = DOE.id_secuencial)
+        E.estado FROM cab_oentrada OE
         INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
         INNER JOIN estados E ON (OE.id_estado = E.id_estado)
         WHERE OE.id_estado =1";

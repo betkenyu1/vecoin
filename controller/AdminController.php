@@ -82,6 +82,17 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+    public function get_proveedor_id()
+    {
+        $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
+        $exito = $this->adm->getProveedorId($IdProveedor);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function save_new_empresa(){
         $RazonSocial = (isset($_REQUEST['RazonSocial'])) ? $_REQUEST['RazonSocial'] : '';
         $NombreComercial = (isset($_REQUEST['NombreComercial'])) ? $_REQUEST['NombreComercial'] : '';
@@ -90,6 +101,42 @@ class AdminController
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $exito = $this->adm->RegistroEmpresa($RazonSocial,$NombreComercial,$Ruc,$Direccion,$Telefono,$Email);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+    public function save_new_proveedor(){
+        $Ruc = (isset($_REQUEST['Ruc'])) ? $_REQUEST['Ruc'] : '';
+        $RazonSocial = (isset($_REQUEST['RazonSocial'])) ? $_REQUEST['RazonSocial'] : '';             
+        $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
+        $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
+        $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
+        $exito = $this->adm->RegistroProveedor($Ruc,$RazonSocial,$Direccion,$Telefono,$Email);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+    public function get_elim_proveedor(){
+        $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
+        $exito = $this->adm->EliminarProveedor($IdProveedor);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+    public function get_mod_proveedor(){
+        $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
+        $Ruc = (isset($_REQUEST['Ruc'])) ? $_REQUEST['Ruc'] : '';
+        $RazonSocial = (isset($_REQUEST['RazonSocial'])) ? $_REQUEST['RazonSocial'] : '';
+        $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
+        $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
+        $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
+        $exito = $this->adm->ModificarProveedor($IdProveedor,$Ruc,$RazonSocial,$Direccion,$Telefono,$Email);
         if ($exito) {
             echo 1;
         } else {

@@ -44,7 +44,7 @@ class AdminController
     {
          require_once 'views/parametrizacion/lista_secuenciales.php';
     }
-    //
+    /*
     public function get_secuencial()
     {
         $exito = $this->adm->getSecuenciales();
@@ -53,6 +53,23 @@ class AdminController
         } else {
             $vacio = array('');
             echo json_encode($vacio);
+        }
+    }*/
+    public function get_secuencial()
+    {
+        $IdUsuario = $_SESSION["idusuario"];
+        $existe = $this->adm->ExisteSecuencial($IdUsuario);
+        if ($existe) {
+        } else {
+            $exito = $this->adm->RegistroSecuencial($IdUsuario);
+        }
+        $existe = $this->adm->ExisteSecuencial($IdUsuario);
+        if ($existe) {
+            echo json_encode($existe);
+            
+        } else {
+            $exito = array();
+            echo json_encode($exito);
         }
     }
     public function get_empresas()

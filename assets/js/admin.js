@@ -5,10 +5,9 @@ function getSecuencial() {
 		success: function (response) {
 			response = JSON.parse(response);
 			$.each(response, function (key, value) {
-				//var id = (value.id_ecuencial);
 				var n = ('000000000' + value.id_secuencial).slice(-9);
-				$('#IdNroFactura').val(n);
-        alert(n);
+				$('#IdSecuencial').val(value.id_secuencial);
+        $('#IdSecu').text('Secuencial: [ ' + n +' ]');
 			});
 		}
 	});

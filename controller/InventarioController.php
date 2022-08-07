@@ -29,6 +29,8 @@ class InventarioController
         $Updated_At = date('m-d-Y h:i:s a', time());
         $Fecha = date('Y-m-d');
         $FechaCompra = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
+        $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
+        $IdSecu = (isset($_REQUEST['IdSecu'])) ? $_REQUEST['IdSecu'] : '';
         $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
         $IdProveedor = strtoupper((isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '');
@@ -36,7 +38,7 @@ class InventarioController
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Observacion = (isset($_REQUEST['Observacion'])) ? $_REQUEST['Observacion'] : '';
         $IdUsuario = $_SESSION['idusuario'];
-        $exito = $this->inv->RegistroOrdenEntrada($Fecha, $FechaCompra ,$NroFactura, $IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion, $IdUsuario);
+        $exito = $this->inv->RegistroOrdenEntrada($Fecha, $FechaCompra ,$IdSecuencial, $IdSecu, $NroFactura, $IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion, $IdUsuario);
         if ($exito) {
             echo 1;
             $act = $this->inv->getBuscarCantidadProducto($IdProducto);

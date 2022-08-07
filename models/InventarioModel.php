@@ -14,13 +14,15 @@ class InventarioModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function RegistroOrdenEntrada($Fecha, $FechaCompra ,$NroFactura, $IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion,$IdUsuario)
+    public function RegistroOrdenEntrada($Fecha, $FechaCompra ,$IdSecuencial, $IdSecu, $NroFactura, $IdProducto, $IdProveedor, $Cantidad, $Precio, $Observacion,$IdUsuario)
     {
-        $consulta = "INSERT INTO ordenes_entrada (fecha,fecha_compra,nro_factura,id_producto,id_proveedor,cantidad,precio,observacion,id_usuario)
-        VALUES(:fecha,:fecha_compra,:nro_factura,:id_producto,:id_proveedor,:cantidad,:precio,:observacion,:id_usuario)";
+        $consulta = "INSERT INTO ordenes_entrada (fecha,fecha_compra,id_secuencial,secuencial,nro_factura,id_producto,id_proveedor,cantidad,precio,observacion,id_usuario)
+        VALUES(:fecha,:fecha_compra,:id_secuencial,:secuencial,:nro_factura,:id_producto,:id_proveedor,:cantidad,:precio,:observacion,:id_usuario)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':fecha', $Fecha);
         $sentencia->bindParam(':fecha_compra', $FechaCompra);
+        $sentencia->bindParam(':id_secuencial', $IdSecuencial);
+        $sentencia->bindParam(':secuencial', $IdSecu);
         $sentencia->bindParam(':nro_factura', $NroFactura);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':id_proveedor', $IdProveedor);

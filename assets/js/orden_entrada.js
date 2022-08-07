@@ -86,6 +86,12 @@ function setNuevaOrdenEntrada() {
     html += '<div class="form-group">';
     html += '<div class="row">';
 
+    html += '<div>';
+    html += '<p class="text-center">';
+    html += '<b style="color: #000000;" id=IdSecu></b> </br>';
+    html += '</p>'
+    html += '</div>';
+
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Fecha:</b> </br>';
@@ -97,6 +103,7 @@ function setNuevaOrdenEntrada() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Nro Factura:</b> </br>';
+    html += '<input type="hidden" class="form-control" id="IdSecuencial">';
     html += '<input type="text" class="form-control" id="IdNroFactura">';
     html += '<div id="alert-nrofac"></div>';
     html += '</div>';
@@ -222,6 +229,8 @@ function getGuardarOrdenEntrada() {
         return false;
     } else {
         var freg = $("#IdFecha").val();
+        var idsc = $("#IdSecuencial").val();
+        var idsecu = $("#IdSecu").text();
         var nrofac = $("#IdNroFactura").val();
         var prod = $("#IdProducto").val();
         var prov = $("#IdProveedor").val();
@@ -241,9 +250,10 @@ function getGuardarOrdenEntrada() {
                     type: "GET",
                     dataType: 'json',
                     url: "index.php?c=Inventario&a=save_new_orden_entrada",
-                    data: "Fecha=" + freg + "&NroFactura=" + nrofac +
-                        "&IdProducto=" + prod + "&IdProveedor=" + prov +
-                        "&Cantidad=" + cant + "&Precio=" + prec + "&Observacion=" + obs,
+                    data: "Fecha=" + freg + "&IdSecuencial=" + idsc + 
+                    "&IdSecu=" + idsecu + "&NroFactura=" + nrofac + 
+                    "&IdProducto=" + prod + "&IdProveedor=" + prov +
+                    "&Cantidad=" + cant + "&Precio=" + prec + "&Observacion=" + obs,
                     success: function (response) {
                         if (response == 1) {
                             Swal.fire({
@@ -528,5 +538,5 @@ function getEliminarProducto(id_producto) {
 }
 $(document).ready(function () {
     getListaOrdenEntrada();
-    getSecuencial();
+    //getSecuencial();
 });

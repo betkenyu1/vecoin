@@ -26,13 +26,35 @@ class AdminModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getSecuenciales(){
-        $consulta = "SELECT id_secuencial,secuencial FROM secuenciales
-        WHERE id_estado = 1";
+    public function ExisteSecuencial($IdUsuario){
+        $consulta = "SELECT id_secuencial
+        FROM secuenciales
+        WHERE id_usuario = '$IdUsuario' AND id_estado = 1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
+    }
+    public function RegistroSecuencial($IdUsuario){
+        $consulta = "INSERT INTO secuenciales (id_usuario)
+        VALUES(:id_usuario)";			
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':id_usuario',$IdUsuario);
+        $sentencia->execute();
+        if ($sentencia->rowCount() <= 0) { 
+            return false;
+        }
+        return true;
+    }
+    public function ActualizaSecuencial($IdSecuencial){
+        $consulta = "UPDATE secuenciales SET IdEstado = 2
+        WHERE id_secuencial = '$IdSecuencial'";			
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() <= 0) { 
+            return false;
+        }
+        return true;
     }
     public function getEmpresas(){
         $consulta = "SELECT id_empresa,razon_social,ruc,telefono,email FROM empresas

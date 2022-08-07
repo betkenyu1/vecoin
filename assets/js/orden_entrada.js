@@ -75,6 +75,11 @@ function CerrarNuevaOrdenEntrada() {
     $(".cerrar-noe").hide();
     getListaOrdenEntrada();
 }
+function LimpiarCampos(){
+    getProductos();
+    $("#IdCantidad").val('');
+    $("#IdPrecio").val('');
+}
 function setNuevaOrdenEntrada() {
     CerrarListaOrdenEntrada();
     $(".cerrar-mp").hide();
@@ -150,8 +155,9 @@ function setNuevaOrdenEntrada() {
    
     html += '<div class="text-center">';
     html += '<br>';
-    html += '<a class="btn btn-outline-danger" onclick="CerrarNuevaOrdenEntrada();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
-    html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarOrdenEntrada();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
+    html += '<a class="btn btn-danger" onclick="CerrarNuevaOrdenEntrada();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
+    html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarOrdenEntrada();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
+    html += '&nbsp;<a class="btn btn-success" title="Cerrar" onclick="getCerrarOrdenEntrada();"><i class="fa-solid fa-save" aria-hidden="true"></i> Cerrar</a>';
     html += '</div>';
 
     html += '</div>';
@@ -166,7 +172,7 @@ function setNuevaOrdenEntrada() {
     getProveedor();
     getSecuencial();
 }
-function getGuardarOrdenEntrada() {
+function getAgregarOrdenEntrada() {
     var html = '';
     if ($('#IdFecha').val() == '') {
         html += '<div class="alert alert-danger">';
@@ -248,7 +254,7 @@ function getGuardarOrdenEntrada() {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    type: "GET",
+                    type: "POST",
                     dataType: 'json',
                     url: "index.php?c=Inventario&a=save_new_orden_entrada",
                     data: "Fecha=" + freg + "&IdSecuencial=" + idsc + 
@@ -260,7 +266,7 @@ function getGuardarOrdenEntrada() {
                             Swal.fire({
                                 html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
                             });
-                            CerrarNuevaOrdenEntrada();
+                            LimpiarCampos();
                         } if (response == 2) {
                             Swal.fire({
                                 html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
@@ -272,7 +278,38 @@ function getGuardarOrdenEntrada() {
         });
     }
 }
-
+function getCerrarOrdenEntrada() {
+    var idsc = $("#IdSecuencial").val();
+    Swal.fire({
+        title: "CONFIRMACION!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "index.php?c=Inventario&a=cerrar_orden_entrada",
+                data: "IdSecuencial=" + idsc,
+                success: function (response) {
+                    if (response == 1) {
+                        Swal.fire({
+                            html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Cerrado OK!.</b></div></div>',
+                        });
+                        CerrarNuevaOrdenEntrada();
+                    } if (response == 2) {
+                        Swal.fire({
+                            html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+                        });
+                    }
+                }
+            });
+        }
+    });
+}
 function getBodegasMod() {
     $("#IdBodegaM").empty();
     $.ajax({

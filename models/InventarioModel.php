@@ -56,10 +56,10 @@ class InventarioModel{
         }
         return true;
     }
-    public function getEliminarItemCatalogo($IdCatalogo)
+    public function ActualizaSecuencialOrdenEntrada($IdSecuencial)
     {
-        $consulta = "UPDATE catalogo SET id_estado =2
-            WHERE id_catalogo = '$IdCatalogo'";
+        $consulta = "UPDATE secuenciales SET id_estado = 2
+        WHERE id_secuencial = '$IdSecuencial'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {

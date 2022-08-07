@@ -54,14 +54,10 @@ class InventarioController
         }
     }
 
-    public function get_mod_catalogo()
+    public function cerrar_orden_entrada()
     {
-        $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
-        $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
-        $Codigo = (isset($_REQUEST['Codigo'])) ? $_REQUEST['Codigo'] : '';
-        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $Descripcion = strtoupper((isset($_REQUEST['Descripcion'])) ? $_REQUEST['Descripcion'] : '');
-        $exito = $this->cat->getModificarItemCatalogo($IdCatalogo, $IdEmpresa, $Codigo ,$Descripcion, $IdEstado);
+        $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
+        $exito = $this->inv->ActualizaSecuencialOrdenEntrada($IdSecuencial);
         if ($exito) {
             echo 1;
         } else {

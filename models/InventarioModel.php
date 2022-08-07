@@ -15,7 +15,7 @@ class InventarioModel{
         return $resultados;
     }
     public function ExisteRegistroOrdenEntrada($IdSecuencial){
-        $consulta = "SELECT id_cabentrada FROM cab_oentrada
+        $consulta = "SELECT id_secuencial FROM cab_oentrada
         WHERE id_secuencial = '$IdSecuencial'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -41,12 +41,12 @@ class InventarioModel{
         }
         return true;
     }
-    public function RegistroDetOrdenEntrada($CabOrdenEntrada, $IdProducto, $Cantidad, $Precio)
+    public function RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $Cantidad, $Precio)
     {
-        $consulta = "INSERT INTO det_oentrada (id_cabentrada,id_producto,cantidad,precio)
-        VALUES(:id_cabentrada,:id_producto,:cantidad,:precio)";
+        $consulta = "INSERT INTO det_oentrada (id_secuencial,id_producto,cantidad,precio)
+        VALUES(:id_secuencial,:id_producto,:cantidad,:precio)";
         $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_cabentrada', $CabOrdenEntrada);
+        $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':precio', $Precio);

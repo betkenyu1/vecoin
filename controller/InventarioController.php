@@ -46,9 +46,9 @@ class InventarioController
         $existe = $this->inv->ExisteRegistroOrdenEntrada($IdSecuencial);
         if ($existe) {
             foreach($existe as $ex){
-                $CabOrdenEntrada = $ex['id_cabentrada'];
+                $CabIdSecuencial = $ex['id_secuencial'];
             }
-            $exito = $this->inv->RegistroDetOrdenEntrada($CabOrdenEntrada, $IdProducto, $Cantidad, $Precio);
+            $exito = $this->inv->RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $Cantidad, $Precio);
             if ($exito) {
                 echo 1;
                 $act = $this->inv->getBuscarCantidadProducto($IdProducto);

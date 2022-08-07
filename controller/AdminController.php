@@ -40,6 +40,10 @@ class AdminController
     {
          require_once 'views/parametrizacion/lista_empleados.php';
     }
+    public function lista_proveedores()
+    {
+         require_once 'views/parametrizacion/lista_proveedores.php';
+    }
     public function get_secuencial()
     {
         $IdUsuario = $_SESSION["idusuario"];

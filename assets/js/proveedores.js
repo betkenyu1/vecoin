@@ -183,6 +183,7 @@ function setProveedor() {
     html += '<th width="1%"></th>';
     html += '<th class="text-nowrap">Ruc</th>';
     html += '<th class="text-nowrap">Razon Social</th>';
+    html += '<th class="text-nowrap">Dirección</th>';
     html += '<th class="text-nowrap">Telefono</th>';
     html += '<th class="text-nowrap">Email</th>';
     html += '<th class="text-nowrap">Acciones</th>';
@@ -199,6 +200,7 @@ function setProveedor() {
           html += '<td width="1%" class="fw-bold text-dark">' + value.id_proveedor + '</td>';
           html += '<td>' + value.ruc + '</td>';
           html += '<td>' + value.razon_social + '</td>';
+          html += '<td>' + value.direccion + '</td>';
           html += '<td>' + value.telefono + '</td>';
           html += '<td>' + value.email + '</td>';
           html += '<td>';

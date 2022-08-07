@@ -7,6 +7,7 @@ function getSecuencial() {
 			$.each(response, function (key, value) {
 				var n = ('000000000' + value.id_secuencial).slice(-9);
 				$('#IdSecuencial').val(value.id_secuencial);
+        $('#IdSecuencia').val(n);
         $('#IdSecu').text('Secuencial: [ ' + n +' ]');
 			});
 		}

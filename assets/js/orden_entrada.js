@@ -104,6 +104,7 @@ function setNuevaOrdenEntrada() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Nro Factura:</b> </br>';
     html += '<input type="hidden" class="form-control" id="IdSecuencial">';
+    html += '<input type="hidden" class="form-control" id="IdSecuencia">';
     html += '<input type="text" class="form-control" id="IdNroFactura">';
     html += '<div id="alert-nrofac"></div>';
     html += '</div>';
@@ -230,7 +231,7 @@ function getGuardarOrdenEntrada() {
     } else {
         var freg = $("#IdFecha").val();
         var idsc = $("#IdSecuencial").val();
-        var idsecu = $("#IdSecu").text();
+        var idsecu = $("#IdSecuencia").val();
         var nrofac = $("#IdNroFactura").val();
         var prod = $("#IdProducto").val();
         var prov = $("#IdProveedor").val();

@@ -40,21 +40,6 @@ class AdminController
     {
          require_once 'views/parametrizacion/lista_empleados.php';
     }
-    public function lista_secuenciales()
-    {
-         require_once 'views/parametrizacion/lista_secuenciales.php';
-    }
-    /*
-    public function get_secuencial()
-    {
-        $exito = $this->adm->getSecuenciales();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
-    }*/
     public function get_secuencial()
     {
         $IdUsuario = $_SESSION["idusuario"];

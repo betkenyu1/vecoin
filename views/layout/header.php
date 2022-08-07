@@ -159,7 +159,7 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-item"><a href="javascript:;" class="menu-link">
 												<div class="menu-text">Clientes</div>
 											</a></div>
-										<div class="menu-item"><a href="javascript:;" class="menu-link">
+										<div class="menu-item"><a href="index.php?c=Admin&a=lista_proveedores" class="menu-link">
 												<div class="menu-text">Proveedores</div>
 											</a></div>
 										<div class="menu-item"><a href="index.php?c=Admin&a=lista_empresas" class="menu-link">

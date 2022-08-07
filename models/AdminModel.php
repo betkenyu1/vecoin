@@ -102,6 +102,18 @@ class AdminModel{
         }
         return true;
     }
+    public function ModificarProveedor($IdProveedor, $Ruc,$RazonSocial, $Direccion, $Telefono, $Email)
+    {
+        $consulta = "UPDATE proveedores SET ruc = '$Ruc', proveedor = '$RazonSocial', 
+        direccion = '$Direccion', telefono = '$Telefono', email = '$Email'
+        WHERE id_proveedor = '$IdProveedor'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
     public function EliminarEmpresa($IdEmpresa)
     {
         $consulta = "UPDATE empresas SET id_estado = 2
@@ -242,10 +254,45 @@ class AdminModel{
     }
     public function getProveedores(){
         $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email
-        FROM proveedores";
+        FROM proveedores WHERE id_estado='1'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
+    }
+    public function getProveedorId($IdProveedor){
+        $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email FROM proveedores
+        WHERE id_proveedor = '$IdProveedor' AND id_estado = 1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function RegistroProveedor($Ruc,$RazonSocial,$Direccion,$Telefono,$Email)
+    {
+        $consulta = "INSERT INTO proveedores(ruc,proveedor,direccion,telefono,email)
+        VALUES(:ruc,:razon_social,:direccion,:telefono,:email)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':ruc', $Ruc);
+        $sentencia->bindParam(':razon_social', $RazonSocial);        
+        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':telefono', $Telefono);
+        $sentencia->bindParam(':email', $Email);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function EliminarProveedor($IdProveedor)
+    {
+        $consulta = "UPDATE proveedores SET id_estado = 2
+        WHERE id_proveedor = '$IdProveedor'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
     }
 }

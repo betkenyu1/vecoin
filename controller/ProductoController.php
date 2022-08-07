@@ -72,25 +72,7 @@ class ProductoController
             echo json_encode($vacio);
         }
     }
-    public function save_new_producto()
-    {
-        $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
-        $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
-        $Fecha = date('Y-m-d');
-        $IdBodega = (isset($_REQUEST['IdBodega'])) ? $_REQUEST['IdBodega'] : '';
-        $IdUMedida = (isset($_REQUEST['IdUMedida'])) ? $_REQUEST['IdUMedida'] : '';
-        $Cantidad = strtoupper((isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '');
-        $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
-        $Prc_Utl = (isset($_REQUEST['Prc_Utl'])) ? $_REQUEST['Prc_Utl'] : '';
-        $PVP = (isset($_REQUEST['PVP'])) ? $_REQUEST['PVP'] : '';
-        $IdUsuario = $_SESSION["idusuario"];
-        $exito = $this->prod->RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario);
-        if ($exito) {
-            echo 1;
-        } else {
-            echo 2;
-        }
-    }
+    
 
     public function get_pmod_producto()
     {

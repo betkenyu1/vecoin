@@ -252,6 +252,7 @@ function getGuardarProducto() {
 		var pact = $("#IdPrecio_act").val();
 		var utl = $("#IdUtilidad").val();
 		var pvp = $("#IdPVP").val();
+		alert(prov+bp+um+ct+cact+pact+utl+pvp);
 		Swal.fire({
 			title: "CONFIRMACION!",
 			icon: "warning",
@@ -264,7 +265,7 @@ function getGuardarProducto() {
 				$.ajax({
 					type: "GET",
 					dataType: 'json',
-					url: "index.php?c=Producto&a=save_new_producto",
+					url: "index.php?c=Inventario&a=save_new_producto",
 					data: "IdProveedor=" + prov + "&IdBodega=" + bp +
 						"&IdUMedida=" + um + "&IdCatalogo=" + ct +
 						"&Cantidad=" + cact + "&Precio=" + pact + "&Prc_Utl=" + utl + "&PVP=" + pvp,

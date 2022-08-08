@@ -26,20 +26,22 @@ class AdminModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function ExisteSecuencial($IdUsuario){
-        $consulta = "SELECT id_secuencial
+    public function ExisteSecuencial($IdTipo){
+        $consulta = "SELECT id_secuencial,secuencial
         FROM secuenciales
-        WHERE id_usuario = '$IdUsuario' AND id_estado = 1";
+        WHERE id_tipo = '$IdTipo' AND id_estado =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function RegistroSecuencial($IdUsuario){
-        $consulta = "INSERT INTO secuenciales (id_usuario)
-        VALUES(:id_usuario)";			
+    
+    public function RegistroSecuencial($Secuencial,$IdTipo){
+        $consulta = "INSERT INTO secuenciales (secuencial,id_tipo)
+        VALUES(:secuencial,:id_tipo)";			
         $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_usuario',$IdUsuario);
+        $sentencia->bindParam(':secuencial',$Secuencial);
+        $sentencia->bindParam(':id_tipo',$IdTipo);
         $sentencia->execute();
         if ($sentencia->rowCount() <= 0) { 
             return false;

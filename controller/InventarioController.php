@@ -95,7 +95,8 @@ data: "IdProveedor=" + prov + "&IdBodega=" + bp +
     public function cerrar_orden_entrada()
     {
         $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
-        $exito = $this->inv->ActualizaSecuencialOrdenEntrada($IdSecuencial);
+        $Secuencial = (isset($_REQUEST['Secuencial'])) ? $_REQUEST['Secuencial'] : '';
+        $exito = $this->inv->ActualizaSecuencialOrdenEntrada($IdSecuencial, $Secuencial);
         if ($exito) {
             echo 1;
         } else {

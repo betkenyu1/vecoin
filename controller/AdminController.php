@@ -50,13 +50,14 @@ class AdminController
     }
     public function get_secuencial()
     {
-        $IdUsuario = $_SESSION["idusuario"];
-        $existe = $this->adm->ExisteSecuencial($IdUsuario);
+        $IdTipo = 1;
+        $Secuencial = 1;
+        $existe = $this->adm->ExisteSecuencial($IdTipo);
         if ($existe) {
         } else {
-            $exito = $this->adm->RegistroSecuencial($IdUsuario);
+            $exito = $this->adm->RegistroSecuencial($Secuencial,$IdTipo);
         }
-        $existe = $this->adm->ExisteSecuencial($IdUsuario);
+        $existe = $this->adm->ExisteSecuencial($Secuencial,$IdTipo);
         if ($existe) {
             echo json_encode($existe);
             

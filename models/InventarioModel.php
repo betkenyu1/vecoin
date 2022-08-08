@@ -97,9 +97,18 @@ class InventarioModel{
         }
         return true;
     }
-    public function ActualizaSecuencialOrdenEntrada($IdSecuencial)
+    public function ExisteSecuencialIdTipo($IdTipo,$Secuencial){
+        $consulta = "SELECT id_secuencial,secuencial
+        FROM secuenciales
+        WHERE id_tipo = '$IdTipo' AND secuencial = '$Secuencial'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function ActualizaSecuencialOrdenEntrada($IdSecuencial,$Secuencial)
     {
-        $consulta = "UPDATE secuenciales SET id_estado = 2
+        $consulta = "UPDATE secuenciales SET secuencial = '$Secuencial'
         WHERE id_secuencial = '$IdSecuencial'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

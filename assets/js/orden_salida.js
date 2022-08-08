@@ -23,7 +23,7 @@ function getListaOrdenEntrada() {
         type: "GET",
         dataType: 'json',
         url: 'index.php?c=OrdenEntrada&a=get_ord_entrda',
-        success: function (response) {//OE.id_cabentrada,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor
+        success: function (response) {
             $.each(response, function (key, value) {
                 html += '<tr class="odd gradeX">';
                 html += '<td width="1%" class="fw-bold text-dark">' + value.id_secuencial + '</td>';
@@ -96,7 +96,6 @@ function setNuevaOrdenEntrada() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Fecha:</b> </br>';
     html += '<input type="date" class="form-control" id="IdFecha">';
-    html += '<input type="text" class="form-control" id="IdSecuenc">';
     html += '<div id="alert-freg"></div>';
     html += '</div>';
     html += '</div>';
@@ -104,8 +103,8 @@ function setNuevaOrdenEntrada() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Nro Factura:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdSecuencial">';
-    html += '<input type="text" class="form-control" id="IdSecuencia">';
+    html += '<input type="hidden" class="form-control" id="IdSecuencial">';
+    html += '<input type="hidden" class="form-control" id="IdSecuencia">';
     html += '<input type="text" class="form-control" id="IdNroFactura">';
     html += '<div id="alert-nrofac"></div>';
     html += '</div>';
@@ -287,11 +286,7 @@ function getAgregarOrdenEntrada() {
     }
 }
 function getCerrarOrdenEntrada() {
-    var ids = $("#IdSecuenc").val();
-    var idsc = $("#IdSecuencia").val();
-    var nex = 1;
-    var secu = parseFloat(idsc) + parseFloat(nex);
-    alert(ids);
+    var idsc = $("#IdSecuencial").val();
     Swal.fire({
         title: "CONFIRMACION!",
         icon: "warning",
@@ -305,7 +300,7 @@ function getCerrarOrdenEntrada() {
                 type: "POST",
                 dataType: 'json',
                 url: "index.php?c=Inventario&a=cerrar_orden_entrada",
-                data: "IdSecuencial=" + ids + "&Secuencial=" + secu,
+                data: "IdSecuencial=" + idsc,
                 success: function (response) {
                     if (response == 1) {
                         Swal.fire({

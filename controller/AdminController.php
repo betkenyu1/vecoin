@@ -86,6 +86,17 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+    public function get_cliente_id()
+    {
+        $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
+        $exito = $this->adm->getClienteId($IdCliente);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_clientes()
     {
         $exito = $this->adm->getClientes();
@@ -96,6 +107,24 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
+    public function get_mod_cliente(){
+        $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
+        $Ruc = (isset($_REQUEST['Ruc'])) ? $_REQUEST['Ruc'] : '';
+        $RazonSocial = (isset($_REQUEST['RazonSocial'])) ? $_REQUEST['RazonSocial'] : '';        
+        $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
+        $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
+        $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
+        $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
+        $exito = $this->adm->ModificarCliente($IdCliente,$RazonSocial,$Ruc,$Direccion,$Telefono,$Email,$Tiempocredito);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+
+
     public function get_proveedor_id()
     {
         $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';

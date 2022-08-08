@@ -157,6 +157,27 @@ class AdminModel{
         }
         return true;
     }
+
+    public function ModificarCliente($IdCliente, $Ruc,$RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito)
+    {
+        $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocial', 
+        direccion = '$Direccion', telefono = '$Telefono', email = '$Email', tiempo_credito='$Tiempocredito'
+        WHERE id_cliente = '$IdCliente'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function getClienteId($IdCliente){
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,id_estado FROM clientes WHERE id_cliente = '$IdCliente' AND id_estado = 1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function EliminarEmpresa($IdEmpresa)
     {
         $consulta = "UPDATE empresas SET id_estado = 2

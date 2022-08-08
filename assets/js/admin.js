@@ -255,6 +255,24 @@ function getProveedorMod(){
     },
   });
 }
+
+function getClienteMod(){
+  $("#IdClienteMod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_clientes",
+    success: function (response) {
+      var $select = $("#IdClienteMod");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_cliente + ">" + value.razon_social + "</option>"
+        );
+      });
+    },
+  });
+}
 function getCatalogoMod(){
   $("#IdCatalogoMod").empty();
   $.ajax({

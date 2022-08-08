@@ -171,7 +171,8 @@ class AdminModel{
         return true;
     }
     public function getClienteId($IdCliente){
-        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,id_estado FROM clientes WHERE id_cliente = '$IdCliente' AND id_estado = 1";
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,id_estado FROM clientes 
+        WHERE id_cliente = '$IdCliente' AND id_estado = 1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

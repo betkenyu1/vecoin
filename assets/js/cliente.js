@@ -346,53 +346,53 @@ function setCliente() {
   }
   function getModificarCliente() {
       var html = '';
-      if ($('#IdRuc').val() == '') {
+      if ($('#IdRuc_mod').val() == '') {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
         $("#alert-rc").html(html);
-        $('#IdRuc').focus();
+        $('#IdRuc_mod').focus();
         setTimeout(function () {
           $("#alert-rc").fadeOut(1500);
         }, 3000);
         return false;
       }
-      if ($('#IdRazonSocial').val() == "") {
+      if ($('#IdRazonSocial_mod').val() == "") {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
       $("#alert-rs").html(html);
-      $('#IdRazonSocial').focus();
+      $('#IdRazonSocial_mod').focus();
       setTimeout(function () {
         $("#alert-rs").fadeOut(1500);
       }, 3000);
       return false;
-    } if ($('#IdDireccion').val() == '') {
+    } if ($('#IdDireccion_mod').val() == '') {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
       $("#alert-dr").html(html);
-      $('#IdDireccion').focus();
+      $('#IdDireccion_mod').focus();
       setTimeout(function () {
         $("#alert-dr").fadeOut(1500);
       }, 3000);
       return false;
-    } if ($('#IdTelefono').val() == '') {
+    } if ($('#IdTelefono_mod').val() == '') {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
       $("#alert-tl").html(html);
-      $('#IdTelefono').focus();
+      $('#IdTelefono_mod').focus();
       setTimeout(function () {
         $("#alert-tl").fadeOut(1500);
       }, 3000);
       return false;
-    } if ($('#IdEmail').val() == '') {
+    } if ($('#IdEmail_mod').val() == '') {
       html += '<div class="alert alert-danger">';
       html += 'Este campo es obligatorio!.';
       html += '</div>';
       $("#alert-em").html(html);
-      $('#IdEmail').focus();
+      $('#IdEmail_mod').focus();
       setTimeout(function () {
         $("#alert-em").fadeOut(1500);
       }, 3000);

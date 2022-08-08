@@ -158,7 +158,7 @@ class AdminModel{
         return true;
     }
 
-    public function ModificarCliente($IdCliente, $Ruc,$RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito)
+    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito)
     {
         $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocial', 
         direccion = '$Direccion', telefono = '$Telefono', email = '$Email', tiempo_credito='$Tiempocredito'

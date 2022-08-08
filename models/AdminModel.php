@@ -162,7 +162,7 @@ class AdminModel{
     {
         $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocial', 
         direccion = '$Direccion', telefono = '$Telefono', email = '$Email', tiempo_credito='$Tiempocredito'
-        WHERE id_cliente = '$IdCliente'";
+        WHERE id_cliente = '$IdCliente'";        
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {

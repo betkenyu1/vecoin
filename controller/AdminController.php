@@ -116,7 +116,7 @@ class AdminController
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
-        $exito = $this->adm->ModificarCliente($IdCliente,$RazonSocial,$Ruc,$Direccion,$Telefono,$Email,$Tiempocredito);
+        $exito = $this->adm->ModificarCliente($IdCliente,$Ruc,$RazonSocial,$Direccion,$Telefono,$Email,$Tiempocredito);
         if ($exito) {
             echo 1;
         } else {

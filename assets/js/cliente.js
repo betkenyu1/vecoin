@@ -271,13 +271,12 @@ function setCliente() {
       html += '<div class="col-md-6">';
       html += '<div class="mb-10px">';
       html += '<b style="color: #000000;">Razon Social:</b> </br>';
-      html += '<input type="hidden" class="form-control" id="IdEmpresa">';
+      html += '<input type="hidden" class="form-control" id="IdCliente">';
       html += '<input type="text" class="form-control" id="IdRazonSocial_mod">';
       html += '<div id="alert-rs"></div>';
       html += "</div>";
       html += "</div>";
   
-
       html += '<div class="col-md-6">';
       html += '<div class="mb-10px">';
       html += '<b style="color: #000000;">Direccion:</b> </br>';
@@ -311,7 +310,6 @@ function setCliente() {
       html += "</div>";
       html += "</div>";
 
-  
       html += '<div class="text-center">';
       html += '<a class="btn btn-outline-danger" onclick="CerrarModificarCliente();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
       html += '&nbsp;<a class="btn btn-outline-primary" title="Modificar" onclick="getModificarCliente();"><i class="fa-solid fa-pencil" aria-hidden="true"></i> Modificar</a>';

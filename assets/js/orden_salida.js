@@ -30,7 +30,7 @@ function getListaOrdenSalida() {
                 html += '<td>' + value.fecha + '</td>';
                 html += '<td>' + value.secuencial + '</td>';
                 html += '<td>' + value.nro_factura + '</td>';
-                html += '<td>' + value.proveedor + '</td>';
+                html += '<td>' + value.razon_social + '</td>';
                 html += '<td>' + value.estado + '</td>';
                 html += '<td>';
                 html += '<a class="btn btn-outline-danger" onclick="getReporteOrdenSalida(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
@@ -71,6 +71,7 @@ function CerrarNuevaOrdenSalida() {
 }
 function LimpiarCampos(){
     getProductos();
+    getCliente();
     $("#IdCantidad").val('');
     $("#IdPrecio").val('');
     getUMedidas();
@@ -103,7 +104,7 @@ function setNuevaOrdenSalida() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Nro Factura:</b> </br>';
+    html += '<b style="color: #000000;">Nro Comprobante:</b> </br>';
     html += '<input type="text" class="form-control" id="IdSecuencial">';
     html += '<input type="text" class="form-control" id="IdSecuencia">';
     html += '<input type="text" class="form-control" id="IdNroFactura">';
@@ -179,7 +180,7 @@ function setNuevaOrdenSalida() {
     getUMedidas();
     getCliente();
 }
-function getAgregarOrdenEntrada() {
+function getAgregarOrdenSalida() {
     var html = '';
     if ($('#IdFecha').val() == '') {
         html += '<div class="alert alert-danger">';
@@ -211,12 +212,12 @@ function getAgregarOrdenEntrada() {
             $("#alert-prod").fadeOut(1500);
         }, 3000);
         return false;
-    } if ($('#IdProveedor').val() == 0) {
+    } if ($('#IdCliente').val() == 0) {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
         $("#alert-prov").html(html);
-        $('#IdProveedor').focus();
+        $('#IdCliente').focus();
         setTimeout(function () {
             $("#alert-prov").fadeOut(1500);
         }, 3000);
@@ -247,7 +248,7 @@ function getAgregarOrdenEntrada() {
         var idsecu = $("#IdSecuencia").val();
         var nrofac = $("#IdNroFactura").val();
         var prod = $("#IdProducto").val();
-        var prov = $("#IdProveedor").val();
+        var prov = $("#IdCliente").val();
         var cant = $("#IdCantidad").val();
         var um = $("#IdUMedida").val();
         var prec = $("#IdPrecio").val();
@@ -264,10 +265,10 @@ function getAgregarOrdenEntrada() {
                 $.ajax({
                     type: "POST",
                     dataType: 'json',
-                    url: "index.php?c=Inventario&a=save_new_orden_entrada",
+                    url: "index.php?c=Inventario&a=save_new_orden_salida",
                     data: "Fecha=" + freg + "&IdSecuencial=" + idsc + 
                     "&IdSecu=" + idsecu + "&NroFactura=" + nrofac + 
-                    "&IdProducto=" + prod + "&IdProveedor=" + prov +
+                    "&IdProducto=" + prod + "&IdCliente=" + prov +
                     "&Cantidad=" + cant + "&IdUMedida=" + um + "&Precio=" + prec + "&Observacion=" + obs,
                     success: function (response) {
                         if (response == 1) {
@@ -286,8 +287,12 @@ function getAgregarOrdenEntrada() {
         });
     }
 }
-function getCerrarOrdenEntrada() {
-    var idsc = $("#IdSecuencial").val();
+function getCerrarOrdenSalida() {
+    var ids = $("#IdSecuenc").val();
+    var idsc = $("#IdSecuencia").val();
+    var nex = 1;
+    var secu = parseFloat(idsc) + parseFloat(nex);
+    alert(ids);
     Swal.fire({
         title: "CONFIRMACION!",
         icon: "warning",
@@ -300,14 +305,14 @@ function getCerrarOrdenEntrada() {
             $.ajax({
                 type: "POST",
                 dataType: 'json',
-                url: "index.php?c=Inventario&a=cerrar_orden_entrada",
-                data: "IdSecuencial=" + idsc,
+                url: "index.php?c=Inventario&a=cerrar_orden_salida",
+                data: "IdSecuencial=" + ids + "&Secuencial=" + secu,
                 success: function (response) {
                     if (response == 1) {
                         Swal.fire({
                             html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Cerrado OK!.</b></div></div>',
                         });
-                        CerrarNuevaOrdenEntrada();
+                        CerrarNuevaOrdenSalida();
                     } if (response == 2) {
                         Swal.fire({
                             html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',

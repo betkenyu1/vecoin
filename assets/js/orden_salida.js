@@ -154,9 +154,9 @@ function setNuevaOrdenSalida() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<br>';
-    html += '<a class="btn btn-danger" onclick="CerrarNuevaOrdenEntrada();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
-    html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarOrdenEntrada();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
-    html += '&nbsp;<a class="btn btn-success" title="Cerrar" onclick="getCerrarOrdenEntrada();"><i class="fa-solid fa-save" aria-hidden="true"></i> Cerrar</a>';;
+    html += '<a class="btn btn-danger" onclick="CerrarNuevaOrdenSalida();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
+    html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarOrdenSalida();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
+    html += '&nbsp;<a class="btn btn-success" title="Cerrar" onclick="getCerrarOrdenSalida();"><i class="fa-solid fa-save" aria-hidden="true"></i> Cerrar</a>';;
     html += '</div>';
     html += '</div>';
 
@@ -172,12 +172,12 @@ function setNuevaOrdenSalida() {
     html += '</div>';
     html += '</div>';
     html += '</div>';
-    $("#new-ord-entrada").html(html);
+    $("#new-ord-salida").html(html);
     $('.default-select2').select2();
-    getSecuencial();
+    getSecuencialOrdenSalida();
     getProductos();
     getUMedidas();
-    getProveedor();
+    getCliente();
 }
 function getAgregarOrdenEntrada() {
     var html = '';

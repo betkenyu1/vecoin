@@ -14,6 +14,23 @@ function getSecuencial() {
 		}
 	});
 }
+
+function getSecuencialOrdenSalida() {
+	$.ajax({
+		type: "GET",
+		url: 'index.php?c=Admin&a=get_secuencial_orden_salida',
+		success: function (response) {
+			response = JSON.parse(response);
+			$.each(response, function (key, value) {
+        $('#IdSecuenc').val(value.id_secuencial);
+				var n = ('000000000' + value.secuencial).slice(-9);
+				$('#IdSecuencial').val(value.secuencial);
+        $('#IdSecuencia').val(n);
+        $('#IdSecu').text('Secuencial: [ ' + n +' ]');
+			});
+		}
+	});
+}
 function getEmpresasMod() {
   $("#IdEmpresaM").empty();
   $.ajax({

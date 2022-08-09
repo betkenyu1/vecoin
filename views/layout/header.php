@@ -12,7 +12,7 @@ if ($_SESSION["user"] === null) {
 
 <head>
 	<meta charset="utf-8" />
-	<title>Vecoin | Home</title>
+	<title>Vecoin | Inicio </title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
@@ -38,7 +38,7 @@ if ($_SESSION["user"] === null) {
 			<svg class="circular" viewBox="25 25 50 50">
 				<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"></circle>
 			</svg>
-			<div class="message">Loading...</div>
+			<div class="message">Cargando...</div>
 		</div>
 	</div>
 	<!-- END #loader -->
@@ -73,7 +73,7 @@ if ($_SESSION["user"] === null) {
 						</div>
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-1">
-						<div class="dropdown-divider"></div>
+						<!--<div class="dropdown-divider"></div>-->
 						<a href="index.php?c=Index&a=index" class="dropdown-item">Cerrar Sesion</a>
 					</div>
 				</div>
@@ -98,12 +98,13 @@ if ($_SESSION["user"] === null) {
 									<div class="flex-grow-1">
 										<?php echo $Usuario; ?>
 									</div>
-									<div class="menu-caret ms-auto"></div>
+									<!--<div class="menu-caret ms-auto"></div>-->
 								</div>
 								<small><?php echo $Rol; ?></small>
 							</div>
 						</a>
 					</div>
+					<!--
 					<div id="appSidebarProfileMenu" class="collapse">
 						<div class="menu-item pt-5px">
 							<a href="javascript:;" class="menu-link">
@@ -125,13 +126,14 @@ if ($_SESSION["user"] === null) {
 						</div>
 						<div class="menu-divider m-0"></div>
 					</div>
-					<div class="menu-header">Navigation</div>
+					-->
+					<!--<div class="menu-header">Navegación</div>-->
 					<div class="menu-item active">
 						<a href="index.php?c=Index&a=home" class="menu-link">
 							<div class="menu-icon">
 								<i class="material-icons">home</i>
 							</div>
-							<div class="menu-text">Home</div>
+							<div class="menu-text">Inicio</div>
 						</a>
 					</div>
 
@@ -205,7 +207,7 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-item"><a href="index.php?c=OrdenEntrada&a=lista_ordenes_entrada" class="menu-link">
 												<div class="menu-text">Ordenes de entrada</div>
 											</a></div>
-										<div class="menu-item"><a href="javascript:;" class="menu-link">
+										<div class="menu-item"><a href="index.php?c=OrdenSalida&a=lista_ordenes_salida" class="menu-link">
 												<div class="menu-text">Ordenes de salida</div>
 											</a></div>
 										<div class="menu-item"><a href="javascript:;" class="menu-link">

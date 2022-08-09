@@ -1,7 +1,7 @@
-function CerrarListaOrdenEntrada() {
+function CerrarListaOrdenSalida() {
     $(".cerrar-lp").hide();
 }
-function getListaOrdenEntrada() {
+function getListaOrdenSalida() {
     var html = '';
     html += '<div class="cerrar-lp">';
     html += '<div class="note note-blue">';
@@ -13,7 +13,7 @@ function getListaOrdenEntrada() {
     html += '<th class="text-nowrap">Fecha</th>';
     html += '<th class="text-nowrap">Secuencial</th>';
     html += '<th class="text-nowrap">Nro Factura</th>';
-    html += '<th class="text-nowrap">Proveedor</th>';
+    html += '<th class="text-nowrap">Cliente</th>';
     html += '<th class="text-nowrap">Estado</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
@@ -22,7 +22,7 @@ function getListaOrdenEntrada() {
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: 'index.php?c=OrdenEntrada&a=get_ord_entrda',
+        url: 'index.php?c=OrdenSalida&a=get_ord_salida',
         success: function (response) {
             $.each(response, function (key, value) {
                 html += '<tr class="odd gradeX">';
@@ -33,7 +33,7 @@ function getListaOrdenEntrada() {
                 html += '<td>' + value.proveedor + '</td>';
                 html += '<td>' + value.estado + '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-outline-danger" onclick="getReporteOrdenEntrada(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
+                html += '<a class="btn btn-outline-danger" onclick="getReporteOrdenSalida(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
                 html += '</td>';
                 html += '</tr>';
             });
@@ -42,7 +42,7 @@ function getListaOrdenEntrada() {
             html += '</div>';
             html += '</div>';
             html += '</div>';
-            $("#lista-ord_entrada").html(html);
+            $("#lista-ord_salida").html(html);
             $('#data-table-select').DataTable({
                 select: true,
                 responsive: true
@@ -65,9 +65,9 @@ function getProductos() {
         }
     });
 }
-function CerrarNuevaOrdenEntrada() {
-    $(".cerrar-noe").hide();
-    getListaOrdenEntrada();
+function CerrarNuevaOrdenSalida() {
+    $(".cerrar-nos").hide();
+    getListaOrdenSalida();
 }
 function LimpiarCampos(){
     getProductos();
@@ -75,11 +75,11 @@ function LimpiarCampos(){
     $("#IdPrecio").val('');
     getUMedidas();
 }
-function setNuevaOrdenEntrada() {
-    CerrarListaOrdenEntrada();
+function setNuevaOrdenSalida() {
+    CerrarListaOrdenSalida();
     $(".cerrar-mp").hide();
     var html = '';
-    html += '<div class="cerrar-noe">';
+    html += '<div class="cerrar-nos">';
     html += '<div class="note note-info">';
     html += '<div class="note-content">';
     html += '<form>';
@@ -96,6 +96,7 @@ function setNuevaOrdenEntrada() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Fecha:</b> </br>';
     html += '<input type="date" class="form-control" id="IdFecha">';
+    html += '<input type="text" class="form-control" id="IdSecuenc">';
     html += '<div id="alert-freg"></div>';
     html += '</div>';
     html += '</div>';
@@ -103,8 +104,8 @@ function setNuevaOrdenEntrada() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Nro Factura:</b> </br>';
-    html += '<input type="hidden" class="form-control" id="IdSecuencial">';
-    html += '<input type="hidden" class="form-control" id="IdSecuencia">';
+    html += '<input type="text" class="form-control" id="IdSecuencial">';
+    html += '<input type="text" class="form-control" id="IdSecuencia">';
     html += '<input type="text" class="form-control" id="IdNroFactura">';
     html += '<div id="alert-nrofac"></div>';
     html += '</div>';
@@ -120,8 +121,8 @@ function setNuevaOrdenEntrada() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Proveedor:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdProveedor"></select>';
+    html += '<b style="color: #000000;">Cliente:</b> </br>';
+    html += '<select class="default-select2 form-control" id="IdCliente"></select>';
     html += '<div id="alert-prov"></div>';
     html += '</div>';
     html += '</div>';
@@ -318,5 +319,5 @@ function getCerrarOrdenEntrada() {
     });
 }
 $(document).ready(function () {
-    getListaOrdenEntrada();
+    getListaOrdenSalida();
 });

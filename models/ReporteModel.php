@@ -10,11 +10,10 @@ class ReporteModel  {
         CONCAT(EP.nombres,' ',EP.apellidos) AS responsable,E.direccion,E.telefono
         FROM cab_oentrada OE
         INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
-        INNER JOIN secuenciales SC ON (OE.id_secuencial = SC.id_secuencial)
-        INNER JOIN usuarios US ON (SC.id_usuario = US.id_usuario)
+        INNER JOIN usuarios US ON (OE.id_usuario = US.id_usuario)
         INNER JOIN empleados EP ON (US.id_empleado = EP.id_empleado)
         INNER JOIN empresas E ON (EP.id_empresa = E.id_empresa)
-        WHERE OE.id_secuencial = '$IdSecuencial'";
+        WHERE OE.id_secuencial =  '$IdSecuencial'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

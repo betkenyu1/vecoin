@@ -62,7 +62,7 @@ class PDF extends FPDF
 
 date_default_timezone_set('America/Guayaquil');
 $DateAndTime = date('m-d-Y h:i:s a', time());
-$sf = 'VECOIN_ORDENE DE ENTRADA';
+$sf = 'VECOIN_ORDEN DE ENTRADA';
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();

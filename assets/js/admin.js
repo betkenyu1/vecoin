@@ -131,6 +131,42 @@ function getProveedor(){
     },
   });
 }
+
+function getProveedorActivo(){
+  $("#IdProveedor").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_proveedor_activo",
+    success: function (response) {
+      var $select = $("#IdProveedor");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
+        );
+      });
+    },
+  });
+}
+
+function getCliente(){
+  $("#IdCliente").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_clientes_activos",
+    success: function (response) {
+      var $select = $("#IdCliente");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_cliente + ">" + value.razon_social + "</option>"
+        );
+      });
+    },
+  });
+}
 function getCatalogo(){
   $("#IdCatalogo").empty();
   $.ajax({

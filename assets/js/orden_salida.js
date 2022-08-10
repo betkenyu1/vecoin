@@ -22,7 +22,7 @@ function getListaOrdenSalida() {
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: 'index.php?c=OrdenSalida&a=get_ord_salida',
+        url: 'index.php?c=Inventario&a=get_ord_salida',
         success: function (response) {
             $.each(response, function (key, value) {
                 html += '<tr class="odd gradeX">';
@@ -97,9 +97,9 @@ function setNuevaOrdenSalida() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Fecha:</b> </br>';
     html += '<input type="date" class="form-control" id="IdFecha">';
-    html += '<input type="text" class="form-control" id="IdSecuenc">';
-    html += '<input type="text" class="form-control" id="IdSecuencial">';
-    html += '<input type="text" class="form-control" id="IdSecuencia">';
+    html += '<input type="hidden" class="form-control" id="IdSecuenc">';
+    html += '<input type="hidden" class="form-control" id="IdSecuencial">';
+    html += '<input type="hidden" class="form-control" id="IdSecuencia">';
     html += '<div id="alert-freg"></div>';
     html += '</div>';
     html += '</div>';
@@ -319,9 +319,8 @@ function getCerrarOrdenSalida() {
     var idsc = $("#IdSecuencia").val();
     var nex = 1;
     var secu = parseFloat(idsc) + parseFloat(nex);
-    alert(ids);
     Swal.fire({
-        title: "CONFIRMACION!",
+        title: "Desea cerrar esta orden y generar una nueva?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

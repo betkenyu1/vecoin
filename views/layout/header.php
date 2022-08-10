@@ -204,10 +204,10 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-item"><a href="index.php?c=Producto&a=lista_productos" class="menu-link">
 												<div class="menu-text">Productos</div>
 											</a></div>
-										<div class="menu-item"><a href="index.php?c=OrdenEntrada&a=lista_ordenes_entrada" class="menu-link">
+										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_entrada" class="menu-link">
 												<div class="menu-text">Ordenes de entrada</div>
 											</a></div>
-										<div class="menu-item"><a href="index.php?c=OrdenSalida&a=lista_ordenes_salida" class="menu-link">
+										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_salida" class="menu-link">
 												<div class="menu-text">Ordenes de salida</div>
 											</a></div>
 										<div class="menu-item"><a href="javascript:;" class="menu-link">

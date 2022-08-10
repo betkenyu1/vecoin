@@ -17,6 +17,15 @@ class InventarioModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getExistencias($IdProducto)
+    {
+        $consulta = "SELECT cantidad,pvp FROM productos
+        WHERE id_producto = '$IdProducto'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario)
     {
         $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,fecha,id_bodega,id_umedida,cantidad,precio,prc_utl,pvp,id_usuario)
@@ -58,17 +67,15 @@ class InventarioModel
         return $resultados;
     }
 
-    public function RegistroCabOrdenSalida($Fecha, $FechaCompra, $IdSecuencial, $IdSecu, $NroFactura, $IdCliente, $Observacion, $IdUsuario)
+    public function RegistroCabOrdenSalida($Fecha, $FechaCompra, $IdSecuencial, $IdSecu, $Observacion, $IdUsuario)
     {
-        $consulta = "INSERT INTO cab_osalida(fecha,fecha_venta,id_secuencial,secuencial,nro_factura,id_cliente,observacion,id_usuario)
-        VALUES(:fecha,:fecha_venta,:id_secuencial,:secuencial,:nro_factura,:id_cliente,:observacion,:id_usuario)";
+        $consulta = "INSERT INTO cab_osalida(fecha,fecha_venta,id_secuencial,secuencial,observacion,id_usuario)
+        VALUES(:fecha,:fecha_venta,:id_secuencial,:secuencial,:observacion,:id_usuario)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':fecha', $Fecha);
         $sentencia->bindParam(':fecha_venta', $FechaCompra);
         $sentencia->bindParam(':id_secuencial', $IdSecuencial);
         $sentencia->bindParam(':secuencial', $IdSecu);
-        $sentencia->bindParam(':nro_factura', $NroFactura);
-        $sentencia->bindParam(':id_cliente', $IdCliente);
         $sentencia->bindParam(':observacion', $Observacion);
         $sentencia->bindParam(':id_usuario', $IdUsuario);
         $sentencia->execute();

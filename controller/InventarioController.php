@@ -23,14 +23,19 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
+    public function get_existencias()
+    {
+        $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
+        $exito = $this->inv->getExistencias($IdProducto);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function save_new_producto()
     {
-        /*
-
-data: "IdProveedor=" + prov + "&IdBodega=" + bp +
-						"&IdUMedida=" + um + "&IdCatalogo=" + ct +
-						"&Cantidad=" + cact + "&Precio=" + pact + "&Prc_Utl=" + utl + "&PVP=" + pvp,
-        */
         $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
         $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
         $Fecha = date('Y-m-d');
@@ -94,13 +99,20 @@ data: "IdProveedor=" + prov + "&IdBodega=" + bp +
 
     public function save_new_orden_salida()
     {
+        /*
+
+data: "Fecha=" + freg + "&IdSecuencial=" + idsc + 
+                    "&IdSecu=" + idsecu + "&IdPercha=" + ph + 
+                    "&IdProducto=" + prod + "&Cantidad=" + cant + 
+                    "&IdUMedida=" + um + "&Precio=" + prec + "&Observacion=" + obs,
+        */
         date_default_timezone_set('America/Guayaquil');
         $Updated_At = date('m-d-Y h:i:s a', time());
-        $Fecha = date('Y-m-d');
+        $Fecha = $Updated_At;
         $FechaCompra = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
         $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
         $IdSecu = (isset($_REQUEST['IdSecu'])) ? $_REQUEST['IdSecu'] : '';
-        $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
+        $IdPercha = (isset($_REQUEST['IdPercha'])) ? $_REQUEST['IdPercha'] : '';
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
         $IdCliente = strtoupper((isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '');
         $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
@@ -111,7 +123,7 @@ data: "IdProveedor=" + prov + "&IdBodega=" + bp +
         $existe = $this->inv->ExisteRegistroOrdenSalida($IdSecuencial);
         if ($existe) {
         } else {
-            $reg_cab = $this->inv->RegistroCabOrdenSalida($Fecha, $FechaCompra, $IdSecuencial, $IdSecu, $NroFactura, $IdCliente, $Observacion, $IdUsuario);
+            $reg_cab = $this->inv->RegistroCabOrdenSalida($Fecha, $FechaCompra, $IdSecuencial, $IdSecu, $IdPercha, $IdCliente, $Observacion, $IdUsuario);
         }
         $existe = $this->inv->ExisteRegistroOrdenSalida($IdSecuencial);
         if ($existe) {

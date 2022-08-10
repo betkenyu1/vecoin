@@ -108,7 +108,7 @@ function setNuevaOrdenSalida() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Perchas:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdPercha"></select>';
-    html += '<div id="alert-prov"></div>';
+    html += '<div id="alert-ph"></div>';
     html += '</div>';
     html += '</div>';
     
@@ -124,7 +124,7 @@ function setNuevaOrdenSalida() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">U.Medida:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdUMedida"></select>';
-    html += '<div id="alert-prov"></div>';
+    html += '<div id="alert-umed"></div>';
     html += '</div>';
     html += '</div>';
 
@@ -138,17 +138,17 @@ function setNuevaOrdenSalida() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Cantidad:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdCantidad">';
-    html += '<div id="alert-cant"></div>';
+    html += '<b style="color: #000000;">PVP:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdPVP">';
+    html += '<div id="alert-prec"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Precio:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdPrecio">';
-    html += '<div id="alert-prec"></div>';
+    html += '<b style="color: #000000;">Cantidad:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdCantidad">';
+    html += '<div id="alert-cant"></div>';
     html += '</div>';
     html += '</div>';
 
@@ -180,6 +180,34 @@ function setNuevaOrdenSalida() {
     getUMedidas();
     getPerchas();
 }
+$(document).on('change', '#IdProducto', function () {
+	var html = '';
+	if ($('#IdProducto').val() == 0) {
+		html += '<div class="alert alert-danger">';
+		html += 'Seleccione el producto!.';
+		html += '</div>';
+		$("#alert-prod").html(html);
+		$('#IdProducto').focus();
+		setTimeout(function () {
+			$("#alert-prod").fadeOut(1500);
+		}, 3000);
+		return false;
+	} else {
+		var idprod = $('#IdProducto').val();
+		$.ajax({
+			type: "POST",
+			dataType: 'json',
+			url: "index.php?c=Inventario&a=get_existencias",
+			data: "IdProducto=" + idprod,
+			success: function (response) {
+				$.each(response, function (key, value) {
+					$('#IdExistencia').val(value.cantidad)
+                    $('#IdPVP').val(value.pvp)
+				});
+			}
+		});
+	}
+});
 function getAgregarOrdenSalida() {
     var html = '';
     if ($('#IdFecha').val() == '') {
@@ -192,14 +220,14 @@ function getAgregarOrdenSalida() {
             $("#alert-freg").fadeOut(1500);
         }, 3000);
         return false;
-    } if ($('#IdNroFactura').val() == "") {
+    } if ($('#IdPercha').val() == "0") {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
-        $("#alert-nrofac").html(html);
-        $('#IdNroFactura').focus();
+        $("#alert-ph").html(html);
+        $('#IdPercha').focus();
         setTimeout(function () {
-            $("#alert-nrofac").fadeOut(1500);
+            $("#alert-ph").fadeOut(1500);
         }, 3000);
         return false;
     } if ($('#IdProducto').val() == 0) {
@@ -212,14 +240,14 @@ function getAgregarOrdenSalida() {
             $("#alert-prod").fadeOut(1500);
         }, 3000);
         return false;
-    } if ($('#IdCliente').val() == 0) {
+    } if ($('#IdUMedida').val() == 0) {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
-        $("#alert-prov").html(html);
-        $('#IdCliente').focus();
+        $("#alert-umed").html(html);
+        $('#IdUMedida').focus();
         setTimeout(function () {
-            $("#alert-prov").fadeOut(1500);
+            $("#alert-umed").fadeOut(1500);
         }, 3000);
         return false;
     } if ($('#IdCantidad').val() == '') {
@@ -232,12 +260,12 @@ function getAgregarOrdenSalida() {
             $("#alert-cant").fadeOut(1500);
         }, 3000);
         return false;
-    } if ($('#IdPrecio').val() == '') {
+    } if ($('#IdPVP').val() == '') {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
         $("#alert-prec").html(html);
-        $('#IdPrecio').focus();
+        $('#IdPVP').focus();
         setTimeout(function () {
             $("#alert-prec").fadeOut(1500);
         }, 3000);
@@ -246,12 +274,11 @@ function getAgregarOrdenSalida() {
         var freg = $("#IdFecha").val();
         var idsc = $("#IdSecuencial").val();
         var idsecu = $("#IdSecuencia").val();
-        var nrofac = $("#IdNroFactura").val();
+        var ph = $("#IdPercha").val();
         var prod = $("#IdProducto").val();
-        var prov = $("#IdCliente").val();
         var cant = $("#IdCantidad").val();
         var um = $("#IdUMedida").val();
-        var prec = $("#IdPrecio").val();
+        var prec = $("#IdPVP").val();
         var obs = $("#IdObs").val();
         Swal.fire({
             title: "CONFIRMACION!",
@@ -267,9 +294,9 @@ function getAgregarOrdenSalida() {
                     dataType: 'json',
                     url: "index.php?c=Inventario&a=save_new_orden_salida",
                     data: "Fecha=" + freg + "&IdSecuencial=" + idsc + 
-                    "&IdSecu=" + idsecu + "&NroFactura=" + nrofac + 
-                    "&IdProducto=" + prod + "&IdCliente=" + prov +
-                    "&Cantidad=" + cant + "&IdUMedida=" + um + "&Precio=" + prec + "&Observacion=" + obs,
+                    "&IdSecu=" + idsecu + "&IdPercha=" + ph + 
+                    "&IdProducto=" + prod + "&Cantidad=" + cant + 
+                    "&IdUMedida=" + um + "&Precio=" + prec + "&Observacion=" + obs,
                     success: function (response) {
                         if (response == 1) {
                             Swal.fire({

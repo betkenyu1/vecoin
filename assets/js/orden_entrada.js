@@ -23,7 +23,7 @@ function getListaOrdenEntrada() {
         type: "GET",
         dataType: 'json',
         url: 'index.php?c=OrdenEntrada&a=get_ord_entrda',
-        success: function (response) {//OE.id_cabentrada,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor
+        success: function (response) {
             $.each(response, function (key, value) {
                 html += '<tr class="odd gradeX">';
                 html += '<td width="1%" class="fw-bold text-dark">' + value.id_secuencial + '</td>';

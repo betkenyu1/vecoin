@@ -98,20 +98,20 @@ function setNuevaOrdenSalida() {
     html += '<b style="color: #000000;">Fecha:</b> </br>';
     html += '<input type="date" class="form-control" id="IdFecha">';
     html += '<input type="text" class="form-control" id="IdSecuenc">';
+    html += '<input type="text" class="form-control" id="IdSecuencial">';
+    html += '<input type="text" class="form-control" id="IdSecuencia">';
     html += '<div id="alert-freg"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Nro Comprobante:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdSecuencial">';
-    html += '<input type="text" class="form-control" id="IdSecuencia">';
-    html += '<input type="text" class="form-control" id="IdNroFactura">';
-    html += '<div id="alert-nrofac"></div>';
+    html += '<b style="color: #000000;">Perchas:</b> </br>';
+    html += '<select class="default-select2 form-control" id="IdPercha"></select>';
+    html += '<div id="alert-prov"></div>';
     html += '</div>';
     html += '</div>';
-
+    
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Productos:</b> </br>';
@@ -122,17 +122,17 @@ function setNuevaOrdenSalida() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Cliente:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdCliente"></select>';
+    html += '<b style="color: #000000;">U.Medida:</b> </br>';
+    html += '<select class="default-select2 form-control" id="IdUMedida"></select>';
     html += '<div id="alert-prov"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">U.Medida:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdUMedida"></select>';
-    html += '<div id="alert-prov"></div>';
+    html += '<b style="color: #000000;">Existencia:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdExistencia">';
+    html += '<div id="alert-exist"></div>';
     html += '</div>';
     html += '</div>';
 
@@ -178,7 +178,7 @@ function setNuevaOrdenSalida() {
     getSecuencialOrdenSalida();
     getProductos();
     getUMedidas();
-    getCliente();
+    getPerchas();
 }
 function getAgregarOrdenSalida() {
     var html = '';

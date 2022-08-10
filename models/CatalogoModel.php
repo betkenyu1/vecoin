@@ -16,6 +16,13 @@ class CatalogoModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getPerchas(){
+        $consulta = "SELECT id_percha,percha FROM perchas";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function RegistroItemCatalogo($IdEmpresa, $Codigo ,$Producto)
     {
         $consulta = "INSERT INTO catalogo (id_empresa,codigo,producto)

@@ -28,6 +28,16 @@ class CatalogoController
             echo json_encode($vacio);
         }
     }
+    public function get_perchas()
+    {
+        $exito = $this->cat->getPerchas();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function save_new_item()
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';

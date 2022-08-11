@@ -210,7 +210,7 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_salida" class="menu-link">
 												<div class="menu-text">Ordenes de salida</div>
 											</a></div>
-										<div class="menu-item"><a href="javascript:;" class="menu-link">
+										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_stock_productos" class="menu-link">
 												<div class="menu-text">Consulta de stock</div>
 											</a></div>
 									</div>

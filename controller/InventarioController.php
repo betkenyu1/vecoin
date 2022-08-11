@@ -23,6 +23,16 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
+    public function get_stock_productos()
+    {
+        $exito = $this->inv->getStockProductos();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_existencias()
     {
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
@@ -53,8 +63,13 @@ class InventarioController
             echo 2;
         }
     }
-    public function lista_ordenes_entrada(){
+    public function lista_ordenes_entrada()
+    {
         require_once 'views/inventario/lista_ordenes_entrada.php';
+    }
+    public function lista_stock_productos()
+    {
+        require_once 'views/inventario/lista_stock_productos.php';
     }
     public function get_ord_entrda()
     {
@@ -108,7 +123,8 @@ class InventarioController
             }
         }
     }
-    public function lista_ordenes_salida(){
+    public function lista_ordenes_salida()
+    {
         require_once 'views/inventario/lista_ordenes_salida.php';
     }
     public function get_ord_salida()
@@ -146,10 +162,10 @@ class InventarioController
             foreach ($existe as $ex) {
                 $CabIdSecuencial = $ex['id_secuencial'];
             }
-            $exito = $this->inv->RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida ,$IdPercha, $IdProducto, $Cantidad, $Precio);
+            $exito = $this->inv->RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida, $IdPercha, $IdProducto, $Cantidad, $Precio);
             if ($exito) {
                 echo 1;
-                $st = $this->inv->RegistroStockOrdenSalida($CabIdSecuencial,$IdPercha,$IdUMedida,$IdProducto,$Cantidad,$Precio);
+                $st = $this->inv->RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdUMedida, $IdProducto, $Cantidad, $Precio);
                 $act = $this->inv->getBuscarCantidadProducto($IdProducto);
                 if ($act) {
                     foreach ($act as $cant) {

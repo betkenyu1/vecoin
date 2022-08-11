@@ -17,6 +17,20 @@ class InventarioModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getStockProductos()
+    {
+        $consulta = "SELECT PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
+        , CASE WHEN PR.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
+        INNER JOIN proveedores P ON P.id_proveedor = PR.id_proveedor
+        INNER JOIN catalogo C ON C.id_catalogo = PR.id_catalogo
+        INNER JOIN empresas E ON E.id_empresa = C.id_empresa
+        INNER JOIN bodegas B ON B.id_bodega = PR.id_bodega
+        INNER JOIN unidad_medida UM ON UM.id_umedida = PR.id_umedida;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function getExistencias($IdProducto)
     {
         $consulta = "SELECT cantidad,pvp FROM productos
@@ -26,7 +40,7 @@ class InventarioModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    
+
     public function RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario)
     {
         $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,fecha,id_bodega,id_umedida,cantidad,precio,prc_utl,pvp,id_usuario)
@@ -48,7 +62,8 @@ class InventarioModel
         }
         return true;
     }
-    public function getOrdenesEntrada(){
+    public function getOrdenesEntrada()
+    {
         $consulta = "SELECT OE.id_secuencial,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor,
         E.estado FROM cab_oentrada OE
         INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
@@ -59,7 +74,8 @@ class InventarioModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getOrdenesSalida(){
+    public function getOrdenesSalida()
+    {
         $consulta = "SELECT OS.id_secuencial,OS.fecha,OS.secuencial,
         CONCAT(EM.nombres,' ',EM.apellidos) AS responsable,
         E.estado FROM cab_osalida OS
@@ -143,7 +159,7 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida ,$IdPercha, $IdProducto, $Cantidad, $Precio)
+    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida, $IdPercha, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO det_osalida (id_secuencial,id_umedida,id_percha,id_producto,cantidad,pvp)
         VALUES(:id_secuencial,:id_umedida,:id_percha,:id_producto,:cantidad,:pvp)";
@@ -160,7 +176,7 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroStockOrdenSalida($CabIdSecuencial,$IdPercha,$IdUMedida,$IdProducto,$Cantidad,$Precio)
+    public function RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdUMedida, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO stock (id_secuencial,id_percha,id_umedida,id_producto,cantidad,pvp)
         VALUES(:id_secuencial,:id_percha,:id_umedida,:id_producto,:cantidad,:pvp)";

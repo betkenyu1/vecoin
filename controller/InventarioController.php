@@ -146,7 +146,7 @@ class InventarioController
             foreach ($existe as $ex) {
                 $CabIdSecuencial = $ex['id_secuencial'];
             }
-            $exito = $this->inv->RegistroDetOrdenSalida($CabIdSecuencial, $IdProducto, $Cantidad, $Precio);
+            $exito = $this->inv->RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida ,$IdPercha, $IdProducto, $Cantidad, $Precio);
             if ($exito) {
                 echo 1;
                 $st = $this->inv->RegistroStockOrdenSalida($CabIdSecuencial,$IdPercha,$IdUMedida,$IdProducto,$Cantidad,$Precio);

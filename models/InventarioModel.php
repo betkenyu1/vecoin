@@ -143,12 +143,14 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdProducto, $Cantidad, $Precio)
+    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida ,$IdPercha, $IdProducto, $Cantidad, $Precio)
     {
-        $consulta = "INSERT INTO det_osalida (id_secuencial,id_producto,cantidad,pvp)
-        VALUES(:id_secuencial,:id_producto,:cantidad,:pvp)";
+        $consulta = "INSERT INTO det_osalida (id_secuencial,id_umedida,id_percha,id_producto,cantidad,pvp)
+        VALUES(:id_secuencial,:id_umedida,:id_percha,:id_producto,:cantidad,:pvp)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
+        $sentencia->bindParam(':id_umedida', $IdUMedida);
+        $sentencia->bindParam(':id_percha', $IdPercha);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':pvp', $Precio);

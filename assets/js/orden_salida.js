@@ -12,8 +12,7 @@ function getListaOrdenSalida() {
     html += '<th width="1%"></th>';
     html += '<th class="text-nowrap">Fecha</th>';
     html += '<th class="text-nowrap">Secuencial</th>';
-    html += '<th class="text-nowrap">Nro Factura</th>';
-    html += '<th class="text-nowrap">Cliente</th>';
+    html += '<th class="text-nowrap">Responsable</th>';
     html += '<th class="text-nowrap">Estado</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
@@ -29,8 +28,7 @@ function getListaOrdenSalida() {
                 html += '<td width="1%" class="fw-bold text-dark">' + value.id_secuencial + '</td>';
                 html += '<td>' + value.fecha + '</td>';
                 html += '<td>' + value.secuencial + '</td>';
-                html += '<td>' + value.nro_factura + '</td>';
-                html += '<td>' + value.razon_social + '</td>';
+                html += '<td>' + value.responsable + '</td>';
                 html += '<td>' + value.estado + '</td>';
                 html += '<td>';
                 html += '<a class="btn btn-outline-danger" onclick="getReporteOrdenSalida(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';

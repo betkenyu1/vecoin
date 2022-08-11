@@ -24,7 +24,6 @@ include_once 'views/layout/header.php';
             <hr>
             <div id="lista-ord_salida"></div>
             <div id="new-ord-salida"></div>
-            <div id="mod-prod"></div>
         </div>
     </div>
     <!-- END panel -->

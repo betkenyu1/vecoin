@@ -4,7 +4,6 @@ require_once '../../config/conbd.php';
 require_once '../../models/ReporteModel.php';
 if (!isset($_SESSION)) {
     session_start();
-    //$_SESSION["idcta"] = $_SESSION["idcuenta"];
 }
 class PDF extends FPDF
 {
@@ -12,12 +11,12 @@ class PDF extends FPDF
     {
         $rep = new ReporteModel();
         $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
-        $sol_cred = $rep->ReporteCabOrdenEntrada($IdSecuencial);
+        $sol_cred = $rep->ReporteCabOrdenSalida($IdSecuencial);
         if ($sol_cred) {
             foreach ($sol_cred as $scred) {
                 $_SESSION["dir"] = $scred["direccion"];
                 $_SESSION["tel"] = $scred["telefono"];
-                $title = 'ORDEN DE ENTRADA';
+                $title = 'ORDEN DE SALIDA';
                 $ta = 'Responsable: ';
                 $fh = 'Fecha/Hora: ';
                 $this->SetFont('Arial', 'B', 10);
@@ -40,7 +39,7 @@ class PDF extends FPDF
                 $this->SetFont('Arial', 'I', 7);
                 $this->Cell(190, 5, utf8_decode($fi) . $DateAndTime, 0, 1, 'R', 0);
                 $this->SetFont('Arial', 'I', 8);
-                $FechaCred = date('d/m/Y', strtotime($scred["fecha"]));
+                $FechaCred = $scred["fecha"];
                 $this->Cell(30, 5, utf8_decode($fh . $FechaCred . '  -  ' . $ta . $scred["responsable"]), 0, 1, '');
             }
         }
@@ -62,7 +61,7 @@ class PDF extends FPDF
 
 date_default_timezone_set('America/Guayaquil');
 $DateAndTime = date('m-d-Y h:i:s a', time());
-$sf = 'VECOIN_ORDEN DE ENTRADA';
+$sf = 'VECOIN_ORDEN DE SALIDA';
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
@@ -70,7 +69,7 @@ $rep = new ReporteModel();
 $pdf->SetFillColor(150, 150, 150);
 $pdf->SetTextColor(3, 3, 3);
 $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
-$resultados = $rep->ReporteDetOrdenEntrada($IdSecuencial);
+$resultados = $rep->ReporteDetOrdenSalida($IdSecuencial);
 if ($resultados) {
     $sum = 0;
     $pdf->SetFont('Arial', 'B', 10);
@@ -86,9 +85,9 @@ if ($resultados) {
         $pdf->Cell(20, 5, utf8_decode($re["cantidad"]), 1, 0, 'C', false);
         $pdf->Cell(25, 5, utf8_decode($re["umedida"]), 1, 0, 'C', false);
         $pdf->Cell(95, 5, utf8_decode($re["producto"]), 1, 0, 'L', false);
-        $pdf->Cell(20, 5, utf8_decode($re["precio"]), 1, 0, 'C', false);
+        $pdf->Cell(20, 5, utf8_decode($re["pvp"]), 1, 0, 'C', false);
         $pdf->Cell(30, 5, utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 1, 'C', false);
-        $sum += $re["cantidad"]*$re["precio"];
+        $sum += $re["cantidad"]*$re["pvp"];
     }
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->Cell(160, 5, 'TOTAL:', 1, 0, 'R', true);
@@ -96,7 +95,7 @@ if ($resultados) {
     $pdf->Cell(30, 5, number_format($sum, 2, ".", ","), 1, 1, 'C', false);
 }
 $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
-$sol_cred = $rep->ReporteCabOrdenEntrada($IdSecuencial);
+$sol_cred = $rep->ReporteCabOrdenSalida($IdSecuencial);
 $pdf->SetFont('Arial', 'I', 10);
 if ($sol_cred) {
     foreach ($sol_cred as $sc) {
@@ -107,7 +106,7 @@ if ($sol_cred) {
     $sb = '_';
     date_default_timezone_set('America/Guayaquil');
     $DateAndTime = date('m-d-Y h:i:s a', time());
-    $pdf->Output('I', $sf . $sb. $sc["proveedor"] . $sb . $DateAndTime . $ext);
+    $pdf->Output('I', $sf . $sb . $DateAndTime . $ext);
 } else {
     $alert = "No hay datos para el reporte!, revise la fecha y el cliente";
     echo json_encode($alert);

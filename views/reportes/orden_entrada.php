@@ -4,7 +4,6 @@ require_once '../../config/conbd.php';
 require_once '../../models/ReporteModel.php';
 if (!isset($_SESSION)) {
     session_start();
-    //$_SESSION["idcta"] = $_SESSION["idcuenta"];
 }
 class PDF extends FPDF
 {

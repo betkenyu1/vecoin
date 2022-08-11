@@ -60,9 +60,11 @@ class InventarioModel
         return $resultados;
     }
     public function getOrdenesSalida(){
-        $consulta = "SELECT OS.id_secuencial,OS.fecha,OS.secuencial,OS.nro_factura,EE.razon_social,
+        $consulta = "SELECT OS.id_secuencial,OS.fecha,OS.secuencial,
+        CONCAT(EM.nombres,' ',EM.apellidos) AS responsable,
         E.estado FROM cab_osalida OS
-        INNER JOIN clientes EE ON (OS.id_cliente = EE.id_cliente)
+        INNER JOIN usuarios U ON (OS.id_usuario = U.id_usuario)
+        INNER JOIN empleados EM ON (U.id_empleado = EM.id_empleado)
         INNER JOIN estados E ON (OS.id_estado = E.id_estado)
         WHERE OS.id_estado =1";
         $sentencia = $this->db->prepare($consulta);

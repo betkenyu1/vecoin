@@ -227,7 +227,7 @@ if ($_SESSION["user"] === null) {
 									<div class="menu-submenu">
 
 										<div class="menu-item has-sub">
-											<a href="javascript:;" class="menu-link">
+											<a href="index.php?c=Venta&a=lista_ventas" class="menu-link">
 												<div class="menu-text">Registro de facturas</div>
 											</a>
 

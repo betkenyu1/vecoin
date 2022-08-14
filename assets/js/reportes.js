@@ -4,3 +4,7 @@ function getReporteOrdenEntrada(ids) {
 function getReporteOrdenSalida(os) {
     window.open('views/reportes/orden_salida.php?IdSecuencial=' + os + '');
 }
+
+function getReporteStock() {
+    window.open('views/reportes/stock_productos.php');
+}

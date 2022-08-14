@@ -16,6 +16,27 @@ class VentaController
     public function lista_ventas(){
         require_once 'views/ventas/lista_ventas.php';
     }
+    public function get_clientes()
+    {
+        $exito = $this->vta->getClientes();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_stock()
+    {
+        $exito = $this->vta->getStockVenta();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
     public function save_new_cab_venta()
     {
         $aut = '';
@@ -23,12 +44,24 @@ class VentaController
         $Ruta = 'xml/' . $_FILES['filexml']['name'];
         //$xml = simplexml_load_file(utf8_encode($Ruta));
        // $Autorizacion = $xml->numeroAutorizacion; //ok
+       //$obj = simplexml_load_string(file_get_contents($Ruta),'SimpleXMLElement', LIBXML_NOCDATA);
+       //$json = json_encode($obj);
+       //$inputArray = json_decode($json,TRUE);
+       //echo $inputArray;
         
-        
-        
+       $xml = simplexml_load_string($Ruta);
+       foreach ($xml as $item) {
+           var_dump((string)$item->numeroAutorizacion);
+       }
+
+        echo $xml;
+/*
         if ($XML_file = @simplexml_load_file($Ruta)) {
             $data = str_replace(array('<![CDATA[', ']]>'), array('', ''), $XML_file->asXML());
             //$xml = simplexml_load_file(utf8_encode($data));
+
+            $xml=simplexml_load_string($data);
+            $valor=$xml->numeroAutorizacion;
 
             //$xml = simplexml_load_string($data);
             //$books = $xml->infoTributaria;
@@ -59,14 +92,12 @@ class VentaController
 
             //$address = json_encode($address);
             //$address = json_decode($address, TRUE);
-            $da = new $data;
-            foreach($da as $rr){
-                foreach($rr as $r){
-                    echo $r->secuencial;
-                }
-            }
+           //
             //$da->getFirstName();
-           //echo $da;
+            
+
+
+           echo $valor;
 
         } else {
             $data = '';

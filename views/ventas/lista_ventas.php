@@ -24,9 +24,9 @@ include_once 'views/layout/header.php';
                 </form>
             </div>
             <hr>
-            <a href="#new?1" onclick="setNuevaOrdenEntrada();" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo</a>
+            <a href="#new?1" onclick="setNuevaVenta();" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo</a>
             <hr>
-            <div id="lista-ord_entrada"></div>
+            <div id="new-venta"></div>
             <div id="new-ord-entrada"></div>
         </div>
     </div>

@@ -12,9 +12,10 @@ function SubirXML() {
 			contentType: false,
 			processData: false,
 			success: function (response) {
+				console.log(response);
 				if (response) {
 					Swal.fire({
-						html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
+						html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>"'+response.autorizacion+'"</b></div></div>',
 					});
 					$(".milogo-cta").attr("src", response);
 				}

@@ -21,17 +21,80 @@ class VentaController
         $aut = '';
         move_uploaded_file($_FILES['filexml']['tmp_name'], 'xml/' . $_FILES['filexml']['name']);
         $Ruta = 'xml/' . $_FILES['filexml']['name'];
-        $xml = simplexml_load_file(utf8_encode($Ruta));
-        $Autorizacion = $xml->numeroAutorizacion; //ok
-
-        /*
+        //$xml = simplexml_load_file(utf8_encode($Ruta));
+       // $Autorizacion = $xml->numeroAutorizacion; //ok
+        
+        
+        
         if ($XML_file = @simplexml_load_file($Ruta)) {
             $data = str_replace(array('<![CDATA[', ']]>'), array('', ''), $XML_file->asXML());
-            $xml=simplexml_load_string($data);
-            $secuencial = $xml->secuencial; //ok
-           echo $secuencial;
-        } else $data = '';
-*/
+            //$xml = simplexml_load_file(utf8_encode($data));
+
+            //$xml = simplexml_load_string($data);
+            //$books = $xml->infoTributaria;
+            //foreach ($books as $book) {
+                //$id = $book->numeroAutorizacion;
+                //echo  $id;
+                //$title = $book->name;
+                //$price = $book->price;
+                //print_r("The title of the book $id is $title and it costs $price." . "\n");
+            //}
+            //$data1 = simplexml_load_file(utf8_encode($data));
+            //$Autorizacion = $data1->factura; //ok
+            //$secuencial = $xml->secuencial; //ok
+            // $memcachedConfig = array("host" => "127.0.0.1","port" => "11211"); 
+            //$memcachedConfig = array("secuencial" );
+            //$memcachedConfig['host'];
+            //$data['secuencial'] = ['secuencial']; //ok
+            //$xml = simplexml_load_file("017-php-simplexml02.xml");
+            //$xml = simplexml_load_string($data);
+           
+
+           // $xml=simplexml_load_string($data) or die("Error: Cannot create object");
+            //print_r($xml);
+            
+
+
+            //$address = simplexml_load_string($data, "SimpleXMLElement", LIBXML_NOCDATA);
+
+            //$address = json_encode($address);
+            //$address = json_decode($address, TRUE);
+            $da = new $data;
+            foreach($da as $rr){
+                foreach($rr as $r){
+                    echo $r->secuencial;
+                }
+            }
+            //$da->getFirstName();
+           //echo $da;
+
+        } else {
+            $data = '';
+        }/*
+
+    /*
+            $address = new SimpleXMLElement($data);
+            echo $address->getName(), PHP_EOL;
+            foreach ($address as $name => $part) {
+                echo "$name: $part", PHP_EOL;
+            }
+            //echo $data;
+            //echo $data;
+        } else {
+            $data = '';
+        }/*
+        $doc = new DOMDocument();
+        $doc->load($Ruta);
+        $destinations = $doc->getElementsByTagName("numeroAutorizacion");
+        foreach ($destinations as $destination) {
+            foreach ($destination->childNodes as $child) {
+                if ($child->nodeType == XML_CDATA_SECTION_NODE) {
+                    echo $child->textContent . "<br/>";
+                }
+            }
+        }
+
+        /*
         $doc = new DOMDocument();
        $doc->load($Ruta);
 

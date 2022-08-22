@@ -29,6 +29,12 @@ if ($_SESSION["user"] === null) {
 	<link href="assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" />
 	<link href="assets/plugins/datatables.net-select-bs5/css/select.bootstrap5.min.css" rel="stylesheet" />
 
+	<!-- ================== BEGIN page-css ================== -->
+	<link href="assets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />
+	<link href="assets/plugins/nvd3/build/nv.d3.css" rel="stylesheet" />
+	<link href="assets/plugins/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+	<!-- ================== END page-css ================== -->
+
 </head>
 
 <body>
@@ -104,29 +110,6 @@ if ($_SESSION["user"] === null) {
 							</div>
 						</a>
 					</div>
-					<!--
-					<div id="appSidebarProfileMenu" class="collapse">
-						<div class="menu-item pt-5px">
-							<a href="javascript:;" class="menu-link">
-								<div class="menu-icon"><i class="fa fa-cog"></i></div>
-								<div class="menu-text">Settings</div>
-							</a>
-						</div>
-						<div class="menu-item">
-							<a href="javascript:;" class="menu-link">
-								<div class="menu-icon"><i class="fa fa-pencil-alt"></i></div>
-								<div class="menu-text"> Send Feedback</div>
-							</a>
-						</div>
-						<div class="menu-item pb-5px">
-							<a href="javascript:;" class="menu-link">
-								<div class="menu-icon"><i class="fa fa-question-circle"></i></div>
-								<div class="menu-text"> Helps</div>
-							</a>
-						</div>
-						<div class="menu-divider m-0"></div>
-					</div>
-					-->
 					<!--<div class="menu-header">Navegación</div>-->
 					<div class="menu-item active">
 						<a href="index.php?c=Index&a=home" class="menu-link">

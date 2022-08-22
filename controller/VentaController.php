@@ -49,55 +49,15 @@ class VentaController
        //$inputArray = json_decode($json,TRUE);
        //echo $inputArray;
         
-       $xml = simplexml_load_string($Ruta);
-       foreach ($xml as $item) {
-           var_dump((string)$item->numeroAutorizacion);
-       }
+      
 
-        echo $xml;
-/*
-        if ($XML_file = @simplexml_load_file($Ruta)) {
+        if ($XML_file = simplexml_load_file($Ruta)) {
             $data = str_replace(array('<![CDATA[', ']]>'), array('', ''), $XML_file->asXML());
-            //$xml = simplexml_load_file(utf8_encode($data));
-
-            $xml=simplexml_load_string($data);
-            $valor=$xml->numeroAutorizacion;
-
-            //$xml = simplexml_load_string($data);
-            //$books = $xml->infoTributaria;
-            //foreach ($books as $book) {
-                //$id = $book->numeroAutorizacion;
-                //echo  $id;
-                //$title = $book->name;
-                //$price = $book->price;
-                //print_r("The title of the book $id is $title and it costs $price." . "\n");
-            //}
-            //$data1 = simplexml_load_file(utf8_encode($data));
-            //$Autorizacion = $data1->factura; //ok
-            //$secuencial = $xml->secuencial; //ok
-            // $memcachedConfig = array("host" => "127.0.0.1","port" => "11211"); 
-            //$memcachedConfig = array("secuencial" );
-            //$memcachedConfig['host'];
-            //$data['secuencial'] = ['secuencial']; //ok
-            //$xml = simplexml_load_file("017-php-simplexml02.xml");
-            //$xml = simplexml_load_string($data);
-           
-
-           // $xml=simplexml_load_string($data) or die("Error: Cannot create object");
-            //print_r($xml);
-            
-
-
-            //$address = simplexml_load_string($data, "SimpleXMLElement", LIBXML_NOCDATA);
-
-            //$address = json_encode($address);
-            //$address = json_decode($address, TRUE);
-           //
-            //$da->getFirstName();
-            
-
-
-           echo $valor;
+            $xml = simplexml_load_file($data);
+            while($xml >0){
+                echo $xml->numeroAutorizacion;
+            }
+           //echo $XML_file->comprobante->infoTributaria->ambiente;
 
         } else {
             $data = '';

@@ -8,10 +8,19 @@ class VentaModel
     {
         $this->db = Conexion::getConexion();
     }
-    public function getProductos()
+    public function getClientes()
     {
-        $consulta = "SELECT P.id_producto,C.producto FROM productos P
-        INNER JOIN catalogo C ON (P.id_catalogo=C.id_catalogo)";
+        $consulta = "SELECT id_cliente,razon_social FROM clientes";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getStockVenta()
+    {
+        $consulta = "SELECT ST.id_stock,C.producto FROM stock ST
+        INNER JOIN productos P ON (ST.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

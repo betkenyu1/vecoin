@@ -74,7 +74,7 @@ function LimpiarCampos(){
     $("#IdCantidad").val('');
     $("#IdPrecio").val('');
     getUMedidas();
-    getProveedor
+    getProveedor();
 }
 function setNuevaOrdenEntrada() {
     CerrarListaOrdenEntrada();

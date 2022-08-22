@@ -27,6 +27,15 @@
 		responsive: true
 	});
 </script>
+<!-- ================== BEGIN page-js ================== -->
+<script src="assets/plugins/d3/d3.min.js"></script>
+<script src="assets/plugins/nvd3/build/nv.d3.min.js"></script>
+<script src="assets/plugins/jvectormap-next/jquery-jvectormap.min.js"></script>
+<script src="assets/plugins/jvectormap-next/jquery-jvectormap-world-mill.js"></script>
+<script src="assets/plugins/apexcharts/dist/apexcharts.min.js"></script>
+<script src="assets/plugins/moment/min/moment.min.js"></script>
+<script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script src="assets/js/demo/dashboard-v3.js"></script>
 </body>
 
 </html>

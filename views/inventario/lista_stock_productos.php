@@ -15,7 +15,7 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
-            <a href="#" onclick="getReporteStockProductos();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte</a>
+            <a href="#" onclick="getReporteStock();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte</a>
             <hr>
             <div id="lista-stock-productos"></div>
         </div>
@@ -28,3 +28,4 @@ include_once 'views/layout/footer.php';
 ?>
 <script src="assets/js/stock_productos.js"></script>
 <script src="assets/js/admin.js"></script>
+<script src="assets/js/reportes.js"></script>

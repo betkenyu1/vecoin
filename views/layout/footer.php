@@ -40,4 +40,3 @@
 <script src="assets/plugins/apexcharts/dist/apexcharts.min.js"></script>
 <script src="assets/plugins/moment/min/moment.min.js"></script>
 <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-<script src="assets/js/demo/dashboard-v3.js"></script>

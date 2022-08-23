@@ -1,18 +1,3 @@
-function getProductos() {
-    $("#IdProducto").empty();
-    $.ajax({
-        type: "GET",
-        dataType: 'json',
-        url: "index.php?c=Venta&a=get_stock",
-        success: function (response) {
-            var $select = $('#IdProducto');
-            $select.append('<option value="0">Seleccione...</option>');
-            $.each(response, function (key, value) {
-                $select.append('<option value=' + value.id_stock + '>' + value.producto + '</option>');
-            });
-        }
-    });
-}
 function getClientes() {
     $("#IdCliente").empty();
     $.ajax({
@@ -35,7 +20,7 @@ function setNuevaVenta() {
     CerrarListaVenta();
     $(".cerrar-mp").hide();
     var html = '';
-    html += '<div class="cerrar-vta">';
+    html += '<div id="ps?1" class="cerrar-vta">';
     html += '<div class="note note-info">';
     html += '<div class="note-content">';
     html += '<form>';
@@ -53,6 +38,14 @@ function setNuevaVenta() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
+    html += '<b style="color: #000000;">Clientes:</b> </br>';
+    html += '<select class="default-select2 form-control" id="IdCliente"></select>';
+    html += '<div id="alert-prov"></div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="col-md-6">';
+    html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Nro Factura:</b> </br>';
     html += '<input type="hidden" class="form-control" id="IdSecuencial">';
     html += '<input type="hidden" class="form-control" id="IdSecuencia">';
@@ -64,16 +57,8 @@ function setNuevaVenta() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Productos:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdProducto"></select>';
-    html += '<div id="alert-prod"></div>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Clientes:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdCliente"></select>';
-    html += '<div id="alert-prov"></div>';
+    html += '<input type="text" class="form-control" id="IdDetProducto">';
+    html += '<div id="alert-cant"></div>';
     html += '</div>';
     html += '</div>';
 
@@ -114,34 +99,81 @@ function setNuevaVenta() {
     html += '</div>';
     html += '</div>';
     html += '</div>';
-    $("#new-venta").html(html);
+    $("#p-osalida").html(html);
     $('.default-select2').select2();
-    getProductos();
+}
+function getListaOrdenSalida() {
+    var html = '';
+    html += '<div class="cerrar-lp">';
+    html += '<div class="note note-blue">';
+    html += '<div class="note-content">';
+    html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    html += '<thead>';
+    html += '<tr>';
+    html += '<th width="1%"></th>';
+    html += '<th class="text-nowrap">Fecha</th>';
+    html += '<th class="text-nowrap">Secuencial</th>';
+    html += '<th class="text-nowrap">Producto</th>';
+    html += '<th class="text-nowrap">U.Medida</th>';
+    html += '<th class="text-nowrap">Bodega</th>';
+    html += '<th class="text-nowrap">Cantidad</th>';
+    html += '<th class="text-nowrap">PVP</th>';
+    html += '<th class="text-nowrap">Acciones</th>';
+    html += '</tr>';
+    html += '</thead>';
+    html += '<tbody>';
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: 'index.php?c=Venta&a=get_det_osalida',
+        success: function (response) {
+            $.each(response, function (key, value) {
+                html += '<tr class="odd gradeX">';
+                html += '<td width="1%" class="fw-bold text-dark">' + value.id_det_osalida + '</td>';
+                html += '<td>' + value.fecha + '</td>';
+                html += '<td>' + value.secuencial + '</td>';
+                html += '<td>' + value.producto + '</td>';
+                html += '<td>' + value.umedida + '</td>';
+                html += '<td>' + value.bodega + '</td>';
+                html += '<td>' + value.cantidad + '</td>';
+                html += '<td>' + value.pvp + '</td>';
+                html += '<td>';
+                html += '<a href="#ps?1" class="btn btn-outline-orange" onclick="getProcesarOSalida(' + value.id_det_osalida + ');" title="Procesar salida"><i class="fa-solid fa-share"></i></a>';
+                html += '</td>';
+                html += '</tr>';
+            });
+            html += '</tbody>';
+            html += '</table>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+            $("#lista-ord_salida").html(html);
+            $('#data-table-select').DataTable({
+                select: true,
+                responsive: true
+            });
+        }
+    });
+}
+
+function getProcesarOSalida(id_det_osalida){
+    setNuevaVenta();
     getClientes();
+    $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: 'index.php?c=Venta&a=get_iddet_osalida',
+        data: "IdDetOSalida=" + id_det_osalida,
+        success: function (response) {
+            $.each(response, function (key, value) {
+                $("#IdDetProducto").val(value.id_det_osalida);
+                $("#IdDetProducto").val(value.producto);
+                $("#IdCantidad").val(value.cantidad);
+                $("#IdPrecio").val(value.pvp);
+            });
+        }
+    });
 }
-function SubirXML() {
-	var formData = new FormData();
-	var files = $('#xml')[0].files[0];
-	if (files == null) {
-		alert('Seleccione un archivo xml' + files);
-	} else {
-		formData.append('filexml', files);
-		$.ajax({
-			url: 'index.php?c=Venta&a=save_new_cab_venta',
-			type: 'POST',
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: function (response) {
-				console.log(response);
-				if (response) {
-					Swal.fire({
-						html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>"'+response.autorizacion+'"</b></div></div>',
-					});
-					$(".milogo-cta").attr("src", response);
-				}
-			}
-		});
-		return false;
-	}
-}
+$(document).ready(function () {
+    getListaOrdenSalida();
+});

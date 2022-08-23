@@ -26,6 +26,37 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getOSalidaProductos()
+    {
+        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,C.producto,
+        UM.umedida,B.bodega,OS.cantidad,OS.pvp
+        FROM det_osalida OS
+        INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
+        INNER JOIN productos P ON (OS.id_producto = P.id_producto)
+        INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getDetOSalida($IdDetOSalida)
+    {
+        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,C.producto,
+        UM.umedida,B.bodega,OS.cantidad,OS.pvp
+        FROM det_osalida OS
+        INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
+        INNER JOIN productos P ON (OS.id_producto = P.id_producto)
+        INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
+        WHERE id_det_osalida = '$IdDetOSalida'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function getStockProductos()
     {
         $consulta = "SELECT PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 

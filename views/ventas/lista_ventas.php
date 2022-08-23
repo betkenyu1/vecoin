@@ -26,8 +26,8 @@ include_once 'views/layout/header.php';
             <hr>
             <a href="#new?1" onclick="setNuevaVenta();" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo</a>
             <hr>
-            <div id="new-venta"></div>
-            <div id="new-ord-entrada"></div>
+            <div id="lista-ord_salida"></div>
+            <div id="p-osalida"></div>
         </div>
     </div>
     <!-- END panel -->

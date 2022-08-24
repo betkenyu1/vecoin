@@ -57,4 +57,29 @@ class VentaController
             echo json_encode($vacio);
         }
     }
+    /*
+    data: "IdFecha=" + idfreg +
+              "&IdCliente=" + clien + "&NroFactura=" + nfact +
+              "&Producto=" + prod + "&Cantidad=" + cant + "&Precio=" + prec,
+    */
+    public function save_new_venta()
+    {
+        date_default_timezone_set('America/Guayaquil');
+        $Freg = date('m-d-Y h:i:s a', time());
+        $Fecha = date('Y-m-d');
+        $IdDetPSalida = (isset($_REQUEST['IdDetPSalida'])) ? $_REQUEST['IdDetPSalida'] : '';
+        $Fecha = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
+        $Fecha = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
+        $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
+        $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
+        $Producto = (isset($_REQUEST['Producto'])) ? $_REQUEST['Producto'] : '';
+        $Cantidad = strtoupper((isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '');
+        $Precio = strtoupper((isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '');
+        $exito = $this->vta->getRegistroCabVenta($Freg, $Fecha, $IdCliente, $NroFactura ,$IdDetPSalida);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
 }

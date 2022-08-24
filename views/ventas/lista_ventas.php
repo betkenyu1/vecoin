@@ -15,17 +15,6 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
-            <div class="profile-header-info">
-                <form action="#" enctype="multipart/form-data" method="POST">
-                    <div class="form-group">
-                        <input type="file" class="btn btn-xs btn-info" class="form-control-file" name="image" id="xml" accept=".xml">
-                        <a type="button" class="btn btn-sm btn-outline-success" onclick="SubirXML();"><i class="fa-solid fa-upload"></i></a>
-                    </div>
-                </form>
-            </div>
-            <hr>
-            <a href="#new?1" onclick="setNuevaVenta();" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Nuevo</a>
-            <hr>
             <div id="lista-ord_salida"></div>
             <div id="p-osalida"></div>
         </div>

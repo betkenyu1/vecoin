@@ -57,97 +57,16 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getStockProductos()
-    {
-        $consulta = "SELECT PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
-        , CASE WHEN PR.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
-        INNER JOIN proveedores P ON P.id_proveedor = PR.id_proveedor
-        INNER JOIN catalogo C ON C.id_catalogo = PR.id_catalogo
-        INNER JOIN empresas E ON E.id_empresa = C.id_empresa
-        INNER JOIN bodegas B ON B.id_bodega = PR.id_bodega
-        INNER JOIN unidad_medida UM ON UM.id_umedida = PR.id_umedida;";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-    public function getExistencias($IdProducto)
-    {
-        $consulta = "SELECT cantidad,pvp FROM productos
-        WHERE id_producto = '$IdProducto'";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-
-    public function RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario)
-    {
-        $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,fecha,id_bodega,id_umedida,cantidad,precio,prc_utl,pvp,id_usuario)
-        Values(:id_catalogo,:id_proveedor,:fecha,:id_bodega,:id_umedida,:cantidad,:precio,:prc_utl,:pvp,:id_usuario)";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_catalogo', $IdCatalogo);
-        $sentencia->bindParam(':id_proveedor', $IdProveedor);
-        $sentencia->bindParam(':fecha', $Fecha);
-        $sentencia->bindParam(':id_bodega', $IdBodega);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
-        $sentencia->bindParam(':cantidad', $Cantidad);
-        $sentencia->bindParam(':precio', $Precio);
-        $sentencia->bindParam(':prc_utl', $Prc_Utl);
-        $sentencia->bindParam(':pvp', $PVP);
-        $sentencia->bindParam(':id_usuario', $IdUsuario);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
-    public function getOrdenesEntrada()
-    {
-        $consulta = "SELECT OE.id_secuencial,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor,
-        E.estado FROM cab_oentrada OE
-        INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
-        INNER JOIN estados E ON (OE.id_estado = E.id_estado)
-        WHERE OE.id_estado =1";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-    public function getOrdenesSalida()
-    {
-        $consulta = "SELECT OS.id_secuencial,OS.fecha,OS.secuencial,
-        CONCAT(EM.nombres,' ',EM.apellidos) AS responsable,
-        E.estado FROM cab_osalida OS
-        INNER JOIN usuarios U ON (OS.id_usuario = U.id_usuario)
-        INNER JOIN empleados EM ON (U.id_empleado = EM.id_empleado)
-        INNER JOIN estados E ON (OS.id_estado = E.id_estado)
-        WHERE OS.id_estado =1";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-    public function ExisteRegistroOrdenSalida($IdSecuencial)
+    public function ExisteRegistroCabVenta($IdDetPSalida)
     {
         $consulta = "SELECT id_secuencial FROM cab_osalida
-        WHERE id_secuencial = '$IdSecuencial'";
+        WHERE id_det_osalida = '$IdDetPSalida'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function ExisteRegistroOrdenEntrada($IdSecuencial)
-    {
-        $consulta = "SELECT id_secuencial FROM cab_oentrada
-        WHERE id_secuencial = '$IdSecuencial'";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-
-    public function RegistroCabOrdenSalida($Fecha, $FechaSalida, $IdSecuencial, $IdSecu, $Observacion, $IdUsuario)
+    public function getRegistroCabVenta($Freg, $Fecha, $IdCliente, $NroFactura ,$IdDetPSalida)
     {
         $consulta = "INSERT INTO cab_osalida(fecha,fecha_osalida,id_secuencial,secuencial,observacion,id_usuario)
         VALUES(:fecha,:fecha_osalida,:id_secuencial,:secuencial,:observacion,:id_usuario)";

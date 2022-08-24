@@ -31,7 +31,6 @@ function setNuevaVenta() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Fecha:</b> </br>';
     html += '<input type="date" class="form-control" id="IdFecha">';
-    html += '<input type="hidden" class="form-control" id="IdSecuenc">';
     html += '<div id="alert-freg"></div>';
     html += '</div>';
     html += '</div>';
@@ -40,15 +39,14 @@ function setNuevaVenta() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Clientes:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdCliente"></select>';
-    html += '<div id="alert-prov"></div>';
+    html += '<div id="alert-cli"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Nro Factura:</b> </br>';
-    html += '<input type="hidden" class="form-control" id="IdSecuencial">';
-    html += '<input type="hidden" class="form-control" id="IdSecuencia">';
+    html += '<input type="hidden" class="form-control" id="IdDetPSalida">';
     html += '<input type="text" class="form-control" id="IdNroFactura">';
     html += '<div id="alert-nrofac"></div>';
     html += '</div>';
@@ -58,7 +56,7 @@ function setNuevaVenta() {
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Productos:</b> </br>';
     html += '<input type="text" class="form-control" id="IdDetProducto">';
-    html += '<div id="alert-cant"></div>';
+    html += '<div id="alert-prod"></div>';
     html += '</div>';
     html += '</div>';
 
@@ -80,9 +78,9 @@ function setNuevaVenta() {
 
     html += '<div>';
     html += '<br>';
-	html += '<div class="text-center">';
+    html += '<div class="text-center">';
     html += '<a class="btn btn-danger" onclick="CerrarNuevaOrdenEntrada();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
-    html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarOrdenEntrada();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
+    html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarVenta();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
     html += '&nbsp;<a class="btn btn-success" title="Cerrar" onclick="getCerrarOrdenEntrada();"><i class="fa-solid fa-save" aria-hidden="true"></i> Cerrar</a>';;
     html += '</div>';
     html += '</div>';
@@ -156,7 +154,7 @@ function getListaOrdenSalida() {
     });
 }
 
-function getProcesarOSalida(id_det_osalida){
+function getProcesarOSalida(id_det_osalida) {
     setNuevaVenta();
     getClientes();
     $.ajax({
@@ -166,13 +164,118 @@ function getProcesarOSalida(id_det_osalida){
         data: "IdDetOSalida=" + id_det_osalida,
         success: function (response) {
             $.each(response, function (key, value) {
-                $("#IdDetProducto").val(value.id_det_osalida);
+                $("#IdDetPSalida").val(value.id_det_osalida);
                 $("#IdDetProducto").val(value.producto);
                 $("#IdCantidad").val(value.cantidad);
                 $("#IdPrecio").val(value.pvp);
             });
         }
     });
+}
+function getAgregarVenta() {
+    var html = '';
+    if ($('#IdFecha').val() == '') {
+        html += '<div class="alert alert-danger">';
+        html += 'Este campo es obligatorio!.';
+        html += '</div>';
+        $("#alert-freg").html(html);
+        $('#IdFecha').focus();
+        setTimeout(function () {
+            $("#alert-freg").fadeOut(1500);
+        }, 3000);
+        return false;
+    } if ($('#IdCliente').val() == '0') {
+        html += '<div class="alert alert-danger">';
+        html += 'Este campo es obligatorio!.';
+        html += '</div>';
+        $("#alert-cli").html(html);
+        $('#IdCliente').focus();
+        setTimeout(function () {
+            $("#alert-cli").fadeOut(1500);
+        }, 3000);
+        return false;
+    } if ($('#IdNroFactura').val() == '') {
+        html += '<div class="alert alert-danger">';
+        html += 'Este campo es obligatorio!.';
+        html += '</div>';
+        $("#alert-nrofac").html(html);
+        $('#IdNroFactura').focus();
+        setTimeout(function () {
+            $("#alert-nrofac").fadeOut(1500);
+        }, 3000);
+        return false;
+    } if ($('#IdDetProducto').val() == '') {
+        html += '<div class="alert alert-danger">';
+        html += 'Este campo es obligatorio!.';
+        html += '</div>';
+        $("#alert-prod").html(html);
+        $('#IdDetProducto').focus();
+        setTimeout(function () {
+            $("#alert-prod").fadeOut(1500);
+        }, 3000);
+        return false;
+    } if ($('#IdCantidad').val() == '') {
+        html += '<div class="alert alert-danger">';
+        html += 'Este campo es obligatorio!.';
+        html += '</div>';
+        $("#alert-cant").html(html);
+        $('#IdCantidad').focus();
+        setTimeout(function () {
+            $("#alert-cant").fadeOut(1500);
+        }, 3000);
+        return false;
+    } if ($('#IdPrecio').val() == '') {
+        html += '<div class="alert alert-danger">';
+        html += 'Este campo es obligatorio!.';
+        html += '</div>';
+        $("#alert-prec").html(html);
+        $('#IdPrecio').focus();
+        setTimeout(function () {
+            $("#alert-prec").fadeOut(1500);
+        }, 3000);
+        return false;
+    } else {
+        var idds = $('#IdDetPSalida').val();
+        var idfreg = $("#IdFecha").val();
+        var clien = $("#IdCliente").val();
+        var nfact = $("#IdNroFactura").val();
+        var prod = $("#IdDetProducto").val();
+        var cant = $("#IdCantidad").val();
+        var prec = $("#IdPrecio").val();
+        Swal.fire({
+            title: "CONFIRMACION!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí continuar"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "GET",
+                    dataType: 'json',
+                    url: "index.php?c=Venta&a=save_new_venta",
+                    data: "IdDetPSalida=" + idds + "&IdFecha=" + idfreg +
+                        "&IdCliente=" + clien + "&NroFactura=" + nfact +
+                        "&Producto=" + prod + "&Cantidad=" + cant + "&Precio=" + prec,
+                    success: function (response) {
+                        response = JSON.stringify(response);
+                        if (response == 1) {
+                            Swal.fire({
+                                html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
+                            });
+                            CerrarNuevoEmpleado();
+                            getListaEmpleados();
+                        } if (response == 2) {
+                            Swal.fire({
+                                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error al Registrar!.</b></div></div>',
+                            });
+                        }
+                    }
+                });
+            }
+        });
+    }
 }
 $(document).ready(function () {
     getListaOrdenSalida();

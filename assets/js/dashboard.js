@@ -345,7 +345,7 @@ var handleVisitorsAreaChart = function() {
 					//visitorAreaChartData = JSON.parse(response);
 					
 					$.each(AreaChartData, function (key, value) {
-						AreaChartData = value.cantidad;
+						AreaChartData = value;
 						console.log(AreaChartData);
 						
 					});

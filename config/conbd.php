@@ -1,6 +1,6 @@
 <?php 
 class Conexion{
-    public static function getConexion(){
+   static public function getConexion(){
         $database_username = 'desarrollo';
         $database_password = 'armijo123.';
         $dbname="vecoin_bd";

@@ -330,6 +330,37 @@ var handleVisitorsAreaChart = function() {
 				d = d.setDate(d.getDate() - minusDate);
 		return d;
 	};
+	var ChartData = [{
+		'key' : 'Unique Visitante',
+		'color' : app.color.green,
+		'values' : [
+			$.ajax({
+				type: "GET",
+				dataType: 'json',
+				url: 'index.php?c=Producto&a=get_producto_chart',
+				success: function (response) {
+					var AreaChartData = response;
+					//console.log(response);
+					
+					//visitorAreaChartData = JSON.parse(response);
+					
+					$.each(AreaChartData, function (key, value) {
+						AreaChartData = value.cantidad;
+						console.log(AreaChartData);
+						
+					});
+					
+					return AreaChartData;
+				}
+			})
+		] 
+	}
+];
+var visitorAreaChartData = ChartData;
+	
+	
+	
+	/*
 	var visitorAreaChartData = [{
 		'key' : 'Unique Visitante',
 		'color' : app.color.green,
@@ -381,13 +412,13 @@ var handleVisitorsAreaChart = function() {
 			[handleGetDate(2) , 18], [handleGetDate(0) , 17]
 		]
 	}];
-	
+	*/
 	if ($('#visitors-line-chart').length !== 0) {
 		nv.addGraph(function() {
 			var stackedAreaChart = nv.models.stackedAreaChart()
 				.useInteractiveGuideline(true)
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1] })
+				.x(function(d) { return d[2] })
+				.y(function(d) { return d[7] })
 				.pointSize(0.5)
 				.margin({'left':35,'right': 25,'top': 20,'bottom':20})
 				.controlLabels({stacked: 'Stacked'})
@@ -401,7 +432,6 @@ var handleVisitorsAreaChart = function() {
 				return d ;
 			});
 			stackedAreaChart.yAxis.tickFormat(d3.format(',.0f'));
-
 			d3.select('#visitors-line-chart')
 				.append('svg')
 				.datum(visitorAreaChartData)
@@ -542,7 +572,115 @@ var DashboardV3 = function () {
 		}
 	};
 }();
-
+function AreaGrafica(){
+	$.ajax({
+		url: 'index.php?c=Producto&a=get_producto_chart',
+		method: "GET",
+		success: function(respuesta){
+		   console.log(respuesta);
+		   var data = JSON.parse(respuesta);
+		   var x = [];
+		   var tiempos = [];
+		   for (let index = 0; index < data.length; index++) {
+				x.push(data[index][2]);
+				tiempos.push(data[index][7]);
+		   }
+			//--------------
+			//- AREA CHART -
+			//--------------
+			// Get context with jQuery - using jQuery's .get() method.
+			var areaChartCanvas = $('#visitors-line-chart').get(0).getContext('d3')
+			var areaChartData = {
+			labels  : x,
+			datasets: [
+				{
+				label               : 'Digital Goods',
+				backgroundColor     : 'rgba(60,141,188,0.9)',
+				borderColor         : 'rgba(60,141,188,0.8)',
+				pointRadius          : false,
+				pointColor          : '#3b8bba',
+				pointStrokeColor    : 'rgba(60,141,188,1)',
+				pointHighlightFill  : '#fff',
+				pointHighlightStroke: 'rgba(60,141,188,1)',
+				data                : tiempos
+				}
+			]
+			}
+			var areaChartOptions = {
+				maintainAspectRatio: false,
+				responsive: true,                    
+				events: false,
+				tooltips: {
+					enabled: false
+				},
+				legend: {
+					display: false
+				},
+				scales: {
+					xAxes: [{
+						ticks: {
+						fontColor: '#000'
+						},
+						gridLines: {
+						display: false,
+						color: '#000',
+						drawBorder: false
+						}
+					}],
+					yAxes: [{
+						ticks: {
+						stepSize: 1,
+						fontColor: '#000'
+						},
+						gridLines: {
+						display: true,
+						color: '#7DCEA0',
+						drawBorder: false
+						}
+					}]
+				},
+				animation: {
+					duration: 1,
+					onComplete: function () {
+						var chartInstance = this.chart,
+							ctx = chartInstance.ctx;
+							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+							ctx.fillStyle = "#000";
+							ctx.textAlign = 'center';
+							ctx.textBaseline = 'bottom';
+							this.data.datasets.forEach(function (dataset, i) {
+								var meta = chartInstance.controller.getDatasetMeta(i);
+								meta.data.forEach(function (bar, index) {
+									var data = dataset.data[index];                            
+									ctx.fillText(data, bar._model.x, bar._model.y - 5);
+								});
+							});
+					}
+				}
+			}
+			// This will get the first returned node in the jQuery collection.
+			new Chart(areaChartCanvas, {
+				type: 'line',
+				data: areaChartData,
+				options: areaChartOptions
+			})
+			//-------------
+			//- LINE CHART -
+			//--------------
+			var lineChartCanvas = $('#lineChart').get(0).getContext('d3')
+			var lineChartOptions = $.extend(true, {}, areaChartOptions)
+			var lineChartData = $.extend(true, {}, areaChartData)
+			lineChartData.datasets[0].fill = false;        
+			lineChartOptions.datasetFill = false
+			var lineChart = new Chart(lineChartCanvas, {
+			type: 'line',
+			data: lineChartData,
+			options: lineChartOptions
+			})
+		}
+	});
+}
 $(document).ready(function() {
 	DashboardV3.init();
+	//AreaGrafica();
 });

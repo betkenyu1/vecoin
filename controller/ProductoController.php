@@ -52,6 +52,15 @@ class ProductoController
             echo json_encode($vacio);
         }
     }
+    public function get_producto_chart(){
+        $exito = $this->prod->getProductosChart();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_bodegas()
     {
         $exito = $this->prod->getBodegas();

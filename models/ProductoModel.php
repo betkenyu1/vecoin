@@ -48,6 +48,19 @@ class ProductoModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getProductosChart(){
+        $consulta = "SELECT P.id_producto,EM.razon_social,P.fecha,C.codigo,C.producto,B.bodega,U.umedida,
+        P.cantidad,P.precio,P.prc_utl,P.pvp,E.estado FROM productos P
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN empresas EM ON (C.id_empresa = EM.id_empresa)
+        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
+        INNER JOIN unidad_medida U ON (P.id_umedida = U.id_umedida)
+        INNER JOIN estados E ON (P.id_estado = E.id_estado) GROUP BY P.fecha ASC ";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function getProductoId($IdProducto){
         $consulta = "SELECT cantidad,precio FROM productos
         WHERE id_producto = '$IdProducto' AND id_estado =1";

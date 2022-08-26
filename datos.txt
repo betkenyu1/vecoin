@@ -6,4 +6,5 @@ http://www.mailxmail.com/curso-empresa-costo-materiales/departamento-recepcion-f
 //html += '<td>' + Number(value.monto).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</td>';
 
 https://www.youtube.com/watch?v=569i3MSSMWQ&ab_channel=ManuelJ.D%C3%A1vila
+https://www.youtube.com/watch?v=IGo7CUOtCps ***graficas js
 

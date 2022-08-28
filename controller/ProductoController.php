@@ -53,13 +53,25 @@ class ProductoController
         }
     }
     public function get_producto_chart(){
+        $result = array();
         $exito = $this->prod->getProductosChart();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
+        /*
+        foreach($exito as $ex){
+            //$result = $ex['id_umedida'] ;
+            $result = array_push($result, array($ex['id_umedida'],$ex['cantidad']));
+            echo json_encode($result);
+        }*/
+           
+           //echo json_encode($result,JSON_NUMERIC_CHECK);
+           
+           echo json_encode($exito);
+           // echo json_encode(array_push($exito));
+            /*
+            foreach($exito as $ex){
+                $resultado = array_push($result['id_umedida'],$result['cantidad']);
+                echo json_encode($resultado);
+            }*/
+        
     }
     public function get_bodegas()
     {

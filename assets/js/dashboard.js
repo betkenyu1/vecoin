@@ -323,45 +323,73 @@ var handleStoreSessionSparkline = function() {
 		new ApexCharts(document.querySelector('#store-session-sparkline'), options).render();
 	}
 };
+function crearGrafica() {
+	var AreaChartData = [];
+	$.ajax({
+		type: "POST",
+		dataType: 'json',
+		url: 'index.php?c=Producto&a=get_producto_chart',
+		success: function (response) {
+			console.log(response.cantidad);
+			const ctx = document.getElementById('myChart').getContext('2d');
+			$.each(response, function (key, value) {
+				AreaChartData = Array(value.cantidad, value.utilidad, 10, 5, 9, 3);
+				const myChart = new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
+						datasets: [{
+							label: 'Tabla Productos',
+							data: AreaChartData,
+							backgroundColor: [
+								'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgba(75, 192, 192, 0.2)',
+								'rgba(153, 102, 255, 0.2)',
+								'rgba(255, 159, 64, 0.2)'
+							],
+							borderColor: [
+								'rgba(255, 99, 132, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)',
+								'rgba(255, 159, 64, 1)'
+							],
+							options: {
+								plugins: {
+									title: {
+										display: true,
+										text: 'Custom Chart Title'
+									}
+								}
+							},
+							borderWidth: 1
+						}]
+					},
+					options: {
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				});
 
+			});
+		}
+	});
+}
 var handleVisitorsAreaChart = function() {
 	var handleGetDate = function(minusDate) {
 		var d = new Date();
 				d = d.setDate(d.getDate() - minusDate);
 		return d;
 	};
-	var ChartData = [{
-		'key' : 'Unique Visitante',
-		'color' : app.color.green,
-		'values' : [
-			$.ajax({
-				type: "GET",
-				dataType: 'json',
-				url: 'index.php?c=Producto&a=get_producto_chart',
-				success: function (response) {
-					var AreaChartData = response;
-					//console.log(response);
-					
-					//visitorAreaChartData = JSON.parse(response);
-					
-					$.each(AreaChartData, function (key, value) {
-						AreaChartData = value;
-						console.log(AreaChartData);
-						
-					});
-					
-					return AreaChartData;
-				}
-			})
-		] 
-	}
-];
-var visitorAreaChartData = ChartData;
-	
-	
 	
 	/*
-	var visitorAreaChartData = [{
+	 crearGrafica() = [{
 		'key' : 'Unique Visitante',
 		'color' : app.color.green,
 		'values' : [ 
@@ -417,8 +445,8 @@ var visitorAreaChartData = ChartData;
 		nv.addGraph(function() {
 			var stackedAreaChart = nv.models.stackedAreaChart()
 				.useInteractiveGuideline(true)
-				.x(function(d) { return d[2] })
-				.y(function(d) { return d[7] })
+				.x(function(d) { return d[0] })
+				.y(function(d) { return d[1] })
 				.pointSize(0.5)
 				.margin({'left':35,'right': 25,'top': 20,'bottom':20})
 				.controlLabels({stacked: 'Stacked'})
@@ -434,7 +462,7 @@ var visitorAreaChartData = ChartData;
 			stackedAreaChart.yAxis.tickFormat(d3.format(',.0f'));
 			d3.select('#visitors-line-chart')
 				.append('svg')
-				.datum(visitorAreaChartData)
+				.datum(crearGrafica())
 				.transition().duration(1000)
 				.call(stackedAreaChart)
 				.each('start', function() {
@@ -683,4 +711,5 @@ function AreaGrafica(){
 $(document).ready(function() {
 	DashboardV3.init();
 	//AreaGrafica();
+	crearGrafica();
 });

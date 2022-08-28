@@ -330,7 +330,6 @@ function crearGrafica() {
 		dataType: 'json',
 		url: 'index.php?c=Producto&a=get_producto_chart',
 		success: function (response) {
-			console.log(response.cantidad);
 			const ctx = document.getElementById('myChart').getContext('2d');
 			$.each(response, function (key, value) {
 				AreaChartData = Array(value.cantidad, value.utilidad, 10, 5, 9, 3);

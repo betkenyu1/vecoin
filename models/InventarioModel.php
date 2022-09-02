@@ -32,6 +32,16 @@ class InventarioModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getStockProductosSum()
+    {
+        $consulta = "SELECT SUM(cantidad) AS Cantidad, SUM(Precio) AS Precio, SUM(PVP) AS Valor 
+        FROM productos";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function getExistencias($IdProducto)
     {
         $consulta = "SELECT cantidad,pvp FROM productos

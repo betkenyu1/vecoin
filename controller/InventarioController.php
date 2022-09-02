@@ -33,6 +33,16 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
+    public function get_stock_productos_sum()
+    {
+        $exito = $this->inv->getStockProductosSum();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_existencias()
     {
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';

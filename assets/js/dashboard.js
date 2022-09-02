@@ -1,4 +1,19 @@
+function getStockProductosSum() {
+	$.ajax({
+	  type: "GET",
+	  dataType: 'json',
+	  url: 'index.php?c=Inventario&a=get_stock_productos_sum',
+	  success: function (response) {
+		$.each(response, function (key, value) {
+		  $("#IdCantidad").text('Σ '+value.Cantidad);
+		  $("#IdPrecio").text('$ '+value.Precio);
+		  $("#IdPVP").text('$ '+value.Valor);
+		});
+	  }
+	});
+  }
 var handleTotalSalesSparkline = function() {
+	
 	var options = {
 		chart: {
 			type: 'line',
@@ -31,7 +46,7 @@ var handleTotalSalesSparkline = function() {
 			},
 		},
 		series: [{
-			data: [9452.37, 11018.87, 7296.37, 6274.29, 7924.05, 6581.34, 12918.14]
+			data: [9452.37, 11018.87, 7296.37, 6274.29, 7924.05, 6581.34, 12918.45]
 		}],
 		tooltip: {
 			theme: 'dark',
@@ -47,7 +62,7 @@ var handleTotalSalesSparkline = function() {
 						return ''
 					}
 				},
-				formatter: (value) => { return '$'+ convertNumberWithCommas(value) },
+				formatter: (value) => { return 'Σ'+ convertNumberWithCommas(value) },
 			},
 			marker: {
 				show: false
@@ -711,4 +726,5 @@ $(document).ready(function() {
 	DashboardV3.init();
 	//AreaGrafica();
 	crearGrafica();
+	getStockProductosSum();
 });

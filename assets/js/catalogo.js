@@ -107,7 +107,17 @@ function setNuevoCatalogo() {
 	html += '</div>';
 	html += '</div>';
 	$("#new-catalogo").html(html);
-	$('.default-select2').select2();
+	$('.default-select2').select2({    
+		language: {
+		  noResults: function() {
+			//VACIO
+			return "Cargando...";          
+		  },
+		  searching: function() {	  
+			return "Buscando..";
+		  }
+		}
+	  });
 	getEmpresas();
 }
 function getGuardarCatalogo() {
@@ -147,12 +157,12 @@ function getGuardarCatalogo() {
 		var codp = $("#IdCodigo").val();
 		var dp = $("#IdDescripcionP").val();
 		Swal.fire({
-			title: "CONFIRMACION!",
+			title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
 			cancelButtonColor: "#d33",
-			confirmButtonText: "Sí continuar"
+			confirmButtonText: "Confirmar"
 		}).then((result) => {
 			if (result.isConfirmed) {
 				$.ajax({
@@ -165,12 +175,12 @@ function getGuardarCatalogo() {
 						response = JSON.stringify(response);
 						if (response == 1) {
 							Swal.fire({
-								html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
+								html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
 							});
 							CerrarNuevoCatalogo();
 						} if (response == 2) {
 							Swal.fire({
-								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>REGISTRO INCORRECTO</b></div></div>',
 							});
 						}
 					}
@@ -197,8 +207,8 @@ function setModificarCatalogo(id_catalogo) {
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Empresa:</b> </br>';
-	html += '<select class="default-select2 form-control" id="IdEmpresa"></select>';
-	html += '<div id="alert-epm"></div>';
+	html += '<select class="default-select2 form-control" id="IdEmpresaM"></select>';
+	html += '<div id="alert-emp"></div>';
 	html += '</div>';
 	html += '</div>';
 
@@ -239,8 +249,18 @@ function setModificarCatalogo(id_catalogo) {
 	html += '</div>';
 	html += '</div>';
 	$("#mod-catalogo").html(html);
-	$('.default-select2').select2();
-	getEmpresas();
+	$('.default-select2').select2({    
+		language: {
+		  noResults: function() {
+			//VACIO
+			return "Cargando...";        
+		  },
+		  searching: function() {
+			return "Buscando..";
+		  }
+		}
+	  });
+	getEmpresasMod();
 	getPrepareModificarCatalogo(id_catalogo);
 	getEstados();
 }
@@ -261,14 +281,14 @@ function getPrepareModificarCatalogo(id_catalogo) {
 }
 function getModificarCatalogo() {
 	var html = '';
-	if ($('#IdEmpresa').val() == 0) {
+	if ($('#IdEmpresaM').val() == 0) {
 		html += '<div class="alert alert-danger">';
 		html += 'Este campo es obligatorio!.';
 		html += '</div>';
-		$("#alert-epm").html(html);
-		$('#IdEmpresa').focus();
+		$("#alert-emp").html(html);
+		$('#IdEmpresaM').focus();
 		setTimeout(function () {
-			$("#alert-epm").fadeOut(1500);
+			$("#alert-emp").fadeOut(1500);
 		}, 3000);
 		return false;
 	} if ($('#IdCodigoM').val() == '') {
@@ -303,35 +323,35 @@ function getModificarCatalogo() {
 		return false;
 	} else {
 		var idcat = $("#IdCatalogo").val();
-		var ep = $("#IdEmpresa").val();
+		var emp = $("#IdEmpresaM").val();
 		var codp = $("#IdCodigoM").val();
 		var dp = $("#IdDescripcionM").val();
 		var es = $("#IdEstado").val();
 		Swal.fire({
-			title: "CONFIRMACION!",
+			title: "¡ATENCIÓN CONFIRMAR ACTUALIZACIÓN!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
 			cancelButtonColor: "#d33",
-			confirmButtonText: "Sí continuar"
+			confirmButtonText: "Confirmar"
 		}).then((result) => {
 			if (result.isConfirmed) {
 				$.ajax({
 					type: "POST",
 					dataType: 'json',
 					url: "index.php?c=Catalogo&a=get_mod_catalogo",
-					data: "IdCatalogo=" + idcat + "&IdEmpresa=" + ep + "&Codigo=" + codp +
+					data: "IdCatalogo=" + idcat + "&IdEmpresa=" + emp + "&Codigo=" + codp +
 						"&Descripcion=" + dp + "&IdEstado=" + es,
 					success: function (response) {
 						response = JSON.stringify(response);
 						if (response == 1) {
 							Swal.fire({
-								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Modificado OK!.</b></div></div>',
+								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>ACTUALIZACIÓN CORRECTA</b></div></div>',
 							});
 							CerrarModificarCatalogo();
 						} if (response == 2) {
 							Swal.fire({
-								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ACTUALIZACIÓN INCORRECTA</b></div></div>',
 							});
 						}
 					}
@@ -342,12 +362,12 @@ function getModificarCatalogo() {
 }
 function getEliminarCatalogo(id_catalogo) {
 	Swal.fire({
-		title: "CONFIRMACION!",
+		title: "¡ATENCIÓN CONFIRMAR ELIMINACIÓN!",
 		icon: "warning",
 		showCancelButton: true,
 		confirmButtonColor: "#3085d6",
 		cancelButtonColor: "#d33",
-		confirmButtonText: "Sí continuar"
+		confirmButtonText: "Confirmar"
 	}).then((result) => {
 		if (result.isConfirmed) {
 			$.ajax({
@@ -359,12 +379,12 @@ function getEliminarCatalogo(id_catalogo) {
 					response = JSON.stringify(response);
 					if (response == 1) {
 						Swal.fire({
-							html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>Eliminado OK!.</b></div></div>',
+							html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>ELIMINACIÓN CORRECTA</b></div></div>',
 						});
 						getListaCatalogo();
 					} if (response == 2) {
 						Swal.fire({
-							html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+							html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ELIMINACIÓN INCORRECTA</b></div></div>',
 						});
 					}
 				}

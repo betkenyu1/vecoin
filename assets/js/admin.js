@@ -36,7 +36,7 @@ function getEmpresasMod() {
   $.ajax({
     type: "GET",
     dataType: "json",
-    url: "index.php?c=Catalogo&a=get_empresas",
+    url: "index.php?c=Admin&a=get_empresas",
     success: function (response) {
       var $select = $("#IdEmpresaM");
       $select.append('<option value="0">Seleccione...</option>');

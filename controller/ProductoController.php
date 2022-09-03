@@ -52,27 +52,6 @@ class ProductoController
             echo json_encode($vacio);
         }
     }
-    public function get_producto_chart(){
-        $result = array();
-        $exito = $this->prod->getProductosChart();
-        /*
-        foreach($exito as $ex){
-            //$result = $ex['id_umedida'] ;
-            $result = array_push($result, array($ex['id_umedida'],$ex['cantidad']));
-            echo json_encode($result);
-        }*/
-           
-           //echo json_encode($result,JSON_NUMERIC_CHECK);
-           
-           echo json_encode($exito);
-           // echo json_encode(array_push($exito));
-            /*
-            foreach($exito as $ex){
-                $resultado = array_push($result['id_umedida'],$result['cantidad']);
-                echo json_encode($resultado);
-            }*/
-        
-    }
     public function get_bodegas()
     {
         $exito = $this->prod->getBodegas();
@@ -118,10 +97,11 @@ class ProductoController
         $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Prc_Utl = (isset($_REQUEST['Prc_Utl'])) ? $_REQUEST['Prc_Utl'] : '';
+        $Utilidad = (isset($_REQUEST['Utilidad'])) ? $_REQUEST['Utilidad'] : '';
         $PVP = (isset($_REQUEST['PVP'])) ? $_REQUEST['PVP'] : '';
         $IdUsuario = $_SESSION["idusuario"];
         $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $exito = $this->prod->getModificarProductoCatalogo($IdProducto, $IdCatalogo, $IdProveedor, $IdBodega, $IdUMedida, $Cantidad ,$Precio, $Prc_Utl, $PVP, $IdUsuario,$Updated_At, $IdEstado);
+        $exito = $this->prod->getModificarProductoCatalogo($IdProducto, $IdCatalogo, $IdProveedor, $IdBodega, $IdUMedida, $Cantidad ,$Precio, $Prc_Utl, $Utilidad, $PVP, $IdUsuario,$Updated_At, $IdEstado);
         if ($exito) {
             echo 1;
         } else {

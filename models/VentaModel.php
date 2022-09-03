@@ -147,4 +147,32 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getProductoMasVendido()
+    {
+        $consulta = "SELECT CT.producto AS Producto,SUM(DV.cantidad) AS Cantidad,SUM(DV.pvp) AS Valor
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
+        INNER JOIN det_osalida CS ON (DV.id_secuencial=CS.id_secuencial)
+        INNER JOIN productos P ON (CS.id_producto=P.id_producto)
+        INNER JOIN catalogo CT ON (P.id_catalogo=CT.id_catalogo)
+        GROUP BY CS.id_producto
+        ORDER BY SUM(DV.cantidad) DESC
+        LIMIT 0 , 1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function GetCtasxCobrar($IdFDesde,$IdFHasta)
+    {
+        $consulta = "SELECT CV.nro_factura AS NroFactura,DV.pvp AS Valor
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND CV.id_estado=1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
 }

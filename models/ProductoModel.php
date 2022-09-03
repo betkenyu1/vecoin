@@ -48,13 +48,6 @@ class ProductoModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getProductosChart(){
-        $consulta = "SELECT SUM(cantidad) AS cantidad, SUM(prc_utl) AS utilidad FROM productos";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
     public function getProductoId($IdProducto){
         $consulta = "SELECT cantidad,precio FROM productos
         WHERE id_producto = '$IdProducto' AND id_estado =1";
@@ -73,12 +66,13 @@ class ProductoModel{
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getModificarProductoCatalogo($IdProducto, $IdCatalogo, $IdProveedor, $IdBodega, $IdUMedida, $Cantidad ,$Precio, $Prc_Utl, $PVP, $IdUsuario,$Updated_At,$IdEstado)
+    public function getModificarProductoCatalogo($IdProducto, $IdCatalogo, $IdProveedor, $IdBodega, $IdUMedida, $Cantidad ,$Precio, $Prc_Utl, $Utilidad,$PVP, $IdUsuario,$Updated_At,$IdEstado)
     {
-        $consulta = "UPDATE productos SET id_catalogo = '$IdCatalogo',id_proveedor = '$IdProveedor',id_bodega = '$IdBodega',
-            id_umedida = '$IdUMedida',cantidad = '$Cantidad',precio = '$Precio',prc_utl = '$Prc_Utl',
-            pvp = '$PVP',id_usuario = '$IdUsuario',updated_at = '$Updated_At',id_estado = '$IdEstado'
-            WHERE id_producto = '$IdProducto'";
+        $consulta = "UPDATE productos SET id_catalogo = '$IdCatalogo',id_proveedor = '$IdProveedor',
+        id_bodega = '$IdBodega',id_umedida = '$IdUMedida',cantidad = '$Cantidad',
+        precio = '$Precio',prc_utl = '$Prc_Utl',utilidad = '$Utilidad',pvp = '$PVP',
+        id_usuario = '$IdUsuario',updated_at = '$Updated_At',id_estado = '$IdEstado'
+        WHERE id_producto = '$IdProducto'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {

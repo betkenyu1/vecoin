@@ -134,4 +134,24 @@ class VentaController
             echo json_encode($vacio);
         }
     }
+    public function get_productomasvendido(){
+        $exito = $this->vta->getProductoMasVendido();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_ctasxcobrar(){
+        $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
+        $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
+        $exito = $this->vta->GetCtasxCobrar($IdFDesde,$IdFHasta);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
 }

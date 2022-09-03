@@ -251,15 +251,17 @@ function getUMedidas() {
 function CalcularUtilidad(){
   var prca = $('#IdPrecio_act').val();
   var prc = $('#IdUtilidad').val();
-  var r = prca*prc/100;
-  r = Number(parseFloat(r)+parseFloat(prca)).toFixed(2);
+  var utl = Number(parseFloat(prca*prc/100)).toFixed(2);
+  $('#IdUtl').val(utl);
+  r = Number(parseFloat(utl)+parseFloat(prca)).toFixed(2);
   $('#IdPVP').val(r);
 }
 function CalcularUtilidadMod(){
   var prca = $('#IdPrecio_actMod').val();
   var prc = $('#IdUtilidadMod').val();
-  var r = prca*prc/100;
-  r = Number(parseFloat(r)+parseFloat(prca)).toFixed(2);
+  var utl = Number(parseFloat(prca*prc/100)).toFixed(2);
+  $('#IdUtlMod').val(utl);
+  var r = Number(parseFloat(utl)+parseFloat(prca)).toFixed(2);
   $('#IdPVPMod').val(r);
 }
 function getBodegasMod() {

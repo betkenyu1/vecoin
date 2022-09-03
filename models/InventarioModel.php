@@ -34,7 +34,7 @@ class InventarioModel
     }
     public function getStockProductosSum()
     {
-        $consulta = "SELECT SUM(cantidad) AS Cantidad, SUM(Precio) AS Precio, SUM(PVP) AS Valor 
+        $consulta = "SELECT SUM(cantidad) AS Cantidad, SUM(Precio) AS Precio, SUM(Utilidad) AS Utilidad 
         FROM productos";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -52,10 +52,10 @@ class InventarioModel
         return $resultados;
     }
 
-    public function RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario)
+    public function RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP, $IdUsuario)
     {
-        $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,fecha,id_bodega,id_umedida,cantidad,precio,prc_utl,pvp,id_usuario)
-        Values(:id_catalogo,:id_proveedor,:fecha,:id_bodega,:id_umedida,:cantidad,:precio,:prc_utl,:pvp,:id_usuario)";
+        $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,fecha,id_bodega,id_umedida,cantidad,precio,prc_utl,utilidad,pvp,id_usuario)
+        Values(:id_catalogo,:id_proveedor,:fecha,:id_bodega,:id_umedida,:cantidad,:precio,:prc_utl,:utilidad,:pvp,:id_usuario)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_catalogo', $IdCatalogo);
         $sentencia->bindParam(':id_proveedor', $IdProveedor);
@@ -65,6 +65,7 @@ class InventarioModel
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':precio', $Precio);
         $sentencia->bindParam(':prc_utl', $Prc_Utl);
+        $sentencia->bindParam(':utilidad', $Utilidad);
         $sentencia->bindParam(':pvp', $PVP);
         $sentencia->bindParam(':id_usuario', $IdUsuario);
         $sentencia->execute();

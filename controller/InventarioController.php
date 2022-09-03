@@ -64,9 +64,10 @@ class InventarioController
         $Cantidad = strtoupper((isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '');
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Prc_Utl = (isset($_REQUEST['Prc_Utl'])) ? $_REQUEST['Prc_Utl'] : '';
+        $Utilidad = (isset($_REQUEST['Utilidad'])) ? $_REQUEST['Utilidad'] : '';
         $PVP = (isset($_REQUEST['PVP'])) ? $_REQUEST['PVP'] : '';
         $IdUsuario = $_SESSION["idusuario"];
-        $exito = $this->inv->RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $PVP, $IdUsuario);
+        $exito = $this->inv->RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP, $IdUsuario);
         if ($exito) {
             echo 1;
         } else {

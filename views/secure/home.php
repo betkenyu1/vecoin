@@ -22,7 +22,7 @@ include_once 'views/layout/header.php';
                             <div class="mb-3 text-gray-300">
                                 <b>GESTION DE STOCK</b>
                                 <span class="ms-2">
-                                    <i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Totales" data-bs-placement="top" data-bs-content="Sumatoria de productos en stock de forma generalizada"></i>
+                                    <i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Totales" data-bs-placement="top" data-bs-content="Sumatoria de productos en stock, costo de compra y utilidad"></i>
                                 </span>
                             </div>
                             <!-- END title -->
@@ -52,8 +52,8 @@ include_once 'views/layout/header.php';
                                 <!-- END col-6 -->
                                 <!-- BEGIN col-6 -->
                                 <div class="col-6">
-                                    <div class=" text-gray-300">P.V.P</div>
-                                    <div id="IdPVP" class="fs-18px mb-5px fw-bold"><span data-animation="number" data-value="0"></span></div>
+                                    <div class=" text-gray-300">Utilidad</div>
+                                    <div id="IdUtilidad" class="fs-18px mb-5px fw-bold"><span data-animation="number" data-value="0"></span></div>
                                     <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
                                         <div class="progress-bar progress-bar-striped rounded-right" data-animation="width" data-value="60%" style="width: 0%"></div>
                                     </div>
@@ -90,14 +90,14 @@ include_once 'views/layout/header.php';
                             <div class="mb-3 text-gray-300">
                                 <b>GESTION DE VENTAS</b>
                                 <span class="ms-2">
-                                    <i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Totales" data-bs-placement="top" data-bs-content="Sumatoria de productos en stock de forma generalizada"></i>
+                                    <i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Totales" data-bs-placement="top" data-bs-content="Producto más vendido actualmente"></i>
                                 </span>
                             </div>
                             <!-- END title -->
                             <!-- BEGIN total-sales -->
                             <div class="d-flex mb-1">
                                 <p></p>
-                                <h2 id="IdCantidad" class="mb-0">$<span data-animation="number" data-value="1">0.00</span></h2>
+                                <h2 id="IdProducto" class="mb-0"></h2>
                                 <div class="ms-auto mt-n1 mb-n1">
                                     <div id="total-sales-sparkline"></div>
                                 </div>
@@ -111,8 +111,8 @@ include_once 'views/layout/header.php';
                             <div class="row text-truncate">
                                 <!-- BEGIN col-6 -->
                                 <div class="col-6">
-                                    <div class=" text-gray-300">Total Precio</div>
-                                    <div id="IdPrecio" class="fs-18px mb-5px fw-bold" data-animation="number" data-value="0"></div>
+                                    <div class=" text-gray-300">Cantidad</div>
+                                    <div id="IdCantidadPV" class="fs-18px mb-5px fw-bold" data-animation="number" data-value="0"></div>
                                     <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
                                         <div class="progress-bar progress-bar-striped rounded-right bg-teal" data-animation="width" data-value="55%" style="width: 0%"></div>
                                     </div>
@@ -120,8 +120,8 @@ include_once 'views/layout/header.php';
                                 <!-- END col-6 -->
                                 <!-- BEGIN col-6 -->
                                 <div class="col-6">
-                                    <div class=" text-gray-300">PVP</div>
-                                    <div id="IdPVP" class="fs-18px mb-5px fw-bold">$<span data-animation="number" data-value="0"></span></div>
+                                    <div class=" text-gray-300">Valor</div>
+                                    <div id="IdValorPV" class="fs-18px mb-5px fw-bold">$<span data-animation="number" data-value="0"></span></div>
                                     <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
                                         <div class="progress-bar progress-bar-striped rounded-right" data-animation="width" data-value="60%" style="width: 0%"></div>
                                     </div>
@@ -164,11 +164,6 @@ include_once 'views/layout/header.php';
                 <span class="d-sm-block d-none">∑ Cuentas x Cobrar</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a href="#nav-pills-tab-4" data-bs-toggle="tab" class="nav-link">
-                <span class="d-sm-block d-none">∑ Cuentas x Pagar</span>
-            </a>
-        </li>
     </ul>
     <!-- END nav-pills -->
     <!-- BEGIN tab-content -->
@@ -202,53 +197,47 @@ include_once 'views/layout/header.php';
                     <div id="alert-fh"></div>
                     <b>Total Pagos:</b>
                     <input type="text" class="form-control" id="IdTPagos" style="color: green" readonly>
+                    <br>
+                </div>
+                <!-- BEGIN hljs-wrapper -->
+                <div class="col-md-12">
+                    <div class="card border-0 mb-3 bg-gray-900 text-white">
+                        <div class="card-body">
+                            <canvas id="myChart" width="1000" height="300"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- END tab-pane -->
         <!-- BEGIN tab-pane -->
         <div class="tab-pane fade" id="nav-pills-tab-3">
-            <h3 class="mt-10px">Nav Pills Tab 3</h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Integer ac dui eu felis hendrerit lobortis. Phasellus elementum, nibh eget adipiscing porttitor,
-                est diam sagittis orci, a ornare nisi quam elementum tortor.
-                Proin interdum ante porta est convallis dapibus dictum in nibh.
-                Aenean quis massa congue metus mollis fermentum eget et tellus.
-                Aenean tincidunt, mauris ut dignissim lacinia, nisi urna consectetur sapien,
-                nec eleifend orci eros id lectus.
-            </p>
-        </div>
-        <!-- END tab-pane -->
-        <!-- BEGIN tab-pane -->
-        <div class="tab-pane fade" id="nav-pills-tab-4">
-            <h3 class="mt-10px">Nav Pills Tab 4</h3>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Integer ac dui eu felis hendrerit lobortis. Phasellus elementum, nibh eget adipiscing porttitor,
-                est diam sagittis orci, a ornare nisi quam elementum tortor.
-                Proin interdum ante porta est convallis dapibus dictum in nibh.
-                Aenean quis massa congue metus mollis fermentum eget et tellus.
-                Aenean tincidunt, mauris ut dignissim lacinia, nisi urna consectetur sapien,
-                nec eleifend orci eros id lectus.
-            </p>
+            <h3 class="mt-10px">Consulta Parametrizada</h3>
+            <div class="row">
+                <div class="col-xl-6">
+                    <b>Fecha Desde:</b>
+                    <input type="date" class="form-control" id="IdFDesdeCXC">
+                    <div id="alert-fdesde"></div>
+                </div>
+                <div class="col-xl-6">
+                    <b>Fecha Hasta:</b>
+                    <input type="date" class="form-control" onchange="GenerarGraficaCtasXCobrar();" id="IdFHastaCXC">
+                    <div id="alert-fhasta"></div>
+                    <br>
+                </div>
+                <!-- BEGIN hljs-wrapper -->
+                <div class="col-md-12">
+                    <div class="card border-0 mb-3 bg-gray-900 text-white">
+                        <div class="card-body">
+                            <canvas id="myChartCXC" width="1000" height="300"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- END tab-pane -->
     </div>
     <br>
-    <!-- END tab-content -->
-    <!-- BEGIN hljs-wrapper -->
-    <div class="row">
-        <!-- BEGIN col-8 -->
-        <div class="col-md-12">
-            <div class="card border-0 mb-3 bg-gray-900 text-white">
-                <div class="card-body">
-                    <canvas id="myChart" width="1000" height="300"></canvas>
-                </div>
-            </div>
-        </div>
-        <!-- END col-8 -->
-    </div>
 </div>
 <!-- END #content -->
 <?php

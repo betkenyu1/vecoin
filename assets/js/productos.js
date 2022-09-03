@@ -129,7 +129,8 @@ function setNuevoProducto() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">% Utilidad:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdUtilidad" onkeyup="CalcularUtilidad();">';
+    html += '<input type="text" class="form-control" id="IdUtilidad" onchange="CalcularUtilidad();">';
+	html += '<input type="text" class="form-control" id="IdUtl">';
     html += '<div id="alert-utl"></div>';
     html += '</div>';
     html += '</div>';
@@ -251,6 +252,7 @@ function getGuardarProducto() {
 		var cact = $("#IdCant_act").val();
 		var pact = $("#IdPrecio_act").val();
 		var utl = $("#IdUtilidad").val();
+		var utilidad = $("#IdUtl").val();
 		var pvp = $("#IdPVP").val();
 		Swal.fire({
 			title: "CONFIRMACION!",
@@ -267,7 +269,8 @@ function getGuardarProducto() {
 					url: "index.php?c=Inventario&a=save_new_producto",
 					data: "IdProveedor=" + prov + "&IdBodega=" + bp +
 						"&IdUMedida=" + um + "&IdCatalogo=" + ct +
-						"&Cantidad=" + cact + "&Precio=" + pact + "&Prc_Utl=" + utl + "&PVP=" + pvp,
+						"&Cantidad=" + cact + "&Precio=" + pact + "&Prc_Utl=" + utl + 
+						"&Utilidad=" + utilidad + "&PVP=" + pvp,
 					success: function (response) {
 						response = JSON.stringify(response);
 						if (response == 1) {
@@ -353,7 +356,8 @@ function setModificarProducto(id_producto) {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">% Utilidad:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdUtilidadMod" onkeyup="CalcularUtilidadMod();">';
+    html += '<input type="text" class="form-control" id="IdUtilidadMod" onchange="CalcularUtilidadMod();">';
+	html += '<input type="hidden" class="form-control" id="IdUtlMod">';
     html += '<div id="alert-utl"></div>';
     html += '</div>';
     html += '</div>';
@@ -517,6 +521,7 @@ function getModificarProducto() {
 		var cact = $("#IdCant_actMod").val();
 		var pact = $("#IdPrecio_actMod").val();
 		var utl = $("#IdUtilidadMod").val();
+		var utlm = $("#IdUtlMod").val();
 		var pvp = $("#IdPVPMod").val();
 		var es = $("#IdEstado").val();
 		Swal.fire({
@@ -534,7 +539,7 @@ function getModificarProducto() {
 					url: "index.php?c=Producto&a=get_mod_producto",
 					data: "IdProducto=" + prod + "&IdProveedor=" + prov + "&IdBodega=" + bp +
 						"&IdUMedida=" + um + "&IdCatalogo=" + ct +
-						"&Cantidad=" + cact + "&Precio=" + pact + "&Prc_Utl=" + utl + "&PVP=" + pvp + "&IdEstado=" + es,
+						"&Cantidad=" + cact + "&Precio=" + pact + "&Prc_Utl=" + utl + "&Utilidad=" + utlm + "&PVP=" + pvp + "&IdEstado=" + es,
 					success: function (response) {
 						response = JSON.stringify(response);
 						if (response == 1) {

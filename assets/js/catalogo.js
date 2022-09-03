@@ -3,10 +3,10 @@ function CerrarListaCatalogo() {
 }
 function getListaCatalogo() {
 	var html = '';
-	html += '<div class="cerrar-lcat">';
-	html += '<div class="note note-blue">';
+	html += '<div style="overflow: scroll" class="cerrar-lcat">';
+	html += '<div class="">';
 	html += '<div class="note-content">';
-	html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+	html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
 	html += '<thead>';
 	html += '<tr>';
 	html += '<th width="1%"></th>';
@@ -17,7 +17,7 @@ function getListaCatalogo() {
 	html += '<th class="text-nowrap">Acciones</th>';
 	html += '</tr>';
 	html += '</thead>';
-	html += '<tbody>';
+	html += '<tbody style="background-color:#c1f8ff">';
 	$.ajax({
 		type: "GET",
 		dataType: 'json',

@@ -28,6 +28,7 @@ if ($_SESSION["user"] === null) {
 	<link href="assets/plugins/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
 	<link href="assets/plugins/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet" />
 	<link href="assets/plugins/datatables.net-select-bs5/css/select.bootstrap5.min.css" rel="stylesheet" />
+	<link href="assets/plugins/datatables.net-scroller-bs5/css/scroller.bootstrap5.min.css" rel="stylesheet" />
 
 	<!-- ================== BEGIN page-css ================== -->
 	<link href="assets/plugins/jvectormap-next/jquery-jvectormap.css" rel="stylesheet" />

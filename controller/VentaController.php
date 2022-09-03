@@ -57,29 +57,33 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    /*
-    data: "IdFecha=" + idfreg +
-              "&IdCliente=" + clien + "&NroFactura=" + nfact +
-              "&Producto=" + prod + "&Cantidad=" + cant + "&Precio=" + prec,
-    */
     public function save_new_venta()
     {
         date_default_timezone_set('America/Guayaquil');
-        $Freg = date('m-d-Y h:i:s a', time());
-        $Fecha = date('Y-m-d');
-        $IdDetPSalida = (isset($_REQUEST['IdDetPSalida'])) ? $_REQUEST['IdDetPSalida'] : '';
-        $Fecha = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
-        $Fecha = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
+        $Fecha = date('m-d-Y h:i:s a', time());
+        $FechaFactura = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
         $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
         $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
-        $Producto = (isset($_REQUEST['Producto'])) ? $_REQUEST['Producto'] : '';
-        $Cantidad = strtoupper((isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '');
-        $Precio = strtoupper((isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '');
-        $exito = $this->vta->getRegistroCabVenta($Freg, $Fecha, $IdCliente, $NroFactura ,$IdDetPSalida);
-        if ($exito) {
-            echo 1;
+        $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
+        $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
+        $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
+        $IdUsuario = $_SESSION['idusuario'];
+        $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
+        if ($existe) {
         } else {
-            echo 2;
+            $reg_cab = $this->vta->RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario);
+        }
+        $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
+        if ($existe) {
+            foreach ($existe as $ex) {
+                $IdCabVenta = $ex['id_cabventa'];
+            }
+            $exito = $this->vta->RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio);
+            if ($exito) {
+                echo 1;
+            } else {
+                echo 2;
+            }
         }
     }
     

@@ -14,10 +14,12 @@ include_once 'views/layout/header.php';
                 <a href="javascript:;" class="btn btn-xs btn-icon btn-danger" data-toggle="panel-remove"><i class="fa fa-times"></i></a>
             </div>
         </div>
+       
         <div class="panel-body">
             <div id="lista-ord_salida"></div>
             <div id="p-osalida"></div>
         </div>
+        
     </div>
     <!-- END panel -->
 </div>

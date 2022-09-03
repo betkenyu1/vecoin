@@ -111,7 +111,7 @@ function setNuevoCatalogo() {
 		language: {
 		  noResults: function() {
 			//VACIO
-			return "Cargando...";          
+			return "No hay registros";          
 		  },
 		  searching: function() {	  
 			return "Buscando..";
@@ -253,7 +253,7 @@ function setModificarCatalogo(id_catalogo) {
 		language: {
 		  noResults: function() {
 			//VACIO
-			return "Cargando...";        
+			return "No hay registros";        
 		  },
 		  searching: function() {
 			return "Buscando..";

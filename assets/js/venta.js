@@ -27,6 +27,10 @@ function setNuevaVenta() {
     html += '<div class="form-group">';
     html += '<div class="row">';
 
+    html += '<div style="color: white;" class="text-center">';
+    html += '<h3>REGISTRO DE FACTURA DE VENTA</h3>';
+    html += '</div>';
+
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Fecha:</b> </br>';
@@ -55,6 +59,7 @@ function setNuevaVenta() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Productos:</b> </br>';
+    html += '<input type="hidden" class="form-control" id="IdProducto">';
     html += '<input type="text" class="form-control" id="IdDetProducto">';
     html += '<div id="alert-prod"></div>';
     html += '</div>';
@@ -105,7 +110,7 @@ function getListaOrdenSalida() {
     html += '<div class="cerrar-lp">';
     html += '<div class="note note-blue">';
     html += '<div class="note-content">';
-    html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    html += '<table id="data-table-scroller" class="table table-striped table-bordered align-middle">';
     html += '<thead>';
     html += '<tr>';
     html += '<th width="1%"></th>';
@@ -145,9 +150,19 @@ function getListaOrdenSalida() {
             html += '</div>';
             html += '</div>';
             html += '</div>';
+            /*
             $("#lista-ord_salida").html(html);
             $('#data-table-select').DataTable({
                 select: true,
+                responsive: true
+            });*/
+            $("#lista-ord_salida").html(html);
+            $('#data-table-scroller').DataTable({
+                //ajax:           "assets/js/demo/json/scroller_demo.json",
+                deferRender:    true,
+                scrollX:        300,
+                scrollCollapse: true,
+                scroller:       true,
                 responsive: true
             });
         }
@@ -165,6 +180,7 @@ function getProcesarOSalida(id_det_osalida) {
         success: function (response) {
             $.each(response, function (key, value) {
                 $("#IdDetPSalida").val(value.id_det_osalida);
+                $("#IdProducto").val(value.id_producto);
                 $("#IdDetProducto").val(value.producto);
                 $("#IdCantidad").val(value.cantidad);
                 $("#IdPrecio").val(value.pvp);
@@ -235,11 +251,10 @@ function getAgregarVenta() {
         }, 3000);
         return false;
     } else {
-        var idds = $('#IdDetPSalida').val();
         var idfreg = $("#IdFecha").val();
         var clien = $("#IdCliente").val();
         var nfact = $("#IdNroFactura").val();
-        var prod = $("#IdDetProducto").val();
+        var prod = $("#IdProducto").val();
         var cant = $("#IdCantidad").val();
         var prec = $("#IdPrecio").val();
         Swal.fire({
@@ -255,9 +270,8 @@ function getAgregarVenta() {
                     type: "GET",
                     dataType: 'json',
                     url: "index.php?c=Venta&a=save_new_venta",
-                    data: "IdDetPSalida=" + idds + "&IdFecha=" + idfreg +
-                        "&IdCliente=" + clien + "&NroFactura=" + nfact +
-                        "&Producto=" + prod + "&Cantidad=" + cant + "&Precio=" + prec,
+                    data: "Fecha=" + idfreg + "&IdCliente=" + clien + "&NroFactura=" + nfact +
+                        "&IdProducto=" + prod + "&Cantidad=" + cant + "&Precio=" + prec,
                     success: function (response) {
                         response = JSON.stringify(response);
                         if (response == 1) {

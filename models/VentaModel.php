@@ -43,7 +43,7 @@ class VentaModel
     }
     public function getDetOSalida($IdDetOSalida)
     {
-        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,C.producto,
+        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
         UM.umedida,B.bodega,OS.cantidad,OS.pvp
         FROM det_osalida OS
         INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
@@ -57,26 +57,40 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function ExisteRegistroCabVenta($IdDetPSalida)
+    public function ExisteRegistroCabVenta($NroFactura)
     {
-        $consulta = "SELECT id_secuencial FROM cab_osalida
-        WHERE id_det_osalida = '$IdDetPSalida'";
+        $consulta = "SELECT id_cabventa FROM cab_venta
+        WHERE nro_factura = '$NroFactura'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getRegistroCabVenta($Freg, $Fecha, $IdCliente, $NroFactura ,$IdDetPSalida)
+    public function RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario)
     {
-        $consulta = "INSERT INTO cab_osalida(fecha,fecha_osalida,id_secuencial,secuencial,observacion,id_usuario)
-        VALUES(:fecha,:fecha_osalida,:id_secuencial,:secuencial,:observacion,:id_usuario)";
+        $consulta = "INSERT INTO cab_venta(freg,fecha,nro_factura,id_cliente,id_usuario)
+        VALUES(:freg,:fecha,:nro_factura,:id_cliente,:id_usuario)";
         $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':fecha', $Fecha);
-        $sentencia->bindParam(':fecha_osalida', $FechaSalida);
-        $sentencia->bindParam(':id_secuencial', $IdSecuencial);
-        $sentencia->bindParam(':secuencial', $IdSecu);
-        $sentencia->bindParam(':observacion', $Observacion);
+        $sentencia->bindParam(':freg', $Fecha);
+        $sentencia->bindParam(':fecha', $FechaFactura);
+        $sentencia->bindParam(':nro_factura', $NroFactura);
+        $sentencia->bindParam(':id_cliente', $IdCliente);
         $sentencia->bindParam(':id_usuario', $IdUsuario);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio)
+    {
+        $consulta = "INSERT INTO cab_venta(id_cabventa,id_producto,cantidad,pvp)
+        VALUES(:id_cabventa,:id_producto,:cantidad,:pvp)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':id_cabventa', $IdCabVenta);
+        $sentencia->bindParam(':id_producto', $IdProducto);
+        $sentencia->bindParam(':cantidad', $Cantidad);
+        $sentencia->bindParam(':pvp', $Precio);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;
@@ -152,10 +166,9 @@ class VentaModel
         $consulta = "SELECT CT.producto AS Producto,SUM(DV.cantidad) AS Cantidad,SUM(DV.pvp) AS Valor
         FROM det_venta DV
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-        INNER JOIN det_osalida CS ON (DV.id_secuencial=CS.id_secuencial)
-        INNER JOIN productos P ON (CS.id_producto=P.id_producto)
+        INNER JOIN productos P ON (DV.id_producto=P.id_producto)
         INNER JOIN catalogo CT ON (P.id_catalogo=CT.id_catalogo)
-        GROUP BY CS.id_producto
+        GROUP BY P.id_producto
         ORDER BY SUM(DV.cantidad) DESC
         LIMIT 0 , 1";
         $sentencia = $this->db->prepare($consulta);

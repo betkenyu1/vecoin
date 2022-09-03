@@ -84,18 +84,11 @@ function setNuevaVenta() {
     html += '<div>';
     html += '<br>';
     html += '<div class="text-center">';
-    html += '<a class="btn btn-danger" onclick="CerrarNuevaOrdenEntrada();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
+    html += '<a class="btn btn-danger" onclick="CerrarListaVenta();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
     html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarVenta();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
-    html += '&nbsp;<a class="btn btn-success" title="Cerrar" onclick="getCerrarOrdenEntrada();"><i class="fa-solid fa-save" aria-hidden="true"></i> Cerrar</a>';;
     html += '</div>';
     html += '</div>';
-
-    html += '<div>';
-    html += '<b style="color: #000000;">Observación (Opcional):</b> </br>';
-    html += '<textarea type="text" row="3" class="form-control" id="IdObs"></textarea>';
-    html += '<div id="alert-obs"></div>';
-    html += '</div>';
-
+    
     html += '</div>';
     html += '</div>';
     html += '</form>';
@@ -251,6 +244,7 @@ function getAgregarVenta() {
         }, 3000);
         return false;
     } else {
+        var iddet = $("#IdDetPSalida").val();
         var idfreg = $("#IdFecha").val();
         var clien = $("#IdCliente").val();
         var nfact = $("#IdNroFactura").val();
@@ -270,7 +264,7 @@ function getAgregarVenta() {
                     type: "GET",
                     dataType: 'json',
                     url: "index.php?c=Venta&a=save_new_venta",
-                    data: "Fecha=" + idfreg + "&IdCliente=" + clien + "&NroFactura=" + nfact +
+                    data: "Fecha=" + idfreg + "&IdDetPSalida=" + iddet + "&IdCliente=" + clien + "&NroFactura=" + nfact +
                         "&IdProducto=" + prod + "&Cantidad=" + cant + "&Precio=" + prec,
                     success: function (response) {
                         response = JSON.stringify(response);
@@ -278,8 +272,7 @@ function getAgregarVenta() {
                             Swal.fire({
                                 html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
                             });
-                            CerrarNuevoEmpleado();
-                            getListaEmpleados();
+                            getListaOrdenSalida();
                         } if (response == 2) {
                             Swal.fire({
                                 html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error al Registrar!.</b></div></div>',

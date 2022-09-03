@@ -28,14 +28,15 @@ class VentaModel
     }
     public function getOSalidaProductos()
     {
-        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,C.producto,
+        $consulta = "SELECT OS.id_det_osalida,CO.id_secuencial,CO.fecha,CO.secuencial,C.producto,
         UM.umedida,B.bodega,OS.cantidad,OS.pvp
         FROM det_osalida OS
         INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
         INNER JOIN productos P ON (OS.id_producto = P.id_producto)
         INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)";
+        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
+        WHERE OS.id_estado =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -84,13 +85,24 @@ class VentaModel
     }
     public function RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio)
     {
-        $consulta = "INSERT INTO cab_venta(id_cabventa,id_producto,cantidad,pvp)
+        $consulta = "INSERT INTO det_venta(id_cabventa,id_producto,cantidad,pvp)
         VALUES(:id_cabventa,:id_producto,:cantidad,:pvp)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_cabventa', $IdCabVenta);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':pvp', $Precio);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function ActualizaDetOSalida($IdDetPSalida)
+    {
+        $consulta = "UPDATE det_osalida SET id_estado =2
+        WHERE id_det_osalida = '$IdDetPSalida'";
+        $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;

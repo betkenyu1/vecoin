@@ -61,6 +61,7 @@ class VentaController
     {
         date_default_timezone_set('America/Guayaquil');
         $Fecha = date('m-d-Y h:i:s a', time());
+        $IdDetPSalida = (isset($_REQUEST['IdDetPSalida'])) ? $_REQUEST['IdDetPSalida'] : '';
         $FechaFactura = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
         $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
         $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
@@ -80,6 +81,7 @@ class VentaController
             }
             $exito = $this->vta->RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio);
             if ($exito) {
+                $exito = $this->vta->ActualizaDetOSalida($IdDetPSalida);
                 echo 1;
             } else {
                 echo 2;

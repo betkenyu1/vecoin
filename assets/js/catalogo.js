@@ -43,6 +43,7 @@ function getListaCatalogo() {
 			html += '</div>';
 			$("#lista-catalogo").html(html);
 			$('#data-table-select').DataTable({
+				"language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
 				select: true,
 				responsive: true
 			});
@@ -51,7 +52,7 @@ function getListaCatalogo() {
 }
 
 function CerrarNuevoCatalogo() {
-	$(".cerrar-np").hide();
+	$(".cerrar-np").hide();	
 	getListaCatalogo();
 }
 function setNuevoCatalogo() {
@@ -67,7 +68,7 @@ function setNuevoCatalogo() {
 
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
-	html += '<b style="color: #000000;">Empresas:</b> </br>';
+	html += '<b style="color: #000000;">Empresa:</b> </br>';
 	html += '<select class="default-select2 form-control" id="IdEmpresa"></select>';
 	html += '<div id="alert-ep"></div>';
 	html += '</div>';
@@ -195,8 +196,8 @@ function setModificarCatalogo(id_catalogo) {
 
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
-	html += '<b style="color: #000000;">Empresas:</b> </br>';
-	html += '<select class="default-select2 form-control" id="IdEmpresaM"></select>';
+	html += '<b style="color: #000000;">Empresa:</b> </br>';
+	html += '<select class="default-select2 form-control" id="IdEmpresa"></select>';
 	html += '<div id="alert-epm"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -220,7 +221,7 @@ function setModificarCatalogo(id_catalogo) {
 
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
-	html += '<b style="color: #000000;">Estados:</b> </br>';
+	html += '<b style="color: #000000;">Estado:</b> </br>';
 	html += '<select class="default-select2 form-control" id="IdEstado"></select>';
 	html += '<div id="alert-es"></div>';
 	html += '</div>';
@@ -239,7 +240,7 @@ function setModificarCatalogo(id_catalogo) {
 	html += '</div>';
 	$("#mod-catalogo").html(html);
 	$('.default-select2').select2();
-	getEmpresasMod();
+	getEmpresas();
 	getPrepareModificarCatalogo(id_catalogo);
 	getEstados();
 }
@@ -260,12 +261,12 @@ function getPrepareModificarCatalogo(id_catalogo) {
 }
 function getModificarCatalogo() {
 	var html = '';
-	if ($('#IdEmpresaM').val() == 0) {
+	if ($('#IdEmpresa').val() == 0) {
 		html += '<div class="alert alert-danger">';
 		html += 'Este campo es obligatorio!.';
 		html += '</div>';
 		$("#alert-epm").html(html);
-		$('#IdEmpresaM').focus();
+		$('#IdEmpresa').focus();
 		setTimeout(function () {
 			$("#alert-epm").fadeOut(1500);
 		}, 3000);
@@ -302,7 +303,7 @@ function getModificarCatalogo() {
 		return false;
 	} else {
 		var idcat = $("#IdCatalogo").val();
-		var ep = $("#IdEmpresaM").val();
+		var ep = $("#IdEmpresa").val();
 		var codp = $("#IdCodigoM").val();
 		var dp = $("#IdDescripcionM").val();
 		var es = $("#IdEstado").val();

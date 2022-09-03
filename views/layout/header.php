@@ -139,7 +139,7 @@ if ($_SESSION["user"] === null) {
 									</a>
 									<div class="menu-submenu">
 										<div class="menu-item"><a href="index.php?c=Catalogo&a=lista_catalogo" class="menu-link">
-												<div class="menu-text">Catálogo general</div>
+												<div class="menu-text">Productos</div>
 											</a></div>
 										<div class="menu-item"><a href="index.php?c=Admin&a=lista_clientes" class="menu-link">
 												<div class="menu-text">Clientes</div>
@@ -185,7 +185,7 @@ if ($_SESSION["user"] === null) {
 									<div class="menu-submenu">
 
 										<div class="menu-item"><a href="index.php?c=Producto&a=lista_productos" class="menu-link">
-												<div class="menu-text">Productos</div>
+												<div class="menu-text">Inventario Inicial</div>
 											</a></div>
 										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_entrada" class="menu-link">
 												<div class="menu-text">Ordenes de entrada</div>
@@ -194,7 +194,7 @@ if ($_SESSION["user"] === null) {
 												<div class="menu-text">Ordenes de salida</div>
 											</a></div>
 										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_stock_productos" class="menu-link">
-												<div class="menu-text">Consulta de stock</div>
+												<div class="menu-text">Stock de Productos</div>
 											</a></div>
 									</div>
 								</div>
@@ -204,14 +204,14 @@ if ($_SESSION["user"] === null) {
 							?>
 								<div class="menu-item has-sub">
 									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Ventas</div>
+										<div class="menu-text">(Gestión de) Ventas</div>
 										<div class="menu-caret"></div>
 									</a>
 									<div class="menu-submenu">
 
 										<div class="menu-item has-sub">
 											<a href="index.php?c=Venta&a=lista_ventas" class="menu-link">
-												<div class="menu-text">Registro de facturas</div>
+												<div class="menu-text">Facturas</div>
 											</a>
 
 											<a href="javascript:;" class="menu-link">
@@ -250,15 +250,60 @@ if ($_SESSION["user"] === null) {
 										</a>
 
 										<a href="javascript:;" class="menu-link">
-											<div class="menu-text">Ventas por periodos</div>
+											<div class="menu-text">Ventas Mensuales</div>
 										</a>
 
 										<a href="javascript:;" class="menu-link">
-											<div class="menu-text">Productos en stock</div>
+											<div class="menu-text">Stock de Productos</div>
+										</a>
+
+										<a href="javascript:;" class="menu-link">
+											<div class="menu-text">Facturas Registradas</div>
+										</a>
+
+										<a href="javascript:;" class="menu-link">
+											<div class="menu-text">Notas de Crédito Registradas</div>
 										</a>
 									</div>
 								</div>
 							</div>
+							<?php
+							if ($IdRol == 1) {
+							?>
+								<div class="menu-item has-sub">
+									<a href="javascript:;" class="menu-link">
+										<div class="menu-text">Auditoría</div>
+										<div class="menu-caret"></div>
+									</a>
+									<div class="menu-submenu">
+										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+												<div class="menu-text">Inicios de sesión</div>
+											</a></div>
+										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+												<div class="menu-text">Usuarios</div>
+											</a></div>
+									</div>
+								</div>
+							<?php } ?>
+							<?php
+							if ($IdRol == 1) {
+							?>
+								<div class="menu-item has-sub">
+									<a href="javascript:;" class="menu-link">
+										<div class="menu-text">Parametrización<nav></nav>
+										</div>
+										<div class="menu-caret"></div>
+									</a>
+									<div class="menu-submenu">
+										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+												<div class="menu-text"></div>
+											</a></div>
+										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+												<div class="menu-text">Usuarios</div>
+											</a></div>
+									</div>
+								</div>
+							<?php } ?>
 						</div>
 					</div>
 

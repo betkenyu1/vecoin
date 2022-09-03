@@ -82,4 +82,56 @@ class VentaController
             echo 2;
         }
     }
+    
+    public function get_ventas_administrador(){
+        $exito = $this->vta->GetVentasAdministrador();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_ventas_vendedor(){
+        $exito = $this->vta->GetVentasVendedor();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_ventas_params(){
+        $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
+        $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
+        $exito = $this->vta->GetVentasParams($IdFDesde,$IdFHasta);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_pagos_params(){
+        $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
+        $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
+        $exito = $this->vta->GetPagosParams($IdFDesde,$IdFHasta);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_ventas_charts_params(){
+        $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
+        $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
+        $exito = $this->vta->GetVentasChartsParams($IdFDesde,$IdFHasta);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
 }

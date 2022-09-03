@@ -252,7 +252,6 @@ function getGuardarProducto() {
 		var pact = $("#IdPrecio_act").val();
 		var utl = $("#IdUtilidad").val();
 		var pvp = $("#IdPVP").val();
-		alert(prov+bp+um+ct+cact+pact+utl+pvp);
 		Swal.fire({
 			title: "CONFIRMACION!",
 			icon: "warning",
@@ -406,7 +405,7 @@ function getPrepareModificarProducto(id_producto) {
 		dataType: 'json',
 		url: 'index.php?c=Producto&a=get_pmod_producto',
 		data: "IdProducto=" + id_producto,
-		success: function (response) {//id_producto,cantidad,precio,prc_utl,pvp
+		success: function (response) {
 			$.each(response, function (key, value) {
 				$("#IdProducto").val(value.id_producto);
 				$("#IdCant_actMod").val(value.cantidad);

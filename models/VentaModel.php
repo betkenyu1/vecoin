@@ -83,127 +83,68 @@ class VentaModel
         }
         return true;
     }
-    public function RegistroCabOrdenEntrada($Fecha, $FechaCompra, $IdSecuencial, $IdSecu, $NroFactura, $IdProveedor, $Observacion, $IdUsuario)
+    public function GetVentasAdministrador()
     {
-        $consulta = "INSERT INTO cab_oentrada (fecha,fecha_compra,id_secuencial,secuencial,nro_factura,id_proveedor,observacion,id_usuario)
-        VALUES(:fecha,:fecha_compra,:id_secuencial,:secuencial,:nro_factura,:id_proveedor,:observacion,:id_usuario)";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':fecha', $Fecha);
-        $sentencia->bindParam(':fecha_compra', $FechaCompra);
-        $sentencia->bindParam(':id_secuencial', $IdSecuencial);
-        $sentencia->bindParam(':secuencial', $IdSecu);
-        $sentencia->bindParam(':nro_factura', $NroFactura);
-        $sentencia->bindParam(':id_proveedor', $IdProveedor);
-        $sentencia->bindParam(':observacion', $Observacion);
-        $sentencia->bindParam(':id_usuario', $IdUsuario);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
-    public function RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $IdUMedida, $Cantidad, $Precio)
-    {
-        $consulta = "INSERT INTO det_oentrada (id_secuencial,id_producto,id_umedida,cantidad,precio)
-        VALUES(:id_secuencial,:id_producto,:id_umedida,:cantidad,:precio)";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
-        $sentencia->bindParam(':id_producto', $IdProducto);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
-        $sentencia->bindParam(':cantidad', $Cantidad);
-        $sentencia->bindParam(':precio', $Precio);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
-    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida, $IdPercha, $IdProducto, $Cantidad, $Precio)
-    {
-        $consulta = "INSERT INTO det_osalida (id_secuencial,id_umedida,id_percha,id_producto,cantidad,pvp)
-        VALUES(:id_secuencial,:id_umedida,:id_percha,:id_producto,:cantidad,:pvp)";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
-        $sentencia->bindParam(':id_percha', $IdPercha);
-        $sentencia->bindParam(':id_producto', $IdProducto);
-        $sentencia->bindParam(':cantidad', $Cantidad);
-        $sentencia->bindParam(':pvp', $Precio);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
-    public function RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdUMedida, $IdProducto, $Cantidad, $Precio)
-    {
-        $consulta = "INSERT INTO stock (id_secuencial,id_percha,id_umedida,id_producto,cantidad,pvp)
-        VALUES(:id_secuencial,:id_percha,:id_umedida,:id_producto,:cantidad,:pvp)";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
-        $sentencia->bindParam(':id_percha', $IdPercha);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
-        $sentencia->bindParam(':id_producto', $IdProducto);
-        $sentencia->bindParam(':cantidad', $Cantidad);
-        $sentencia->bindParam(':pvp', $Precio);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
-    public function getBuscarCantidadProducto($IdProducto)
-    {
-        $consulta = "SELECT cantidad FROM productos
-        WHERE id_producto = '$IdProducto'";
+        $consulta = "SELECT CONCAT(E.Nombres,' ',E.Apellidos) AS Empleado,SUM(DV.pvp) AS PVP,R.rol
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
+        INNER JOIN usuarios U ON (CV.id_usuario=U.id_usuario)
+        INNER JOIN empleados E ON (U.id_empleado=E.id_empleado)
+        INNER JOIN roles R ON (U.id_rol=R.id_rol)
+        WHERE U.id_rol =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function ActualizaCantidadProducto($IdProducto, $Cantidad, $IdUsuario, $Updated_At)
+    public function GetVentasVendedor()
     {
-        $consulta = "UPDATE productos SET cantidad = '$Cantidad',updated_at = '$Updated_At',
-        id_usuario = '$IdUsuario'
-        WHERE id_producto = '$IdProducto'";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
-    public function ExisteSecuencialIdTipo($IdTipo, $Secuencial)
-    {
-        $consulta = "SELECT id_secuencial,secuencial
-        FROM secuenciales
-        WHERE id_tipo = '$IdTipo' AND secuencial = '$Secuencial'";
+        $consulta = "SELECT CONCAT(E.Nombres,' ',E.Apellidos) AS Empleado,SUM(DV.pvp) AS PVP,R.rol
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
+        INNER JOIN usuarios U ON (CV.id_usuario=U.id_usuario)
+        INNER JOIN empleados E ON (U.id_empleado=E.id_empleado)
+        INNER JOIN roles R ON (U.id_rol=R.id_rol)
+        WHERE U.id_rol =3";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function ActualizaSecuencialOrdenEntrada($IdSecuencial, $Secuencial)
+    public function GetVentasParams($IdFDesde,$IdFHasta)
     {
-        $consulta = "UPDATE secuenciales SET secuencial = '$Secuencial'
-        WHERE id_secuencial = '$IdSecuencial'";
+        $consulta = "SELECT DV.pvp AS TotalVentas
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND CV.id_estado=1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
     }
-
-    public function ActualizaSecuencialOrdenSalida($IdSecuencial, $Secuencial)
+    public function GetPagosParams($IdFDesde,$IdFHasta)
     {
-        $consulta = "UPDATE secuenciales SET secuencial = '$Secuencial'
-        WHERE id_secuencial = '$IdSecuencial'";
+        $consulta = "SELECT DV.pvp AS TotalPagos
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND CV.id_estado=2";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function GetVentasChartsParams($IdFDesde,$IdFHasta)
+    {
+        $consulta = "SELECT CV.fecha,DV.pvp AS PVP
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
     }
 }

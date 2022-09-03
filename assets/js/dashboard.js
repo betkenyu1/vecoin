@@ -1,19 +1,93 @@
 function getStockProductosSum() {
 	$.ajax({
-	  type: "GET",
-	  dataType: 'json',
-	  url: 'index.php?c=Inventario&a=get_stock_productos_sum',
-	  success: function (response) {
-		$.each(response, function (key, value) {
-		  $("#IdCantidad").text('Σ '+value.Cantidad);
-		  $("#IdPrecio").text('$ '+value.Precio);
-		  $("#IdPVP").text('$ '+value.Valor);
-		});
-	  }
+		type: "GET",
+		dataType: 'json',
+		url: 'index.php?c=Inventario&a=get_stock_productos_sum',
+		success: function (response) {
+			$.each(response, function (key, value) {
+				$("#IdCantidad").text('Σ ' + value.Cantidad);
+				$("#IdPrecio").text('$ ' + value.Precio);
+				$("#IdPVP").text('$ ' + value.Valor);
+			});
+		}
 	});
-  }
-var handleTotalSalesSparkline = function() {
-	
+}
+function getVentasAdministrador() {
+	$.ajax({
+		type: "GET",
+		dataType: 'json',
+		url: 'index.php?c=Venta&a=get_ventas_administrador',
+		success: function (response) {
+			$.each(response, function (key, value) {
+				$("#IdUserAdmin").text(value.Empleado);
+				$("#IdValor").text('$ ' + value.PVP);
+				$("#IdRolAdmin").text('Rol: (' + value.rol +')');
+			});
+		}
+	});
+}
+function getVentasVendedor() {
+	$.ajax({
+		type: "GET",
+		dataType: 'json',
+		url: 'index.php?c=Venta&a=get_ventas_vendedor',
+		success: function (response) {
+			$.each(response, function (key, value) {
+				$("#IdVendedor").text(value.Empleado);
+				$("#IdValorVendedor").text('$ ' + value.PVP);
+				$("#IdRolUser").text('Rol: (' + value.rol +')');
+			});
+		}
+	});
+}
+function getVentasParametros() {
+	var chartExist = Chart.getChart("myChart");
+	if (chartExist != undefined)
+		chartExist.destroy();
+		
+	var fd = $("#IdFDesde").val();
+	var fh = $("#IdFHasta").val();
+	$.ajax({
+		type: "GET",
+		dataType: 'json',
+		url: 'index.php?c=Venta&a=get_ventas_params',
+		data: "IdFDesde=" + fd + "&IdFHasta=" + fh,
+		success: function (response) {
+			var tv = 0;
+			var tventas = 0;
+			$.each(response, function (key, value) {
+				tventas += parseFloat(value.TotalVentas);
+				tv += parseFloat(value.TotalVentas);
+			});
+			tventas = tv.toLocaleString(2);
+			$('#IdTVentas').val(tventas);
+			getPagosParametros();
+			GenerarGraficaVentas();
+		}
+	});
+}
+function getPagosParametros() {
+	var fd = $("#IdFDesde").val();
+	var fh = $("#IdFHasta").val();
+	$.ajax({
+		type: "GET",
+		dataType: 'json',
+		url: 'index.php?c=Venta&a=get_pagos_params',
+		data: "IdFDesde=" + fd + "&IdFHasta=" + fh,
+		success: function (response) {
+			var tv = 0;
+			var tventas = 0;
+			$.each(response, function (key, value) {
+				tventas += parseFloat(value.TotalPagos);
+				tv += parseFloat(value.TotalPagos);
+			});
+			tventas = tv.toLocaleString(2);
+			$('#IdTPagos').val(tventas);
+		}
+	});
+}
+var handleTotalSalesSparkline = function () {
+
 	var options = {
 		chart: {
 			type: 'line',
@@ -62,7 +136,7 @@ var handleTotalSalesSparkline = function() {
 						return ''
 					}
 				},
-				formatter: (value) => { return 'Σ'+ convertNumberWithCommas(value) },
+				formatter: (value) => { return 'Σ' + convertNumberWithCommas(value) },
 			},
 			marker: {
 				show: false
@@ -75,28 +149,28 @@ var handleTotalSalesSparkline = function() {
 					width: 130
 				}
 			}
-		},{
+		}, {
 			breakpoint: 1300,
 			options: {
 				chart: {
 					width: 100
 				}
 			}
-		},{
+		}, {
 			breakpoint: 1200,
 			options: {
 				chart: {
 					width: 200
 				}
 			}
-		},{
+		}, {
 			breakpoint: 576,
 			options: {
 				chart: {
 					width: 180
 				}
 			}
-		},{
+		}, {
 			breakpoint: 400,
 			options: {
 				chart: {
@@ -110,7 +184,7 @@ var handleTotalSalesSparkline = function() {
 	}
 };
 
-var handleConversionRateSparkline = function() {
+var handleConversionRateSparkline = function () {
 	var options = {
 		chart: {
 			type: 'line',
@@ -182,35 +256,35 @@ var handleConversionRateSparkline = function() {
 					width: 120
 				}
 			}
-		},{
+		}, {
 			breakpoint: 1300,
 			options: {
 				chart: {
 					width: 100
 				}
 			}
-		},{
+		}, {
 			breakpoint: 1200,
 			options: {
 				chart: {
 					width: 160
 				}
 			}
-		},{
+		}, {
 			breakpoint: 900,
 			options: {
 				chart: {
 					width: 120
 				}
 			}
-		},{
+		}, {
 			breakpoint: 576,
 			options: {
 				chart: {
 					width: 180
 				}
 			}
-		},{
+		}, {
 			breakpoint: 400,
 			options: {
 				chart: {
@@ -224,7 +298,7 @@ var handleConversionRateSparkline = function() {
 	}
 };
 
-var handleStoreSessionSparkline = function() {
+var handleStoreSessionSparkline = function () {
 	var options = {
 		chart: {
 			type: 'line',
@@ -297,35 +371,35 @@ var handleStoreSessionSparkline = function() {
 					width: 120
 				}
 			}
-		},{
+		}, {
 			breakpoint: 1300,
 			options: {
 				chart: {
 					width: 100
 				}
 			}
-		},{
+		}, {
 			breakpoint: 1200,
 			options: {
 				chart: {
 					width: 160
 				}
 			}
-		},{
+		}, {
 			breakpoint: 900,
 			options: {
 				chart: {
 					width: 120
 				}
 			}
-		},{
+		}, {
 			breakpoint: 576,
 			options: {
 				chart: {
 					width: 180
 				}
 			}
-		},{
+		}, {
 			breakpoint: 400,
 			options: {
 				chart: {
@@ -338,18 +412,19 @@ var handleStoreSessionSparkline = function() {
 		new ApexCharts(document.querySelector('#store-session-sparkline'), options).render();
 	}
 };
+/*
 function crearGrafica() {
 	var AreaChartData = [];
 	$.ajax({
 		type: "POST",
 		dataType: 'json',
-		url: 'index.php?c=Producto&a=get_producto_chart',
+		url: 'index.php?c=Producto&a=get_ventas_charts_params',
 		success: function (response) {
 			const ctx = document.getElementById('myChart').getContext('2d');
 			$.each(response, function (key, value) {
 				AreaChartData = Array(value.cantidad, value.utilidad, 10, 5, 9, 3);
 				const myChart = new Chart(ctx, {
-					type: 'bar',
+					type: 'line',
 					data: {
 						labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun'],
 						datasets: [{
@@ -394,14 +469,92 @@ function crearGrafica() {
 			});
 		}
 	});
+}*/
+function GenerarGraficaVentas() {
+	var html = '';
+	if ($('#IdFDesde').val() == '0') {
+		html += '<div class="alert alert-danger">';
+		html += 'Este campo es obligatorio!.';
+		html += '</div>';
+		$("#alert-tpb").html(html);
+		$('#IdFDesde').focus();
+		setTimeout(function () {
+			$("#alert-tpb").fadeOut(1500);
+		}, 3000);
+		return false;
+	} if ($('#IdFHasta').val() == '') {
+		html += '<div class="alert alert-danger">';
+		html += 'Este campo es obligatorio!.';
+		html += '</div>';
+		$("#alert-fh").html(html);
+		$('#IdFHasta').focus();
+		setTimeout(function () {
+			$("#alert-fh").fadeOut(1500);
+		}, 3000);
+		return false;
+	} else {
+		var fd = $("#IdFDesde").val();
+		var fh = $("#IdFHasta").val();
+		$.ajax({
+			type: "POST",
+			dataType: 'json',
+			url: "index.php?c=Venta&a=get_ventas_charts_params",
+			data: "IdFDesde=" + fd + "&IdFHasta=" + fh,
+			success: function (response) {
+				var x = [];
+				var y = [];
+				var total =0;
+				const ctx = document.getElementById('myChart').getContext('2d');
+				$.each(response, function (key, value) {
+					y.push(value.fecha);
+					total = parseFloat(value.PVP);
+					x.push(total).toLocaleString(2);
+				});
+				
+				chartExist = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: y,
+						datasets: [{ 
+							label: 'Ventas',
+							data: x,
+							backgroundColor: [
+								'rgba(255, 99, 132, 0.2)',
+								'rgba(54, 162, 235, 0.2)',
+								'rgba(255, 206, 86, 0.2)',
+								'rgba(75, 192, 192, 0.2)',
+								'rgba(153, 102, 255, 0.2)',
+								'rgba(255, 159, 64, 0.2)'
+							],
+							borderColor: [
+								'rgba(255, 99, 132, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(255, 206, 86, 1)',
+								'rgba(75, 192, 192, 1)',
+								'rgba(153, 102, 255, 1)',
+								'rgba(255, 159, 64, 1)'
+							],
+						}]
+					},
+					options: {
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				});
+			}
+		});
+	}
 }
-var handleVisitorsAreaChart = function() {
-	var handleGetDate = function(minusDate) {
+var handleVisitorsAreaChart = function () {
+	var handleGetDate = function (minusDate) {
 		var d = new Date();
-				d = d.setDate(d.getDate() - minusDate);
+		d = d.setDate(d.getDate() - minusDate);
 		return d;
 	};
-	
+
 	/*
 	 crearGrafica() = [{
 		'key' : 'Unique Visitante',
@@ -456,22 +609,22 @@ var handleVisitorsAreaChart = function() {
 	}];
 	*/
 	if ($('#visitors-line-chart').length !== 0) {
-		nv.addGraph(function() {
+		nv.addGraph(function () {
 			var stackedAreaChart = nv.models.stackedAreaChart()
 				.useInteractiveGuideline(true)
-				.x(function(d) { return d[0] })
-				.y(function(d) { return d[1] })
+				.x(function (d) { return d[0] })
+				.y(function (d) { return d[1] })
 				.pointSize(0.5)
-				.margin({'left':35,'right': 25,'top': 20,'bottom':20})
-				.controlLabels({stacked: 'Stacked'})
+				.margin({ 'left': 35, 'right': 25, 'top': 20, 'bottom': 20 })
+				.controlLabels({ stacked: 'Stacked' })
 				.showControls(false)
 				.duration(300);
 
-			stackedAreaChart.xAxis.tickFormat(function(d) { 
+			stackedAreaChart.xAxis.tickFormat(function (d) {
 				var monthsName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 				d = new Date(d);
 				d = monthsName[d.getMonth()] + ' ' + d.getDate();
-				return d ;
+				return d;
 			});
 			stackedAreaChart.yAxis.tickFormat(d3.format(',.0f'));
 			d3.select('#visitors-line-chart')
@@ -479,10 +632,10 @@ var handleVisitorsAreaChart = function() {
 				.datum(crearGrafica())
 				.transition().duration(1000)
 				.call(stackedAreaChart)
-				.each('start', function() {
-					setTimeout(function() {
-						d3.selectAll('#visitors-line-chart *').each(function() {
-							if(this.__transition__)
+				.each('start', function () {
+					setTimeout(function () {
+						d3.selectAll('#visitors-line-chart *').each(function () {
+							if (this.__transition__)
 								this.__transition__.duration = 1;
 						})
 					}, 0)
@@ -494,8 +647,8 @@ var handleVisitorsAreaChart = function() {
 	}
 };
 
-var handleVisitorsMap = function() {
-	var fillColor = ($('#visitors-map').attr('data-theme')) ? 'rgba('+ app.color.componentColorRgb +', .25)' : app.color.gray700;
+var handleVisitorsMap = function () {
+	var fillColor = ($('#visitors-map').attr('data-theme')) ? 'rgba(' + app.color.componentColorRgb + ', .25)' : app.color.gray700;
 	var options = {
 		map: 'world_mill',
 		scaleColors: [app.color.black, app.color.black],
@@ -551,8 +704,8 @@ var handleVisitorsMap = function() {
 		$('#visitors-map').vectorMap(options);
 	}
 }
-
-var handleDateRangeFilter = function() {
+/*
+var handleDateRangeFilter = function () {
 	$('#daterange-filter span').html(moment().subtract('days', 7).format('D MMMM YYYY') + ' - ' + moment().format('D MMMM YYYY'));
 	$('#daterange-prev-date').html(moment().subtract('days', 15).format('D MMMM') + ' - ' + moment().subtract('days', 8).format('D MMMM YYYY'));
 
@@ -588,18 +741,18 @@ var handleDateRangeFilter = function() {
 			fromLabel: 'From',
 			toLabel: 'To',
 			customRangeLabel: 'Custom',
-			daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+			daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
 			monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 			firstDay: 1
 		}
-	}, function(start, end, label) {
+	}, function (start, end, label) {
 		$('#daterange-filter span').html(start.format('D MMMM YYYY') + ' - ' + end.format('D MMMM YYYY'));
-		
+
 		var gap = end.diff(start, 'days');
 		$('#daterange-prev-date').html(moment(start).subtract('days', gap).format('D MMMM') + ' - ' + moment(start).subtract('days', 1).format('D MMMM YYYY'));
 	});
 };
-
+*/
 var DashboardV3 = function () {
 	"use strict";
 	return {
@@ -610,47 +763,47 @@ var DashboardV3 = function () {
 			handleStoreSessionSparkline();
 			handleVisitorsAreaChart();
 			handleVisitorsMap();
-			handleDateRangeFilter();
+			//handleDateRangeFilter();
 		}
 	};
 }();
-function AreaGrafica(){
+function AreaGrafica() {
 	$.ajax({
 		url: 'index.php?c=Producto&a=get_producto_chart',
 		method: "GET",
-		success: function(respuesta){
-		   console.log(respuesta);
-		   var data = JSON.parse(respuesta);
-		   var x = [];
-		   var tiempos = [];
-		   for (let index = 0; index < data.length; index++) {
+		success: function (respuesta) {
+			console.log(respuesta);
+			var data = JSON.parse(respuesta);
+			var x = [];
+			var tiempos = [];
+			for (let index = 0; index < data.length; index++) {
 				x.push(data[index][2]);
 				tiempos.push(data[index][7]);
-		   }
+			}
 			//--------------
 			//- AREA CHART -
 			//--------------
 			// Get context with jQuery - using jQuery's .get() method.
 			var areaChartCanvas = $('#visitors-line-chart').get(0).getContext('d3')
 			var areaChartData = {
-			labels  : x,
-			datasets: [
-				{
-				label               : 'Digital Goods',
-				backgroundColor     : 'rgba(60,141,188,0.9)',
-				borderColor         : 'rgba(60,141,188,0.8)',
-				pointRadius          : false,
-				pointColor          : '#3b8bba',
-				pointStrokeColor    : 'rgba(60,141,188,1)',
-				pointHighlightFill  : '#fff',
-				pointHighlightStroke: 'rgba(60,141,188,1)',
-				data                : tiempos
-				}
-			]
+				labels: x,
+				datasets: [
+					{
+						label: 'Digital Goods',
+						backgroundColor: 'rgba(60,141,188,0.9)',
+						borderColor: 'rgba(60,141,188,0.8)',
+						pointRadius: false,
+						pointColor: '#3b8bba',
+						pointStrokeColor: 'rgba(60,141,188,1)',
+						pointHighlightFill: '#fff',
+						pointHighlightStroke: 'rgba(60,141,188,1)',
+						data: tiempos
+					}
+				]
 			}
 			var areaChartOptions = {
 				maintainAspectRatio: false,
-				responsive: true,                    
+				responsive: true,
 				events: false,
 				tooltips: {
 					enabled: false
@@ -661,23 +814,23 @@ function AreaGrafica(){
 				scales: {
 					xAxes: [{
 						ticks: {
-						fontColor: '#000'
+							fontColor: '#000'
 						},
 						gridLines: {
-						display: false,
-						color: '#000',
-						drawBorder: false
+							display: false,
+							color: '#000',
+							drawBorder: false
 						}
 					}],
 					yAxes: [{
 						ticks: {
-						stepSize: 1,
-						fontColor: '#000'
+							stepSize: 1,
+							fontColor: '#000'
 						},
 						gridLines: {
-						display: true,
-						color: '#7DCEA0',
-						drawBorder: false
+							display: true,
+							color: '#7DCEA0',
+							drawBorder: false
 						}
 					}]
 				},
@@ -686,17 +839,17 @@ function AreaGrafica(){
 					onComplete: function () {
 						var chartInstance = this.chart,
 							ctx = chartInstance.ctx;
-							ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-							ctx.fillStyle = "#000";
-							ctx.textAlign = 'center';
-							ctx.textBaseline = 'bottom';
-							this.data.datasets.forEach(function (dataset, i) {
-								var meta = chartInstance.controller.getDatasetMeta(i);
-								meta.data.forEach(function (bar, index) {
-									var data = dataset.data[index];                            
-									ctx.fillText(data, bar._model.x, bar._model.y - 5);
-								});
+						ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
+						ctx.fillStyle = "#000";
+						ctx.textAlign = 'center';
+						ctx.textBaseline = 'bottom';
+						this.data.datasets.forEach(function (dataset, i) {
+							var meta = chartInstance.controller.getDatasetMeta(i);
+							meta.data.forEach(function (bar, index) {
+								var data = dataset.data[index];
+								ctx.fillText(data, bar._model.x, bar._model.y - 5);
 							});
+						});
 					}
 				}
 			}
@@ -712,19 +865,21 @@ function AreaGrafica(){
 			var lineChartCanvas = $('#lineChart').get(0).getContext('d3')
 			var lineChartOptions = $.extend(true, {}, areaChartOptions)
 			var lineChartData = $.extend(true, {}, areaChartData)
-			lineChartData.datasets[0].fill = false;        
+			lineChartData.datasets[0].fill = false;
 			lineChartOptions.datasetFill = false
 			var lineChart = new Chart(lineChartCanvas, {
-			type: 'line',
-			data: lineChartData,
-			options: lineChartOptions
+				type: 'line',
+				data: lineChartData,
+				options: lineChartOptions
 			})
 		}
 	});
 }
-$(document).ready(function() {
+$(document).ready(function () {
 	DashboardV3.init();
 	//AreaGrafica();
-	crearGrafica();
+	//crearGrafica();
 	getStockProductosSum();
+	getVentasAdministrador();
+	getVentasVendedor();
 });

@@ -100,11 +100,10 @@ function setNuevaVenta() {
 }
 function getListaOrdenSalida() {
     var html = '';
-    //html += '<div class="cerrar-lp">';
+    html += '<div>';
     html += '<div style="overflow: scroll" class="cerrar-lp">';
-    html += '<div class="note note-blue">';
-    html += '<div class="note-content">';
     html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+    html += '<div class="note note-blue">';
     html += '<thead>';
     html += '<tr>';
     html += '<th width="1%"></th>';
@@ -142,7 +141,6 @@ function getListaOrdenSalida() {
                 });
                 html += '</tbody>';
                 html += '</table>';
-                html += '</div>';
                 html += '</div>';
                 html += '</div>';
                 $("#lista-ord_salida").html(html);

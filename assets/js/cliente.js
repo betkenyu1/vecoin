@@ -6,21 +6,21 @@ function setCliente() {
     html += '<div class="cerrar-clie">';
     html += '<div class="note note-info">';
     html += '<div class="note-content">';
-    html += "<form>";
+    html += '<form>';
     html += '<div class="form-group">';
     html += '<div class="row">';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Ruc:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdRuc">';
+    html += '<b style="color: #000000;">R.U.C.:</b> </br>';
+    html += '<input onKeypress="if (event.length == 13 || event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" class="form-control" id="IdRuc">';
     html += '<div id="alert-nc"></div>';
     html += "</div>";
     html += "</div>";
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Razon Social:</b> </br>';
+    html += '<b style="color: #000000;">Razón Social:</b> </br>';
     html += '<input type="text" class="form-control" id="IdRazonSocial">';
     html += '<div id="alert-rs"></div>';
     html += "</div>";
@@ -28,7 +28,7 @@ function setCliente() {
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Direccion:</b> </br>';
+    html += '<b style="color: #000000;">Dirección:</b> </br>';
     html += '<input type="text" class="form-control" id="IdDireccion">';
     html += '<div id="alert-dr"></div>';
     html += "</div>";
@@ -36,7 +36,7 @@ function setCliente() {
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Telefono:</b> </br>';
+    html += '<b style="color: #000000;">Teléfono:</b> </br>';
     html += '<input type="text" class="form-control" id="IdTelefono">';
     html += '<div id="alert-tl"></div>';
     html += "</div>";
@@ -152,12 +152,12 @@ function setCliente() {
       var em = $("#IdEmail").val();
       var tcr = $("#IdTiempocredito").val();
       Swal.fire({
-        title: "CONFIRMACION!",
+        title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sí continuar"
+        confirmButtonText: "Confirmar"
       }).then((result) => {
         if (result.isConfirmed) {
           $.ajax({
@@ -174,12 +174,12 @@ function setCliente() {
               response = JSON.stringify(response);
               if (response == 1) {
                 Swal.fire({
-                  html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
+                  html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
                 });
                 CerrarNuevoCliente();
               } if (response == 2) {
                 Swal.fire({
-                  html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+                  html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>REGISTRO INCORRECTO</b></div></div>',
                 });
               }
             }
@@ -190,24 +190,24 @@ function setCliente() {
   }
   function getListaClientes() {
     var html = '';
-    html += '<div class="cerrar-lclie">';
-    html += '<div class="note note-blue">';
+    html += '<div style="overflow: scroll" class="cerrar-lclie">';
+    html += '<div class="">';
     html += '<div class="note-content">';
     html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
     html += '<thead>';
     html += '<tr>';
     html += '<th width="1%"></th>';
-    html += '<th class="text-nowrap">Ruc</th>';
-    html += '<th class="text-nowrap">Razon Social</th>';
+    html += '<th class="text-nowrap">R.U.C.</th>';
+    html += '<th class="text-nowrap">Razón Social</th>';
     html += '<th class="text-nowrap">Dirección</th>';
-    html += '<th class="text-nowrap">Telefono</th>';
+    html += '<th class="text-nowrap">Teléfono</th>';
     html += '<th class="text-nowrap">Email</th>';
     html += '<th class="text-nowrap">Tiempo de Crédito</th>';
     html += '<th class="text-nowrap">Estado</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
     html += '</thead>';
-    html += '<tbody>';
+    html += '<tbody style="background-color:#c1f8ff">';
     $.ajax({
       type: "GET",
       dataType: 'json',
@@ -236,6 +236,7 @@ function setCliente() {
         html += '</div>';
         $("#lista-clientes").html(html);
         $('#data-table-select').DataTable({
+          "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
           select: true,
           responsive: true
         });

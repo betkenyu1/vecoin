@@ -261,8 +261,9 @@ function setModificarCatalogo(id_catalogo) {
 		}
 	  });
 	getEmpresasMod();
-	getPrepareModificarCatalogo(id_catalogo);
 	getEstados();
+	getPrepareModificarCatalogo(id_catalogo);
+	
 }
 function getPrepareModificarCatalogo(id_catalogo) {
 	$.ajax({

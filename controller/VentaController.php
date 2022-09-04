@@ -13,18 +13,8 @@ class VentaController
         $this->vta = new VentaModel();
         $this->inv = new InventarioModel();
     }
-    public function lista_ventas(){
-        require_once 'views/ventas/lista_ventas.php';
-    }
-    public function get_clientes()
-    {
-        $exito = $this->vta->getClientes();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
+    public function gestion_ventas(){
+        require_once 'views/ventas/gestion_ventas.php';
     }
     public function get_stock()
     {
@@ -61,6 +51,7 @@ class VentaController
     {
         date_default_timezone_set('America/Guayaquil');
         $Fecha = date('m-d-Y h:i:s a', time());
+        $IdDetPSalida = (isset($_REQUEST['IdDetPSalida'])) ? $_REQUEST['IdDetPSalida'] : '';
         $FechaFactura = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
         $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
         $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
@@ -80,6 +71,7 @@ class VentaController
             }
             $exito = $this->vta->RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio);
             if ($exito) {
+                $exito = $this->vta->ActualizaDetOSalida($IdDetPSalida);
                 echo 1;
             } else {
                 echo 2;

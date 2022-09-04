@@ -148,7 +148,7 @@ function getListaOrdenSalida() {
 
 function getProcesarOSalida(id_det_osalida) {
     setNuevaVenta();
-    getCliente();
+    getClientes();
     $.ajax({
         type: "GET",
         dataType: 'json',

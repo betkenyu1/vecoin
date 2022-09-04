@@ -50,8 +50,6 @@ class AdminController
     }
     public function get_secuencial()
     {
-        //Tipo 1: Orden entrada
-        //Tipo 2: Orden salida
         $IdTipo = 1;
         $Secuencial = 1;
         $existe = $this->adm->ExisteSecuencial($IdTipo);
@@ -70,7 +68,6 @@ class AdminController
 
     public function get_secuencial_orden_salida()
     {
-        //Tipo 2: Orden salida
         $IdTipo = 2;
         $Secuencial = 1;
         $existe = $this->adm->ExisteSecuencial($IdTipo);

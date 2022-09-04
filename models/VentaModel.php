@@ -8,14 +8,6 @@ class VentaModel
     {
         $this->db = Conexion::getConexion();
     }
-    public function getClientes()
-    {
-        $consulta = "SELECT id_cliente,razon_social FROM clientes";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
     public function getStockVenta()
     {
         $consulta = "SELECT ST.id_stock,C.producto FROM stock ST

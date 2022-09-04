@@ -13,18 +13,8 @@ class VentaController
         $this->vta = new VentaModel();
         $this->inv = new InventarioModel();
     }
-    public function lista_ventas(){
-        require_once 'views/ventas/lista_ventas.php';
-    }
-    public function get_clientes()
-    {
-        $exito = $this->vta->getClientes();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
+    public function gestion_ventas(){
+        require_once 'views/ventas/gestion_ventas.php';
     }
     public function get_stock()
     {

@@ -16,9 +16,9 @@ include_once 'views/layout/header.php';
         </div>
        
         <div class="panel-body">
-            <div id="lista-ventas"></div>
+            <div id="lista-ord_salida"></div>
             <br>
-            <div id="n-ncredito"></div>
+            <div id="n-venta"></div>
         </div>
     </div>
     <!-- END panel -->

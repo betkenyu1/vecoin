@@ -166,7 +166,6 @@ function getProveedorActivo(){
     },
   });
 }
-
 function getCliente(){
   $("#IdCliente").empty();
   $.ajax({

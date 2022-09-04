@@ -1,3 +1,75 @@
+//validaciones
+function validarRUC(evt){
+  // code is the decimal ASCII representation of the pressed key.
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if($('#IdRuc').val().length<13){
+    if(code==8) { // backspace.
+      return true;
+    } else if(code>=48 && code<=57) { // is a number.
+          setTimeout(function () {
+          $("#alert-rc").fadeOut(500);
+        }, 0);
+        return true;
+    } else{ // other keys.
+        var html = "";
+        html += '<div class="alert alert-danger">';
+        html += '*Ingrese solo dígitos del [0] al [9]';
+        html += '</div>';
+        $("#alert-rc").html(html);      
+        $("#alert-rc").fadeIn(1000);
+        $('#IdRuc').focus();
+      return false;
+    } 
+  } 
+}
+
+function validarTelefono(evt){
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if($('#IdTelefono').val().length<10 || $('#IdTelefono').val()!=''){
+    if(code==8) { // backspace.
+      return true;
+    } else if(code>=48 && code<=57) { // is a number.
+          setTimeout(function () {
+          $("#alert-tl").fadeOut(500);
+        }, 0);
+        return true;
+    } else{ // other keys.
+        var html = "";
+        html += '<div class="alert alert-danger">';
+        html += '*Ingrese solo dígitos del [0] al [9]';
+        html += '</div>';
+        $("#alert-tl").html(html);      
+        $("#alert-tl").fadeIn(1000);
+        $('#IdTelefono').focus();
+      return false;
+    } 
+  }  else{
+    alert('else');
+  }
+}
+
+function validarCorrecion(evt){
+  // code is the decimal ASCII representation of the pressed key.
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if(code!='') { 
+    setTimeout(function () {
+      $("#alert-rs").fadeOut(500);
+    }, 0);
+    setTimeout(function () {
+      $("#alert-dr").fadeOut(500);
+    }, 0);
+    setTimeout(function () {
+      $("#alert-em").fadeOut(500);
+    }, 0);
+    setTimeout(function () {
+      $("#alert-pp").fadeOut(500);
+    }, 0);
+    return true;// backspace.
+  }  
+}
+
+/*************************/
+
 function setCliente() {
     //desarrollo de interfaz vacia
     $(".cerrar-lclie").hide();
@@ -6,38 +78,38 @@ function setCliente() {
     html += '<div class="cerrar-clie">';
     html += '<div class="note note-info">';
     html += '<div class="note-content">';
-    html += "<form>";
+    html += '<form>';
     html += '<div class="form-group">';
     html += '<div class="row">';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Ruc:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdRuc">';
-    html += '<div id="alert-nc"></div>';
+    html += '<b style="color: #000000;">R.U.C.:</b> </br>';
+    html += '<input type="text" name="txt" placeholder="Ingrese R.U.C." minlength="13" maxlength="13" onkeypress="return validarRUC(event);" class="form-control" id="IdRuc">';
+    html += '<div id="alert-rc"></div>';
     html += "</div>";
     html += "</div>";
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Razon Social:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdRazonSocial">';
+    html += '<b style="color: #000000;">Razón Social:</b> </br>';
+    html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Razón Social" class="form-control" id="IdRazonSocial">';
     html += '<div id="alert-rs"></div>';
     html += "</div>";
     html += "</div>";
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Direccion:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdDireccion">';
+    html += '<b style="color: #000000;">Dirección:</b> </br>';
+    html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Dirección"  class="form-control" id="IdDireccion">';
     html += '<div id="alert-dr"></div>';
     html += "</div>";
     html += "</div>";
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Telefono:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdTelefono">';
+    html += '<b style="color: #000000;">Teléfono:</b> </br>';
+    html += '<input type="text" maxlength="10" onkeypress="return validarTelefono(event)" placeholder="Ingrese Teléfono" class="form-control" id="IdTelefono">';
     html += '<div id="alert-tl"></div>';
     html += "</div>";
     html += "</div>";
@@ -45,16 +117,16 @@ function setCliente() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Email:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdEmail">';
+    html += '<input type="email" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Email" class="form-control" id="IdEmail">';
     html += '<div id="alert-em"></div>';
     html += "</div>";
     html += "</div>";
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Tiempo de crédito:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdTiempocredito">';
-    html += '<div id="alert-em"></div>';
+    html += '<b style="color: #000000;">Plazo de pago:</b> </br>';
+    html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Plazo de pago" class="form-control" id="IdTiempocredito">';
+    html += '<div id="alert-pp"></div>';
     html += "</div>";
     html += "</div>";
   
@@ -81,70 +153,121 @@ function setCliente() {
     var html = '';
     if ($('#IdRuc').val() == '') {
       html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
+      html += '*Campo requerido';
+      html += '</div>';
+      $("#alert-rc").html(html);    
+      $("#alert-rc").fadeIn(500);
+      $('#IdRuc').focus();
+      return false;
+    } else if($('#IdRuc').val().length <13 || $('#IdRuc').val().length>13){
+      html += '<div class="alert alert-danger">';
+      html += '*R.U.C. posee 13 dígitos';
       html += '</div>';
       $("#alert-rc").html(html);
+      $("#alert-rc").fadeIn(500);
       $('#IdRuc').focus();
-      setTimeout(function () {
-        $("#alert-rc").fadeOut(1500);
-      }, 3000);
       return false;
-    } 
-    if ($('#IdRazonSocial').val() == 0) {
-      html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
-      html += '</div>';
-      $("#alert-re").html(html);
-      $('#IdRazonSocial').focus();
+    }else{
       setTimeout(function () {
-        $("#alert-re").fadeOut(1500);
-      }, 3000);
-      return false;
-    } 
-    if ($('#IdDireccion').val() == '') {
+        $("#alert-rc").fadeOut(500);
+      }, 0);
+    }
+
+    if ($('#IdRazonSocial').val() == '') {
       html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
+      html += '*Campo requerido';
       html += '</div>';
-      $("#alert-dr").html(html);
-      $('#IdDireccion').focus();
-      setTimeout(function () {
-        $("#alert-dr").fadeOut(1500);
-      }, 3000);
-      return false;
-    } 
-    if ($('#IdTelefono').val() == '') {
-      html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
-      html += '</div>';
-      $("#alert-tl").html(html);
-      $('#IdTelefono').focus();
-      setTimeout(function () {
-        $("#alert-tl").fadeOut(1500);
-      }, 3000);
-      return false;
-    } 
-    if ($('#IdEmail').val() == '') {
-      html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
-      html += '</div>';
-      $("#alert-em").html(html);
-      $('#IdEmail').focus();
-      setTimeout(function () {
-        $("#alert-em").fadeOut(1500);
-      }, 3000);
-      return false;
-    } 
-    if ($('#IdTiempocredito').val() == '') {
-      html += '<div class="alert alert-danger">';
-      html += 'Este campo es obligatorio!.';
-      html += '</div>';
-      $("#alert-tcr").html(html);
-      $('#IdTiempocredito').focus();
-      setTimeout(function () {
-        $("#alert-tcr").fadeOut(1500);
-      }, 3000);
+      $("#alert-rs").html(html);
+      $('#IdRazonSocial').focus();      
+      $("#alert-rs").fadeIn(500);
       return false;
     } else {
+      setTimeout(function () {
+        $("#alert-rs").fadeOut(500);
+      }, 0);
+    }
+
+    if ($('#IdDireccion').val() == '') {
+      html += '<div class="alert alert-danger">';
+      html += '*Campo requerido';
+      html += '</div>';
+      $("#alert-dr").html(html);
+      $('#IdDireccion').focus();      
+      $("#alert-dr").fadeIn(500);
+      return false;
+    } else {
+      setTimeout(function () {
+        $("#alert-dr").fadeOut(500);
+      }, 0);
+    } 
+
+    if ($('#IdTelefono').val() == '') {
+      html += '<div class="alert alert-danger">';
+      html += '*Campo requerido';
+      html += '</div>';
+      $("#alert-tl").html(html);    
+      $("#alert-tl").fadeIn(500);
+      $('#IdTelefono').focus();
+        return false;
+    }else if($('#IdTelefono').val().length <9){
+      html += '<div class="alert alert-danger">';
+      html += '*Ingrese un teléfono fijo con código de area';
+      html += '</div>';
+      $("#alert-tl").html(html);
+      $("#alert-tl").fadeIn(500);
+      $('#IdTelefono').focus();
+      return false;
+    }else if($('#IdTelefono').val().length <10 && $('#IdTelefono').val().length >9){
+      html += '<div class="alert alert-danger">';
+      html += '*Ingrese un teléfono celular válido';
+      html += '</div>';
+      $("#alert-tl").html(html);
+      $("#alert-tl").fadeIn(500);
+      $('#IdTelefono').focus();
+      return false;
+    }else{
+      setTimeout(function () {
+        $("#alert-tl").fadeOut(500);
+      }, 0);
+    }
+
+    if ($('#IdEmail').val() == '') {
+      html += '<div class="alert alert-danger">';
+      html += '*Campo requerido';
+      html += '</div>';
+      $("#alert-em").html(html);
+      $('#IdEmail').focus();      
+      $("#alert-em").fadeIn(500);
+        return false;
+    }else if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test($('#IdEmail').val())==0){
+      html += '<div class="alert alert-danger">';
+      html += '*Email incorrecto';
+      html += '</div>';
+      $("#alert-em").html(html);
+      $('#IdEmail').focus();      
+      $("#alert-em").fadeIn(500);
+        return false;
+    }else {
+      setTimeout(function () {
+        $("#alert-em").fadeOut(500);
+      }, 0);
+    } 
+
+    if ($('#IdTiempocredito').val() == '') {
+      html += '<div class="alert alert-danger">';
+      html += '*Campo requerido';
+      html += '</div>';
+      $("#alert-pp").html(html);
+      $('#IdTiempocredito').focus();      
+      $("#alert-pp").fadeIn(500);
+      return false;
+    } else {
+      setTimeout(function () {
+        $("#alert-pp").fadeOut(500);
+      }, 0);
+    }
+
+    if($('#IdRuc').val() != '' && $('#IdRazonSocial').val() != '' && $('#IdDireccion').val() != '' && $('#IdTelefono').val() != '' && $('#IdEmail').val() != '' && $('#IdTiempocredito').val()!=''){
       var rc = $("#IdRuc").val();
       var re = $("#IdRazonSocial").val();
       var dr = $("#IdDireccion").val();
@@ -152,12 +275,12 @@ function setCliente() {
       var em = $("#IdEmail").val();
       var tcr = $("#IdTiempocredito").val();
       Swal.fire({
-        title: "CONFIRMACION!",
+        title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sí continuar"
+        confirmButtonText: "Confirmar"
       }).then((result) => {
         if (result.isConfirmed) {
           $.ajax({
@@ -174,12 +297,12 @@ function setCliente() {
               response = JSON.stringify(response);
               if (response == 1) {
                 Swal.fire({
-                  html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
+                  html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
                 });
                 CerrarNuevoCliente();
               } if (response == 2) {
                 Swal.fire({
-                  html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+                  html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>REGISTRO INCORRECTO</b></div></div>',
                 });
               }
             }
@@ -187,27 +310,28 @@ function setCliente() {
         }
       });
     }
-  }
+      /**/
+  } 
   function getListaClientes() {
     var html = '';
-    html += '<div class="cerrar-lclie">';
-    html += '<div class="note note-blue">';
+    html += '<div style="overflow: scroll" class="cerrar-lclie">';
+    html += '<div class="">';
     html += '<div class="note-content">';
     html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
     html += '<thead>';
     html += '<tr>';
     html += '<th width="1%"></th>';
-    html += '<th class="text-nowrap">Ruc</th>';
-    html += '<th class="text-nowrap">Razon Social</th>';
+    html += '<th class="text-nowrap">R.U.C.</th>';
+    html += '<th class="text-nowrap">Razón Social</th>';
     html += '<th class="text-nowrap">Dirección</th>';
-    html += '<th class="text-nowrap">Telefono</th>';
+    html += '<th class="text-nowrap">Teléfono</th>';
     html += '<th class="text-nowrap">Email</th>';
     html += '<th class="text-nowrap">Tiempo de Crédito</th>';
     html += '<th class="text-nowrap">Estado</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
     html += '</thead>';
-    html += '<tbody>';
+    html += '<tbody style="background-color:#c1f8ff">';
     $.ajax({
       type: "GET",
       dataType: 'json',
@@ -236,8 +360,9 @@ function setCliente() {
         html += '</div>';
         $("#lista-clientes").html(html);
         $('#data-table-select').DataTable({
+          "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
           select: true,
-          responsive: true
+          responsive: true,
         });
       }
     });

@@ -44,7 +44,7 @@ function getListaCatalogo() {
 			$("#lista-catalogo").html(html);
 			$('#data-table-select').DataTable({
 				"language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
-				select: true,
+				select: false,
 				responsive: true
 			});
 		}
@@ -62,7 +62,7 @@ function setNuevoCatalogo() {
 	html += '<div class="cerrar-np">';
 	html += '<div class="note note-info">';
 	html += '<div class="note-content">';
-	html += '<form>';
+	html += '<form >';
 	html += '<div class="form-group">';
 	html += '<div class="row">';
 
@@ -77,7 +77,7 @@ function setNuevoCatalogo() {
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Código:</b> </br>';
-	html += '<input type="text" class="form-control" id="IdCodigo">';
+	html += '<input type="text" maxlength="10" placeholder="Ingrese código del producto" class="form-control" id="IdCodigo">';
 	html += '<div id="alert-codp"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -85,7 +85,7 @@ function setNuevoCatalogo() {
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Descripción:</b> </br>';
-	html += '<input type="text" class="form-control" id="IdDescripcionP">';
+	html += '<input type="text" placeholder="Ingrese breve descripción del producto" class="form-control" id="IdDescripcionP">';
 	html += '<div id="alert-dp"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -216,7 +216,7 @@ function setModificarCatalogo(id_catalogo) {
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Código:</b> </br>';
 	html += '<input type="hidden" class="form-control" id="IdCatalogo">';
-	html += '<input type="text" class="form-control" id="IdCodigoM">';
+	html += '<input type="text" maxlength="10" placeholder="Ingrese código del producto" class="form-control" id="IdCodigoM">';
 	html += '<div id="alert-codpm"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -224,7 +224,7 @@ function setModificarCatalogo(id_catalogo) {
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Descripción:</b> </br>';
-	html += '<input type="text" class="form-control" id="IdDescripcionM">';
+	html += '<input type="text" placeholder="Ingrese breve descripción del producto" class="form-control" id="IdDescripcionM">';
 	html += '<div id="alert-dpm"></div>';
 	html += '</div>';
 	html += '</div>';

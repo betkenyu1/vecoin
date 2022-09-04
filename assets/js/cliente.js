@@ -1,3 +1,8 @@
+//validaciones
+
+
+/*************************/
+
 function setCliente() {
     //desarrollo de interfaz vacia
     $(".cerrar-lclie").hide();
@@ -13,7 +18,7 @@ function setCliente() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">R.U.C.:</b> </br>';
-    html += '<input onKeypress="if (event.length == 13 || event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" class="form-control" id="IdRuc">';
+    html += '<input type="text" name="txt" placeholder="Ingrese R.U.C." maxlength="13" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" class="form-control" id="IdRuc">';
     html += '<div id="alert-nc"></div>';
     html += "</div>";
     html += "</div>";

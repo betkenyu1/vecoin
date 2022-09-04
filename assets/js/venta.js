@@ -100,10 +100,11 @@ function setNuevaVenta() {
 }
 function getListaOrdenSalida() {
     var html = '';
-    html += '<div class="cerrar-lp">';
+    //html += '<div class="cerrar-lp">';
+    html += '<div style="overflow: scroll" class="cerrar-lp">';
     html += '<div class="note note-blue">';
     html += '<div class="note-content">';
-    html += '<table id="data-table-scroller" class="table table-striped table-bordered align-middle">';
+    html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
     html += '<thead>';
     html += '<tr>';
     html += '<th width="1%"></th>';
@@ -123,41 +124,41 @@ function getListaOrdenSalida() {
         dataType: 'json',
         url: 'index.php?c=Venta&a=get_det_osalida',
         success: function (response) {
-            $.each(response, function (key, value) {
-                html += '<tr class="odd gradeX">';
-                html += '<td width="1%" class="fw-bold text-dark">' + value.id_det_osalida + '</td>';
-                html += '<td>' + value.fecha + '</td>';
-                html += '<td>' + value.secuencial + '</td>';
-                html += '<td>' + value.producto + '</td>';
-                html += '<td>' + value.umedida + '</td>';
-                html += '<td>' + value.bodega + '</td>';
-                html += '<td>' + value.cantidad + '</td>';
-                html += '<td>' + value.pvp + '</td>';
-                html += '<td>';
-                html += '<a href="#ps?1" class="btn btn-outline-orange" onclick="getProcesarOSalida(' + value.id_det_osalida + ');" title="Procesar salida"><i class="fa-solid fa-share"></i></a>';
-                html += '</td>';
-                html += '</tr>';
-            });
-            html += '</tbody>';
-            html += '</table>';
-            html += '</div>';
-            html += '</div>';
-            html += '</div>';
-            /*
-            $("#lista-ord_salida").html(html);
-            $('#data-table-select').DataTable({
-                select: true,
-                responsive: true
-            });*/
-            $("#lista-ord_salida").html(html);
-            $('#data-table-scroller').DataTable({
-                //ajax:           "assets/js/demo/json/scroller_demo.json",
-                deferRender:    true,
-                scrollX:        300,
-                scrollCollapse: true,
-                scroller:       true,
-                responsive: true
-            });
+            if (response != '') {
+                $.each(response, function (key, value) {
+                    html += '<tr class="odd gradeX">';
+                    html += '<td width="1%" class="fw-bold text-dark">' + value.id_det_osalida + '</td>';
+                    html += '<td>' + value.fecha + '</td>';
+                    html += '<td>' + value.secuencial + '</td>';
+                    html += '<td>' + value.producto + '</td>';
+                    html += '<td>' + value.umedida + '</td>';
+                    html += '<td>' + value.bodega + '</td>';
+                    html += '<td>' + value.cantidad + '</td>';
+                    html += '<td>' + value.pvp + '</td>';
+                    html += '<td>';
+                    html += '<a href="#ps?1" class="btn btn-outline-orange" onclick="getProcesarOSalida(' + value.id_det_osalida + ');" title="Procesar salida"><i class="fa-solid fa-share"></i></a>';
+                    html += '</td>';
+                    html += '</tr>';
+                });
+                html += '</tbody>';
+                html += '</table>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+                $("#lista-ord_salida").html(html);
+                $('#data-table-select').DataTable({
+                    "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
+				select: true,
+				responsive: true
+                });
+            } else {
+                html = '';
+                html += '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
+                html += '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+                html += '<b>No hay datos</b>';
+                html += '</div>';
+                $("#lista-ord_salida").html(html);
+            }
         }
     });
 }

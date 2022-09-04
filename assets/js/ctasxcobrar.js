@@ -1,9 +1,9 @@
 function CerrarListaVenta() {
     $(".cerrar-nc").hide();
 }
-function setNuevaNCredito() {
+function setNuevoPago() {
     var html = '';
-    html += '<div id="nc?1" class="cerrar-nc">';
+    html += '<div id="npg?1" class="cerrar-nc">';
     html += '<div class="note note-info">';
     html += '<div class="note-content">';
     html += '<form>';
@@ -11,65 +11,40 @@ function setNuevaNCredito() {
     html += '<div class="row">';
 
     html += '<div style="color: white;" class="text-center">';
-    html += '<h3>REGISTRO DE NOTA DE CREDITO</h3>';
+    html += '<h3>REGISTRO DE PAGO</h3>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Fecha:</b> </br>';
-    html += '<input type="date" class="form-control" id="IdFecha">';
-    html += '<div id="alert-freg"></div>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Clientes:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdCliente"></select>';
+    html += '<b style="color: #000000;">Cliente:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdClient">';
     html += '<div id="alert-cli"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Nro NCredito:</b> </br>';
-    html += '<input type="hidden" class="form-control" id="IdDetVenta">';
-    html += '<input type="hidden" class="form-control" id="IdNroFactura">';
-    html += '<input type="text" class="form-control" id="IdNroNCredito">';
+    html += '<b style="color: #000000;">Nro Factura:</b> </br>';
+    html += '<input type="hidden" class="form-control" id="IdCabVenta">';
+    html += '<input type="text" class="form-control" id="IdNroFactura">';
     html += '<div id="alert-nrofac"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Productos:</b> </br>';
-    html += '<input type="hidden" class="form-control" id="IdProducto">';
-    html += '<input type="text" class="form-control" id="IdDetProducto">';
-    html += '<div id="alert-prod"></div>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Cantidad:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdCantidad">';
-    html += '<div id="alert-cant"></div>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Precio:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdPrecio">';
+    html += '<b style="color: #000000;">Valor:</b> </br>';
+    html += '<input type="text" class="form-control" id="IdValor">';
     html += '<div id="alert-prec"></div>';
     html += '</div>';
     html += '</div>';
 
-    html += '<div>';
+    html += '<div class="col-md-6">';
+    html += '<div class="mb-10px">';
     html += '<br>';
-    html += '<div class="text-center">';
     html += '<a class="btn btn-danger" onclick="CerrarListaVenta();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
-    html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarNCredito();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
+    html += '&nbsp;<a class="btn btn-primary" title="Registrar Pago" onclick="getRegistrarPago();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Registrar</a>';
+    html += '<div id="alert-prec"></div>';
     html += '</div>';
     html += '</div>';
     
@@ -79,7 +54,7 @@ function setNuevaNCredito() {
     html += '</div>';
     html += '</div>';
     html += '</div>';
-    $("#n-ncredito").html(html);
+    $("#n-npago").html(html);
     $('.default-select2').select2();
 }
 function getListaVentas() {
@@ -91,6 +66,7 @@ function getListaVentas() {
     html += '<thead>';
     html += '<tr>';
     html += '<th width="1%"></th>';
+    html += '<th hidden class="text-nowrap"></th>';
     html += '<th class="text-nowrap">Fecha</th>';
     html += '<th class="text-nowrap">Secuencial</th>';
     html += '<th class="text-nowrap">Producto</th>';
@@ -109,13 +85,14 @@ function getListaVentas() {
                 $.each(response, function (key, value) {
                     html += '<tr class="odd gradeX">';
                     html += '<td width="1%" class="fw-bold text-dark">' + value.id_detventa + '</td>';
+                    html += '<td hidden>' + value.id_cabventa + '</td>';
                     html += '<td>' + value.freg + '</td>';
                     html += '<td>' + value.nro_factura + '</td>';
                     html += '<td>' + value.producto + '</td>';
                     html += '<td>' + value.cantidad + '</td>';
                     html += '<td>' + value.pvp + '</td>';
                     html += '<td>';
-                    html += '<a href="#nc?1" class="btn btn-outline-orange" onclick="getProcesarNCredito(' + value.id_detventa + ');" title="Procesar N/Crédito"><i class="fa-solid fa-share"></i></a>';
+                    html += '<a href="#npg?1" class="btn btn-outline-green" onclick="getProcesarPago(' + value.id_cabventa + ');" title="Procesar Pago"><i class="fa-solid fa-dollar"></i></a>';
                     html += '</td>';
                     html += '</tr>';
                 });
@@ -141,49 +118,26 @@ function getListaVentas() {
     });
 }
 
-function getProcesarNCredito(id_detventa) {
-    setNuevaNCredito();
-    getCliente();
+function getProcesarPago(id_cabventa) {
+    setNuevoPago();
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: 'index.php?c=Venta&a=get_iddet_venta',
-        data: "IdDetVenta=" + id_detventa,
+        url: 'index.php?c=Venta&a=get_sum_ventapago',
+        data: "IdCabVenta=" + id_cabventa,
         success: function (response) {
             $.each(response, function (key, value) {
-                $("#IdDetVenta").val(value.id_detventa);
-                $("#IdProducto").val(value.id_producto);
-                $("#IdDetProducto").val(value.producto);
+                $("#IdCabVenta").val(value.id_cabventa);
                 $("#IdNroFactura").val(value.nro_factura);
-                $("#IdCantidad").val(value.cantidad);
-                $("#IdPrecio").val(value.pvp);
+                $("#IdClient").val(value.Cliente);
+                $("#IdValor").val(value.Valor);
             });
         }
     });
 }
-function getAgregarNCredito() {
+function getRegistrarPago() {
     var html = '';
-    if ($('#IdFecha').val() == '') {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-freg").html(html);
-        $('#IdFecha').focus();
-        setTimeout(function () {
-            $("#alert-freg").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdCliente').val() == '0') {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-cli").html(html);
-        $('#IdCliente').focus();
-        setTimeout(function () {
-            $("#alert-cli").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdNroFactura').val() == '') {
+    if ($('#IdNroFactura').val() == '') {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
@@ -193,45 +147,20 @@ function getAgregarNCredito() {
             $("#alert-nrofac").fadeOut(1500);
         }, 3000);
         return false;
-    } if ($('#IdDetProducto').val() == '') {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-prod").html(html);
-        $('#IdDetProducto').focus();
-        setTimeout(function () {
-            $("#alert-prod").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdCantidad').val() == '') {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-cant").html(html);
-        $('#IdCantidad').focus();
-        setTimeout(function () {
-            $("#alert-cant").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdPrecio').val() == '') {
+    } if ($('#IdValor').val() == '') {
         html += '<div class="alert alert-danger">';
         html += 'Este campo es obligatorio!.';
         html += '</div>';
         $("#alert-prec").html(html);
-        $('#IdPrecio').focus();
+        $('#IdValor').focus();
         setTimeout(function () {
             $("#alert-prec").fadeOut(1500);
         }, 3000);
         return false;
     } else {
-        var iddet = $("#IdDetVenta").val();
-        var idfreg = $("#IdFecha").val();
-        var clien = $("#IdCliente").val();
+        var idcab = $("#IdCabVenta").val();
         var nfact = $("#IdNroFactura").val();
-        var ncredito = $("#IdNroNCredito").val();
-        var prod = $("#IdProducto").val();
-        var cant = $("#IdCantidad").val();
-        var prec = $("#IdPrecio").val();
+        var vr = $("#IdValor").val();
         Swal.fire({
             title: "CONFIRMACION!",
             icon: "warning",
@@ -244,11 +173,8 @@ function getAgregarNCredito() {
                 $.ajax({
                     type: "GET",
                     dataType: 'json',
-                    url: "index.php?c=Venta&a=save_new_ncredito",
-                    data: "Fecha=" + idfreg + "&IdDetVenta=" + iddet + 
-                    "&IdCliente=" + clien + "&NroNCredito=" + ncredito + 
-                    "&NroFactura=" + nfact + "&IdProducto=" + prod + 
-                    "&Cantidad=" + cant + "&Precio=" + prec,
+                    url: "index.php?c=Venta&a=save_new_pago",
+                    data: "IdCabVenta=" + idcab +  "&NroFactura=" + nfact + "&Valor=" + vr,
                     success: function (response) {
                         response = JSON.stringify(response);
                         if (response == 1) {

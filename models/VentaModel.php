@@ -192,4 +192,135 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    // NOTA DE CREDITO
+    public function getListaVentas()
+    {
+        $consulta = "SELECT DV.id_detventa,CV.id_cabventa,CV.freg,CV.nro_factura,C.producto,
+        DV.cantidad,DV.pvp
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
+        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        WHERE DV.id_estado =1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getDetVenta($IdDetVenta)
+    {
+        $consulta = "SELECT DV.id_detventa,CV.freg,CV.nro_factura,P.id_producto,C.producto,
+        DV.cantidad,DV.pvp
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
+        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        WHERE DV.id_detventa = '$IdDetVenta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function ExisteRegistroCabNCredito($NroNCredito)
+    {
+        $consulta = "SELECT id_cabncredito FROM cab_ncredito
+        WHERE nro_ncredito = '$NroNCredito'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function RegistroCabNCredito($FReg, $Fecha, $NroNCredito, $NroFactura, $IdCliente, $IdUsuario)
+    {
+        $consulta = "INSERT INTO cab_ncredito(freg,fecha,nro_ncredito,nro_factura,id_cliente,id_usuario)
+        VALUES(:freg,:fecha,:nro_ncredito,:nro_factura,:id_cliente,:id_usuario)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':freg', $FReg);
+        $sentencia->bindParam(':fecha', $Fecha);
+        $sentencia->bindParam(':nro_ncredito', $NroNCredito);
+        $sentencia->bindParam(':nro_factura', $NroFactura);
+        $sentencia->bindParam(':id_cliente', $IdCliente);
+        $sentencia->bindParam(':id_usuario', $IdUsuario);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function RegistroDetNCredito($IdCabNCredito, $IdProducto, $Cantidad, $Precio)
+    {
+        $consulta = "INSERT INTO det_ncredito(id_cabncredito,id_producto,cantidad,pvp)
+        VALUES(:id_cabncredito,:id_producto,:cantidad,:pvp)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':id_cabncredito', $IdCabNCredito);
+        $sentencia->bindParam(':id_producto', $IdProducto);
+        $sentencia->bindParam(':cantidad', $Cantidad);
+        $sentencia->bindParam(':pvp', $Precio);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function ActualizaEstadoDetVenta($IdDetVenta)
+    {
+        $consulta = "UPDATE det_venta SET id_estado =2
+        WHERE id_detventa = '$IdDetVenta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    // PAGO
+    public function getSumaFactura($IdCabVenta)
+    {
+        $consulta = "SELECT CV.nro_factura,CV.id_cabventa,CL.razon_social AS Cliente,SUM(DV.pvp) AS Valor
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
+        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
+        WHERE CV.id_cabventa = '$IdCabVenta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function ExisteRegistroPago($NroFactura)
+    {
+        $consulta = "SELECT id_cabncredito FROM cab_ncredito
+        WHERE nro_ncredito = '$NroFactura'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function RegistroPago($FReg, $Fecha, $IdCabVenta, $NroFactura, $Valor, $IdUsuario)
+    {
+        $consulta = "INSERT INTO pagos(freg,fecha,id_cabventa,nro_factura,valor,id_usuario)
+        VALUES(:freg,:fecha,:id_cabventa,:nro_factura,:valor,:id_usuario)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':freg', $FReg);
+        $sentencia->bindParam(':fecha', $Fecha);
+        $sentencia->bindParam(':id_cabventa', $IdCabVenta);
+        $sentencia->bindParam(':nro_factura', $NroFactura);
+        $sentencia->bindParam(':valor', $Valor);
+        $sentencia->bindParam(':id_usuario', $IdUsuario);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function ActualizaEstadoCabVenta($IdCabVenta)
+    {
+        $consulta = "UPDATE cab_venta SET id_estado =3
+        WHERE id_cabventa = '$IdCabVenta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
 }

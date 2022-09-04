@@ -77,7 +77,7 @@ function setNuevoCatalogo() {
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Código:</b> </br>';
-	html += '<input type="text" maxlength="10" placeholder="Ingrese código del producto" class="form-control" id="IdCodigo">';
+	html += '<input type="text" minlength="1" maxlength="10" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" placeholder="Ingrese código del producto" class="form-control" id="IdCodigo">';
 	html += '<div id="alert-codp"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -216,7 +216,7 @@ function setModificarCatalogo(id_catalogo) {
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Código:</b> </br>';
 	html += '<input type="hidden" class="form-control" id="IdCatalogo">';
-	html += '<input type="text" maxlength="10" placeholder="Ingrese código del producto" class="form-control" id="IdCodigoM">';
+	html += '<input type="text" minlength="1" maxlength="10" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" placeholder="Ingrese código del producto" class="form-control" id="IdCodigoM">';
 	html += '<div id="alert-codpm"></div>';
 	html += '</div>';
 	html += '</div>';

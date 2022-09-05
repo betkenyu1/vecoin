@@ -259,7 +259,6 @@ function GenerarGraficaCtasXCobrar() {
 		});
 	}
 }
-
 $(document).ready(function () {
 	getStockProductosSum();
 	getVentasAdministrador();

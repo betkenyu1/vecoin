@@ -208,7 +208,7 @@ class VentaController
                 echo 2;
             }
         }
-    }//IdValor
+    }//PAGOS
     public function get_sum_ventapago()
     {
         $IdCabVenta = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';

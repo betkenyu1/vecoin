@@ -323,4 +323,17 @@ class VentaModel
         }
         return true;
     }
+    //LISTA REPORTES
+    public function getRepCtasXCobrar()
+    {
+        $consulta = "SELECT CV.id_cabventa,CV.freg,CL.razon_social AS Cliente,CV.nro_factura,EV.estado
+        FROM cab_venta CV
+        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
 }

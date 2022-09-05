@@ -215,7 +215,7 @@ if ($_SESSION["user"] === null) {
 												<div class="menu-text">Facturas</div>
 											</a>
 
-											<a href="javascript:;" class="menu-link">
+											<a href="index.php?c=Venta&a=gestion_ncredito" class="menu-link">
 												<div class="menu-text">Notas de crédito</div>
 											</a>
 										</div>
@@ -232,7 +232,7 @@ if ($_SESSION["user"] === null) {
 									</a>
 									<div class="menu-submenu">
 										<div class="menu-item has-sub">
-											<a href="javascript:;" class="menu-link">
+											<a href="index.php?c=Venta&a=gestion_ctasxcobrar" class="menu-link">
 												<div class="menu-text">Cuentas por Cobrar</div>
 											</a>
 										</div>
@@ -246,7 +246,7 @@ if ($_SESSION["user"] === null) {
 								</a>
 								<div class="menu-submenu">
 									<div class="menu-item has-sub">
-										<a href="javascript:;" class="menu-link">
+										<a href="index.php?c=Reporte&a=reporte_cxcobrar" class="menu-link">
 											<div class="menu-text">Cuentas por cobrar</div>
 										</a>
 

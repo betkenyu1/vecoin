@@ -16,6 +16,12 @@ class VentaController
     public function gestion_ventas(){
         require_once 'views/ventas/gestion_ventas.php';
     }
+    public function gestion_ncredito(){
+        require_once 'views/ventas/gestion_ncredito.php';
+    }
+    public function gestion_ctasxcobrar(){
+        require_once 'views/ventas/gestion_ctasxcobrar.php';
+    }
     public function get_stock()
     {
         $exito = $this->vta->getStockVenta();
@@ -78,7 +84,6 @@ class VentaController
             }
         }
     }
-    
     public function get_ventas_administrador(){
         $exito = $this->vta->GetVentasAdministrador();
         if ($exito) {
@@ -148,6 +153,89 @@ class VentaController
         } else {
             $vacio = array('');
             echo json_encode($vacio);
+        }
+    }
+    //NOTA DE CREDITO
+    public function get_ventas()
+    {
+        $exito = $this->vta->getListaVentas();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_iddet_venta()
+    {
+        $IdDetVenta = (isset($_REQUEST['IdDetVenta'])) ? $_REQUEST['IdDetVenta'] : '';
+        $exito = $this->vta->getDetVenta($IdDetVenta);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function save_new_ncredito()
+    {
+        date_default_timezone_set('America/Guayaquil');
+        $FechaReg = date('m-d-Y h:i:s a', time());
+        $IdDetVenta = (isset($_REQUEST['IdDetVenta'])) ? $_REQUEST['IdDetVenta'] : '';
+        $Fecha = (isset($_REQUEST['Fecha'])) ? $_REQUEST['Fecha'] : '';
+        $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
+        $NroNCredito = (isset($_REQUEST['NroNCredito'])) ? $_REQUEST['NroNCredito'] : '';
+        $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
+        $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
+        $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
+        $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
+        $IdUsuario = $_SESSION['idusuario'];
+        $existe = $this->vta->ExisteRegistroCabNCredito($NroNCredito);
+        if ($existe) {
+        } else {
+            $reg_cab = $this->vta->RegistroCabNCredito($FechaReg, $Fecha, $NroNCredito, $NroFactura, $IdCliente, $IdUsuario);
+        }
+        $existe = $this->vta->ExisteRegistroCabNCredito($NroNCredito);
+        if ($existe) {
+            foreach ($existe as $ex) {
+                $IdCabNCredito = $ex['id_cabncredito'];
+            }
+            $exito = $this->vta->RegistroDetNCredito($IdCabNCredito, $IdProducto, $Cantidad, $Precio);
+            if ($exito) {
+                $exito = $this->vta->ActualizaEstadoDetVenta($IdDetVenta);
+                echo 1;
+            } else {
+                echo 2;
+            }
+        }
+    }//PAGOS
+    public function get_sum_ventapago()
+    {
+        $IdCabVenta = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
+        $exito = $this->vta->getSumaFactura($IdCabVenta);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function save_new_pago()
+    {
+        date_default_timezone_set('America/Guayaquil');
+        $FReg = date('m-d-Y h:i:s a', time());
+        $Fecha = date('Y-m-d');
+        $IdCabVenta = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
+        $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
+        $Valor = (isset($_REQUEST['Valor'])) ? $_REQUEST['Valor'] : '';
+        $IdUsuario = $_SESSION['idusuario'];
+        $existe = $this->vta->ExisteRegistroPago($NroFactura);
+        $exito = $this->vta->RegistroPago($FReg, $Fecha, $IdCabVenta, $NroFactura, $Valor, $IdUsuario);
+        if ($exito) {
+            $exito = $this->vta->ActualizaEstadoCabVenta($IdCabVenta);
+            echo 1;
+        } else {
+            echo 2;
         }
     }
 }

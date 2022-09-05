@@ -8,3 +8,6 @@ function getReporteOrdenSalida(os) {
 function getReporteStock() {
     window.open('views/reportes/stock_productos.php');
 }
+function getReporteCtasXCobrar() {
+    window.open('views/reportes/rep_ctasxcobrar.php');
+}

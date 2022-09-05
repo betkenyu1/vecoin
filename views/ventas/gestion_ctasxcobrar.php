@@ -6,7 +6,7 @@ include_once 'views/layout/header.php';
     <!-- BEGIN panel -->
     <div class="panel panel-inverse">
         <div class="panel-heading">
-            <h4 class="panel-title">Lista de Ordenes de Salida</h4>
+            <h4 class="panel-title">Lista de Cuentas x Cobrar</h4>
             <div class="panel-heading-btn">
                 <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                 <a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i class="fa fa-redo"></i></a>
@@ -16,9 +16,9 @@ include_once 'views/layout/header.php';
         </div>
        
         <div class="panel-body">
-            <div id="lista-ventas"></div>
-            <br>
-            <div id="n-ncredito"></div>
+        <a href="#" onclick="getReporteCtasXCobrar();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte</a>
+            <hr>
+            <div id="lista-ctasxcobrar"></div>
         </div>
     </div>
     <!-- END panel -->
@@ -26,6 +26,5 @@ include_once 'views/layout/header.php';
 <?php
 include_once 'views/layout/footer.php';
 ?>
-<script src="assets/js/venta.js"></script>
-<script src="assets/js/admin.js"></script>
+<script src="assets/js/rep_ctasxcobrar.js"></script>
 <script src="assets/js/reportes.js"></script>

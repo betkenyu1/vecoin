@@ -182,10 +182,14 @@ class AdminModel
         return true;
     }
 
-    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito)
+    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $Estado)
     {
-        $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocial', 
-        direccion = '$Direccion', telefono = '$Telefono', email = '$Email', tiempo_credito='$Tiempocredito'
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $TiempocreditoCAPITAL = ucwords(strtolower($Tiempocredito));
+        $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocialUPPER', 
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', tiempo_credito='$TiempocreditoCAPITAL',id_estado='$Estado'
         WHERE id_cliente = '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -196,7 +200,7 @@ class AdminModel
     }
     public function getClienteId($IdCliente)
     {
-        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,id_estado FROM clientes 
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,C.id_estado,E.estado FROM clientes C inner join estados E on E.id_estado=C.id_estado
         WHERE id_cliente = '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

@@ -31,5 +31,7 @@ include_once 'views/layout/header.php';
 </div>
 <?php
 include_once 'views/layout/footer.php';
+
 ?>
+<script src="assets/js/admin.js"></script>
 <script src="assets/js/cliente.js"></script>

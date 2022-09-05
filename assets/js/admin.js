@@ -213,6 +213,7 @@ function getEstados(){
         $select.append(
           "<option value=" + value.id_estado + ">" + value.estado + "</option>"
         );
+      
       });
     },
   });

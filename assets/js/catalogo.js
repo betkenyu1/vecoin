@@ -20,31 +20,36 @@ function validarCodigo(evt){
 		  $('#IdCodigo').focus();
 		return false;
 	  } 
-	}/*else if($('#IdCodigo').val().length>10){
-			
-		setTimeout(function () {
+	}
+}
+
+function validarCodigoMod(evt){
+	// code is the decimal ASCII representation of the pressed key.
+	var code = (evt.which) ? evt.which : evt.keyCode;
+	if($('#IdCodigoM').val().length<=10 || $('#IdCodigoM').val().length>10 ){
+	  if(code==8) { // backspace.
+		return true;
+	  } else if(code>=48 && code<=57) { // is a number.
+			setTimeout(function () {
 			$("#alert-codp").fadeOut(500);
 		  }, 0);
+		  return true;
+	  } else{ // other keys.
 		  var html = "";
 		  html += '<div class="alert alert-danger">';
-		  html += '*Longitud máxima 10 dígitos';
+		  html += '*Ingrese solo dígitos del [0] al [9]';
 		  html += '</div>';
 		  $("#alert-codp").html(html);      
 		  $("#alert-codp").fadeIn(1000);
-		  $('#IdCodigo').focus();
-		  return true;
-	  
-	}*/
+		  $('#IdCodigoM').focus();
+		return false;
+	  } 
+	}
 }
-
-
 function validarCorrecion(evt){
 	// code is the decimal ASCII representation of the pressed key.
 	var code = (evt.which) ? evt.which : evt.keyCode;
-	if(code!='') { 
-	  //setTimeout(function () {
-		//$("#alert-ep").fadeOut(500);
-	  //}, 0);
+	if(code!='') {
 	  setTimeout(function () {
 		$("#alert-codp").fadeOut(500);
 	  }, 0);
@@ -168,6 +173,7 @@ function setNuevoCatalogo() {
 	$('.default-select2').select2({   
         placeholder: 'Cargando datos...', 
         selectOnClose: 'false',
+
         language: {
           noResults: function() {
           //VACIO
@@ -289,7 +295,7 @@ function setModificarCatalogo(id_catalogo) {
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Empresa:</b> </br>';
 	html += '<select class="default-select2 form-control" id="IdEmpresaM"></select>';
-	html += '<div id="alert-emp"></div>';
+	html += '<div id="alert-ep"></div>';
 	html += '</div>';
 	html += '</div>';
 
@@ -297,23 +303,23 @@ function setModificarCatalogo(id_catalogo) {
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Código:</b> </br>';
 	html += '<input type="hidden" class="form-control" id="IdCatalogo">';
-	html += '<input type="text" minlength="1" maxlength="10" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" placeholder="Ingrese código del producto" class="form-control" id="IdCodigoM">';
-	html += '<div id="alert-codpm"></div>';
+	html += '<input type="text"  minlength="1" onkeypress="return validarCodigoMod(event);" placeholder="Ingrese código del producto" class="form-control" id="IdCodigoM">';
+	html += '<div id="alert-codp"></div>';
 	html += '</div>';
 	html += '</div>';
 
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Descripción:</b> </br>';
-	html += '<input type="text" placeholder="Ingrese breve descripción del producto" class="form-control" id="IdDescripcionM">';
-	html += '<div id="alert-dpm"></div>';
+	html += '<input onkeypress="return validarCorrecion(event)" type="text" placeholder="Ingrese breve descripción del producto" class="form-control" id="IdDescripcionM">';
+	html += '<div id="alert-dp"></div>';
 	html += '</div>';
 	html += '</div>';
 
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Estado:</b> </br>';
-	html += '<select class="default-select2 form-control" id="IdEstado"></select>';
+	html += '<select class="default-select2 form-control" name="IdEstado" id="IdEstado"></select>';
 	html += '<div id="alert-es"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -330,23 +336,27 @@ function setModificarCatalogo(id_catalogo) {
 	html += '</div>';
 	html += '</div>';
 	$("#mod-catalogo").html(html);
-	$('.default-select2').select2({    
-		language: {
-		  noResults: function() {
-			//VACIO
-			return "No hay registros";        
-		  },
-		  searching: function() {
-			return "Buscando..";
-		  }
-		}
-	  });
-	getEmpresasMod();
+	$('.default-select2').select2({   
+        placeholder: 'Cargando datos...', 
+        selectOnClose: 'false',
+        language: {
+          noResults: function() {
+          //VACIO
+          return "No hay registros";        
+          },
+          searching: function() {
+          return "Buscando..";
+          }
+
+        }
+	});
+	getEmpresasMod();	
 	getEstados();
-	getPrepareModificarCatalogo(id_catalogo);
+	getPrepareModificarCatalogo(id_catalogo);	
 	
 }
-function getPrepareModificarCatalogo(id_catalogo) {
+
+function getPrepareModificarCatalogo(id_catalogo) {		
 	$.ajax({
 		type: "GET",
 		dataType: 'json',
@@ -354,56 +364,96 @@ function getPrepareModificarCatalogo(id_catalogo) {
 		data: "IdCatalogo=" + id_catalogo,
 		success: function (response) {
 			$.each(response, function (key, value) {
-				$("#IdCatalogo").val(value.id_catalogo);
+								
+				//primero traer valores luego hacer triggers consulta debe traer id y descripcion																		
+				//$('#IdEmpresaM').val(null).trigger('change');							
+				
+				//alert($('#IdEmpresaM').val())									
+				/*$('#IdEstado').val(value.ID_ESTADO) + "";
+				$('#IdEstado').trigger('change'); // Notify only Select2 of changes								
+				alert($('#IdEstado').val() + "");*/
+				$("#IdEmpresaM").val(value.id_empresa).trigger('change');			
+				$("#IdCatalogo").val(value.id_catalogo);					
 				$("#IdCodigoM").val(value.codigo);
 				$("#IdDescripcionM").val(value.producto);
-			});
+				$("#IdEstado").val(value.id_estado).trigger('change'); 
+				//alert(value.ID_EMPRESA);				
+				//alert('dentro');
+				//selectestado=$('#IdEstado').val();
+				//alert($('#IdEstado').val());	
+				//$('#IdEstado').val(value.ID_ESTADO).trigger('change');
+				
+			});						
 		}
 	});
 }
 function getModificarCatalogo() {
 	var html = '';
-	if ($('#IdEmpresaM').val() == 0) {
+	if ($('#IdEmpresaM').val() == 0) {  
 		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
+		html += '*Campo requerido';
 		html += '</div>';
-		$("#alert-emp").html(html);
+		$("#alert-ep").html(html);		
+		$("#alert-ep").fadeIn(500);
 		$('#IdEmpresaM').focus();
-		setTimeout(function () {
-			$("#alert-emp").fadeOut(1500);
-		}, 3000);
 		return false;
-	} if ($('#IdCodigoM').val() == '') {
+	  }else{
+		setTimeout(function () {
+		  $("#alert-ep").fadeOut(500);
+		}, 0);
+	  }
+
+
+	  if ($('#IdCodigoM').val() == '') {
 		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
+		html += '*Campo requerido';
 		html += '</div>';
-		$("#alert-codpm").html(html);
+		$("#alert-codp").html(html);    
+		$("#alert-codp").fadeIn(500);
 		$('#IdCodigoM').focus();
-		setTimeout(function () {
-			$("#alert-codpm").fadeOut(1500);
-		}, 3000);
 		return false;
-	} if ($('#IdDescripcionM').val() == '') {
+	  } else if($('#IdCodigoM').val().length <5 || $('#IdCodigoM').val().length>10){
 		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
+		html += '*Código debe tener entre 5 dígitos y 10 dígitos. Actualmente tiene: '+$('#IdCodigoM').val().length;
 		html += '</div>';
-		$("#alert-dpm").html(html);
-		$('#IdDescripcionM').focus();
-		setTimeout(function () {
-			$("#alert-dpm").fadeOut(1500);
-		}, 3000);
+		$("#alert-codp").html(html);
+		$("#alert-codp").fadeIn(500);
+		$('#IdCodigoM').focus();
 		return false;
-	} if ($('#IdEstado').val() == '0') {
+	  }else{
+		setTimeout(function () {
+		  $("#alert-codp").fadeOut(500);
+		}, 0);
+	  }
+
+	  if ($('#IdDescripcionM').val() == '') {
 		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
+		html += '*Campo requerido';
+		html += '</div>';
+		$("#alert-dp").html(html);
+		$('#IdDescripcionM').focus();      
+		$("#alert-dp").fadeIn(500);
+		return false;
+	  } else {
+		setTimeout(function () {
+		  $("#alert-dp").fadeOut(500);
+		}, 0);
+	  } 
+
+	  if ($('#IdEstado').val() == 0) {  
+		html += '<div class="alert alert-danger">';
+		html += '*Campo requerido';
 		html += '</div>';
 		$("#alert-es").html(html);
-		$('#IdEstado').focus();
-		setTimeout(function () {
-			$("#alert-es").fadeOut(1500);
-		}, 3000);
+		$("#alert-es").fadeIn(500);   
+		$('#IdEstado').focus();            
 		return false;
-	} else {
+	  }else{
+		setTimeout(function () {
+		  $("#alert-es").fadeOut(500);
+		}, 0);
+	  } 
+	  if($('#IdEmpresaM').val() != 0 && $('#IdCodigoM').val() != '' && $('#IdDescripcionM').val() != '' && $('#IdEstado').val() != 0){
 		var idcat = $("#IdCatalogo").val();
 		var emp = $("#IdEmpresaM").val();
 		var codp = $("#IdCodigoM").val();

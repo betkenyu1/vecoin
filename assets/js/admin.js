@@ -39,7 +39,7 @@ function getEmpresasMod() {
     url: "index.php?c=Admin&a=get_empresas",
     success: function (response) {
       var $select = $("#IdEmpresaM");
-      $select.append('<option value="0">Seleccione...</option>');
+      //$select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
@@ -208,7 +208,7 @@ function getEstados(){
     url: "index.php?c=Admin&a=get_estados",
     success: function (response) {
       var $select = $("#IdEstado");
-      $select.append('<option value="0">Seleccione...</option>');
+      //$select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" + value.id_estado + ">" + value.estado + "</option>"

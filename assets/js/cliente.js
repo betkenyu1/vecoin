@@ -671,7 +671,7 @@ function setCliente() {
       setTimeout(function () {
         $("#alert-es").fadeOut(500);
       }, 0);
-      } 
+    } 
 
 
     if($('#IdRuc_mod').val() != '' && $('#IdRazonSocial_mod').val() != '' && $('#IdDireccion_mod').val() != '' && $('#IdTelefono_mod').val() != '' && $('#IdEmail_mod').val() != '' && $('#IdTiempocredito_mod').val()!='' && $('#IdEstado').val() != 0){

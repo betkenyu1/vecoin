@@ -1,3 +1,61 @@
+/**********************validaciones******************************/
+function validarCodigo(evt){
+	// code is the decimal ASCII representation of the pressed key.
+	var code = (evt.which) ? evt.which : evt.keyCode;
+	if($('#IdCodigo').val().length<=10 || $('#IdCodigo').val().length>10 ){
+	  if(code==8) { // backspace.
+		return true;
+	  } else if(code>=48 && code<=57) { // is a number.
+			setTimeout(function () {
+			$("#alert-codp").fadeOut(500);
+		  }, 0);
+		  return true;
+	  } else{ // other keys.
+		  var html = "";
+		  html += '<div class="alert alert-danger">';
+		  html += '*Ingrese solo dígitos del [0] al [9]';
+		  html += '</div>';
+		  $("#alert-codp").html(html);      
+		  $("#alert-codp").fadeIn(1000);
+		  $('#IdCodigo').focus();
+		return false;
+	  } 
+	}/*else if($('#IdCodigo').val().length>10){
+			
+		setTimeout(function () {
+			$("#alert-codp").fadeOut(500);
+		  }, 0);
+		  var html = "";
+		  html += '<div class="alert alert-danger">';
+		  html += '*Longitud máxima 10 dígitos';
+		  html += '</div>';
+		  $("#alert-codp").html(html);      
+		  $("#alert-codp").fadeIn(1000);
+		  $('#IdCodigo').focus();
+		  return true;
+	  
+	}*/
+}
+
+
+function validarCorrecion(evt){
+	// code is the decimal ASCII representation of the pressed key.
+	var code = (evt.which) ? evt.which : evt.keyCode;
+	if(code!='') { 
+	  //setTimeout(function () {
+		//$("#alert-ep").fadeOut(500);
+	  //}, 0);
+	  setTimeout(function () {
+		$("#alert-codp").fadeOut(500);
+	  }, 0);
+	  setTimeout(function () {
+		$("#alert-dp").fadeOut(500);
+	  }, 0);
+	  return true;// backspace.
+	}  
+  }
+/**********************fin validaciones******************************/
+
 function CerrarListaCatalogo() {
 	$(".cerrar-lcat").hide();
 }
@@ -77,7 +135,7 @@ function setNuevoCatalogo() {
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Código:</b> </br>';
-	html += '<input type="text" minlength="1" maxlength="10" onKeypress="if (event.keyCode < 48 || event.keyCode > 57) event.returnValue = false;" placeholder="Ingrese código del producto" class="form-control" id="IdCodigo">';
+	html += '<input type="text"  minlength="1" onkeypress="return validarCodigo(event);" placeholder="Ingrese código del producto" class="form-control" id="IdCodigo">';
 	html += '<div id="alert-codp"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -85,7 +143,7 @@ function setNuevoCatalogo() {
 	html += '<div class="col-md-6">';
 	html += '<div class="mb-10px">';
 	html += '<b style="color: #000000;">Descripción:</b> </br>';
-	html += '<input type="text" placeholder="Ingrese breve descripción del producto" class="form-control" id="IdDescripcionP">';
+	html += '<input onkeypress="return validarCorrecion(event)" type="text" placeholder="Ingrese breve descripción del producto" class="form-control" id="IdDescripcionP">';
 	html += '<div id="alert-dp"></div>';
 	html += '</div>';
 	html += '</div>';
@@ -107,52 +165,75 @@ function setNuevoCatalogo() {
 	html += '</div>';
 	html += '</div>';
 	$("#new-catalogo").html(html);
-	$('.default-select2').select2({    
-		language: {
-		  noResults: function() {
-			//VACIO
-			return "No hay registros";          
-		  },
-		  searching: function() {	  
-			return "Buscando..";
-		  }
-		}
-	  });
+	$('.default-select2').select2({   
+        placeholder: 'Cargando datos...', 
+        selectOnClose: 'false',
+        language: {
+          noResults: function() {
+          //VACIO
+          return "No hay registros";        
+          },
+          searching: function() {
+          return "Buscando..";
+          }
+
+        }
+        });
 	getEmpresas();
 }
 function getGuardarCatalogo() {
 	var html = '';
-	if ($('#IdEmpresa').val() == 0) {
+	if ($('#IdEmpresa').val() == 0) {  
 		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
+		html += '*Campo requerido';
 		html += '</div>';
-		$("#alert-ep").html(html);
+		$("#alert-ep").html(html);		
+		$("#alert-ep").fadeIn(500);
 		$('#IdEmpresa').focus();
-		setTimeout(function () {
-			$("#alert-ep").fadeOut(1500);
-		}, 3000);
 		return false;
-	} if ($('#IdCodigo').val() == '') {
+	  }else{
+		setTimeout(function () {
+		  $("#alert-ep").fadeOut(500);
+		}, 0);
+	  }
+
+	  if ($('#IdCodigo').val() == '') {
 		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
+		html += '*Campo requerido';
+		html += '</div>';
+		$("#alert-codp").html(html);    
+		$("#alert-codp").fadeIn(500);
+		$('#IdCodigo').focus();
+		return false;
+	  } else if($('#IdCodigo').val().length <5 || $('#IdCodigo').val().length>10){
+		html += '<div class="alert alert-danger">';
+		html += '*Código debe tener entre 5 dígitos y 10 dígitos. Actualmente tiene: '+$('#IdCodigo').val().length;
 		html += '</div>';
 		$("#alert-codp").html(html);
+		$("#alert-codp").fadeIn(500);
 		$('#IdCodigo').focus();
-		setTimeout(function () {
-			$("#alert-codp").fadeOut(1500);
-		}, 3000);
 		return false;
-	} if ($('#IdDescripcionP').val() == '') {
+	  }else{
+		setTimeout(function () {
+		  $("#alert-codp").fadeOut(500);
+		}, 0);
+	  }
+
+	  if ($('#IdDescripcionP').val() == '') {
 		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
+		html += '*Campo requerido';
 		html += '</div>';
 		$("#alert-dp").html(html);
-		$('#IdDescripcionP').focus();
-		setTimeout(function () {
-			$("#alert-dp").fadeOut(1500);
-		}, 3000);
+		$('#IdDescripcionP').focus();      
+		$("#alert-dp").fadeIn(500);
 		return false;
-	} else {
+	  } else {
+		setTimeout(function () {
+		  $("#alert-dp").fadeOut(500);
+		}, 0);
+	  } 
+
+	  if($('#IdEmpresa').val() != 0 && $('#IdCodigo').val() != '' && $('#IdDescripcionP').val() != ''){	
 		var ep = $("#IdEmpresa").val();
 		var codp = $("#IdCodigo").val();
 		var dp = $("#IdDescripcionP").val();

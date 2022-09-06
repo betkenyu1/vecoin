@@ -382,7 +382,6 @@ function getPrepareModificarCatalogo(id_catalogo) {
 				//selectestado=$('#IdEstado').val();
 				//alert($('#IdEstado').val());	
 				//$('#IdEstado').val(value.ID_ESTADO).trigger('change');
-				
 			});						
 		}
 	});

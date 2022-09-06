@@ -43,7 +43,7 @@ class CatalogoModel
     }
     public function getPModificarItemCatalogo($IdCatalogo)
     {
-        $consulta = "SELECT id_catalogo, ID_EMPRESA, CODIGO,PRODUCTO,ID_ESTADO FROM CATALOGO WHERE id_catalogo= '$IdCatalogo'";
+        $consulta = "SELECT id_catalogo, id_empresa, codigo, producto, id_estado FROM catalogo WHERE id_catalogo= '$IdCatalogo'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

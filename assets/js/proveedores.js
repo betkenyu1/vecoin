@@ -1,3 +1,29 @@
+/********** VALIDACIONES **********/
+function validarRUC(evt){
+  // code is the decimal ASCII representation of the pressed key.
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if($('#IdRuc').val().length<=13||$('#IdRuc').val().length>13){
+    if(code==8) { // backspace.
+      return true;
+    } else if(code>=48 && code<=57) { // is a number.
+          setTimeout(function () {
+          $("#alert-rc").fadeOut(500);
+        }, 0);
+        return true;
+    } else{ // other keys.
+        var html = "";
+        html += '<div class="alert alert-danger">';
+        html += '*Ingrese solo dígitos del [0] al [9]';
+        html += '</div>';
+        $("#alert-rc").html(html);      
+        $("#alert-rc").fadeIn(1000);
+        $('#IdRuc').focus();
+      return false;
+    } 
+  } 
+}
+/********** FIN VALIDACIONES **********/
+
 function getListaProveedores() {
   var html = '';
   html += '<div style="overflow: scroll" class="cerrar-lprov">';
@@ -16,7 +42,7 @@ function getListaProveedores() {
   html += '<th class="text-nowrap">Acciones</th>';
   html += '</tr>';
   html += '</thead>';
-  html += '<tbody>';
+  html += '<tbody style="background-color:#c1f8ff">';
   $.ajax({
     type: "GET",
     dataType: 'json',
@@ -66,15 +92,15 @@ function setProveedor() {
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Ruc:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdRuc">';
+    html += '<b style="color: #000000;">R.U.C.:</b> </br>';
+    html += '<input type="text"   class="form-control" minlength="13" onkeypress="return validarRUC(event)" placeholder="Ingrese R.U.C." id="IdRuc">';
     html += '<div id="alert-rc"></div>';
     html += "</div>";
     html += "</div>";
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Razon Social:</b> </br>';
+    html += '<b style="color: #000000;">Razón Social:</b> </br>';
     html += '<input type="text" class="form-control" id="IdRazonSocial">';
     html += '<div id="alert-rs"></div>';
     html += "</div>";
@@ -82,7 +108,7 @@ function setProveedor() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Direccion:</b> </br>';
+    html += '<b style="color: #000000;">Dirección:</b> </br>';
     html += '<input type="text" class="form-control" id="IdDireccion">';
     html += '<div id="alert-dr"></div>';
     html += "</div>";
@@ -90,7 +116,7 @@ function setProveedor() {
   
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Telefono:</b> </br>';
+    html += '<b style="color: #000000;">Teléfono:</b> </br>';
     html += '<input type="text" class="form-control" id="IdTelefono">';
     html += '<div id="alert-tl"></div>';
     html += "</div>";

@@ -476,7 +476,20 @@ function setProveedor() {
       html += '</div>';
       html += '</div>';
       $("#panel-mod-proveedor").html(html);
-      $('.default-select2').select2();
+      $('.default-select2').select2({   
+        placeholder: 'Cargando datos...', 
+        selectOnClose: 'false',
+        language: {
+          noResults: function() {
+          //VACIO
+          return "No hay registros";        
+          },
+          searching: function() {
+          return "Buscando..";
+          }
+
+        }
+        });
       getEstadosModificar();
       getPrepareModificarProveedor(id_proveedor);
   }

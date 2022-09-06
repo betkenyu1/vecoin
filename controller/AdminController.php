@@ -104,6 +104,17 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+    public function get_empresa_id_modificar()
+    {
+        $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
+        $exito = $this->adm->getEmpresaIdModificar($IdEmpresa);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_cliente_id()
     {
         $IdCliente = (isset($_REQUEST['IdCliente'])) ? $_REQUEST['IdCliente'] : '';
@@ -147,7 +158,7 @@ class AdminController
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
         $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $exito = $this->adm->ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito,$IdEstado);
+        $exito = $this->adm->ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $IdEstado);
         if ($exito) {
             echo 1;
         } else {
@@ -253,7 +264,7 @@ class AdminController
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $exito = $this->adm->ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email,$IdEstado);
+        $exito = $this->adm->ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $IdEstado);
         if ($exito) {
             echo 1;
         } else {
@@ -269,7 +280,8 @@ class AdminController
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $exito = $this->adm->ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email);
+        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';    
+        $exito = $this->adm->ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email, $IdEstado);
         if ($exito) {
             echo 1;
         } else {

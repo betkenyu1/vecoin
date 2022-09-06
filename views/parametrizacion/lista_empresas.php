@@ -10,8 +10,7 @@ include_once 'views/layout/header.php';
         <div class="panel-heading">
             <h4 class="panel-title">CATÁLOGO DE EMPRESAS</h4>
             <div class="panel-heading-btn">
-                <a href="javascript:;" title="Pantalla Completa" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i
-                        class="fa fa-expand"></i></a>
+                <a href="javascript:;" title="Pantalla Completa" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i class="fa fa-expand"></i></a>
                 <!--<a href="javascript:;" class="btn btn-xs btn-icon btn-success" data-toggle="panel-reload"><i
                         class="fa fa-redo"></i></a>
                 <a href="javascript:;" class="btn btn-xs btn-icon btn-warning" data-toggle="panel-collapse"><i
@@ -21,8 +20,7 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
-            <a href="#new?1" onclick="setEmpresa();" class="btn btn-success"><i class="fa fa-plus"
-                    aria-hidden="true"></i> Agregar Empresa</a>
+            <a href="#new?1" onclick="setEmpresa();" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Empresa</a>
             <hr>
             <div id="new-empresa"></div>
             <div id="lista-empresas"></div>
@@ -34,4 +32,5 @@ include_once 'views/layout/header.php';
 <?php
 include_once 'views/layout/footer.php';
 ?>
+<script src="assets/js/admin.js"></script>
 <script src="assets/js/empresa.js"></script>

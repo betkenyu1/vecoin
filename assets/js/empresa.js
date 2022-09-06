@@ -433,11 +433,19 @@ function setModificarEmpresa(id_empresa) {
 	html += '<div class="form-group">';
 	html += '<div class="row">';
 
-	html += '<div class="col-md-6">';
+  html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Razon Social:</b> </br>';
+  html += '<b style="color: #000000;">R.U.C.:</b> </br>';
+  html += '<input type="text"   class="form-control" minlength="13" onkeypress="return validarRUCMod(event)" placeholder="Ingrese R.U.C." id="IdRuc_mod">';
+  html += '<div id="alert-rc"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Razón Social:</b> </br>';
   html += '<input type="hidden" class="form-control" id="IdEmpresa">';
-  html += '<input type="text" class="form-control" id="IdRazonSocial_mod">';
+  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Razón Social" class="form-control" id="IdRazonSocial_mod">';
   html += '<div id="alert-rs"></div>';
   html += "</div>";
   html += "</div>";
@@ -445,31 +453,25 @@ function setModificarEmpresa(id_empresa) {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Nombre Comercial:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdNombreComercial_mod">';
+  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Razón Social" class="form-control" id="IdNombreComercial_mod">';
   html += '<div id="alert-nc"></div>';
   html += "</div>";
   html += "</div>";
 
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Ruc:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdRuc_mod">';
-  html += '<div id="alert-rc"></div>';
-  html += "</div>";
-  html += "</div>";
+  
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Direccion:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdDireccion_mod">';
+  html += '<b style="color: #000000;">Dirección:</b> </br>';
+  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Dirección"  class="form-control" id="IdDireccion_mod">';
   html += '<div id="alert-dr"></div>';
   html += "</div>";
   html += "</div>";
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Telefono:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdTelefono_mod">';
+  html += '<b style="color: #000000;">Teléfono:</b> </br>';
+  html += '<input type="text" onkeypress="return validarTelefonoMod(event)" placeholder="Ingrese Teléfono" class="form-control" id="IdTelefono_mod">';
   html += '<div id="alert-tl"></div>';
   html += "</div>";
   html += "</div>";
@@ -477,10 +479,18 @@ function setModificarEmpresa(id_empresa) {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Email:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdEmail_mod">';
+  html += '<input type="email" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Email" class="form-control" id="IdEmail_mod">';
   html += '<div id="alert-em"></div>';
   html += "</div>";
   html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Estado:</b> </br>';
+  html += '<select class="default-select2 form-control" name="IdEstado" id="IdEstado"></select>';
+  html += '<div id="alert-es"></div>';
+  html += '</div>';
+  html += '</div>';
 
 	html += '<div class="text-center">';
 	html += '<a class="btn btn-outline-danger" onclick="CerrarModificarEmpresa();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
@@ -494,124 +504,218 @@ function setModificarEmpresa(id_empresa) {
 	html += '</div>';
 	html += '</div>';
 	$("#panel-mod-empresa").html(html);
-	$('.default-select2').select2();
-  getPrepareModificarEmpresa(id_empresa);
+	$('.default-select2').select2({   
+    placeholder: 'Cargando datos...', 
+    selectOnClose: 'false',
+    language: {
+      noResults: function() {
+      //VACIO
+      return "No hay registros";        
+      },
+      searching: function() {
+      return "Buscando..";
+      }
+
+    }
+    });
+    getEstadosModificar();
+    getPrepareModificarEmpresa(id_empresa);
 }
 function getPrepareModificarEmpresa(id_empresa) {
 	$.ajax({
 		type: "GET",
 		dataType: 'json',
-		url: 'index.php?c=Admin&a=get_empresa_id',
+		url: 'index.php?c=Admin&a=get_empresa_id_modificar',
 		data: "IdEmpresa=" + id_empresa,
 		success: function (response) {
 			$.each(response, function (key, value) {
         $("#IdEmpresa").val(value.id_empresa);
+        $("#IdRuc_mod").val(value.ruc);
 				$("#IdRazonSocial_mod").val(value.razon_social);
-				$("#IdNombreComercial_mod").val(value.nombre_comercial);
-				$("#IdRuc_mod").val(value.ruc);
+				$("#IdNombreComercial_mod").val(value.nombre_comercial);				
         $("#IdDireccion_mod").val(value.direccion);
 				$("#IdTelefono_mod").val(value.telefono);
         $("#IdEmail_mod").val(value.email);
+        $("#IdEstado").val(value.id_estado).trigger('change');  
 			});
 		}
 	});
 }
 function getModificarEmpresa() {
 	var html = '';
-	if ($('#IdRazonSocial').val() == "") {
+
+  if ($('#IdRuc_mod').val() == '') {
     html += '<div class="alert alert-danger">';
-    html += 'Este campo es obligatorio!.';
+    html += '*Campo requerido';
     html += '</div>';
-    $("#alert-rs").html(html);
-    $('#IdRazonSocial').focus();
-    setTimeout(function () {
-      $("#alert-rs").fadeOut(1500);
-    }, 3000);
+    $("#alert-rc").html(html);    
+    $("#alert-rc").fadeIn(500);
+    $('#IdRuc_mod').focus();
     return false;
-  } if ($('#IdNombreComercial').val() == "") {
+  } else if($('#IdRuc_mod').val().length !=13 || $('#IdRuc_mod').val().length>13){
     html += '<div class="alert alert-danger">';
-    html += 'Este campo es obligatorio!.';
-    html += '</div>';
-    $("#alert-ump").html(html);
-    $('#IdNombreComercial').focus();
-    setTimeout(function () {
-      $("#alert-ump").fadeOut(1500);
-    }, 3000);
-    return false;
-  } if ($('#IdRuc').val() == '') {
-    html += '<div class="alert alert-danger">';
-    html += 'Este campo es obligatorio!.';
+    html += '*R.U.C. posee 13 dígitos.  Actualmente tiene: '+$('#IdRuc_mod').val().length;
     html += '</div>';
     $("#alert-rc").html(html);
-    $('#IdRuc').focus();
-    setTimeout(function () {
-      $("#alert-rc").fadeOut(1500);
-    }, 3000);
+    $("#alert-rc").fadeIn(500);
+    $('#IdRuc_mod').focus();
     return false;
-  } if ($('#IdDireccion').val() == '') {
+  }else{
+    setTimeout(function () {
+      $("#alert-rc").fadeOut(500);
+    }, 0);
+  }
+
+	if ($('#IdRazonSocial_mod').val() == '') {
     html += '<div class="alert alert-danger">';
-    html += 'Este campo es obligatorio!.';
+    html += '*Campo requerido';
+    html += '</div>';
+    $("#alert-rs").html(html);
+    $('#IdRazonSocial_mod').focus();      
+    $("#alert-rs").fadeIn(500);
+    return false;
+  } else {
+    setTimeout(function () {
+      $("#alert-rs").fadeOut(500);
+    }, 0);
+  }
+
+  if ($('#IdNombreComercial_mod').val() == '') {
+    html += '<div class="alert alert-danger">';
+    html += '*Campo requerido';
+    html += '</div>';
+    $("#alert-nc").html(html);
+    $('#IdNombreComercial_mod').focus();      
+    $("#alert-nc").fadeIn(500);
+    return false;
+  } else {
+    setTimeout(function () {
+      $("#alert-nc").fadeOut(500);
+    }, 0);
+  }
+  
+  if ($('#IdDireccion_mod').val() == '') {
+    html += '<div class="alert alert-danger">';
+    html += '*Campo requerido';
     html += '</div>';
     $("#alert-dr").html(html);
-    $('#IdDireccion').focus();
-    setTimeout(function () {
-      $("#alert-dr").fadeOut(1500);
-    }, 3000);
+    $('#IdDireccion_mod').focus();      
+    $("#alert-dr").fadeIn(500);
     return false;
-  } if ($('#IdTelefono').val() == '') {
+  } else {
+    setTimeout(function () {
+      $("#alert-dr").fadeOut(500);
+    }, 0);
+  }
+  
+  if ($('#IdTelefono_mod').val() == '') {
     html += '<div class="alert alert-danger">';
-    html += 'Este campo es obligatorio!.';
+    html += '*Campo requerido';
+    html += '</div>';
+    $("#alert-tl").html(html);    
+    $("#alert-tl").fadeIn(500);
+    $('#IdTelefono_mod').focus();
+    return false;
+  }else if($('#IdTelefono_mod').val().length <9){
+    html += '<div class="alert alert-danger">';
+    html += '*Ingrese un teléfono fijo con código de area o un teléfono celular';
     html += '</div>';
     $("#alert-tl").html(html);
-    $('#IdTelefono').focus();
-    setTimeout(function () {
-      $("#alert-tl").fadeOut(1500);
-    }, 3000);
+    $("#alert-tl").fadeIn(500);
+    $('#IdTelefono_mod').focus();
     return false;
-  } if ($('#IdEmail').val() == '') {
+  }else if($('#IdTelefono_mod').val().length > 10){
     html += '<div class="alert alert-danger">';
-    html += 'Este campo es obligatorio!.';
+    html += '*Ingrese un teléfono fijo o un teléfono celular válido';
+    html += '</div>';
+    $("#alert-tl").html(html);
+    $("#alert-tl").fadeIn(500);
+    $('#IdTelefono_mod').focus();
+    return false;
+  }else{
+    setTimeout(function () {
+      $("#alert-tl").fadeOut(500);
+    }, 0);
+  }
+  
+  if ($('#IdEmail_mod').val() == '') {
+    html += '<div class="alert alert-danger">';
+    html += '*Campo requerido';
     html += '</div>';
     $("#alert-em").html(html);
-    $('#IdEmail').focus();
+    $('#IdEmail_mod').focus();      
+    $("#alert-em").fadeIn(500);
+      return false;
+  }else if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test($('#IdEmail_mod').val())==0){
+    html += '<div class="alert alert-danger">';
+    html += '*Email inválido';
+    html += '</div>';
+    $("#alert-em").html(html);
+    $('#IdEmail_mod').focus();      
+    $("#alert-em").fadeIn(500);
+      return false;
+  }else {
     setTimeout(function () {
-      $("#alert-em").fadeOut(1500);
-    }, 3000);
+      $("#alert-em").fadeOut(500);
+    }, 0);
+  }
+
+  if ($('#IdEstado').val() == 0) {  
+    html += '<div class="alert alert-danger">';
+    html += '*Campo requerido';
+    html += '</div>';
+    $("#alert-es").html(html);
+    $("#alert-es").fadeIn(500);   
+    $('#IdEstado').focus();            
     return false;
-	} else {
+  }else{
+    setTimeout(function () {
+      $("#alert-es").fadeOut(500);
+    }, 0);
+  } 
+  
+  if($('#IdRuc_mod').val() != '' && $('#IdRazonSocial_mod').val() != '' && $('#IdNombreComercial_mod').val() != '' && $('#IdDireccion_mod').val() != '' && $('#IdTelefono_mod').val() != '' && $('#IdEmail_mod').val() != '' && $('#IdEstado').val() != 0){        
 		var idempre = $("#IdEmpresa").val();
-		var rs = $("#IdRazonSocial_mod").val();
-		var nc = $("#IdNombreComercial_mod").val();
 		var rc = $("#IdRuc_mod").val();
+    var rs = $("#IdRazonSocial_mod").val();
+		var nc = $("#IdNombreComercial_mod").val();		
 		var dir = $("#IdDireccion_mod").val();
 		var tel = $("#IdTelefono_mod").val();
 		var ema = $("#IdEmail_mod").val();
+    var es = $("#IdEstado").val();
 		Swal.fire({
-			title: "CONFIRMACION!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Sí continuar"
+			title: "¡ATENCIÓN CONFIRMAR ACTUALIZACIÓN!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText:"Cancelar",
+            confirmButtonText: "Confirmar"
 		}).then((result) => {
 			if (result.isConfirmed) {
 				$.ajax({
 					type: "GET",
 					dataType: 'json',
 					url: "index.php?c=Admin&a=get_mod_empresa",
-					data: "IdEmpresa=" + idempre + "&RazonSocial=" + rs + "&NombreComercial=" + nc +
-						"&Ruc=" + rc + "&Direccion=" + dir +
-						"&Telefono=" + tel + "&Email=" + ema,
+					data: 
+            "IdEmpresa=" + idempre + 
+            "&RazonSocial=" + rs + 
+            "&NombreComercial=" + nc +
+						"&Ruc=" + rc +
+            "&Direccion=" + dir +
+						"&Telefono=" + tel + 
+            "&Email=" + ema+
+            "&IdEstado="+es,            
 					success: function (response) {
 						response = JSON.stringify(response);
 						if (response == 1) {
 							Swal.fire({
-								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Modificado OK!.</b></div></div>',
+								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>ACTUALIZACIÓN CORRECTA</b></div></div>',
 							});
 							CerrarModificarEmpresa();
 						} if (response == 2) {
 							Swal.fire({
-								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error al modificar!.</b></div></div>',
+								html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ACTUALIZACIÓN INCORRECTA</b></div></div>',
 							});
 						}
 					}
@@ -622,12 +726,13 @@ function getModificarEmpresa() {
 }
 function getEliminarEmpresa(id_empresa) {
 	Swal.fire({
-		title: "CONFIRMACION!",
-		icon: "warning",
-		showCancelButton: true,
-		confirmButtonColor: "#3085d6",
-		cancelButtonColor: "#d33",
-		confirmButtonText: "Sí continuar"
+		title: "¡ATENCIÓN CONFIRMAR ELIMINACIÓN!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+			  cancelButtonText:"Cancelar",
+        confirmButtonText: "Confirmar"
 	}).then((result) => {
 		if (result.isConfirmed) {
 			$.ajax({
@@ -639,12 +744,12 @@ function getEliminarEmpresa(id_empresa) {
 					response = JSON.stringify(response);
 					if (response == 1) {
 						Swal.fire({
-							html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>Eliminado OK!.</b></div></div>',
+							html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>ELIMINACIÓN CORRECTA</b></div></div>',
 						});
 						CerrarModificarEmpresa();
 					} if (response == 2) {
 						Swal.fire({
-							html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+							html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ELIMINACIÓN INCORRECTA</b></div></div>',
 						});
 					}
 				}

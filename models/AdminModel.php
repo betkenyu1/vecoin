@@ -162,11 +162,16 @@ class AdminModel
         return true;
     }
 
-    public function ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email)
+    public function ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email, $IdEstado)
     {
-        $consulta = "UPDATE empresas SET razon_social = '$RazonSocial', 
-        nombre_comercial = '$NombreComercial',ruc = '$Ruc',
-        direccion = '$Direccion', telefono = '$Telefono', email = '$Email'
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $NombreComercialUPPER = mb_strtoupper($NombreComercial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $consulta = "UPDATE empresas SET razon_social = '$RazonSocialUPPER', 
+        nombre_comercial = '$NombreComercialUPPER',ruc = '$Ruc',
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', 
+        email = '$EmailLOWER',  id_estado='$IdEstado'
         WHERE id_empresa = '$IdEmpresa'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -385,6 +390,19 @@ class AdminModel
         INNER JOIN estados E 
         ON E.id_estado=P.id_estado
         WHERE id_proveedor = '$IdProveedor'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+    public function getEmpresaIdModificar($IdEmpresa)
+    {
+        $consulta = "SELECT id_empresa,ruc,razon_social,nombre_comercial,direccion,telefono,email,E.id_estado ,ES.estado
+        FROM empresas E
+        INNER JOIN estados ES
+        ON E.id_estado=ES.id_estado
+        WHERE id_empresa = '$IdEmpresa'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

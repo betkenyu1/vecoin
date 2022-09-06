@@ -1,4 +1,4 @@
-//validaciones
+/********** VALIDACIONES **********/
 function validarRUC(evt){
   // code is the decimal ASCII representation of the pressed key.
   var code = (evt.which) ? evt.which : evt.keyCode;
@@ -117,7 +117,7 @@ function validarCorrecion(evt){
   }  
 }
 
-/*************************/
+/********** FIN VALIDACIONES **********/
 
 function setCliente() {
     //desarrollo de interfaz vacia

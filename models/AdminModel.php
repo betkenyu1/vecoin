@@ -67,8 +67,10 @@ class AdminModel
     }
     public function getEmpresas()
     {
-        $consulta = "SELECT id_empresa,razon_social,ruc,telefono,email FROM empresas
-        WHERE id_estado = 1";
+        $consulta = "SELECT id_empresa,ruc,razon_social,nombre_comercial,direccion,telefono,email,
+        CASE WHEN id_estado='1' THEN 'Activo'
+        ELSE 'Inactivo' END AS id_estado
+        FROM empresas";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

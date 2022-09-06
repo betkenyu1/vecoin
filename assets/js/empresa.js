@@ -1,3 +1,85 @@
+/***************** VALIDACIONES*****************/
+function validarRUC(evt){
+  // code is the decimal ASCII representation of the pressed key.
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if($('#IdRuc').val().length<=13||$('#IdRuc').val().length>13){
+    if(code==8) { // backspace.
+      return true;
+    } else if(code>=48 && code<=57) { // ES UN NUMERO
+          setTimeout(function () {
+          $("#alert-rc").fadeOut(500);
+        }, 0);
+        return true;
+    } else{ // other keys.
+        var html = "";
+        html += '<div class="alert alert-danger">';
+        html += '*Ingrese solo dígitos del [0] al [9]';
+        html += '</div>';
+        $("#alert-rc").html(html);      
+        $("#alert-rc").fadeIn(1000);
+        $('#IdRuc').focus();
+      return false;
+    } 
+  } 
+}
+/***************** FIN VALIDACIONES*****************/
+function getListaEmpresas() {
+  var html = '';
+  html += '<div style="overflow:scroll" class="cerrar-lemp">';
+  html += '<div class="">';
+  html += '<div class="note-content">';
+  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+  html += '<thead>';
+  html += '<tr>';
+  html += '<th width="1%"></th>';
+  html += '<th class="text-nowrap">R.U.C.</th>';
+  html += '<th class="text-nowrap">Razón Social</th>';
+  html += '<th class="text-nowrap">Nombre Comercial</th>';
+  html += '<th class="text-nowrap">Dirección</th>';
+  html += '<th class="text-nowrap">Telefono</th>';
+  html += '<th class="text-nowrap">Email</th>';
+  html += '<th class="text-nowrap">Estado</th>';
+  html += '<th class="text-nowrap">Acciones</th>';
+  html += '</tr>';
+  html += '</thead>';
+  html += '<tbody style="background-color:#c1f8ff">';
+  $.ajax({
+    type: "GET",
+    dataType: 'json',
+    url: 'index.php?c=Admin&a=get_empresas',
+    success: function (response) {
+      $.each(response, function (key, value) {
+        html += '<tr class="odd gradeX">';
+        html += '<td width="1%" class="fw-bold text-dark">' + value.id_empresa + '</td>';
+        html += '<td>' + value.ruc + '</td>';
+        html += '<td>' + value.razon_social + '</td>';
+        html += '<td>' + value.nombre_comercial + '</td>';
+        html += '<td>' + value.direccion + '</td>';
+        html += '<td>' + value.telefono + '</td>';
+        html += '<td>' + value.email + '</td>';
+        html += '<td>' + value.id_estado + '</td>';
+        html += '<td>';
+        html += '<a class="btn btn-outline-warning" onclick="setModificarEmpresa(' + value.id_empresa + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+        html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarEmpresa(' + value.id_empresa + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+        html += '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody>';
+      html += '</table>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      $("#lista-empresas").html(html);
+      $('#data-table-select').DataTable({
+        "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
+        select: false,
+        responsive: true
+        
+      });
+    }
+  });
+}
+
 function setEmpresa() {
   //desarrollo de interfaz vacia
   $(".cerrar-lemp").hide();
@@ -9,10 +91,18 @@ function setEmpresa() {
   html += "<form>";
   html += '<div class="form-group">';
   html += '<div class="row">';
+  
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">R.U.C.:</b> </br>';
+  html += '<input type="text" class="form-control" minlength="13" placeholder="Ingrese R.U.C." onkeypress="return validarRUC(event)" id="IdRuc">';
+  html += '<div id="alert-rc"></div>';
+  html += "</div>";
+  html += "</div>";
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Razon Social:</b> </br>';
+  html += '<b style="color: #000000;">Razón Social:</b> </br>';
   html += '<input type="text" class="form-control" id="IdRazonSocial">';
   html += '<div id="alert-rs"></div>';
   html += "</div>";
@@ -26,17 +116,10 @@ function setEmpresa() {
   html += "</div>";
   html += "</div>";
 
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Ruc:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdRuc">';
-  html += '<div id="alert-rc"></div>';
-  html += "</div>";
-  html += "</div>";
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Direccion:</b> </br>';
+  html += '<b style="color: #000000;">Dirección:</b> </br>';
   html += '<input type="text" class="form-control" id="IdDireccion">';
   html += '<div id="alert-dr"></div>';
   html += "</div>";
@@ -44,7 +127,7 @@ function setEmpresa() {
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Telefono:</b> </br>';
+  html += '<b style="color: #000000;">Teléfono:</b> </br>';
   html += '<input type="text" class="form-control" id="IdTelefono">';
   html += '<div id="alert-tl"></div>';
   html += "</div>";
@@ -180,54 +263,7 @@ function getGuardarEmpresa() {
     });
   }
 }
-function getListaEmpresas() {
-  var html = '';
-  html += '<div class="cerrar-lemp">';
-  html += '<div class="note note-blue">';
-  html += '<div class="note-content">';
-  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
-  html += '<thead>';
-  html += '<tr>';
-  html += '<th width="1%"></th>';
-  html += '<th class="text-nowrap">Razon Social</th>';
-  html += '<th class="text-nowrap">Ruc</th>';
-  html += '<th class="text-nowrap">Telefono</th>';
-  html += '<th class="text-nowrap">Email</th>';
-  html += '<th class="text-nowrap">Acciones</th>';
-  html += '</tr>';
-  html += '</thead>';
-  html += '<tbody>';
-  $.ajax({
-    type: "GET",
-    dataType: 'json',
-    url: 'index.php?c=Admin&a=get_empresas',
-    success: function (response) {
-      $.each(response, function (key, value) {
-        html += '<tr class="odd gradeX">';
-        html += '<td width="1%" class="fw-bold text-dark">' + value.id_empresa + '</td>';
-        html += '<td>' + value.razon_social + '</td>';
-        html += '<td>' + value.ruc + '</td>';
-        html += '<td>' + value.telefono + '</td>';
-        html += '<td>' + value.email + '</td>';
-        html += '<td>';
-        html += '<a class="btn btn-outline-warning" onclick="setModificarEmpresa(' + value.id_empresa + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
-        html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarEmpresa(' + value.id_empresa + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-        html += '</td>';
-        html += '</tr>';
-      });
-      html += '</tbody>';
-      html += '</table>';
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      $("#lista-empresas").html(html);
-      $('#data-table-select').DataTable({
-        select: true,
-        responsive: true
-      });
-    }
-  });
-}
+
 function CerrarModificarEmpresa() {
 	$(".cerrar-emp").hide();
 	getListaEmpresas();

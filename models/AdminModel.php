@@ -108,15 +108,19 @@ class AdminModel
     }
     public function RegistroEmpresa($RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email)
     {
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $NombreComercialUPPER = mb_strtoupper($NombreComercial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $consulta = "INSERT INTO empresas (razon_social,nombre_comercial,ruc,direccion,telefono,email)
         VALUES(:razon_social,:nombre_comercial,:ruc,:direccion,:telefono,:email)";
         $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':razon_social', $RazonSocial);
-        $sentencia->bindParam(':nombre_comercial', $NombreComercial);
+        $sentencia->bindParam(':razon_social', $RazonSocialUPPER);
+        $sentencia->bindParam(':nombre_comercial', $NombreComercialUPPER);
         $sentencia->bindParam(':ruc', $Ruc);
-        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':direccion', $DireccionCAPITAL);
         $sentencia->bindParam(':telefono', $Telefono);
-        $sentencia->bindParam(':email', $Email);
+        $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;

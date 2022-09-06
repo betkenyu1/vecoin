@@ -110,9 +110,9 @@ function validarCorrecion(evt){
     setTimeout(function () {
       $("#alert-em").fadeOut(500);
     }, 0);
-    setTimeout(function () {
+    /*setTimeout(function () {
       $("#alert-pp").fadeOut(500);
-    }, 0);
+    }, 0);*/
     return true;// backspace.
   }  
 }

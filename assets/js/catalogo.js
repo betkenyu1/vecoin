@@ -352,7 +352,7 @@ function setModificarCatalogo(id_catalogo) {
         }
 	});
 	getEmpresasMod();	
-	getEstados();
+	getEstadosModificar();
 	getPrepareModificarCatalogo(id_catalogo);	
 	
 }

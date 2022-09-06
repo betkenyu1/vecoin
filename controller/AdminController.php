@@ -167,6 +167,18 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
+    public function get_proveedor_id_modificar()
+    {
+        $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
+        $exito = $this->adm->getProveedorIdModificar($IdProveedor);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function save_new_empresa()
     {
         $RazonSocial = (isset($_REQUEST['RazonSocial'])) ? $_REQUEST['RazonSocial'] : '';
@@ -240,7 +252,8 @@ class AdminController
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $exito = $this->adm->ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email);
+        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
+        $exito = $this->adm->ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email,$IdEstado);
         if ($exito) {
             echo 1;
         } else {

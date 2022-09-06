@@ -158,7 +158,7 @@ function setCliente() {
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Teléfono:</b> </br>';
-    html += '<input type="text" maxlength="10" onkeypress="return validarTelefono(event)" placeholder="Ingrese Teléfono" class="form-control" id="IdTelefono">';
+    html += '<input type="text"  onkeypress="return validarTelefono(event)" placeholder="Ingrese Teléfono" class="form-control" id="IdTelefono">';
     html += '<div id="alert-tl"></div>';
     html += "</div>";
     html += "</div>";
@@ -266,9 +266,9 @@ function setCliente() {
       $("#alert-tl").fadeIn(500);
       $('#IdTelefono').focus();
       return false;
-    }else if($('#IdTelefono').val().length <10 && $('#IdTelefono').val().length >9){
+    }else if($('#IdTelefono').val().length > 10){
       html += '<div class="alert alert-danger">';
-      html += '*Ingrese un teléfono celular válido';
+      html += '*Ingrese un teléfono fijo o un teléfono celular válido';
       html += '</div>';
       $("#alert-tl").html(html);
       $("#alert-tl").fadeIn(500);
@@ -290,7 +290,7 @@ function setCliente() {
         return false;
     }else if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test($('#IdEmail').val())==0){
       html += '<div class="alert alert-danger">';
-      html += '*Email incorrecto';
+      html += '*Email inválido';
       html += '</div>';
       $("#alert-em").html(html);
       $('#IdEmail').focus();      
@@ -518,7 +518,7 @@ function setCliente() {
 
         }
         });
-        getEstados();
+        getEstadosModificar();
         getPrepareModificarCliente(id_cliente);
   }
   function getPrepareModificarCliente(id_cliente) {
@@ -536,8 +536,7 @@ function setCliente() {
                   $("#IdTelefono_mod").val(value.telefono);
                   $("#IdEmail_mod").val(value.email);
                   $("#IdTiempocredito_mod").val(value.tiempo_credito);
-                    $('#IdEstado').val(value.id_estado); 
-                    $('#IdEstado').trigger('change');              
+                  $("#IdEstado").val(value.id_estado).trigger('change');              
               });
           }
       });
@@ -610,9 +609,9 @@ function setCliente() {
       $("#alert-tl").fadeIn(500);
       $('#IdTelefono_mod').focus();
       return false;
-    }else if($('#IdTelefono_mod').val().length <10 && $('#IdTelefono_mod').val().length >9){
+    }else if($('#IdTelefono_mod').val().length > 10){
       html += '<div class="alert alert-danger">';
-      html += '*Ingrese un teléfono celular válido';
+      html += '*Ingrese un teléfono fijo o un teléfono celular válido';
       html += '</div>';
       $("#alert-tl").html(html);
       $("#alert-tl").fadeIn(500);
@@ -634,7 +633,7 @@ function setCliente() {
         return false;
     }else if(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test($('#IdEmail_mod').val())==0){
       html += '<div class="alert alert-danger">';
-      html += '*Email incorrecto';
+      html += '*Email inválido';
       html += '</div>';
       $("#alert-em").html(html);
       $('#IdEmail_mod').focus();      

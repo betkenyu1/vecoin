@@ -208,7 +208,25 @@ function getEstados(){
     url: "index.php?c=Admin&a=get_estados",
     success: function (response) {
       var $select = $("#IdEstado");
-      //$select.append('<option value="0">Seleccione...</option>');
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_estado + ">" + value.estado + "</option>"
+        );
+      
+      });
+    },
+  });
+}
+
+function getEstadosModificar(){
+  $("#IdEstado").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_estados",
+    success: function (response) {
+      var $select = $("#IdEstado");      
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" + value.id_estado + ">" + value.estado + "</option>"

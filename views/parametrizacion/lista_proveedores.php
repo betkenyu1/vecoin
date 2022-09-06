@@ -29,4 +29,5 @@ include_once 'views/layout/header.php';
 <?php
 include_once 'views/layout/footer.php';
 ?>
+<script src="assets/js/admin.js"></script>
 <script src="assets/js/proveedores.js"></script>

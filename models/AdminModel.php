@@ -171,10 +171,13 @@ class AdminModel
         }
         return true;
     }
-    public function ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email)
+    public function ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $IdEstado)
     {
-        $consulta = "UPDATE proveedores SET ruc = '$Ruc', proveedor = '$RazonSocial', 
-        direccion = '$Direccion', telefono = '$Telefono', email = '$Email'
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $consulta = "UPDATE proveedores SET ruc = '$Ruc', proveedor = '$RazonSocialUPPER', 
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', id_estado='$IdEstado'
         WHERE id_proveedor = '$IdProveedor'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -371,16 +374,31 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getProveedorIdModificar($IdProveedor)
+    {
+        $consulta = "SELECT id_proveedor, ruc, proveedor, direccion, telefono, email, P.id_estado, E.estado 
+        FROM proveedores P
+        INNER JOIN estados E 
+        ON E.id_estado=P.id_estado
+        WHERE id_proveedor = '$IdProveedor'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function RegistroProveedor($Ruc, $RazonSocial, $Direccion, $Telefono, $Email)
     {
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $consulta = "INSERT INTO proveedores(ruc,proveedor,direccion,telefono,email)
         VALUES(:ruc,:razon_social,:direccion,:telefono,:email)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':ruc', $Ruc);
-        $sentencia->bindParam(':razon_social', $RazonSocial);
-        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':razon_social', $RazonSocialUPPER);
+        $sentencia->bindParam(':direccion', $DireccionCAPITAL);
         $sentencia->bindParam(':telefono', $Telefono);
-        $sentencia->bindParam(':email', $Email);
+        $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;

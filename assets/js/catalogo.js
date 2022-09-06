@@ -249,6 +249,7 @@ function getGuardarCatalogo() {
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
 			cancelButtonColor: "#d33",
+			cancelButtonText:"Cancelar",
 			confirmButtonText: "Confirmar"
 		}).then((result) => {
 			if (result.isConfirmed) {
@@ -464,6 +465,7 @@ function getModificarCatalogo() {
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
 			cancelButtonColor: "#d33",
+			cancelButtonText:"Cancelar",
 			confirmButtonText: "Confirmar"
 		}).then((result) => {
 			if (result.isConfirmed) {
@@ -498,6 +500,7 @@ function getEliminarCatalogo(id_catalogo) {
 		showCancelButton: true,
 		confirmButtonColor: "#3085d6",
 		cancelButtonColor: "#d33",
+		cancelButtonText:"Cancelar",
 		confirmButtonText: "Confirmar"
 	}).then((result) => {
 		if (result.isConfirmed) {

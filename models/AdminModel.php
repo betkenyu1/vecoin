@@ -352,8 +352,9 @@ class AdminModel
     }
     public function getProveedores()
     {
-        $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email
-        FROM proveedores WHERE id_estado='1'";
+        $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email,
+        CASE WHEN id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado 
+        FROM proveedores";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

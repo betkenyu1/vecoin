@@ -1,3 +1,57 @@
+function getListaProveedores() {
+  var html = '';
+  html += '<div style="overflow: scroll" class="cerrar-lprov">';
+  html += '<div class="">';
+  html += '<div class="note-content">';
+  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+  html += '<thead>';
+  html += '<tr>';
+  html += '<th width="1%"></th>';
+  html += '<th class="text-nowrap">R.U.C.</th>';
+  html += '<th class="text-nowrap">Razón Social</th>';
+  html += '<th class="text-nowrap">Dirección</th>';
+  html += '<th class="text-nowrap">Teléfono</th>';
+  html += '<th class="text-nowrap">Email</th>';
+  html += '<th class="text-nowrap">Estado</th>';
+  html += '<th class="text-nowrap">Acciones</th>';
+  html += '</tr>';
+  html += '</thead>';
+  html += '<tbody>';
+  $.ajax({
+    type: "GET",
+    dataType: 'json',
+    url: 'index.php?c=Admin&a=get_proveedor',
+    success: function (response) {
+      $.each(response, function (key, value) {
+        html += '<tr class="odd gradeX">';
+        html += '<td width="1%" class="fw-bold text-dark">' + value.id_proveedor + '</td>';
+        html += '<td>' + value.ruc + '</td>';
+        html += '<td>' + value.proveedor + '</td>';
+        html += '<td>' + value.direccion + '</td>';
+        html += '<td>' + value.telefono + '</td>';
+        html += '<td>' + value.email + '</td>';
+        html += '<td>' + value.id_estado + '</td>';
+        html += '<td>';
+        html += '<a class="btn btn-outline-warning" onclick="setModificarProveedor(' + value.id_proveedor + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+        html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProveedor(' + value.id_proveedor + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+        html += '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody>';
+      html += '</table>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      $("#lista-proveedores").html(html);
+      $('#data-table-select').DataTable({
+        "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
+        select: false,
+        responsive: true
+      });
+    }
+  });
+}
+
 function setProveedor() {
     //desarrollo de interfaz vacia
     $(".cerrar-lprov").hide();
@@ -64,7 +118,7 @@ function setProveedor() {
     html += "</div>";
     html += "</div>";
     $("#new-proveedor").html(html); //enlace de interfaz con la principal
-  }
+}
   function CerrarProveedor() {
     $(".cerrar-prov").hide();
     getListaProveedores();
@@ -137,6 +191,7 @@ function setProveedor() {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
+			  cancelButtonText:"Cancelar",
         confirmButtonText: "Sí continuar"
       }).then((result) => {
         if (result.isConfirmed) {
@@ -168,56 +223,7 @@ function setProveedor() {
       });
     }
   }
-  function getListaProveedores() {
-    var html = '';
-    html += '<div class="cerrar-lprov">';
-    html += '<div class="note note-blue">';
-    html += '<div class="note-content">';
-    html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
-    html += '<thead>';
-    html += '<tr>';
-    html += '<th width="1%"></th>';
-    html += '<th class="text-nowrap">Ruc</th>';
-    html += '<th class="text-nowrap">Razon Social</th>';
-    html += '<th class="text-nowrap">Dirección</th>';
-    html += '<th class="text-nowrap">Telefono</th>';
-    html += '<th class="text-nowrap">Email</th>';
-    html += '<th class="text-nowrap">Acciones</th>';
-    html += '</tr>';
-    html += '</thead>';
-    html += '<tbody>';
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      url: 'index.php?c=Admin&a=get_proveedor',
-      success: function (response) {
-        $.each(response, function (key, value) {
-          html += '<tr class="odd gradeX">';
-          html += '<td width="1%" class="fw-bold text-dark">' + value.id_proveedor + '</td>';
-          html += '<td>' + value.ruc + '</td>';
-          html += '<td>' + value.proveedor + '</td>';
-          html += '<td>' + value.direccion + '</td>';
-          html += '<td>' + value.telefono + '</td>';
-          html += '<td>' + value.email + '</td>';
-          html += '<td>';
-          html += '<a class="btn btn-outline-warning" onclick="setModificarProveedor(' + value.id_proveedor + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
-          html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProveedor(' + value.id_proveedor + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-          html += '</td>';
-          html += '</tr>';
-        });
-        html += '</tbody>';
-        html += '</table>';
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
-        $("#lista-proveedores").html(html);
-        $('#data-table-select').DataTable({
-          select: true,
-          responsive: true
-        });
-      }
-    });
-  }
+  
   function CerrarModificarProveedor() {
       $(".cerrar-prov").hide();
       getListaProveedores();
@@ -375,6 +381,7 @@ function setProveedor() {
               showCancelButton: true,
               confirmButtonColor: "#3085d6",
               cancelButtonColor: "#d33",
+			        cancelButtonText:"Cancelar",
               confirmButtonText: "Sí continuar"
           }).then((result) => {
               if (result.isConfirmed) {
@@ -414,6 +421,7 @@ function setProveedor() {
           showCancelButton: true,
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
+			    cancelButtonText:"Cancelar",
           confirmButtonText: "Sí continuar"
       }).then((result) => {
           if (result.isConfirmed) {

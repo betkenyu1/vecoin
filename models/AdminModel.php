@@ -76,6 +76,17 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getEmpresasActivas()
+    {
+        $consulta = "SELECT id_empresa,ruc,razon_social,nombre_comercial,direccion,telefono,email,
+        id_estado        
+        FROM empresas
+        WHERE id_estado=1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
 
     public function getClientes()
     {
@@ -235,15 +246,19 @@ class AdminModel
     }
     public function RegistroEmpleado($IdEmpresa, $Nombres, $Apellidos, $Direccion, $Telefono, $Email)
     {
+        $NombresCAPITAL = ucwords(strtolower($Nombres));
+        $ApellidosCAPITAL = ucwords(strtolower($Apellidos));
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $consulta = "INSERT INTO empleados (id_empresa,nombres,apellidos,direccion,telefono,email)
         VALUES(:id_empresa,:nombres,:apellidos,:direccion,:telefono,:email)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_empresa', $IdEmpresa);
-        $sentencia->bindParam(':nombres', $Nombres);
-        $sentencia->bindParam(':apellidos', $Apellidos);
-        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':nombres', $NombresCAPITAL);
+        $sentencia->bindParam(':apellidos', $ApellidosCAPITAL);
+        $sentencia->bindParam(':direccion', $DireccionCAPITAL);
         $sentencia->bindParam(':telefono', $Telefono);
-        $sentencia->bindParam(':email', $Email);
+        $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;
@@ -280,6 +295,19 @@ class AdminModel
         FROM empleados E
         INNER JOIN empresas EP ON (E.id_empresa=EP.id_empresa)
         WHERE E.id_estado = 1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+    public function getEmpleadosAdmin()
+    {
+        $consulta = "SELECT E.id_empleado, EP.razon_social, CONCAT(E.nombres,' ', E.apellidos) AS empleados, E.telefono, E.direccion, E.email,
+        CASE WHEN E.id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado 
+        FROM empleados E
+        INNER JOIN empresas EP
+        ON (E.id_empresa=EP.id_empresa)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

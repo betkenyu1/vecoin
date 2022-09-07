@@ -75,6 +75,28 @@ function getEmpresas() {
   });
 }
 
+function getEmpresasActivas() {
+  $("#IdEmpresa").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_empresas_activas",
+    success: function (response) {
+      var $select = $("#IdEmpresa");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" +
+            value.id_empresa +
+            ">" +
+            value.razon_social +
+            "</option>"
+        );
+      });
+    },
+  });
+}
+
 function getEmpleados() {
   $("#IdEmpleado").empty();
   $.ajax({

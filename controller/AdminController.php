@@ -93,6 +93,17 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
+    public function get_empresas_activas()
+    {
+        $exito = $this->adm->getEmpresasActivas();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_empresa_id()
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
@@ -346,6 +357,17 @@ class AdminController
     public function get_empleados()
     {
         $exito = $this->adm->getEmpleados();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
+    public function get_empleados_admin()
+    {
+        $exito = $this->adm->getEmpleadosAdmin();
         if ($exito) {
             echo json_encode($exito);
         } else {

@@ -118,7 +118,60 @@ function validarCorrecion(evt){
 }
 
 /********** FIN VALIDACIONES **********/
-
+function getListaClientes() {
+  var html = '';
+  html += '<div style="overflow: scroll" class="cerrar-lclie">';
+  html += '<div class="">';
+  html += '<div class="note-content">';
+  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+  html += '<thead>';
+  html += '<tr>';
+  html += '<th width="1%"></th>';
+  html += '<th class="text-nowrap">R.U.C.</th>';
+  html += '<th class="text-nowrap">Razón Social</th>';
+  html += '<th class="text-nowrap">Dirección</th>';
+  html += '<th class="text-nowrap">Teléfono</th>';
+  html += '<th class="text-nowrap">Email</th>';
+  html += '<th class="text-nowrap">Plazo de Pago</th>';
+  html += '<th class="text-nowrap">Estado</th>';
+  html += '<th class="text-nowrap">Acciones</th>';
+  html += '</tr>';
+  html += '</thead>';
+  html += '<tbody style="background-color:#c1f8ff">';
+  $.ajax({
+    type: "GET",
+    dataType: 'json',
+    url: 'index.php?c=Admin&a=get_clientes',
+    success: function (response) {
+      $.each(response, function (key, value) {
+        html += '<tr class="odd gradeX">';
+        html += '<td width="1%" class="fw-bold text-dark">' + value.id_cliente + '</td>';
+        html += '<td>' + value.ruc + '</td>';
+        html += '<td>' + value.razon_social + '</td>';
+        html += '<td>' + value.direccion + '</td>';
+        html += '<td>' + value.telefono + '</td>';
+        html += '<td>' + value.email + '</td>';
+        html += '<td>' + value.tiempo_credito + '</td>';
+        html += '<td>' + value.id_estado + '</td>';
+        html += '<td>';
+        html += '<a class="btn btn-outline-warning" onclick="setModificarCliente(' + value.id_cliente + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+        html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarCliente(' + value.id_cliente + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+        html += '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody>';
+      html += '</table>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      $("#lista-clientes").html(html);
+      $('#data-table-select').DataTable({
+        "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},      
+        responsive: true,
+      });
+    }
+  });
+}
 function setCliente() {
     //desarrollo de interfaz vacia
     $(".cerrar-lclie").hide();
@@ -362,60 +415,7 @@ function setCliente() {
     }
       /**/
   } 
-  function getListaClientes() {
-    var html = '';
-    html += '<div style="overflow: scroll" class="cerrar-lclie">';
-    html += '<div class="">';
-    html += '<div class="note-content">';
-    html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
-    html += '<thead>';
-    html += '<tr>';
-    html += '<th width="1%"></th>';
-    html += '<th class="text-nowrap">R.U.C.</th>';
-    html += '<th class="text-nowrap">Razón Social</th>';
-    html += '<th class="text-nowrap">Dirección</th>';
-    html += '<th class="text-nowrap">Teléfono</th>';
-    html += '<th class="text-nowrap">Email</th>';
-    html += '<th class="text-nowrap">Plazo de Pago</th>';
-    html += '<th class="text-nowrap">Estado</th>';
-    html += '<th class="text-nowrap">Acciones</th>';
-    html += '</tr>';
-    html += '</thead>';
-    html += '<tbody style="background-color:#c1f8ff">';
-    $.ajax({
-      type: "GET",
-      dataType: 'json',
-      url: 'index.php?c=Admin&a=get_clientes',
-      success: function (response) {
-        $.each(response, function (key, value) {
-          html += '<tr class="odd gradeX">';
-          html += '<td width="1%" class="fw-bold text-dark">' + value.id_cliente + '</td>';
-          html += '<td>' + value.ruc + '</td>';
-          html += '<td>' + value.razon_social + '</td>';
-          html += '<td>' + value.direccion + '</td>';
-          html += '<td>' + value.telefono + '</td>';
-          html += '<td>' + value.email + '</td>';
-          html += '<td>' + value.tiempo_credito + '</td>';
-          html += '<td>' + value.id_estado + '</td>';
-          html += '<td>';
-          html += '<a class="btn btn-outline-warning" onclick="setModificarCliente(' + value.id_cliente + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
-          html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarCliente(' + value.id_cliente + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-          html += '</td>';
-          html += '</tr>';
-        });
-        html += '</tbody>';
-        html += '</table>';
-        html += '</div>';
-        html += '</div>';
-        html += '</div>';
-        $("#lista-clientes").html(html);
-        $('#data-table-select').DataTable({
-          "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},      
-          responsive: true,
-        });
-      }
-    });
-  }
+  
   function CerrarModificarCliente() {
       $(".cerrar-clie").hide();
       getListaClientes();

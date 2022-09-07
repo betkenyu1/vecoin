@@ -1,3 +1,125 @@
+/********** VALIDACIONES **********/
+function validarTelefono(evt){
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if($('#IdTelefono').val().length<10 || $('#IdTelefono').val()!=''){
+    if(code==8) { // backspace.
+      return true;
+    } else if(code>=48 && code<=57) { // is a number.
+          setTimeout(function () {
+          $("#alert-tl").fadeOut(500);
+        }, 0);
+        return true;
+    } else{ // other keys.
+        var html = "";
+        html += '<div class="alert alert-danger">';
+        html += '*Ingrese solo dígitos del [0] al [9]';
+        html += '</div>';
+        $("#alert-tl").html(html);      
+        $("#alert-tl").fadeIn(1000);
+        $('#IdTelefono').focus();
+      return false;
+    } 
+  }  else{
+    alert('else');
+  }
+}
+
+function validarTelefonoMod(evt){
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if($('#IdTelefono_mod').val().length<10 || $('#IdTelefono_mod').val()!=''){
+    if(code==8) { // backspace.
+      return true;
+    } else if(code>=48 && code<=57) { // is a number.
+          setTimeout(function () {
+          $("#alert-tl").fadeOut(500);
+        }, 0);
+        return true;
+    } else{ // other keys.
+        var html = "";
+        html += '<div class="alert alert-danger">';
+        html += '*Ingrese solo dígitos del [0] al [9]';
+        html += '</div>';
+        $("#alert-tl").html(html);      
+        $("#alert-tl").fadeIn(1000);
+        $('#IdTelefono_mod').focus();
+      return false;
+    } 
+  }  else{
+    alert('else');
+  }
+}
+
+function validarCorrecion(evt){
+  // code is the decimal ASCII representation of the pressed key.
+  var code = (evt.which) ? evt.which : evt.keyCode;
+  if(code!='') { 
+    setTimeout(function () {
+      $("#alert-rs").fadeOut(500);
+    }, 0);
+    setTimeout(function () {
+      $("#alert-dr").fadeOut(500);
+    }, 0);
+    setTimeout(function () {
+      $("#alert-em").fadeOut(500);
+    }, 0);
+    setTimeout(function () {
+      $("#alert-pp").fadeOut(500);
+    }, 0);
+    return true;// backspace.
+  }  
+}
+
+/********** FIN VALIDACIONES **********/
+function getListaEmpleados() {
+  var html = '';
+  html += '<div style="overflow: scroll" class="cerrar-emple">';
+  html += '<div class="">';
+  html += '<div class="note-content">';
+  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+  html += '<thead>';
+  html += '<tr>';
+  html += '<th width="1%"></th>';
+  html += '<th class="text-nowrap">Empresa</th>';
+  html += '<th class="text-nowrap">Nombres</th>';
+  html += '<th class="text-nowrap">Dirección</th>';
+  html += '<th class="text-nowrap">Teléfono</th>';
+  html += '<th class="text-nowrap">Email</th>';
+  html += '<th class="text-nowrap">Estado</th>';
+  html += '<th class="text-nowrap">Acciones</th>';
+  html += '</tr>';
+  html += '</thead>';
+  html += '<tbody>';
+  $.ajax({
+    type: "GET",
+    dataType: 'json',
+    url: 'index.php?c=Admin&a=get_empleados',
+    success: function (response) {
+      $.each(response, function (key, value) {
+        html += '<tr class="odd gradeX">';
+        html += '<td width="1%" class="fw-bold text-dark">' + value.id_empleado + '</td>';
+        html += '<td>' + value.razon_social + '</td>';
+        html += '<td>' + value.Empleados + '</td>';
+        html += '<td>' + value.telefono + '</td>';
+        html += '<td>' + value.email + '</td>';
+        html += '<td>';
+        html += '<a class="btn btn-outline-warning" onclick="setModificaEmpleado(' + value.id_empleado + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+        html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarEmpleado(' + value.id_empleado + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+        html += '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody>';
+      html += '</table>';
+      html += '</div>';
+      html += '</div>';
+      html += '</div>';
+      $("#lista-empleados").html(html);
+      $('#data-table-select').DataTable({
+        select: true,
+        responsive: true
+      });
+    }
+  });
+}
 function setEmpleados() {
   CerrarListaEmpleado();
   $(".cerrar-emple_mod").hide();
@@ -81,54 +203,7 @@ function CerrarNuevoEmpleado() {
 function CerrarListaEmpleado() {
   $(".cerrar-emple").hide();
 }
-function getListaEmpleados() {
-  var html = '';
-  html += '<div class="cerrar-emple">';
-  html += '<div class="note note-blue">';
-  html += '<div class="note-content">';
-  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
-  html += '<thead>';
-  html += '<tr>';
-  html += '<th width="1%"></th>';
-  html += '<th class="text-nowrap">Empresa</th>';
-  html += '<th class="text-nowrap">Nombres</th>';
-  html += '<th class="text-nowrap">Teléfono</th>';
-  html += '<th class="text-nowrap">Email</th>';
-  html += '<th class="text-nowrap">Acciones</th>';
-  html += '</tr>';
-  html += '</thead>';
-  html += '<tbody>';
-  $.ajax({
-    type: "GET",
-    dataType: 'json',
-    url: 'index.php?c=Admin&a=get_empleados',
-    success: function (response) {
-      $.each(response, function (key, value) {
-        html += '<tr class="odd gradeX">';
-        html += '<td width="1%" class="fw-bold text-dark">' + value.id_empleado + '</td>';
-        html += '<td>' + value.razon_social + '</td>';
-        html += '<td>' + value.Empleados + '</td>';
-        html += '<td>' + value.telefono + '</td>';
-        html += '<td>' + value.email + '</td>';
-        html += '<td>';
-        html += '<a class="btn btn-outline-warning" onclick="setModificaEmpleado(' + value.id_empleado + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
-        html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarEmpleado(' + value.id_empleado + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
-        html += '</td>';
-        html += '</tr>';
-      });
-      html += '</tbody>';
-      html += '</table>';
-      html += '</div>';
-      html += '</div>';
-      html += '</div>';
-      $("#lista-empleados").html(html);
-      $('#data-table-select').DataTable({
-        select: true,
-        responsive: true
-      });
-    }
-  });
-}
+
 function setCerrarModificaEmpleado() {
   $(".cerrar-emple_mod").hide();
   $(".cerrar-emple").show();

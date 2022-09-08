@@ -36,13 +36,25 @@ function validarPrimerNombre(evt) {
   } else if (
     (code >= 65 && code <= 90) ||
     (code >= 97 && code <= 122) ||
-    code == 130 ||
-    code == 144 ||
+    //code == 130 ||
+    //code == 144 ||
     (code >= 160 && code <= 165) ||
-    code == 181 ||
-    code == 214 ||
-    code == 224 ||
-    code == 233
+    //code == 181 ||
+    //    code == 214 ||
+    //   code == 224 ||
+    //  code == 233 ||
+    code == 241 || //ñ
+    code == 209 || //Ñ
+    code == 225 || //á
+    code == 193 || //Á
+    code == 201 || //É
+    code == 233 || //é
+    code == 205 || //Í
+    code == 237 || //í
+    code == 211 || //Ó
+    code == 243 || //ó
+    code == 218 || //Ú
+    code == 250 //ú
   ) {
     // es una letra mayuscula, minuscula, con tilde
     setTimeout(function () {
@@ -55,7 +67,8 @@ function validarPrimerNombre(evt) {
     alert(code);
     var html = "";
     html += '<div class="alert alert-danger">';
-    html += "*Ingrese solo letras del alfabeto con o sin tílde.";
+    html +=
+      "*Ingrese solo letras del alfabeto con o sin tílde incluida la (ñ | Ñ).";
     html += "</div>";
     $("#alert-nom1").html(html);
     $("#alert-nom1").fadeIn(1000);

@@ -79,7 +79,7 @@ function getListaVentas() {
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: 'index.php?c=Venta&a=get_ventas',
+        url: 'index.php?c=Venta&a=get_ventapagos',
         success: function (response) {
             if (response != '') {
                 $.each(response, function (key, value) {

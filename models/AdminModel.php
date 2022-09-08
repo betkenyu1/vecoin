@@ -244,18 +244,22 @@ class AdminModel
         }
         return true;
     }
-    public function RegistroEmpleado($IdEmpresa, $Nombres, $Apellidos, $Direccion, $Telefono, $Email)
+    public function RegistroEmpleado($IdEmpresa, $Nombres, $Nombres_2, $Apellidos, $Apellidos_2, $Direccion, $Telefono, $Email)
     {
         $NombresCAPITAL = ucwords(strtolower($Nombres));
+        $Nombres_2CAPITAL = ucwords(strtolower($Nombres_2));
         $ApellidosCAPITAL = ucwords(strtolower($Apellidos));
+        $Apellidos_2CAPITAL = ucwords(strtolower($Apellidos_2));
         $DireccionCAPITAL = ucwords(strtolower($Direccion));
         $EmailLOWER = mb_strtolower($Email, 'UTF-8');
-        $consulta = "INSERT INTO empleados (id_empresa,nombres,apellidos,direccion,telefono,email)
-        VALUES(:id_empresa,:nombres,:apellidos,:direccion,:telefono,:email)";
+        $consulta = "INSERT INTO empleados (id_empresa,nombres,nombres_2,apellidos,apellidos_2,direccion,telefono,email)
+        VALUES(:id_empresa,:nombres,:nombres_2,:apellidos,:apellidos_2,:direccion,:telefono,:email)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_empresa', $IdEmpresa);
         $sentencia->bindParam(':nombres', $NombresCAPITAL);
+        $sentencia->bindParam(':nombres_2', $Nombres_2CAPITAL);
         $sentencia->bindParam(':apellidos', $ApellidosCAPITAL);
+        $sentencia->bindParam(':apellidos_2', $Apellidos_2CAPITAL);
         $sentencia->bindParam(':direccion', $DireccionCAPITAL);
         $sentencia->bindParam(':telefono', $Telefono);
         $sentencia->bindParam(':email', $EmailLOWER);

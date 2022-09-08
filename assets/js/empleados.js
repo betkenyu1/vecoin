@@ -27,6 +27,151 @@ function validarTelefono(evt) {
   }
 }
 
+function validarPrimerNombre(evt) {
+  // code is the decimal ASCII representation of the pressed key.
+  var code = evt.which ? evt.which : evt.keyCode;
+  if (code == 8) {
+    // backspace.
+    return true;
+  } else if (
+    (code >= 65 && code <= 90) ||
+    (code >= 97 && code <= 122) ||
+    code == 130 ||
+    code == 144 ||
+    (code >= 160 && code <= 165) ||
+    code == 181 ||
+    code == 214 ||
+    code == 224 ||
+    code == 233
+  ) {
+    // es una letra mayuscula, minuscula, con tilde
+    setTimeout(function () {
+      $("#alert-nom1").fadeOut(500);
+    }, 0);
+    validarCorrecion();
+    return true;
+  } else {
+    // other keys.
+    alert(code);
+    var html = "";
+    html += '<div class="alert alert-danger">';
+    html += "*Ingrese solo letras del alfabeto con o sin tílde.";
+    html += "</div>";
+    $("#alert-nom1").html(html);
+    $("#alert-nom1").fadeIn(1000);
+    $("#IdNombre_1").focus();
+    return false;
+  }
+}
+
+function validarSegundoNombre(evt) {
+  // code is the decimal ASCII representation of the pressed key.
+  var code = evt.which ? evt.which : evt.keyCode;
+  if (code == 8) {
+    // backspace.
+    return true;
+  } else if (
+    (code >= 65 && code <= 90) ||
+    (code >= 97 && code <= 122) ||
+    code == 130 ||
+    code == 144 ||
+    (code >= 160 && code <= 165) ||
+    code == 181 ||
+    code == 214 ||
+    code == 224 ||
+    code == 233
+  ) {
+    // es una letra mayuscula, minuscula, con tilde
+    setTimeout(function () {
+      $("#alert-nom2").fadeOut(500);
+    }, 0);
+    validarCorrecion();
+    return true;
+  } else {
+    // other keys.
+    var html = "";
+    html += '<div class="alert alert-danger">';
+    html += "*Ingrese solo letras del alfabeto con o sin tílde.";
+    html += "</div>";
+    $("#alert-nom2").html(html);
+    $("#alert-nom2").fadeIn(1000);
+    $("#IdNombre_2").focus();
+    return false;
+  }
+}
+
+function validarPrimerApellido(evt) {
+  // code is the decimal ASCII representation of the pressed key.
+  var code = evt.which ? evt.which : evt.keyCode;
+  if (code == 8) {
+    // backspace.
+    return true;
+  } else if (
+    (code >= 65 && code <= 90) ||
+    (code >= 97 && code <= 122) ||
+    code == 130 ||
+    code == 144 ||
+    (code >= 160 && code <= 165) ||
+    code == 181 ||
+    code == 214 ||
+    code == 224 ||
+    code == 233
+  ) {
+    // es una letra mayuscula, minuscula, con tilde
+    setTimeout(function () {
+      $("#alert-ape1").fadeOut(500);
+    }, 0);
+    validarCorrecion();
+    return true;
+  } else {
+    // other keys.
+    var html = "";
+    html += '<div class="alert alert-danger">';
+    html += "*Ingrese solo letras del alfabeto con o sin tílde.";
+    html += "</div>";
+    $("#alert-ape1").html(html);
+    $("#alert-ape1").fadeIn(1000);
+    $("#IdApellido_1").focus();
+    return false;
+  }
+}
+
+function validarSegundoApellido(evt) {
+  // code is the decimal ASCII representation of the pressed key.
+  var code = evt.which ? evt.which : evt.keyCode;
+  if (code == 8) {
+    // backspace.
+    return true;
+  } else if (
+    (code >= 65 && code <= 90) ||
+    (code >= 97 && code <= 122) ||
+    code == 130 ||
+    code == 144 ||
+    (code >= 160 && code <= 165) ||
+    code == 181 ||
+    code == 214 ||
+    code == 224 ||
+    code == 233
+  ) {
+    // es una letra mayuscula, minuscula, con tilde
+    setTimeout(function () {
+      $("#alert-ape2").fadeOut(500);
+    }, 0);
+    validarCorrecion();
+    return true;
+  } else {
+    // other keys.
+    var html = "";
+    html += '<div class="alert alert-danger">';
+    html += "*Ingrese solo letras del alfabeto con o sin tílde.";
+    html += "</div>";
+    $("#alert-ape2").html(html);
+    $("#alert-ape2").fadeIn(1000);
+    $("#IdApellido_2").focus();
+    return false;
+  }
+}
+
 function validarTelefonoMod(evt) {
   var code = evt.which ? evt.which : evt.keyCode;
   if (
@@ -166,10 +311,28 @@ function setEmpleados() {
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Nombres:</b> </br>';
+  html += '<b style="color: #000000;">Primer nombre:</b> </br>';
   html +=
-    '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Nombres" class="form-control" id="IdNombres">';
-  html += '<div id="alert-nom"></div>';
+    '<input type="text" onkeypress="return validarPrimerNombre(event)" placeholder="Ingrese Primer Nombre" class="form-control" id="IdNombre_1">';
+  html += '<div id="alert-nom1"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Segundo nombre:</b> </br>';
+  html +=
+    '<input type="text" onkeypress="return validarSegundoNombre(event)" placeholder="Ingrese Segundo Nombre" class="form-control" id="IdNombre_2">';
+  html += '<div id="alert-nom2"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Primer Apellido:</b> </br>';
+  html +=
+    '<input type="text" onkeypress="return validarPrimerApellido(event)" placeholder="Ingrese Primer Apellido" class="form-control" id="IdApellido_1">';
+  html += '<div id="alert-ape1"></div>';
   html += "</div>";
   html += "</div>";
 
@@ -177,8 +340,8 @@ function setEmpleados() {
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Apellidos:</b> </br>';
   html +=
-    '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Apellidos" class="form-control" id="IdApellidos">';
-  html += '<div id="alert-ape"></div>';
+    '<input type="text" onkeypress="return validarSegundoApellido(event)" placeholder="Ingrese Segundo Apellido" class="form-control" id="IdApellido_2">';
+  html += '<div id="alert-ape2"></div>';
   html += "</div>";
   html += "</div>";
 
@@ -264,35 +427,9 @@ function getGuardarEmpleado() {
     $("#alert-nom").fadeIn(500);
     return false;
   } else {
-    nombre = $("#IdNombres").val();
-    tamanio = nombre.length;
-    contador = 0;
-    for (i = 0; i < tamanio; i++) {
-      carac = nombre.charCodeAt(i);
-      if (carac != 32) {
-        //valida espacios en blanco
-        if (carac < 48 || carac > 57) {
-          // valida numeros
-          contador;
-        } else {
-          contador++;
-        }
-      }
-    }
-    if (contador == 0) {
-      // alert("HA INGRESADO DATOS VALIDOS " + carac);
-      setTimeout(function () {
-        $("#alert-nom").fadeOut(500);
-      }, 0);
-    } else {
-      //alert("HA INGRESADO DATOS NO VALIDOS " + carac);
-      html += '<div class="alert alert-danger">';
-      html += "*Nombre no debe contener números";
-      html += "</div>";
-      $("#alert-nom").html(html);
-      $("#IdNombres").focus();
-      $("#alert-nom").fadeIn(1000);
-    }
+    setTimeout(function () {
+      $("#alert-nom").fadeOut(500);
+    }, 0);
   }
 
   //var input = document.getElementById('IdApellidos');

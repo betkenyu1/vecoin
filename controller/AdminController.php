@@ -291,7 +291,7 @@ class AdminController
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';    
+        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
         $exito = $this->adm->ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email, $IdEstado);
         if ($exito) {
             echo 1;
@@ -313,11 +313,13 @@ class AdminController
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
         $Nombres = (isset($_REQUEST['Nombres'])) ? $_REQUEST['Nombres'] : '';
+        $Nombres_2 = (isset($_REQUEST['Nombres_2'])) ? $_REQUEST['Nombres_2'] : '';
         $Apellidos = (isset($_REQUEST['Apellidos'])) ? $_REQUEST['Apellidos'] : '';
+        $Apellidos_2 = (isset($_REQUEST['Apellidos_2'])) ? $_REQUEST['Apellidos_2'] : '';
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $exito = $this->adm->RegistroEmpleado($IdEmpresa, $Nombres, $Apellidos, $Direccion, $Telefono, $Email);
+        $exito = $this->adm->RegistroEmpleado($IdEmpresa, $Nombres, $Nombres_2, $Apellidos, $Apellidos_2, $Direccion, $Telefono, $Email);
         if ($exito) {
             echo 1;
         } else {

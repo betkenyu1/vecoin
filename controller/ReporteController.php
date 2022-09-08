@@ -11,7 +11,7 @@ class ReporteController
         $this->rep = new VentaModel();
     }
     public function reporte_cxcobrar(){
-        require_once 'views/reportes/rep_ctasxcobrar.php';
+        require_once 'views/ventas/gestion_ctasxcobrar.php';
     }
     public function get_rep_ctasxcobrar()
     {

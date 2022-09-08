@@ -20,7 +20,7 @@ class VentaController
         require_once 'views/ventas/gestion_ncredito.php';
     }
     public function gestion_ctasxcobrar(){
-        require_once 'views/ventas/gestion_ctasxcobrar.php';
+        require_once 'views/ventas/gestion_pagos.php';
     }
     public function get_stock()
     {
@@ -155,7 +155,7 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    //NOTA DE CREDITO
+    //NOTA DE CREDITOgetListaVentaPagos
     public function get_ventas()
     {
         $exito = $this->vta->getListaVentas();
@@ -209,6 +209,16 @@ class VentaController
             }
         }
     }//PAGOS
+    public function get_ventapagos()
+    {
+        $exito = $this->vta->getListaVentaPagos();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_sum_ventapago()
     {
         $IdCabVenta = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
@@ -229,10 +239,9 @@ class VentaController
         $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
         $Valor = (isset($_REQUEST['Valor'])) ? $_REQUEST['Valor'] : '';
         $IdUsuario = $_SESSION['idusuario'];
-        $existe = $this->vta->ExisteRegistroPago($NroFactura);
         $exito = $this->vta->RegistroPago($FReg, $Fecha, $IdCabVenta, $NroFactura, $Valor, $IdUsuario);
         if ($exito) {
-            $exito = $this->vta->ActualizaEstadoCabVenta($IdCabVenta);
+            $act = $this->vta->ActualizaEstadoCabVenta($IdCabVenta);
             echo 1;
         } else {
             echo 2;

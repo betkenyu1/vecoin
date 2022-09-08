@@ -17,7 +17,7 @@ include_once 'views/layout/header.php';
         <div class="panel-body">
             <div id="lista-ventas"></div>
             <br>
-            <div id="n-ncredito"></div>
+            <div id="n-npago"></div>
         </div>
     </div>
     <!-- END panel -->
@@ -25,6 +25,6 @@ include_once 'views/layout/header.php';
 <?php
 include_once 'views/layout/footer.php';
 ?>
-<script src="assets/js/ncredito.js"></script>
+<script src="assets/js/npagos.js"></script>
 <script src="assets/js/admin.js"></script>
 <script src="assets/js/reportes.js"></script>

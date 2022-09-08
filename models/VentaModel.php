@@ -109,7 +109,7 @@ class VentaModel
         INNER JOIN usuarios U ON (CV.id_usuario=U.id_usuario)
         INNER JOIN empleados E ON (U.id_empleado=E.id_empleado)
         INNER JOIN roles R ON (U.id_rol=R.id_rol)
-        WHERE U.id_rol =1";
+        WHERE U.id_rol =1 AND CV.id_estado =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -123,7 +123,7 @@ class VentaModel
         INNER JOIN usuarios U ON (CV.id_usuario=U.id_usuario)
         INNER JOIN empleados E ON (U.id_empleado=E.id_empleado)
         INNER JOIN roles R ON (U.id_rol=R.id_rol)
-        WHERE U.id_rol =3";
+        WHERE U.id_rol =3 AND DV.id_estado =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -159,7 +159,7 @@ class VentaModel
         FROM det_venta DV
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
-        WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta'";
+        WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND DV.id_estado =1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -172,6 +172,7 @@ class VentaModel
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
         INNER JOIN productos P ON (DV.id_producto=P.id_producto)
         INNER JOIN catalogo CT ON (P.id_catalogo=CT.id_catalogo)
+        WHERE DV.id_estado =1
         GROUP BY P.id_producto
         ORDER BY SUM(DV.cantidad) DESC
         LIMIT 0 , 1";
@@ -274,6 +275,21 @@ class VentaModel
         return true;
     }
     // PAGO
+    // NOTA DE CREDITO
+    public function getListaVentaPagos()
+    {
+        $consulta = "SELECT DV.id_detventa,CV.id_cabventa,CV.freg,CV.nro_factura,C.producto,
+        DV.cantidad,DV.pvp
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
+        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        WHERE CV.id_estado =1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function getSumaFactura($IdCabVenta)
     {
         $consulta = "SELECT CV.nro_factura,CV.id_cabventa,CL.razon_social AS Cliente,SUM(DV.pvp) AS Valor
@@ -281,15 +297,6 @@ class VentaModel
         INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         WHERE CV.id_cabventa = '$IdCabVenta'";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-    public function ExisteRegistroPago($NroFactura)
-    {
-        $consulta = "SELECT id_cabncredito FROM cab_ncredito
-        WHERE nro_ncredito = '$NroFactura'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

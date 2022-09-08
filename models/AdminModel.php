@@ -67,8 +67,21 @@ class AdminModel
     }
     public function getEmpresas()
     {
-        $consulta = "SELECT id_empresa,razon_social,ruc,telefono,email FROM empresas
-        WHERE id_estado = 1";
+        $consulta = "SELECT id_empresa,ruc,razon_social,nombre_comercial,direccion,telefono,email,
+        CASE WHEN id_estado='1' THEN 'Activo'
+        ELSE 'Inactivo' END AS id_estado
+        FROM empresas";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getEmpresasActivas()
+    {
+        $consulta = "SELECT id_empresa,ruc,razon_social,nombre_comercial,direccion,telefono,email,
+        id_estado        
+        FROM empresas
+        WHERE id_estado=1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -106,15 +119,19 @@ class AdminModel
     }
     public function RegistroEmpresa($RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email)
     {
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $NombreComercialUPPER = mb_strtoupper($NombreComercial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $consulta = "INSERT INTO empresas (razon_social,nombre_comercial,ruc,direccion,telefono,email)
         VALUES(:razon_social,:nombre_comercial,:ruc,:direccion,:telefono,:email)";
         $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':razon_social', $RazonSocial);
-        $sentencia->bindParam(':nombre_comercial', $NombreComercial);
+        $sentencia->bindParam(':razon_social', $RazonSocialUPPER);
+        $sentencia->bindParam(':nombre_comercial', $NombreComercialUPPER);
         $sentencia->bindParam(':ruc', $Ruc);
-        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':direccion', $DireccionCAPITAL);
         $sentencia->bindParam(':telefono', $Telefono);
-        $sentencia->bindParam(':email', $Email);
+        $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;
@@ -156,11 +173,16 @@ class AdminModel
         return true;
     }
 
-    public function ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email)
+    public function ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email, $IdEstado)
     {
-        $consulta = "UPDATE empresas SET razon_social = '$RazonSocial', 
-        nombre_comercial = '$NombreComercial',ruc = '$Ruc',
-        direccion = '$Direccion', telefono = '$Telefono', email = '$Email'
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $NombreComercialUPPER = mb_strtoupper($NombreComercial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $consulta = "UPDATE empresas SET razon_social = '$RazonSocialUPPER', 
+        nombre_comercial = '$NombreComercialUPPER',ruc = '$Ruc',
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', 
+        email = '$EmailLOWER',  id_estado='$IdEstado'
         WHERE id_empresa = '$IdEmpresa'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -169,10 +191,13 @@ class AdminModel
         }
         return true;
     }
-    public function ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email)
+    public function ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $IdEstado)
     {
-        $consulta = "UPDATE proveedores SET ruc = '$Ruc', proveedor = '$RazonSocial', 
-        direccion = '$Direccion', telefono = '$Telefono', email = '$Email'
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $consulta = "UPDATE proveedores SET ruc = '$Ruc', proveedor = '$RazonSocialUPPER', 
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', id_estado='$IdEstado'
         WHERE id_proveedor = '$IdProveedor'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -182,10 +207,14 @@ class AdminModel
         return true;
     }
 
-    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito)
+    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $Estado)
     {
-        $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocial', 
-        direccion = '$Direccion', telefono = '$Telefono', email = '$Email', tiempo_credito='$Tiempocredito'
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $TiempocreditoCAPITAL = ucwords(strtolower($Tiempocredito));
+        $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocialUPPER', 
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', tiempo_credito='$TiempocreditoCAPITAL',id_estado='$Estado'
         WHERE id_cliente = '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -196,7 +225,7 @@ class AdminModel
     }
     public function getClienteId($IdCliente)
     {
-        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,id_estado FROM clientes 
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,C.id_estado,E.estado FROM clientes C inner join estados E on E.id_estado=C.id_estado
         WHERE id_cliente = '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -215,17 +244,25 @@ class AdminModel
         }
         return true;
     }
-    public function RegistroEmpleado($IdEmpresa, $Nombres, $Apellidos, $Direccion, $Telefono, $Email)
+    public function RegistroEmpleado($IdEmpresa, $Nombres, $Nombres_2, $Apellidos, $Apellidos_2, $Direccion, $Telefono, $Email)
     {
-        $consulta = "INSERT INTO empleados (id_empresa,nombres,apellidos,direccion,telefono,email)
-        VALUES(:id_empresa,:nombres,:apellidos,:direccion,:telefono,:email)";
+        $NombresCAPITAL = ucwords(strtolower($Nombres));
+        $Nombres_2CAPITAL = ucwords(strtolower($Nombres_2));
+        $ApellidosCAPITAL = ucwords(strtolower($Apellidos));
+        $Apellidos_2CAPITAL = ucwords(strtolower($Apellidos_2));
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $consulta = "INSERT INTO empleados (id_empresa,nombres,nombres_2,apellidos,apellidos_2,direccion,telefono,email)
+        VALUES(:id_empresa,:nombres,:nombres_2,:apellidos,:apellidos_2,:direccion,:telefono,:email)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_empresa', $IdEmpresa);
-        $sentencia->bindParam(':nombres', $Nombres);
-        $sentencia->bindParam(':apellidos', $Apellidos);
-        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':nombres', $NombresCAPITAL);
+        $sentencia->bindParam(':nombres_2', $Nombres_2CAPITAL);
+        $sentencia->bindParam(':apellidos', $ApellidosCAPITAL);
+        $sentencia->bindParam(':apellidos_2', $Apellidos_2CAPITAL);
+        $sentencia->bindParam(':direccion', $DireccionCAPITAL);
         $sentencia->bindParam(':telefono', $Telefono);
-        $sentencia->bindParam(':email', $Email);
+        $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;
@@ -262,6 +299,19 @@ class AdminModel
         FROM empleados E
         INNER JOIN empresas EP ON (E.id_empresa=EP.id_empresa)
         WHERE E.id_estado = 1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+    public function getEmpleadosAdmin()
+    {
+        $consulta = "SELECT E.id_empleado, EP.razon_social, CONCAT(E.nombres,' ', E.apellidos) AS empleados, E.telefono, E.direccion, E.email,
+        CASE WHEN E.id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado 
+        FROM empleados E
+        INNER JOIN empresas EP
+        ON (E.id_empresa=EP.id_empresa)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -348,8 +398,9 @@ class AdminModel
     }
     public function getProveedores()
     {
-        $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email
-        FROM proveedores WHERE id_estado='1'";
+        $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email,
+        CASE WHEN id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado 
+        FROM proveedores";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -364,16 +415,44 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function getProveedorIdModificar($IdProveedor)
+    {
+        $consulta = "SELECT id_proveedor, ruc, proveedor, direccion, telefono, email, P.id_estado, E.estado 
+        FROM proveedores P
+        INNER JOIN estados E 
+        ON E.id_estado=P.id_estado
+        WHERE id_proveedor = '$IdProveedor'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+    public function getEmpresaIdModificar($IdEmpresa)
+    {
+        $consulta = "SELECT id_empresa,ruc,razon_social,nombre_comercial,direccion,telefono,email,E.id_estado ,ES.estado
+        FROM empresas E
+        INNER JOIN estados ES
+        ON E.id_estado=ES.id_estado
+        WHERE id_empresa = '$IdEmpresa'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function RegistroProveedor($Ruc, $RazonSocial, $Direccion, $Telefono, $Email)
     {
+        $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $consulta = "INSERT INTO proveedores(ruc,proveedor,direccion,telefono,email)
         VALUES(:ruc,:razon_social,:direccion,:telefono,:email)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':ruc', $Ruc);
-        $sentencia->bindParam(':razon_social', $RazonSocial);
-        $sentencia->bindParam(':direccion', $Direccion);
+        $sentencia->bindParam(':razon_social', $RazonSocialUPPER);
+        $sentencia->bindParam(':direccion', $DireccionCAPITAL);
         $sentencia->bindParam(':telefono', $Telefono);
-        $sentencia->bindParam(':email', $Email);
+        $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;

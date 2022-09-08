@@ -39,7 +39,7 @@ function getEmpresasMod() {
     url: "index.php?c=Admin&a=get_empresas",
     success: function (response) {
       var $select = $("#IdEmpresaM");
-      $select.append('<option value="0">Seleccione...</option>');
+      //$select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
@@ -59,6 +59,28 @@ function getEmpresas() {
     type: "GET",
     dataType: "json",
     url: "index.php?c=Admin&a=get_empresas",
+    success: function (response) {
+      var $select = $("#IdEmpresa");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" +
+            value.id_empresa +
+            ">" +
+            value.razon_social +
+            "</option>"
+        );
+      });
+    },
+  });
+}
+
+function getEmpresasActivas() {
+  $("#IdEmpresa").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_empresas_activas",
     success: function (response) {
       var $select = $("#IdEmpresa");
       $select.append('<option value="0">Seleccione...</option>');
@@ -213,6 +235,25 @@ function getEstados(){
         $select.append(
           "<option value=" + value.id_estado + ">" + value.estado + "</option>"
         );
+      
+      });
+    },
+  });
+}
+
+function getEstadosModificar(){
+  $("#IdEstado").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_estados",
+    success: function (response) {
+      var $select = $("#IdEstado");      
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_estado + ">" + value.estado + "</option>"
+        );
+      
       });
     },
   });

@@ -29,12 +29,13 @@ class CatalogoModel
     }
     public function RegistroItemCatalogo($IdEmpresa, $Codigo, $Producto)
     {
+        $ProductoUPPER = mb_strtoupper($Producto, 'UTF-8');
         $consulta = "INSERT INTO catalogo (id_empresa,codigo,producto)
         VALUES(:id_empresa,:codigo,:producto)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_empresa', $IdEmpresa);
         $sentencia->bindParam(':codigo', $Codigo);
-        $sentencia->bindParam(':producto', $Producto);
+        $sentencia->bindParam(':producto', $ProductoUPPER);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;
@@ -43,8 +44,7 @@ class CatalogoModel
     }
     public function getPModificarItemCatalogo($IdCatalogo)
     {
-        $consulta = "SELECT id_catalogo,codigo,producto FROM catalogo
-        WHERE id_catalogo = '$IdCatalogo'";
+        $consulta = "SELECT id_catalogo, id_empresa, codigo, producto, id_estado FROM catalogo WHERE id_catalogo= '$IdCatalogo'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -52,8 +52,9 @@ class CatalogoModel
     }
     public function getModificarItemCatalogo($IdCatalogo, $IdEmpresa, $Codigo, $Descripcion, $IdEstado)
     {
+        $ProductoUPPER = mb_strtoupper($Descripcion, 'UTF-8');
         $consulta = "UPDATE catalogo SET id_empresa = '$IdEmpresa',
-            codigo = '$Codigo',producto = '$Descripcion',id_estado = '$IdEstado'
+            codigo = '$Codigo',producto = '$ProductoUPPER',id_estado = '$IdEstado'
             WHERE id_catalogo = '$IdCatalogo'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

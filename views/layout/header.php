@@ -205,7 +205,7 @@ if ($_SESSION["user"] === null) {
 							?>
 								<div class="menu-item has-sub">
 									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">(Gestión de) Ventas</div>
+										<div class="menu-text">Ventas</div>
 										<div class="menu-caret"></div>
 									</a>
 									<div class="menu-submenu">

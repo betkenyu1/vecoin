@@ -52,7 +52,7 @@ class CatalogoController
     }
     
     public function get_mod_item()
-    {
+    {        
         $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
         $exito = $this->cat->getPModificarItemCatalogo($IdCatalogo);
         if ($exito) {

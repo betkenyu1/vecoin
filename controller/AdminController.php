@@ -93,10 +93,32 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
+    public function get_empresas_activas()
+    {
+        $exito = $this->adm->getEmpresasActivas();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_empresa_id()
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
         $exito = $this->adm->getEmpresaId($IdEmpresa);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_empresa_id_modificar()
+    {
+        $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
+        $exito = $this->adm->getEmpresaIdModificar($IdEmpresa);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -146,7 +168,8 @@ class AdminController
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
-        $exito = $this->adm->ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito);
+        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
+        $exito = $this->adm->ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $IdEstado);
         if ($exito) {
             echo 1;
         } else {
@@ -159,6 +182,18 @@ class AdminController
     {
         $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
         $exito = $this->adm->getProveedorId($IdProveedor);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
+    public function get_proveedor_id_modificar()
+    {
+        $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
+        $exito = $this->adm->getProveedorIdModificar($IdProveedor);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -239,7 +274,8 @@ class AdminController
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $exito = $this->adm->ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email);
+        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
+        $exito = $this->adm->ModificarProveedor($IdProveedor, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $IdEstado);
         if ($exito) {
             echo 1;
         } else {
@@ -255,7 +291,8 @@ class AdminController
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $exito = $this->adm->ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email);
+        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
+        $exito = $this->adm->ModificarEmpresa($IdEmpresa, $RazonSocial, $NombreComercial, $Ruc, $Direccion, $Telefono, $Email, $IdEstado);
         if ($exito) {
             echo 1;
         } else {
@@ -276,11 +313,13 @@ class AdminController
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
         $Nombres = (isset($_REQUEST['Nombres'])) ? $_REQUEST['Nombres'] : '';
+        $Nombres_2 = (isset($_REQUEST['Nombres_2'])) ? $_REQUEST['Nombres_2'] : '';
         $Apellidos = (isset($_REQUEST['Apellidos'])) ? $_REQUEST['Apellidos'] : '';
+        $Apellidos_2 = (isset($_REQUEST['Apellidos_2'])) ? $_REQUEST['Apellidos_2'] : '';
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $exito = $this->adm->RegistroEmpleado($IdEmpresa, $Nombres, $Apellidos, $Direccion, $Telefono, $Email);
+        $exito = $this->adm->RegistroEmpleado($IdEmpresa, $Nombres, $Nombres_2, $Apellidos, $Apellidos_2, $Direccion, $Telefono, $Email);
         if ($exito) {
             echo 1;
         } else {
@@ -320,6 +359,17 @@ class AdminController
     public function get_empleados()
     {
         $exito = $this->adm->getEmpleados();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
+    public function get_empleados_admin()
+    {
+        $exito = $this->adm->getEmpleadosAdmin();
         if ($exito) {
             echo json_encode($exito);
         } else {

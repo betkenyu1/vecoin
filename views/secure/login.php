@@ -39,7 +39,8 @@ include_once 'views/layout/header_login.php';
                 <div class="form-floating mb-20px">
                     <input type="password" id="id_password" class="form-control fs-13px h-45px border-0"
                         placeholder="Password" />
-                    <label for="id_password" class="d-flex align-items-center text-gray-600 fs-13px">Password</label>
+                    <label for="id_password" class="d-flex align-items-center text-gray-600 fs-13px">Password</label><br>
+                    <div class="checkboxvai"><input type="checkbox"> Recuperar contraseña.</div>
                 </div>
                 <div id="alert-pass"></div>
 

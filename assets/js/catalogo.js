@@ -185,7 +185,7 @@ function setNuevoCatalogo() {
 
         }
         });
-	getEmpresas();
+	getEmpresasActivas();
 }
 function getGuardarCatalogo() {
 	var html = '';
@@ -351,7 +351,7 @@ function setModificarCatalogo(id_catalogo) {
 
         }
 	});
-	getEmpresasMod();	
+	getEmpresasActivasMod();	
 	getEstadosModificar();
 	getPrepareModificarCatalogo(id_catalogo);	
 	

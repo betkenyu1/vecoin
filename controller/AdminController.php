@@ -312,10 +312,10 @@ class AdminController
     public function save_new_empleado()
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
-        $Nombres = (isset($_REQUEST['Nombres'])) ? $_REQUEST['Nombres'] : '';
-        $Nombres_2 = (isset($_REQUEST['Nombres_2'])) ? $_REQUEST['Nombres_2'] : '';
-        $Apellidos = (isset($_REQUEST['Apellidos'])) ? $_REQUEST['Apellidos'] : '';
-        $Apellidos_2 = (isset($_REQUEST['Apellidos_2'])) ? $_REQUEST['Apellidos_2'] : '';
+        $Nombres = (isset($_REQUEST['Nombre1'])) ? $_REQUEST['Nombre1'] : '';
+        $Nombres_2 = (isset($_REQUEST['Nombre2'])) ? $_REQUEST['Nombre2'] : '';
+        $Apellidos = (isset($_REQUEST['Apellido1'])) ? $_REQUEST['Apellido1'] : '';
+        $Apellidos_2 = (isset($_REQUEST['Apellido2'])) ? $_REQUEST['Apellido2'] : '';
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
@@ -330,12 +330,15 @@ class AdminController
     {
         $IdEmpleado = (isset($_REQUEST['IdEmpleado'])) ? $_REQUEST['IdEmpleado'] : '';
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
-        $Nombres = (isset($_REQUEST['Nombres'])) ? $_REQUEST['Nombres'] : '';
-        $Apellidos = (isset($_REQUEST['Apellidos'])) ? $_REQUEST['Apellidos'] : '';
+        $Nombre_1 = (isset($_REQUEST['Nombre_1'])) ? $_REQUEST['Nombre_1'] : '';
+        $Nombre_2 = (isset($_REQUEST['Nombre_2'])) ? $_REQUEST['Nombre_2'] : '';
+        $Apellido_1 = (isset($_REQUEST['Apellido_1'])) ? $_REQUEST['Apellido_1'] : '';
+        $Apellido_2 = (isset($_REQUEST['Apellido_2'])) ? $_REQUEST['Apellido_2'] : '';
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $exito = $this->adm->ModificarEmpleado($IdEmpleado, $IdEmpresa, $Nombres, $Apellidos, $Direccion, $Telefono, $Email);
+        $Estado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
+        $exito = $this->adm->ModificarEmpleado($IdEmpleado, $IdEmpresa, $Nombre_1, $Nombre_2,$Apellido_1,$Apellido_2, $Direccion, $Telefono, $Email,$Estado);
         if ($exito) {
             echo 1;
         } else {

@@ -269,10 +269,19 @@ class AdminModel
         }
         return true;
     }
-    public function ModificarEmpleado($IdEmpleado, $IdEmpresa, $Nombres, $Apellidos, $Direccion, $Telefono, $Email)
+    public function ModificarEmpleado($IdEmpleado, $IdEmpresa, $Nombres, $Nombres_2, $Apellidos, $Apellidos_2, $Direccion, $Telefono, $Email, $Estado)
     {
-        $consulta = "UPDATE empleados SET id_empresa = '$IdEmpresa',nombres = '$Nombres',
-        apellidos = '$Apellidos',direccion = '$Direccion',telefono = '$Telefono',email = '$Email'
+        $NombresCAPITAL = ucwords(strtolower($Nombres));
+        $Nombres_2CAPITAL = ucwords(strtolower($Nombres_2));
+        $ApellidosCAPITAL = ucwords(strtolower($Apellidos));
+        $Apellidos_2CAPITAL = ucwords(strtolower($Apellidos_2));
+        $DireccionCAPITAL = ucwords(strtolower($Direccion));
+        $EmailLOWER = mb_strtolower($Email, 'UTF-8');
+        $consulta = "UPDATE empleados SET id_empresa = '$IdEmpresa',
+        nombres = '$NombresCAPITAL',
+        nombres_2 ='$Nombres_2CAPITAL',
+        apellidos = '$ApellidosCAPITAL',
+        apellidos_2 = '$Apellidos_2CAPITAL',direccion = '$DireccionCAPITAL',telefono = '$Telefono',email = '$EmailLOWER', id_estado='$Estado'
         WHERE id_empleado = '$IdEmpleado'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -307,7 +316,7 @@ class AdminModel
 
     public function getEmpleadosAdmin()
     {
-        $consulta = "SELECT E.id_empleado, EP.razon_social, CONCAT(E.nombres,' ', E.apellidos) AS empleados, E.telefono, E.direccion, E.email,
+        $consulta = "SELECT E.id_empleado, EP.razon_social, CONCAT(E.nombres,' ', E.nombres_2) AS nombres, CONCAT(E.apellidos,' ', E.apellidos_2) AS apellidos, E.telefono, E.direccion, E.email,
         CASE WHEN E.id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado 
         FROM empleados E
         INNER JOIN empresas EP
@@ -319,7 +328,7 @@ class AdminModel
     }
     public function getEmpleadosId($IdEmpleado)
     {
-        $consulta = "SELECT id_empleado,nombres,apellidos,direccion,telefono,email FROM empleados
+        $consulta = "SELECT id_empleado,id_empresa,nombres,nombres_2,apellidos,apellidos_2,direccion,telefono,email,id_estado FROM empleados
         WHERE id_empleado = '$IdEmpleado'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

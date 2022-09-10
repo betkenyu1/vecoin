@@ -1,3 +1,5 @@
+
+
 function getSecuencial() {
   $.ajax({
     type: "GET",
@@ -141,6 +143,72 @@ function getEmpleados() {
   });
 }
 
+function getEmpleadosModUsuario() {
+  $("#IdEmpleado_mod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_empleados",
+    success: function (response) {
+      var $select = $("#IdEmpleado");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" +
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
+        );
+      });
+    },
+  });
+}
+
+function getEmpleadosActivos() {
+  $("#IdEmpleado").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_empleados_activos",
+    success: function (response) {
+      var $select = $("#IdEmpleado");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" +
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
+        );
+      });
+    },
+  });
+}
+
+function getEmpleadosActivosModificarUsuario() {
+  $("#IdEmpleado_mod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_empleados",
+    success: function (response) {
+      var $select = $("#IdEmpleado_mod");
+      //$select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" +
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
+        );
+      });
+    },
+  });
+}
+
 function getRoles() {
   $("#IdRol").empty();
   $.ajax({
@@ -166,7 +234,7 @@ function getRolesMod() {
     url: "index.php?c=Admin&a=get_roles",
     success: function (response) {
       var $select = $("#IdRol_mod");
-      $select.append('<option value="0">Seleccione...</option>');
+      //$select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" + value.id_rol + ">" + value.rol + "</option>"

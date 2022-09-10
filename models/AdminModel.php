@@ -360,8 +360,14 @@ class AdminModel
     }
     public function getListaUsuarios()
     {
-        $consulta = "SELECT id_usuario,CONCAT(E.nombres,' ',E.apellidos) AS Nombres,
-        usuario,R.rol,password,ES.estado FROM usuarios U
+        $consulta = "SELECT id_usuario,
+        CONCAT(E.nombres,' ',E.apellidos) AS Nombres,
+        usuario,
+        R.rol,
+        password,
+        ES.estado,
+        EM.razon_social 
+        FROM usuarios U
         INNER JOIN empleados E ON (U.id_empleado = E.id_empleado)
         INNER JOIN empresas EM ON (E.id_empresa = EM.id_empresa)
         INNER JOIN roles R ON (U.id_rol=R.id_rol)
@@ -373,19 +379,20 @@ class AdminModel
     }
     public function getUsuarioId($IdUsuario)
     {
-        $consulta = "SELECT id_usuario,CONCAT(E.nombres,' ',E.apellidos) AS Nombres,
-        usuario,password FROM usuarios U
-        INNER JOIN empleados E ON (U.id_empleado = E.id_empleado)
-        WHERE U.id_usuario = '$IdUsuario'";
+        $consulta = "SELECT id_usuario,id_empleado,id_rol,usuario,password,id_estado
+        FROM usuarios
+        WHERE id_usuario = '$IdUsuario'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function ModificarUsuario($IdUsuario, $IdRol, $Usuario, $IdEstado)
+    public function ModificarUsuario($IdUsuario, $IdEmpleado, $IdRol, $Usuario,$Password, $IdEstado)
     {
-        $consulta = "UPDATE usuarios SET id_rol = '$IdRol',
-        usuario = '$Usuario',id_estado = '$IdEstado'
+        $consulta = "UPDATE usuarios SET id_empleado='$IdEmpleado',
+        id_rol = '$IdRol', usuario = '$Usuario',
+        password ='$Password',
+        id_estado = '$IdEstado'
         WHERE id_usuario = '$IdUsuario'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

@@ -421,7 +421,6 @@ function validarCorrecion(evt) {
     return true; // backspace.
   }
 }
-
 /********** FIN VALIDACIONES **********/
 function getListaEmpleados() {
   var html = "";
@@ -502,8 +501,7 @@ function setEmpleados() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Empresa Afiliada:</b> </br>';
-  html +=
-    '<select class="default-select2 form-control" name="IdEmpresa" id="IdEmpresa"></select>';
+  html += '<select class="default-select2 form-control" name="IdEmpresa" id="IdEmpresa"></select>';
   html += '<div id="alert-emp"></div>';
   html += "</div>";
   html += "</div>";
@@ -529,8 +527,7 @@ function setEmpleados() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Primer Apellido:</b> </br>';
-  html +=
-    '<input type="text" onkeypress="return validarPrimerApellido(event)" placeholder="Ingrese Primer Apellido" class="form-control" id="IdApellido_1">';
+  html += '<input type="text" onkeypress="return validarPrimerApellido(event)" placeholder="Ingrese Primer Apellido" class="form-control" id="IdApellido_1">';
   html += '<div id="alert-ape1"></div>';
   html += "</div>";
   html += "</div>";
@@ -572,10 +569,8 @@ function setEmpleados() {
   html += "</div>";
 
   html += '<div class="text-center">';
-  html +=
-    '<a class="btn btn-outline-danger" onclick="CerrarNuevoEmpleado();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
-  html +=
-    '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarEmpleado();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
+  html += '<a class="btn btn-outline-danger" onclick="CerrarNuevoEmpleado();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
+  html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarEmpleado();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
   html += "</div>";
 
   html += "</div>";

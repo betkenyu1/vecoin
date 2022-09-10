@@ -338,7 +338,7 @@ class AdminController
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $Estado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $exito = $this->adm->ModificarEmpleado($IdEmpleado, $IdEmpresa, $Nombre_1, $Nombre_2,$Apellido_1,$Apellido_2, $Direccion, $Telefono, $Email,$Estado);
+        $exito = $this->adm->ModificarEmpleado($IdEmpleado, $IdEmpresa, $Nombre_1, $Nombre_2, $Apellido_1, $Apellido_2, $Direccion, $Telefono, $Email, $Estado);
         if ($exito) {
             echo 1;
         } else {
@@ -416,6 +416,7 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
     public function get_usuarios()
     {
         $exito = $this->adm->getListaUsuarios();
@@ -439,10 +440,13 @@ class AdminController
     public function get_mod_usuario()
     {
         $IdUsuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';
+        $IdEmpleado = (isset($_REQUEST['IdEmpleado'])) ? $_REQUEST['IdEmpleado'] : '';
         $IdRol = (isset($_REQUEST['IdRol'])) ? $_REQUEST['IdRol'] : '';
         $Usuario = (isset($_REQUEST['Usuario'])) ? $_REQUEST['Usuario'] : '';
+        $Password = (isset($_REQUEST['Password'])) ? $_REQUEST['Password'] : '';
+        $PasswordHash = password_hash($Password, PASSWORD_DEFAULT, [19]); //password_hash es una funcion de cifrado
         $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $exito = $this->adm->ModificarUsuario($IdUsuario, $IdRol, $Usuario, $IdEstado);
+        $exito = $this->adm->ModificarUsuario($IdUsuario, $IdEmpleado, $IdRol, $Usuario, $PasswordHash, $IdEstado);
         if ($exito) {
             echo json_encode($exito);
         } else {

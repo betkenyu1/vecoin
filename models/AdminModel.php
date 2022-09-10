@@ -16,6 +16,18 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+
+    public function getRecuperarContrasena($usuario)
+    {
+        $consulta = "SELECT id_usuario,usuario FROM usuarios
+        where usuario='$usuario'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+
     public function getUsuarios($usr)
     {
         $consulta = "SELECT id_usuario,usuario,password,
@@ -470,4 +482,17 @@ class AdminModel
         }
         return true;
     }
+
+    public function getPassword($id_usuario,$Contrasena)
+    {
+        $consulta = " UPDATE usuarios SET password = '$Contrasena'
+        WHERE id_usuario = '$id_usuario'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+
 }

@@ -63,9 +63,57 @@ function login() {
   }
 }
 
+
 $("#id_password").keypress(function (e) {
   var code = e.keyCode ? e.keyCode : e.which;
   if (code == 13 && $(this).val() != "") {
    login();
   }
 });
+
+
+function RecuperarPassword(){
+  var user = $('#id_usuario').val();
+	$.ajax({
+		type: "POST",
+		dataType: 'json',
+		url: "index.php?c=Admin&a=get_recuperarcontrasena",
+		data: "Usuario=" + user,
+		success: function (response) {
+			$.each(response, function (key, value) {
+				$('#IdUsuario').val(value.id_usuario);
+				$('#Usuario').val(value.usuario);
+			});
+		}
+	});
+	$("#modal-mod-usuario").modal("show");
+}
+
+
+
+function Password(){
+  var user = $('#IdUsuario').val();
+  var mc = $('#ModContrasena').val();
+  var vc = $('#ValModContrasena').val();
+  if(mc!=vc)
+  {
+    alert('Las contraseñas no coinciden');
+  }
+  else
+  {
+    alert('Las contraseñas coinciden');
+  }
+  	$.ajax({
+		type: "POST",
+		dataType: 'json',
+		url: "index.php?c=Admin&a=get_password",
+		data: "IdUsuario=" + user +"&Password="+mc,
+		success: function (response) {
+			$.each(response, function (key, value) {
+				$('#IdUsuario').val(value.id_usuario);
+				$('#Usuario').val(value.usuario);
+			});
+		}
+	});
+	$("#modal-mod-usuario").modal("hide");
+}

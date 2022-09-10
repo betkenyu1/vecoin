@@ -91,7 +91,6 @@ if ($_SESSION["user"] === null) {
 						</a>
 					</div>
 				</div>
-				<p>hola</p>
 			</div>
 		</div>
 

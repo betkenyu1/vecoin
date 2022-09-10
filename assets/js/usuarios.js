@@ -49,6 +49,7 @@ function validarCorrecion(evt) {
 function getListaUsuarios() {
   $(".cerrar-user_mod").hide();
   $(".cerrar-nuser").hide();
+  $(".cerrar-pass_mod").hide();
   var html = '';
   html += '<div style="overflow: scroll" class="cerrar-luser">';
   html += '<div class="">';
@@ -81,6 +82,7 @@ function getListaUsuarios() {
         html += '<td>' + value.estado + '</td>';
         html += '<td>';
         html += '<a class="btn btn-outline-warning" onclick="setModificaUsuario(' + value.id_usuario + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
+        html += '&nbsp;<a class="btn btn-outline-success" onclick="setModificarPass(' + value.id_usuario + ');" title="Contraseña"><i class="fa fa-key" aria-hidden="true"></i></a>';
         html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarUsuario(' + value.id_usuario + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
         html += '</td>';
         html += '</tr>';
@@ -101,6 +103,7 @@ function getListaUsuarios() {
 }
 
 function setUsuarios() {
+  $(".cerrar-pass_mod").hide();
   $(".cerrar-luser").hide();
   $(".cerrar-user_mod").hide();
   //desarrollo de interfaz vacia
@@ -174,10 +177,20 @@ function setUsuarios() {
   getEmpleados();
   getRoles();
 }
-function getCerrarNewUsuario() {
-  $(".cerrar-nuser").hide();
+function getCerrarModPass() {
+  $(".cerrar-pass_mod").hide();
   getListaUsuarios();
 }
+
+
+function setCerrarModificaPass() {
+  getCerrarNewUsuario();
+  $(".cerrar-user_mod").hide();
+  $(".cerrar-luser").show();
+  $(".cerrar-nuser").hide();
+  $(".cerrar-pass_mod").hide();
+}
+
 function getGuardarNewUsuario() {
   var html = "";
   if ($("#IdEmpleado").val() == 0) {
@@ -309,11 +322,15 @@ function getGuardarNewUsuario() {
 }
 
 function setCerrarModificaUsuario() {
-  getCerrarNewUsuario();
+  getCerrarModPass();
   $(".cerrar-user_mod").hide();
   $(".cerrar-luser").show();
   $(".cerrar-nuser").hide();
 }
+
+
+
+
 function setModificaUsuario(id_usuario) {
   $(".cerrar-luser").hide();
   $(".cerrar-nusu").hide();
@@ -324,14 +341,6 @@ function setModificaUsuario(id_usuario) {
   html += "<form>";
   html += '<div class="form-group">';
   html += '<div class="row">';
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Empleado:</b> </br>';
-  html += '<select class="default-select2 form-control" name="IdEmpleado_mod" id="IdEmpleado_mod"></select>';
-  html += '<div id="alert-emp"></div>';
-  html += '</div>';
-  html += '</div>';
 
 
   html += '<div class="col-md-6">';
@@ -351,22 +360,6 @@ function setModificaUsuario(id_usuario) {
   html += '<div id="alert-user"></div>';
   html += "</div>";
   html += "</div>";
-  
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Contraseña:</b> </br>';
-  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Contraseña" class="form-control" id="IdPassword_mod">';
-  html += '<div id="alert-pass"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Validar Contraseña:</b> </br>';
-  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Validar Contraseña" onchange="getValidaContrasena();" class="form-control" id="IdPassword_valmod">';
-  html += '<div id="alert-pass"></div>';
-  html += "</div>";
-  html += "</div>";
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
@@ -377,7 +370,7 @@ function setModificaUsuario(id_usuario) {
   html += '</div>';
 
   html += '<div class="text-center">';
-  html += '<br>';
+  //html += '<br>';
   html += '<a class="btn btn-outline-danger" onclick="setCerrarModificaUsuario();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
   html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getModificarUsuario();"><i class="fa-solid fa-save" aria-hidden="true"></i> Modificar</a>';
   html += "</div>";
@@ -408,7 +401,61 @@ function setModificaUsuario(id_usuario) {
   getPrepareModificarUsuario(id_usuario);
 
 }
-function getValidaContrasena() {
+
+function getCerrarNewUsuario() {
+  $(".cerrar-nuser").hide();
+  getListaUsuarios();
+}
+
+function setModificarPass(id_usuario) {
+  $(".cerrar-luser").hide();
+  $(".cerrar-nusu").hide();
+  var html = "";
+  html += '<div class="cerrar-pass_mod">';
+  html += '<div class="note note-success">';
+  html += '<div class="note-content">';
+  html += "<form>";
+  html += '<div class="form-group">';
+  html += '<div class="row">';
+
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Contraseña:</b> </br>';
+  html += '<input type="hidden" class="form-control" id="IdUsuarioId_mod">';
+  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Contraseña" class="form-control" id="IdPassword_mod">';
+  html += '<div id="alert-pass"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Validar Contraseña:</b> </br>';
+  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Validar Contraseña" class="form-control" id="IdPassword_valmod">';
+  html += '<div id="alert-pass"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="text-center">';
+  //html += '<br>';
+  html += '<a class="btn btn-outline-danger" onclick="setCerrarModificaPass();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
+  html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getModificarPass();"><i class="fa-solid fa-save" aria-hidden="true"></i> Modificar</a>';
+  html += "</div>";
+
+  html += "</div>";
+  html += "</div>";
+  html += "</form>";
+  html += "</div>";
+  html += "</div>";
+  html += "</div>";
+  $("#mod-usuario").html(html);
+
+  getPrepareModificarUsuario(id_usuario);
+
+}
+
+function getModificarPass() {
+  var html = "";
   var pass = $("#IdPassword_mod").val();
   var vpass = $("#IdPassword_valmod").val();
   if (pass != vpass) {
@@ -418,11 +465,75 @@ function getValidaContrasena() {
     $("#IdPassword_mod").val('');
     $("#IdPassword_valmod").val('');
   } else {
-    Swal.fire({
-      html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>LAS CONTRASEÑAS OK</b></div></div>',
-    });
+    if ($("#IdPassword_mod").val() == "") {
+      html += '<div class="alert alert-danger">';
+      html += "*Campo requerido";
+      html += "</div>";
+      $("#alert-pass").html(html);
+      $("#alert-pass").fadeIn(500);
+      $("#IdPassword_mod").focus();
+      return false;
+    } else if ($("#IdPassword_mod").val().length < 5) {
+      html += '<div class="alert alert-danger">';
+      html +=
+        "*La contraseña debe contener al menos 5 caracteres";
+      html += "</div>";
+      $("#IdPassword_mod").val('');
+      $("#IdPassword_valmod").val('');
+      $("#alert-pass").html(html);
+      $("#alert-pass").fadeIn(500);
+      $("#IdPassword_mod").focus();
+      return false;
+    } else {
+      setTimeout(function () {
+        $("#alert-pass").fadeOut(500);
+      }, 0);
+    }
+
+    if (
+      $('#IdPassword_mod').val() != '' &&
+      $('#IdPassword_valmod').val() != '') {
+      var iduser = $("#IdUsuarioId_mod").val();
+      var pass = $("#IdPassword_mod").val();
+      Swal.fire({
+        title: "¡ATENCIÓN CONFIRMAR ACTUALIZACIÓN DE CONTRASEÑA!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "index.php?c=Admin&a=get_mod_usuario_pass",
+            data:
+              "IdUsuario=" + iduser +
+              "&Password=" + pass,
+            success: function (response) {
+              response = JSON.parse(response);
+              if (response == 1) {
+                Swal.fire({
+                  html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>ACTUALIZACIÓN CORRECTA</b></div></div>',
+                });
+                getListaUsuarios();
+              }
+              if (response == 2) {
+                Swal.fire({
+                  html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ACTUALIZACIÓN INCORRECTA</b></div></div>',
+                });
+              }
+            },
+          });
+        }
+      });
+    }
   }
 }
+
+
 function getPrepareModificarUsuario(id_usuario) {
   $.ajax({
     type: "GET",
@@ -432,7 +543,7 @@ function getPrepareModificarUsuario(id_usuario) {
     success: function (response) {
       $.each(response, function (key, value) {
         $("#IdUsuarioId_mod").val(value.id_usuario);
-        $("#IdEmpleado_mod").val(value.id_empleado).trigger('change');
+        //$("#IdEmpleado_mod").val(value.id_empleado).trigger('change');
         $("#IdRol_mod").val(value.id_rol).trigger('change');
         $("#IdEstado").val(value.id_estado).trigger('change');
         $("#IdUsuario_mod").val(value.usuario);
@@ -441,10 +552,12 @@ function getPrepareModificarUsuario(id_usuario) {
     }
   });
 }
+
+
 function getModificarUsuario() {
   var html = "";
 
-  if ($("#IdEmpleado_mod").val() == 0) {
+  /*f ($("#IdEmpleado_mod").val() == 0) {
     html += '<div class="alert alert-danger">';
     html += "*Campo requerido";
     html += "</div>";
@@ -456,7 +569,7 @@ function getModificarUsuario() {
     setTimeout(function () {
       $("#alert-emp").fadeOut(500);
     }, 0);
-  }
+  }*/
 
   if ($("#IdRol_mod").val() == 0) {
     html += '<div class="alert alert-danger">';
@@ -495,30 +608,30 @@ function getModificarUsuario() {
       $("#alert-user").fadeOut(500);
     }, 0);
   }
-
-  if ($("#IdPassword_mod").val() == "") {
-    html += '<div class="alert alert-danger">';
-    html += "*Campo requerido";
-    html += "</div>";
-    $("#alert-pass").html(html);
-    $("#alert-pass").fadeIn(500);
-    $("#IdPassword_mod").focus();
-    return false;
-  } else if ($("#IdPassword_mod").val().length < 5) {
-    html += '<div class="alert alert-danger">';
-    html +=
-      "*La contraseña debe contener al menos 5 caracteres";
-    html += "</div>";
-    $("#alert-pass").html(html);
-    $("#alert-pass").fadeIn(500);
-    $("#IdPassword_mod").focus();
-    return false;
-  } else {
-    setTimeout(function () {
-      $("#alert-pass").fadeOut(500);
-    }, 0);
-  }
-
+  /*
+    if ($("#IdPassword_mod").val() == "") {
+      html += '<div class="alert alert-danger">';
+      html += "*Campo requerido";
+      html += "</div>";
+      $("#alert-pass").html(html);
+      $("#alert-pass").fadeIn(500);
+      $("#IdPassword_mod").focus();
+      return false;
+    } else if ($("#IdPassword_mod").val().length < 5) {
+      html += '<div class="alert alert-danger">';
+      html +=
+        "*La contraseña debe contener al menos 5 caracteres";
+      html += "</div>";
+      $("#alert-pass").html(html);
+      $("#alert-pass").fadeIn(500);
+      $("#IdPassword_mod").focus();
+      return false;
+    } else {
+      setTimeout(function () {
+        $("#alert-pass").fadeOut(500);
+      }, 0);
+    }
+  */
   if ($('#IdEstado').val() == 0) {
     html += '<div class="alert alert-danger">';
     html += '*Campo requerido';
@@ -532,16 +645,16 @@ function getModificarUsuario() {
       $("#alert-es").fadeOut(500);
     }, 0);
   }
-  if ($('#IdEmpleado_mod').val() != 0 &&
+  if (//$('#IdEmpleado_mod').val() != 0 &&
     $('#IdRol_mod').val() != 0 &&
     $('#IdUsuario_mod').val() != '' &&
-    $('#IdPassword_mod').val() != '' &&
+    //$('#IdPassword_mod').val() != '' &&
     $('#IdEstado').val() != 0) {
     var iduser = $("#IdUsuarioId_mod").val();
-    var idempleado = $("#IdEmpleado_mod").val();
+    ///var idempleado = $("#IdEmpleado_mod").val();
     var idrol = $("#IdRol_mod").val();
     var user = $("#IdUsuario_mod").val();
-    var pass = $("#IdPassword_mod").val();
+    //var pass = $("#IdPassword_mod").val();
     var es = $("#IdEstado").val();
     Swal.fire({
       title: "¡ATENCIÓN CONFIRMAR ACTUALIZACIÓN!",
@@ -558,9 +671,10 @@ function getModificarUsuario() {
           dataType: "json",
           url: "index.php?c=Admin&a=get_mod_usuario",
           data:
-            "IdUsuario=" + iduser + "&IdEmpleado=" + idempleado +
+            "IdUsuario=" + iduser +
+            //"&IdEmpleado=" + idempleado +
             "&IdRol=" + idrol + "&Usuario=" + user +
-            "&Password=" + pass +
+            //"&Password=" + pass +
             "&IdEstado=" + es,
           success: function (response) {
             response = JSON.parse(response);
@@ -583,12 +697,13 @@ function getModificarUsuario() {
 }
 function getEliminarUsuario(id_usuario) {
   Swal.fire({
-    title: "CONFIRMACION!",
+    title: "¡ATENCIÓN CONFIRMAR ELIMINACIÓN!",
     icon: "warning",
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Sí continuar"
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Confirmar"
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
@@ -600,12 +715,12 @@ function getEliminarUsuario(id_usuario) {
           response = JSON.stringify(response);
           if (response == 1) {
             Swal.fire({
-              html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>Eliminado OK!.</b></div></div>',
+              html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>ELIMINACIÓN CORRECTA</b></div></div>',
             });
             getListaUsuarios();
           } if (response == 2) {
             Swal.fire({
-              html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+              html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ELIMINACIÓN INCORRECTA</b></div></div>',
             });
           }
         }

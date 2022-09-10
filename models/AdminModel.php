@@ -399,11 +399,21 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function ModificarUsuario($IdUsuario, $IdEmpleado, $IdRol, $Usuario,$Password, $IdEstado)
+
+    public function ModificarUsuarioPass($IdUsuario, $PasswordHash)
     {
-        $consulta = "UPDATE usuarios SET id_empleado='$IdEmpleado',
-        id_rol = '$IdRol', usuario = '$Usuario',
-        password ='$Password',
+        $consulta = "UPDATE usuarios SET  password = '$PasswordHash'        
+        WHERE id_usuario = '$IdUsuario'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function ModificarUsuario($IdUsuario, $IdRol, $Usuario, $IdEstado)
+    {
+        $consulta = "UPDATE usuarios SET id_rol = '$IdRol', usuario = '$Usuario',
         id_estado = '$IdEstado'
         WHERE id_usuario = '$IdUsuario'";
         $sentencia = $this->db->prepare($consulta);
@@ -499,7 +509,7 @@ class AdminModel
         return true;
     }
 
-    public function getPassword($id_usuario,$Contrasena)
+    public function getPassword($id_usuario, $Contrasena)
     {
         $consulta = " UPDATE usuarios SET password = '$Contrasena'
         WHERE id_usuario = '$id_usuario'";
@@ -510,5 +520,4 @@ class AdminModel
         }
         return true;
     }
-
 }

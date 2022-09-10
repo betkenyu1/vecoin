@@ -440,13 +440,25 @@ class AdminController
     public function get_mod_usuario()
     {
         $IdUsuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';
-        $IdEmpleado = (isset($_REQUEST['IdEmpleado'])) ? $_REQUEST['IdEmpleado'] : '';
+        //$IdEmpleado = (isset($_REQUEST['IdEmpleado'])) ? $_REQUEST['IdEmpleado'] : '';
         $IdRol = (isset($_REQUEST['IdRol'])) ? $_REQUEST['IdRol'] : '';
         $Usuario = (isset($_REQUEST['Usuario'])) ? $_REQUEST['Usuario'] : '';
+        //$Password = (isset($_REQUEST['Password'])) ? $_REQUEST['Password'] : '';
+        //$PasswordHash = password_hash($Password, PASSWORD_DEFAULT, [19]); //password_hash es una funcion de cifrado
+        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
+        $exito = $this->adm->ModificarUsuario($IdUsuario, $IdRol, $Usuario, $IdEstado);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            echo 2;
+        }
+    }
+    public function get_mod_usuario_pass()
+    {
+        $IdUsuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';        
         $Password = (isset($_REQUEST['Password'])) ? $_REQUEST['Password'] : '';
         $PasswordHash = password_hash($Password, PASSWORD_DEFAULT, [19]); //password_hash es una funcion de cifrado
-        $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $exito = $this->adm->ModificarUsuario($IdUsuario, $IdEmpleado, $IdRol, $Usuario, $PasswordHash, $IdEstado);
+        $exito = $this->adm->ModificarUsuarioPass($IdUsuario, $PasswordHash);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -485,7 +497,7 @@ class AdminController
         }
     }
 
-    public function get_recuperarcontrasena() 
+    public function get_recuperarcontrasena()
     {
         $Usuario = (isset($_REQUEST['Usuario'])) ? $_REQUEST['Usuario'] : '';
         $exito = $this->adm->getRecuperarContrasena($Usuario);
@@ -497,12 +509,12 @@ class AdminController
         }
     }
 
-    public function get_password() 
+    public function get_password()
     {
         $Id_Usuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';
         $Password = (isset($_REQUEST['Password'])) ? $_REQUEST['Password'] : '';
         $PasswordHash = password_hash($Password, PASSWORD_DEFAULT, [19]); //password_hash es una funcion de cifrado
-        $exito = $this->adm->getPassword($Id_Usuario,$PasswordHash);
+        $exito = $this->adm->getPassword($Id_Usuario, $PasswordHash);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -511,5 +523,3 @@ class AdminController
         }
     }
 }
-
-

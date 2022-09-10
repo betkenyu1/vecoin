@@ -351,11 +351,19 @@ function setModificaUsuario(id_usuario) {
   html += '<div id="alert-user"></div>';
   html += "</div>";
   html += "</div>";
-
+  
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Contraseña:</b> </br>';
   html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Ingrese Contraseña" class="form-control" id="IdPassword_mod">';
+  html += '<div id="alert-pass"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Validar Contraseña:</b> </br>';
+  html += '<input type="text" onkeypress="return validarCorrecion(event)" placeholder="Validar Contraseña" onchange="getValidaContrasena();" class="form-control" id="IdPassword_valmod">';
   html += '<div id="alert-pass"></div>';
   html += "</div>";
   html += "</div>";
@@ -368,15 +376,11 @@ function setModificaUsuario(id_usuario) {
   html += '</div>';
   html += '</div>';
 
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<div class="text-left">';
+  html += '<div class="text-center">';
   html += '<br>';
   html += '<a class="btn btn-outline-danger" onclick="setCerrarModificaUsuario();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
   html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getModificarUsuario();"><i class="fa-solid fa-save" aria-hidden="true"></i> Modificar</a>';
   html += "</div>";
-  html += '</div>';
-  html += '</div>';
 
   html += "</div>";
   html += "</div>";
@@ -404,6 +408,21 @@ function setModificaUsuario(id_usuario) {
   getPrepareModificarUsuario(id_usuario);
 
 }
+function getValidaContrasena() {
+  var pass = $("#IdPassword_mod").val();
+  var vpass = $("#IdPassword_valmod").val();
+  if (pass != vpass) {
+    Swal.fire({
+      html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>LAS CONTRASEÑAS NO COINCIDEN</b></div></div>',
+    });
+    $("#IdPassword_mod").val('');
+    $("#IdPassword_valmod").val('');
+  } else {
+    Swal.fire({
+      html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>LAS CONTRASEÑAS OK</b></div></div>',
+    });
+  }
+}
 function getPrepareModificarUsuario(id_usuario) {
   $.ajax({
     type: "GET",
@@ -417,7 +436,7 @@ function getPrepareModificarUsuario(id_usuario) {
         $("#IdRol_mod").val(value.id_rol).trigger('change');
         $("#IdEstado").val(value.id_estado).trigger('change');
         $("#IdUsuario_mod").val(value.usuario);
-        $("#IdPassword_mod").val(value.password);
+        //$("#IdPassword_mod").val(value.password);
       });
     }
   });

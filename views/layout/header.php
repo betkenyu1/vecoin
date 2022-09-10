@@ -12,11 +12,10 @@ if ($_SESSION["user"] === null) {
 
 <head>
 	<meta charset="utf-8" />
-	<title>Vecoin | Inicio </title>
+	<title>Vecoin | S.G.V.I. </title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
-
 	<!-- ================== BEGIN core-css ================== -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet" />
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
@@ -71,22 +70,32 @@ if ($_SESSION["user"] === null) {
 			</div>
 			<!-- END navbar-header -->
 			<!-- BEGIN header-nav -->
+
+
+
+
 			<div class="navbar-nav">
 				<div class="navbar-item navbar-user dropdown">
 					<a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
+
 						<span class="d-none d-md-inline"><?php echo $Empresa . ' | ' . $Usuario; ?></span>
-						<div class="image image-icon bg-gray-800 text-gray-600">
-							<i class="fa fa-user"></i>
-						</div>
+						<img src="assets/img/user/user-13.jpg" alt="" />
+						<b class="caret ms-6px"></b>
+
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-1">
-						<!--<div class="dropdown-divider"></div>-->
-						<a href="index.php?c=Index&a=index" class="dropdown-item">Cerrar Sesion</a>
+						<a href="index.php?c=Index&a=index" class="dropdown-item">
+							<div class="menu-text text-center">Cerrar Sesión &nbsp
+								<i style="vertical-align: middle; padding-bottom: 3px" class=" material-icons ">logout</i>
+							</div>
+						</a>
 					</div>
 				</div>
+				<p>hola</p>
 			</div>
-			<!-- END header navigation right -->
 		</div>
+
+
 		<!-- END #header -->
 		<!-- BEGIN #sidebar -->
 		<div id="sidebar" class="app-sidebar" data-disable-slide-animation="true">
@@ -121,198 +130,223 @@ if ($_SESSION["user"] === null) {
 						</a>
 					</div>
 
+					<!--INICIO MENU AFUERA-->
+
+					<?php
+					if ($IdRol == 1) {
+					?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<!--<i class="material-icons">admin_panel_settings</i>-->
+									<i class="material-icons">engineering</i>
+								</div>
+								<div class="menu-text">Administrador</div>
+								<div class="menu-caret"></div>
+							</a>
+							<div class="menu-submenu">
+								<div class="menu-item"><a href="index.php?c=Catalogo&a=lista_catalogo" class="menu-link">
+										<div class="menu-text">Productos</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_clientes" class="menu-link">
+										<div class="menu-text">Clientes</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_proveedores" class="menu-link">
+										<div class="menu-text">Proveedores</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_empresas" class="menu-link">
+										<div class="menu-text">Empresas</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_empleados" class="menu-link">
+										<div class="menu-text">Empleados</div>
+									</a></div>
+							</div>
+						</div>
+					<?php } ?>
+					<?php
+					if ($IdRol == 1) {
+					?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<i class="material-icons">person_search</i>
+								</div>
+								<div class="menu-text">Auditoría</div>
+								<div class="menu-caret"></div>
+							</a>
+							<div class="menu-submenu">
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+										<div class="menu-text">Inicios de sesión</div>
+									</a></div>
+								<!--<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+										<div class="menu-text">Usuarios</div>
+									</a></div>-->
+							</div>
+						</div>
+					<?php } ?>
+					<?php
+					if ($IdRol == 1 || $IdRol == 4) {
+					?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<i class="material-icons">savings</i>
+								</div>
+								<div class="menu-text">Cobranzas</div>
+								<div class="menu-caret"></div>
+							</a>
+							<div class="menu-submenu">
+								<div class="menu-item has-sub">
+									<a href="index.php?c=Venta&a=gestion_ctasxcobrar" class="menu-link">
+										<div class="menu-text">Cuentas por Cobrar</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
+					<?php
+					if ($IdRol == 1 || $IdRol == 2) {
+					?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<i class="material-icons">warehouse</i>
+								</div>
+								<div class="menu-text">Inventarios</div>
+								<div class="menu-caret"></div>
+							</a>
+							<div class="menu-submenu">
+
+								<div class="menu-item"><a href="index.php?c=Producto&a=lista_productos" class="menu-link">
+										<div class="menu-text">Inventario Inicial</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_entrada" class="menu-link">
+										<div class="menu-text">Ordenes de entrada</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_salida" class="menu-link">
+										<div class="menu-text">Ordenes de salida</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_stock_productos" class="menu-link">
+										<div class="menu-text">Stock de Productos</div>
+									</a></div>
+							</div>
+						</div>
+					<?php } ?>
+					<?php
+					if ($IdRol == 1) {
+					?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<i class="material-icons">tune</i>
+								</div>
+								<div class="menu-text">Parametrización<nav></nav>
+								</div>
+								<div class="menu-caret"></div>
+							</a>
+							<div class="menu-submenu">
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+										<div class="menu-text"></div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+										<div class="menu-text">Usuarios</div>
+									</a></div>
+							</div>
+						</div>
+					<?php } ?>
+					<?php
+					if ($IdRol == 1) {
+					?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<i class="material-icons">key</i>
+								</div>
+								<div class="menu-text">Seguridad</div>
+								<div class="menu-caret"></div>
+							</a>
+							<div class="menu-submenu">
+								<!--<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+												<div class="menu-text">Roles</div>
+											</a></div>-->
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
+										<div class="menu-text">Usuarios</div>
+									</a></div>
+							</div>
+						</div>
+					<?php } ?>
+
+
+
 					<div class="menu-item has-sub">
 						<a href="javascript:;" class="menu-link">
 							<div class="menu-icon">
-								<i class="material-icons">list</i>
+								<i class="material-icons">print</i>
 							</div>
-							<div class="menu-text">Menu</div>
+							<div class="menu-text">Reportes</div>
 							<div class="menu-caret"></div>
 						</a>
 						<div class="menu-submenu">
-							<?php
-							if ($IdRol == 1) {
-							?>
-								<div class="menu-item has-sub">
-									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Administrador</div>
-										<div class="menu-caret"></div>
-									</a>
-									<div class="menu-submenu">
-										<div class="menu-item"><a href="index.php?c=Catalogo&a=lista_catalogo" class="menu-link">
-												<div class="menu-text">Productos</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_clientes" class="menu-link">
-												<div class="menu-text">Clientes</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_proveedores" class="menu-link">
-												<div class="menu-text">Proveedores</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_empresas" class="menu-link">
-												<div class="menu-text">Empresas</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_empleados" class="menu-link">
-												<div class="menu-text">Empleados</div>
-											</a></div>
-									</div>
-								</div>
-							<?php } ?>
-							<?php
-							if ($IdRol == 1) {
-							?>
-								<div class="menu-item has-sub">
-									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Seguridad</div>
-										<div class="menu-caret"></div>
-									</a>
-									<div class="menu-submenu">
-										<!--<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
-												<div class="menu-text">Roles</div>
-											</a></div>-->
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
-												<div class="menu-text">Usuarios</div>
-											</a></div>
-									</div>
-								</div>
-							<?php } ?>
-							<?php
-							if ($IdRol == 1 || $IdRol == 2) {
-							?>
-								<div class="menu-item has-sub">
-									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Inventarios</div>
-										<div class="menu-caret"></div>
-									</a>
-									<div class="menu-submenu">
-
-										<div class="menu-item"><a href="index.php?c=Producto&a=lista_productos" class="menu-link">
-												<div class="menu-text">Inventario Inicial</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_entrada" class="menu-link">
-												<div class="menu-text">Ordenes de entrada</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_salida" class="menu-link">
-												<div class="menu-text">Ordenes de salida</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Inventario&a=lista_stock_productos" class="menu-link">
-												<div class="menu-text">Stock de Productos</div>
-											</a></div>
-									</div>
-								</div>
-							<?php } ?>
-							<?php
-							if ($IdRol == 1 || $IdRol == 3) {
-							?>
-								<div class="menu-item has-sub">
-									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Ventas</div>
-										<div class="menu-caret"></div>
-									</a>
-									<div class="menu-submenu">
-
-										<div class="menu-item has-sub">
-											<a href="index.php?c=Venta&a=gestion_ventas" class="menu-link">
-												<div class="menu-text">Facturas</div>
-											</a>
-
-											<a href="index.php?c=Venta&a=gestion_ncredito" class="menu-link">
-												<div class="menu-text">Notas de crédito</div>
-											</a>
-										</div>
-									</div>
-								</div>
-							<?php } ?>
-							<?php
-							if ($IdRol == 1 || $IdRol == 4) {
-							?>
-								<div class="menu-item has-sub">
-									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Cobranzas</div>
-										<div class="menu-caret"></div>
-									</a>
-									<div class="menu-submenu">
-										<div class="menu-item has-sub">
-											<a href="index.php?c=Venta&a=gestion_ctasxcobrar" class="menu-link">
-												<div class="menu-text">Cuentas por Cobrar</div>
-											</a>
-										</div>
-									</div>
-								</div>
-							<?php } ?>
 							<div class="menu-item has-sub">
-								<a href="javascript:;" class="menu-link">
-									<div class="menu-text">Reportes</div>
-									<div class="menu-caret"></div>
+								<a href="index.php?c=Reporte&a=reporte_cxcobrar" class="menu-link">
+									<div class="menu-text">Cuentas por cobrar</div>
 								</a>
-								<div class="menu-submenu">
-									<div class="menu-item has-sub">
-										<a href="index.php?c=Reporte&a=reporte_cxcobrar" class="menu-link">
-											<div class="menu-text">Cuentas por cobrar</div>
-										</a>
 
-										<a href="javascript:;" class="menu-link">
-											<div class="menu-text">Ventas Mensuales</div>
-										</a>
+								<a href="javascript:;" class="menu-link">
+									<div class="menu-text">Ventas Mensuales</div>
+								</a>
 
-										<a href="javascript:;" class="menu-link">
-											<div class="menu-text">Stock de Productos</div>
-										</a>
+								<a href="javascript:;" class="menu-link">
+									<div class="menu-text">Stock de Productos</div>
+								</a>
 
-										<a href="javascript:;" class="menu-link">
-											<div class="menu-text">Facturas Registradas</div>
-										</a>
+								<a href="javascript:;" class="menu-link">
+									<div class="menu-text">Facturas Registradas</div>
+								</a>
 
-										<a href="javascript:;" class="menu-link">
-											<div class="menu-text">Notas de Crédito Registradas</div>
-										</a>
-									</div>
-								</div>
+								<a href="javascript:;" class="menu-link">
+									<div class="menu-text">Notas de Crédito Registradas</div>
+								</a>
 							</div>
-							<?php
-							if ($IdRol == 1) {
-							?>
-								<div class="menu-item has-sub">
-									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Auditoría</div>
-										<div class="menu-caret"></div>
-									</a>
-									<div class="menu-submenu">
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
-												<div class="menu-text">Inicios de sesión</div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
-												<div class="menu-text">Usuarios</div>
-											</a></div>
-									</div>
-								</div>
-							<?php } ?>
-							<?php
-							if ($IdRol == 1) {
-							?>
-								<div class="menu-item has-sub">
-									<a href="javascript:;" class="menu-link">
-										<div class="menu-text">Parametrización<nav></nav>
-										</div>
-										<div class="menu-caret"></div>
-									</a>
-									<div class="menu-submenu">
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
-												<div class="menu-text"></div>
-											</a></div>
-										<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
-												<div class="menu-text">Usuarios</div>
-											</a></div>
-									</div>
-								</div>
-							<?php } ?>
 						</div>
 					</div>
 
-					<!-- BEGIN minify-button -->
+					<?php
+					if ($IdRol == 1 || $IdRol == 3) {
+					?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<i class="material-icons">add_shopping_cart</i>
+								</div>
+								<div class="menu-text">Ventas</div>
+								<div class="menu-caret"></div>
+							</a>
+							<div class="menu-submenu">
+
+								<div class="menu-item has-sub">
+									<a href="index.php?c=Venta&a=gestion_ventas" class="menu-link">
+										<div class="menu-text">Facturas</div>
+									</a>
+
+									<a href="index.php?c=Venta&a=gestion_ncredito" class="menu-link">
+										<div class="menu-text">Notas de crédito</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
+
+
+					<!--FIN MENU AFUERA-->
+
+
+
+
 					<div class="menu-item d-flex">
 						<a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>
 					</div>
-					<!-- END minify-button -->
+
 
 				</div>
 				<!-- END menu -->

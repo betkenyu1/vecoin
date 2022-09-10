@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Vecoin | Login</title>
+    <title>Vecoin | Iniciar Sesión</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -24,7 +24,7 @@
                 <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10">
                 </circle>
             </svg>
-            <div class="message">Loading...</div>
+            <div class="message">Cargando...</div>
         </div>
     </div>
     <!-- END #loader -->

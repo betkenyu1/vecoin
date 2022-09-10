@@ -484,4 +484,32 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
+    public function get_recuperarcontrasena() 
+    {
+        $Usuario = (isset($_REQUEST['Usuario'])) ? $_REQUEST['Usuario'] : '';
+        $exito = $this->adm->getRecuperarContrasena($Usuario);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
+    public function get_password() 
+    {
+        $Id_Usuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';
+        $Password = (isset($_REQUEST['Password'])) ? $_REQUEST['Password'] : '';
+        $PasswordHash = password_hash($Password, PASSWORD_DEFAULT, [19]); //password_hash es una funcion de cifrado
+        $exito = $this->adm->getPassword($Id_Usuario,$PasswordHash);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
 }
+
+

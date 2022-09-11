@@ -31,15 +31,20 @@ include_once 'views/layout/header_login.php';
             <form>
                 <div class="form-floating mb-20px">
                     <input type="text" class="form-control fs-13px h-45px border-0" placeholder="Ingrese Usuario" id="id_usuario" />
+                    <div id="mensaje_0"></div>
                     <label for="id_usuario" class="d-flex align-items-center text-gray-600 fs-13px">Ingrese Usuario</label>
                 </div>
                 <div id="alert-usr"></div>
+                <div id="mensaje"></div>
                 <div class="form-floating mb-20px">
                     <input type="password" class="form-control fs-13px h-45px border-0" placeholder="Ingrese Contraseña" id="id_password" />
                     <label for="id_password" class="d-flex align-items-center text-gray-600 fs-13px">Ingrese Contraseña</label>
                 </div>
+                <div id="alert-pass"></div>
+                <div id="mensaje_2"></div>
+                <div id="alert-reg"></div>
+                <div id="alert-med"></div>
         </div>
-        <div id="alert-pass"></div>
 
         <div class="form-floating mb-20px">
             <!--<div class="checkboxvai"><input onclick="RecuperarPassword();" type="checkbox">¿Olvidaste tu contraseña?</div>-->

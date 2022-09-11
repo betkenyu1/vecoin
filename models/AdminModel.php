@@ -42,6 +42,19 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+    public function registroSesion($IdUsuario)
+    {
+        $consulta = "INSERT INTO auditoria (id_usuario,observacion)
+        VALUES(:id_usuario,'INICIO DE SESIÓN')";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':id_usuario', $IdUsuario);
+        $sentencia->execute();
+        if ($sentencia->rowCount() <= 0) {
+            return false;
+        }
+        return true;
+    }
+
     public function ExisteSecuencial($IdTipo)
     {
         $consulta = "SELECT id_secuencial,secuencial
@@ -384,6 +397,20 @@ class AdminModel
         INNER JOIN empresas EM ON (E.id_empresa = EM.id_empresa)
         INNER JOIN roles R ON (U.id_rol=R.id_rol)
         INNER JOIN estados ES ON (U.id_estado=ES.id_estado)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+    public function getListaAuditoriaSesiones()
+    {
+        $consulta = "SELECT A.id_auditoria,U.usuario,CONCAT (E.nombres,' ',E.apellidos) AS nombres,A.observacion,A.registro_tiempo 
+        FROM auditoria A
+        INNER JOIN usuarios U 
+        ON A.id_usuario=U.id_usuario
+        INNER JOIN empleados E
+        ON U.id_empleado = E.id_empleado";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

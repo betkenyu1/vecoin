@@ -14,23 +14,23 @@ class LoginController
     public function login()
     {
         sleep(1);
+        $idrol = 99;
         $usr = (isset($_REQUEST['usuario'])) ? $_REQUEST['usuario'] : '';
         $pass = (isset($_REQUEST['password'])) ? $_REQUEST['password'] : '';
         $existe = $this->usr->getUsuarios($usr);
         if ($existe) {
             foreach ($existe as $dat) {
-                $passcifrada=password_verify($pass,$dat['password']);
-                if($passcifrada!=$pass){
-                }else{
+                $passcifrada = password_verify($pass, $dat['password']);
+                if ($passcifrada) {
                     $_SESSION["idempresa"] =  $dat['id_empresa'];
                     $_SESSION["n_comercial"] =  $dat['nombre_comercial'];
                     $_SESSION["idusuario"] =  $dat['id_usuario'];
+                    $this->usr->registroSesion($dat['id_usuario']);
                     $_SESSION["user"] =  $dat['Nombres'];
                     $_SESSION["rol"] =  $dat['rol'];
                     $_SESSION["idrol"] = $dat['id_rol'];
                     $idrol = $dat['id_rol'];
                 }
-               
             }
             echo $idrol;
         } else {

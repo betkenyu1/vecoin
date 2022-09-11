@@ -13,24 +13,37 @@ class AdminController
     }
     public function login()
     {
+        sleep(1);
         $usr = (isset($_REQUEST['usuario'])) ? $_REQUEST['usuario'] : '';
         $pass = (isset($_REQUEST['password'])) ? $_REQUEST['password'] : '';
-        $existe = $this->adm->getUsuarios($usr, $pass);
+        $existe = $this->usr->getUsuarios($usr);
         if ($existe) {
             foreach ($existe as $dat) {
-                $_SESSION["idempresa"] =  $dat['id_empresa'];
-                $_SESSION["n_comercial"] =  $dat['nombre_comercial'];
-                $_SESSION["idusuario"] =  $dat['id_usuario'];
-                $_SESSION["user"] =  $dat['Nombres'];
-                $_SESSION["rol"] =  $dat['rol'];
-                $idrol = $dat['id_rol'];
+                $passcifrada = password_verify($pass, $dat['password']);
+                if ($passcifrada != $pass) {
+                    echo 99;
+                    print(99);
+                } else {
+                    $_SESSION["idempresa"] =  $dat['id_empresa'];
+                    $_SESSION["n_comercial"] =  $dat['nombre_comercial'];
+                    $_SESSION["idusuario"] =  $dat['id_usuario'];
+                    $_SESSION["user"] =  $dat['Nombres'];
+                    $_SESSION["rol"] =  $dat['rol'];
+                    $_SESSION["idrol"] = $dat['id_rol'];
+                    $idrol = $dat['id_rol'];
+                }
             }
             echo $idrol;
+            print('positivo');
         } else {
             echo 0;
+            print('afuera');
         }
     }
-
+    public function lista_auditoria_sesiones()
+    {
+        require_once 'views/auditoria/lista_auditoria_sesiones.php';
+    }
     public function lista_empresas()
     {
         require_once 'views/parametrizacion/lista_empresas.php';
@@ -427,6 +440,17 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+    public function get_auditoria_sesion()
+    {
+        $exito = $this->adm->getListaAuditoriaSesiones();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
     public function get_usuario_id()
     {
         $IdUsuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';
@@ -455,7 +479,7 @@ class AdminController
     }
     public function get_mod_usuario_pass()
     {
-        $IdUsuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';        
+        $IdUsuario = (isset($_REQUEST['IdUsuario'])) ? $_REQUEST['IdUsuario'] : '';
         $Password = (isset($_REQUEST['Password'])) ? $_REQUEST['Password'] : '';
         $PasswordHash = password_hash($Password, PASSWORD_DEFAULT, [19]); //password_hash es una funcion de cifrado
         $exito = $this->adm->ModificarUsuarioPass($IdUsuario, $PasswordHash);

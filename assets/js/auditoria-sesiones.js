@@ -40,7 +40,7 @@ function getListaAuditorias() {
         responsive: true,
       });
     }
-  }); 
+  });
 }
 $(document).ready(function () {
   getListaAuditorias();

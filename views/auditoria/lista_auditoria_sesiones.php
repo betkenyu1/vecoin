@@ -22,4 +22,4 @@ include_once 'views/layout/header.php';
 include_once 'views/layout/footer.php';
 ?>
 <script src="assets/js/auditoria-sesiones.js"></script>
-<script src="assets/js/admin.js"></script>
+<!--<script src="assets/js/admin.js"></script>-->

@@ -10,3 +10,7 @@ function getReporteStock() {
 function getReporteCtasXCobrar() {
     window.open('views/reportes/rep_ctasxcobrar.php');
 }
+
+function getReporteInicioSesion() {
+    window.open('views/reportes/inicio_sesion.php');
+}

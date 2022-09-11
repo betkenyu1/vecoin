@@ -1,12 +1,13 @@
 function getListaAuditorias() {
   var html = '';
-  html += '<div style="overflow: scroll" class="">';
+  html += '<div style="overflow: scroll">';
   html += '<div class="">';
   html += '<div class="note-content">';
   html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
   html += '<thead>';
   html += '<tr>';
   html += '<th width="1%"></th>';
+  html += '<th class="text-nowrap">Empresa</th>';
   html += '<th class="text-nowrap">Usuario</th>';
   html += '<th class="text-nowrap">Nombres</th>';
   html += '<th class="text-nowrap">Acción</th>';
@@ -22,6 +23,7 @@ function getListaAuditorias() {
       $.each(response, function (key, value) {
         html += '<tr class="odd gradeX">';
         html += '<td width="1%" class="fw-bold text-dark">' + value.id_auditoria + '</td>';
+        html += '<td>' + value.razon_social + '</td>';
         html += '<td>' + value.usuario + '</td>';
         html += '<td>' + value.nombres + '</td>';
         html += '<td>' + value.observacion + '</td>';
@@ -36,12 +38,17 @@ function getListaAuditorias() {
       $("#lista-auditoria").html(html);
       $("#data-table-select").DataTable({
         "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
+        //muestra descendente la columna 0
+        order: [[0, 'desc']],
         select: false,
         responsive: true,
       });
     }
   });
 }
+
 $(document).ready(function () {
   getListaAuditorias();
 });
+
+

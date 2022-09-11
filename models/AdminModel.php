@@ -42,18 +42,7 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function registroSesion($IdUsuario)
-    {
-        $consulta = "INSERT INTO auditoria (id_usuario,observacion)
-        VALUES(:id_usuario,'INICIO DE SESIÓN')";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->bindParam(':id_usuario', $IdUsuario);
-        $sentencia->execute();
-        if ($sentencia->rowCount() <= 0) {
-            return false;
-        }
-        return true;
-    }
+
 
     public function ExisteSecuencial($IdTipo)
     {
@@ -402,20 +391,40 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-
+    public function registroSesion($IdUsuario)
+    {
+        date_default_timezone_set('America/Guayaquil');
+        $FechaActual = date('Y/m/d h:i:s a', time());
+        $consulta = "INSERT INTO auditoria (id_usuario,observacion,registro_tiempo)
+        VALUES(:id_usuario,'INGRESO AL SISTEMA',:registro_tiempo)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':id_usuario', $IdUsuario);
+        $sentencia->bindParam(':registro_tiempo', $FechaActual);
+        $sentencia->execute();
+        if ($sentencia->rowCount() <= 0) {
+            return false;
+        }
+        return true;
+    }
     public function getListaAuditoriaSesiones()
     {
-        $consulta = "SELECT A.id_auditoria,U.usuario,CONCAT (E.nombres,' ',E.apellidos) AS nombres,A.observacion,A.registro_tiempo 
+        $consulta = "SELECT A.id_auditoria,EM.razon_social,U.usuario,CONCAT (E.nombres,' ',E.apellidos) AS nombres,EM.razon_social,A.observacion,
+        DATE_FORMAT(A.registro_tiempo ,'%d-%m-%Y %h:%i:%s') AS registro_tiempo
         FROM auditoria A
         INNER JOIN usuarios U 
         ON A.id_usuario=U.id_usuario
         INNER JOIN empleados E
-        ON U.id_empleado = E.id_empleado";
+        ON U.id_empleado = E.id_empleado
+        INNER JOIN empresas EM
+        ON E.id_empresa=EM.id_empresa
+        ORDER BY 1 DESC";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+
+
     public function getUsuarioId($IdUsuario)
     {
         $consulta = "SELECT id_usuario,id_empleado,id_rol,usuario,password,id_estado

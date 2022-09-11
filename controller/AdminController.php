@@ -440,6 +440,7 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+    
     public function get_auditoria_sesion()
     {
         $exito = $this->adm->getListaAuditoriaSesiones();

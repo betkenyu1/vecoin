@@ -220,10 +220,10 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-text">Inventario Inicial</div>
 									</a></div>
 								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_entrada" class="menu-link">
-										<div class="menu-text">Ordenes de entrada</div>
+										<div class="menu-text">Órdenes de entrada</div>
 									</a></div>
 								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_ordenes_salida" class="menu-link">
-										<div class="menu-text">Ordenes de salida</div>
+										<div class="menu-text">Órdenes de salida</div>
 									</a></div>
 								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_stock_productos" class="menu-link">
 										<div class="menu-text">Stock de Productos</div>

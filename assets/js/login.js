@@ -33,7 +33,7 @@ function login() {
       success: function (response) {
         //        if (response == 1 || response == 2 || response == 3 || response == 4) {
         if (response == 1 || response == 2 || response == 3 || response == 4) {
-          setTimeout(function () {
+          /*setTimeout(function () {
             html += '<div class="note note-success" id="alert-med">';
             html += '<div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div>';
             html += '<div class="note-content">';
@@ -42,8 +42,9 @@ function login() {
             html += "</div>";
             $("#mensaje_2").html(html);
             $("#alert-med").fadeOut(5000);
-            window.location.href = "index.php?c=Index&a=home";
-          }, 0);
+            
+          }, 0);*/
+          window.location.href = "index.php?c=Index&a=home";
         }
         if (response == 0) {
           setTimeout(function () {

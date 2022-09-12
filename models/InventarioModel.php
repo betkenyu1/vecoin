@@ -89,11 +89,22 @@ class InventarioModel
     }
     public function getOrdenesEntrada()
     {
-        $consulta = "SELECT OE.id_secuencial,DATE_FORMAT(OE.fecha ,'%d-%m-%Y') as fecha,OE.secuencial,OE.nro_factura,P.proveedor,
-        E.estado FROM cab_oentrada OE
+        $consulta = "SELECT 
+        OE.id_secuencial,
+        DATE_FORMAT(OE.fecha ,'%d-%m-%Y') AS fecha,
+        OE.secuencial,
+        OE.nro_factura,
+        P.proveedor,
+        SUM(DE.cantidad*DE.precio) AS monto,
+        U.usuario AS creador,
+        OE.observacion,
+        E.estado 
+        FROM cab_oentrada OE
         INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
         INNER JOIN estados E ON (OE.id_estado = E.id_estado)
-        WHERE OE.id_estado =1";
+        INNER JOIN det_oentrada DE ON (OE.id_secuencial=DE.id_secuencial)
+        INNER JOIN usuarios U ON (OE.id_usuario=U.id_usuario)
+        GROUP BY OE.id_secuencial;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

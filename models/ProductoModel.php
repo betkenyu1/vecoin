@@ -36,7 +36,7 @@ class ProductoModel
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
         INNER JOIN unidad_medida U ON (P.id_umedida = U.id_umedida)
         INNER JOIN estados E ON (P.id_estado = E.id_estado)
-        WHERE P.id_estado=1 AND C.id_empresa ='$IdEmpresa'";
+        WHERE C.id_estado=1 AND C.id_empresa ='$IdEmpresa'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

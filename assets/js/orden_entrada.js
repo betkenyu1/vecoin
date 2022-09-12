@@ -117,6 +117,10 @@ function getListaOrdenEntrada() {
     html += '<th class="text-nowrap">Secuencial</th>';
     html += '<th class="text-nowrap">Nro. Factura</th>';
     html += '<th class="text-nowrap">Proveedor</th>';
+    html += '<th class="text-nowrap">Monto</th>';
+    html += '<th class="text-nowrap">Usuario Creador</th>';
+    html += '<th class="text-nowrap">Observación</th>';
+
     //html += '<th class="text-nowrap">Estado</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
@@ -134,10 +138,12 @@ function getListaOrdenEntrada() {
                 html += '<td>' + value.secuencial + '</td>';
                 html += '<td>' + value.nro_factura + '</td>';
                 html += '<td>' + value.proveedor + '</td>';
+                html += '<td>' + '$ ' + value.monto + '</td>';
+                html += '<td>' + value.creador + '</td>';
+                html += '<td>' + value.observacion + '</td>';
                 //html += '<td>' + value.estado + '</td>';
                 html += '<td>';
                 html += '<a class="btn btn-outline-success" onclick="getReporteOrdenEntrada(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
-                html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarOrdenEntrada(' + value.id_producto + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
                 html += '</td>';
                 html += '</tr>';
             });
@@ -267,8 +273,8 @@ function setNuevaOrdenEntrada() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Precio:</b> </br>';
-    html += '<input type="text" onkeypress="return validarCosto(event)" placeholder="Ingrese Costo"class="form-control" id="IdPrecio">';
+    html += '<b style="color: #000000;">Costo Unitario:</b> </br>';
+    html += '<input type="text" onkeypress="return validarCosto(event)" placeholder="Ingrese Costo Unitario"class="form-control" id="IdPrecio">';
     html += '<div id="alert-prec"></div>';
     html += '</div>';
     html += '</div>';
@@ -295,7 +301,19 @@ function setNuevaOrdenEntrada() {
     html += '</div>';
     html += '</div>';
     $("#new-ord-entrada").html(html);
-    $('.default-select2').select2();
+    $('.default-select2').select2({
+        placeholder: "Cargando datos...",
+        selectOnClose: "false",
+        language: {
+            noResults: function () {
+                //VACIO
+                return "No hay registros";
+            },
+            searching: function () {
+                return "Buscando..";
+            },
+        },
+    });
     getSecuencial();
     getProductosActivosxEmpresa();
     getUMedidas();
@@ -463,12 +481,13 @@ function getCerrarOrdenEntrada() {
     var nex = 1;
     var secu = parseFloat(idsc) + parseFloat(nex);
     Swal.fire({
-        title: "Desea cerrar esta orden y generar una nueva?",
+        title: "¿ATENCÍON DESEA CERRAR ÓRDEN DE ENTRADA?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sí continuar"
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -479,12 +498,12 @@ function getCerrarOrdenEntrada() {
                 success: function (response) {
                     if (response == 1) {
                         Swal.fire({
-                            html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Cerrado OK!.</b></div></div>',
+                            html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>ÓRDEN CERRADA CON ÉXITO</b></div></div>',
                         });
                         CerrarNuevaOrdenEntrada();
                     } if (response == 2) {
                         Swal.fire({
-                            html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+                            html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>NO SE HA PODIDO CERRAR LA ÓRDEN DE ENTRADA</b></div></div>',
                         });
                     }
                 }

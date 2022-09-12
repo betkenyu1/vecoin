@@ -112,13 +112,20 @@ class InventarioModel
     }
     public function getOrdenesSalida()
     {
-        $consulta = "SELECT OS.id_secuencial,OS.fecha,OS.secuencial,
-        CONCAT(EM.nombres,' ',EM.apellidos) AS responsable,
-        E.estado FROM cab_osalida OS
+        $consulta = "SELECT 
+        OS.id_secuencial,
+        OS.fecha,
+        OS.secuencial,
+        SUM(DS.cantidad*DS.pvp) AS monto,
+        U.usuario,
+        OS.observacion,
+        E.estado 
+        FROM cab_osalida OS
         INNER JOIN usuarios U ON (OS.id_usuario = U.id_usuario)
         INNER JOIN empleados EM ON (U.id_empleado = EM.id_empleado)
         INNER JOIN estados E ON (OS.id_estado = E.id_estado)
-        WHERE OS.id_estado =1";
+        INNER JOIN det_osalida DS ON (OS.id_secuencial=DS.id_secuencial)
+        GROUP BY OS.id_secuencial;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

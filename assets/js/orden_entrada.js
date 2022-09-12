@@ -143,7 +143,7 @@ function getListaOrdenEntrada() {
                 html += '<td>' + value.observacion + '</td>';
                 //html += '<td>' + value.estado + '</td>';
                 html += '<td>';
-                html += '<a class="btn btn-outline-success" onclick="getReporteOrdenEntrada(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
+                html += '<a class="btn btn-outline-danger" onclick="getReporteOrdenEntrada(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
                 html += '</td>';
                 html += '</tr>';
             });
@@ -197,11 +197,11 @@ function CerrarNuevaOrdenEntrada() {
     getListaOrdenEntrada();
 }
 function LimpiarCampos() {
-    getProductos();
+    getProductosActivosxEmpresa();
     $("#IdCantidad").val('');
     $("#IdPrecio").val('');
     getUMedidas();
-    getProveedor();
+    getProveedorActivo();
 }
 function setNuevaOrdenEntrada() {
     CerrarListaOrdenEntrada();
@@ -234,7 +234,7 @@ function setNuevaOrdenEntrada() {
     html += '<b style="color: #000000;">Número Factura:</b> </br>';
     html += '<input type="hidden" class="form-control" id="IdSecuencial">';
     html += '<input type="hidden" class="form-control" id="IdSecuencia">';
-    html += '<input type="text" onkeypress="return validarFactura(event)" placeholder="Ingrese Número de Factura Nombre" class="form-control" id="IdNroFactura">';
+    html += '<input type="text" onkeypress="return validarFactura(event)" placeholder="Ingrese Número de Factura" class="form-control" id="IdNroFactura">';
     html += '<div id="alert-nrofac"></div>';
     html += '</div>';
     html += '</div>';
@@ -257,15 +257,15 @@ function setNuevaOrdenEntrada() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">U.Medida:</b> </br>';
+    html += '<b style="color: #000000;">Unidad de Medida:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdUMedida"></select>';
-    html += '<div id="alert-prov"></div>';
+    html += '<div id="alert-umed"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Cantidad:</b> </br>';
+    html += '<b style="color: #000000;">Cantidad a Ingresar:</b> </br>';
     html += '<input type="text" onkeypress="return validarEnteros(event)" placeholder="Ingrese Cantidad" class="form-control" id="IdCantidad">';
     html += '<div id="alert-cant"></div>';
     html += '</div>';
@@ -321,7 +321,6 @@ function setNuevaOrdenEntrada() {
 }
 function getAgregarOrdenEntrada() {
     var html = '';
-
     if ($("#IdFecha").val() == '') {
         html += '<div class="alert alert-danger">';
         html += "*Campo requerido";
@@ -350,6 +349,20 @@ function getAgregarOrdenEntrada() {
         }, 0);
     }
 
+    if ($("#IdProducto").val() == 0) {
+        html += '<div class="alert alert-danger">';
+        html += "*Campo requerido";
+        html += "</div>";
+        $("#alert-prod").html(html);
+        $("#alert-prod").fadeIn(500);
+        $("#IdProducto").focus();
+        return false;
+    } else {
+        setTimeout(function () {
+            $("#alert-prod").fadeOut(500);
+        }, 0);
+    }
+
     if ($("#IdProveedor").val() == 0) {
         html += '<div class="alert alert-danger">';
         html += "*Campo requerido";
@@ -364,9 +377,22 @@ function getAgregarOrdenEntrada() {
         }, 0);
     }
 
+    if ($("#IdUMedida").val() == 0) {
+        html += '<div class="alert alert-danger">';
+        html += "*Campo requerido";
+        html += "</div>";
+        $("#alert-umed").html(html);
+        $("#alert-umed").fadeIn(500);
+        $("#IdUMedida").focus();
+        return false;
+    } else {
+        setTimeout(function () {
+            $("#alert-umed").fadeOut(500);
+        }, 0);
+    }
+
+
     var RE = /^\d*(\.\d{1})?\d{0,1}$/;
-
-
     if ($("#IdCantidad").val() == "") {
         html += '<div class="alert alert-danger">';
         html += "*Campo requerido";
@@ -411,16 +437,17 @@ function getAgregarOrdenEntrada() {
         }, 0);
     }
 
+    if ($("#IdObs").val().trim().length == 0)
+        var obs = $("#IdObs").val('Sin novedades');
 
     if (
         $("#IdFecha").val() != 0 &&
         $("#IdSecuencial").val() != 0 &&
         $("#IdSecuencia").val() != 0 &&
         $("#IdNroFactura").val() != "" &&
-        $("#IdProducto").val() != "" &&
-        $("#IdProveedor").val() != "" &&
-        $("#IdCantidad").val() != "" &&
-        $("#IdUMedida").val() != "" &&
+        $("#IdProducto").val() != 0 &&
+        $("#IdProveedor").val() != 0 &&
+        $("#IdUMedida").val() != 0 &&
         $("#IdCantidad").val() != "" &&
         $("#IdPrecio").val() != ""
     ) {
@@ -434,6 +461,7 @@ function getAgregarOrdenEntrada() {
         var um = $("#IdUMedida").val();
         var prec = $("#IdPrecio").val();
         var obs = $("#IdObs").val();
+
         Swal.fire({
             title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
             icon: "warning",

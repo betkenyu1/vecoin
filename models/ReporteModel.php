@@ -9,7 +9,7 @@ class ReporteModel
     }
     public function ReporteCabOrdenEntrada($IdSecuencial)
     {
-        $consulta = "SELECT OE.id_secuencial,OE.fecha,OE.secuencial,OE.nro_factura,E.razon_social,P.proveedor,
+        $consulta = "SELECT OE.id_secuencial,OE.fecha,OE.secuencial,OE.observacion,OE.nro_factura,E.razon_social,P.proveedor,
         CONCAT(EP.nombres,' ',EP.apellidos) AS responsable,E.direccion,E.telefono
         FROM cab_oentrada OE
         INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)

@@ -14,8 +14,7 @@ include_once 'views/layout/header.php';
             <a href="#new?1" onclick="setNuevaOrdenEntrada();" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Agregar Órden de Entrada</a>
             <hr>
             <div id="lista-ord_entrada"></div>
-            <div id="new-ord-entrada"></div>
-            <div id="mod-prod"></div>
+            <div id="new-ord-entrada"></div>             <!--<div id="mod-prod"></div>-->
         </div>
     </div>
     <!-- END panel -->

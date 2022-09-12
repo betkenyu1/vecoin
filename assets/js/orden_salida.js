@@ -1,10 +1,84 @@
+/****************VALIDACIONES************* */
+function validarPrecio(evt) {
+    var code = evt.which ? evt.which : evt.keyCode;
+    if (
+        $("#IdPVP").val().length < 1 ||
+        $("#IdPVP").val() != ""
+    ) {
+        if (code == 8) {
+            // backspace.
+            return true;
+        } else if (code >= 48 && code <= 57 || code == 46) {
+            // is a number.
+            setTimeout(function () {
+                $("#alert-prec").fadeOut(500);
+            }, 0);
+            return true;
+        } else if (code == 44) {
+            var html = "";
+            html += '<div class="alert alert-danger">';
+            html += "*Use el (.) como separador de decimales.";
+            html += "</div>";
+            $("#alert-prec").html(html);
+            $("#alert-prec").fadeIn(1000);
+            $("#IdPVP").focus();
+            return false;
+        } else {
+            // other keys.
+            var html = "";
+            html += '<div class="alert alert-danger">';
+            html += "*Ingrese solo dígitos del [0] al [9]";
+            html += "</div>";
+            $("#alert-prec").html(html);
+            $("#alert-prec").fadeIn(1000);
+            $("#IdPVP").focus();
+            return false;
+        }
+    } else {
+        alert("else");
+    }
+}
+
+function validarEnteros(evt) {
+    var code = evt.which ? evt.which : evt.keyCode;
+
+    if (
+        $("#IdCantidad").val().length < 1 ||
+        $("#IdCantidad").val() != ""
+    ) {
+        if (code == 8) {
+            // backspace.
+            return true;
+        } else if (code >= 48 && code <= 57) {
+            // is a number.
+            setTimeout(function () {
+                $("#alert-cant").fadeOut(500);
+            }, 0);
+            return true;
+        } else {
+            // other keys.
+            var html = "";
+            html += '<div class="alert alert-danger">';
+            html += "*Ingrese solo dígitos del [0] al [9]";
+            html += "</div>";
+            $("#alert-cant").html(html);
+            $("#alert-cant").fadeIn(1000);
+            $("#IdCantidad").focus();
+            return false;
+        }
+    } else {
+        alert("else");
+    }
+}
+/********************FIN VALIDACIONES******************** */
+
 function CerrarListaOrdenSalida() {
     $(".cerrar-lp").hide();
 }
 function getListaOrdenSalida() {
     var html = '';
-    html += '<div class="cerrar-lp">';
-    html += '<div class="note note-blue">';
+    html += '<div style="overflow: scroll" class="cerrar-lp">';
+    html += '<div class="">';
     html += '<div class="note-content">';
     html += '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
     html += '<thead>';
@@ -12,12 +86,14 @@ function getListaOrdenSalida() {
     html += '<th width="1%"></th>';
     html += '<th class="text-nowrap">Fecha</th>';
     html += '<th class="text-nowrap">Secuencial</th>';
-    html += '<th class="text-nowrap">Responsable</th>';
-    html += '<th class="text-nowrap">Estado</th>';
+    html += '<th class="text-nowrap">Monto</th>';
+    html += '<th class="text-nowrap">Usuario Creador</th>';
+    html += '<th class="text-nowrap">Observación</th>';
+    //html += '<th class="text-nowrap">Estado</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
     html += '</thead>';
-    html += '<tbody>';
+    html += '<tbody style="background-color:#c1f8ff">';
     $.ajax({
         type: "GET",
         dataType: 'json',
@@ -28,8 +104,9 @@ function getListaOrdenSalida() {
                 html += '<td width="1%" class="fw-bold text-dark">' + value.id_secuencial + '</td>';
                 html += '<td>' + value.fecha + '</td>';
                 html += '<td>' + value.secuencial + '</td>';
-                html += '<td>' + value.responsable + '</td>';
-                html += '<td>' + value.estado + '</td>';
+                html += '<td>' + '$ ' + value.monto + '</td>';
+                html += '<td>' + value.usuario + '</td>';
+                html += '<td>' + value.observacion + '</td>';
                 html += '<td>';
                 html += '<a class="btn btn-outline-danger" onclick="getReporteOrdenSalida(' + value.id_secuencial + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
                 html += '</td>';
@@ -42,18 +119,19 @@ function getListaOrdenSalida() {
             html += '</div>';
             $("#lista-ord_salida").html(html);
             $('#data-table-select').DataTable({
-                select: true,
-                responsive: true
+                "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
+                select: false,
+                responsive: true,
             });
         }
     });
 }
-function getProductos() {
+function getProductosActivosxEmpresa() {
     $("#IdProducto").empty();
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: "index.php?c=Inventario&a=get_productos",
+        url: "index.php?c=Inventario&a=get_productos_activos_x_empresa",
         success: function (response) {
             var $select = $('#IdProducto');
             $select.append('<option value="0">Seleccione...</option>');
@@ -67,11 +145,12 @@ function CerrarNuevaOrdenSalida() {
     $(".cerrar-nos").hide();
     getListaOrdenSalida();
 }
-function LimpiarCampos(){
-    getProductos();
-    getCliente();
+function LimpiarCampos() {
+    getProductosActivosxEmpresa();
+    //getCliente();
     $("#IdCantidad").val('');
     $("#IdPrecio").val('');
+    $("#IdExistencia").val('');
     getUMedidas();
 }
 function setNuevaOrdenSalida() {
@@ -86,7 +165,7 @@ function setNuevaOrdenSalida() {
     html += '<div class="row">';
 
     html += '<div>';
-    html += '<p class="text-center">';
+    html += '<p class="text-center h3">';
     html += '<b style="color: #000000;" id=IdSecu></b> </br>';
     html += '</p>'
     html += '</div>';
@@ -102,14 +181,14 @@ function setNuevaOrdenSalida() {
     html += '</div>';
     html += '</div>';
 
-    html += '<div class="col-md-6">';
+    /*html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Perchas:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdPercha"></select>';
     html += '<div id="alert-ph"></div>';
     html += '</div>';
-    html += '</div>';
-    
+    html += '</div>';*/
+
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
     html += '<b style="color: #000000;">Productos:</b> </br>';
@@ -120,7 +199,7 @@ function setNuevaOrdenSalida() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">U.Medida:</b> </br>';
+    html += '<b style="color: #000000;">Unidad de Medida:</b> </br>';
     html += '<select class="default-select2 form-control" id="IdUMedida"></select>';
     html += '<div id="alert-umed"></div>';
     html += '</div>';
@@ -128,24 +207,24 @@ function setNuevaOrdenSalida() {
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Existencia:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdExistencia">';
+    html += '<b style="color: #000000;">Unidades Disponibles:</b> </br>';
+    html += '<input type="text" disabled class="form-control" placeholder="Unidades Disponibles de Producto" id="IdExistencia">';
     html += '<div id="alert-exist"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">PVP:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdPVP">';
+    html += '<b style="color: #000000;">P.V.P.:</b> </br>';
+    html += '<input type="text" onkeypress="return validarPrecio(event)" placeholder ="Precio de Venta al Público" class="form-control" id="IdPVP">';
     html += '<div id="alert-prec"></div>';
     html += '</div>';
     html += '</div>';
 
     html += '<div class="col-md-6">';
     html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Cantidad:</b> </br>';
-    html += '<input type="text" class="form-control" id="IdCantidad">';
+    html += '<b style="color: #000000;">Cantidad a Despachar:</b> </br>';
+    html += '<input type="text" class="form-control" onkeypress="return validarEnteros(event)" placeholder="Cantidad a despachar" id="IdCantidad">';
     html += '<div id="alert-cant"></div>';
     html += '</div>';
     html += '</div>';
@@ -172,65 +251,29 @@ function setNuevaOrdenSalida() {
     html += '</div>';
     html += '</div>';
     $("#new-ord-salida").html(html);
-    $('.default-select2').select2();
+    $('.default-select2').select2({
+        placeholder: "Cargando datos...",
+        selectOnClose: "false",
+        language: {
+            noResults: function () {
+                //VACIO
+                return "No hay registros";
+            },
+            searching: function () {
+                return "Buscando..";
+            },
+        },
+    });
     getSecuencialOrdenSalida();
-    getProductos();
+    getProductosActivosxEmpresa();
     getUMedidas();
-    getPerchas();
+    //getPerchas();
 }
 $(document).on('change', '#IdProducto', function () {
-	var html = '';
-	if ($('#IdProducto').val() == 0) {
-		html += '<div class="alert alert-danger">';
-		html += 'Seleccione el producto!.';
-		html += '</div>';
-		$("#alert-prod").html(html);
-		$('#IdProducto').focus();
-		setTimeout(function () {
-			$("#alert-prod").fadeOut(1500);
-		}, 3000);
-		return false;
-	} else {
-		var idprod = $('#IdProducto').val();
-		$.ajax({
-			type: "POST",
-			dataType: 'json',
-			url: "index.php?c=Inventario&a=get_existencias",
-			data: "IdProducto=" + idprod,
-			success: function (response) {
-				$.each(response, function (key, value) {
-					$('#IdExistencia').val(value.cantidad)
-                    $('#IdPVP').val(value.pvp)
-				});
-			}
-		});
-	}
-});
-function getAgregarOrdenSalida() {
     var html = '';
-    if ($('#IdFecha').val() == '') {
+    if ($('#IdProducto').val() == 0) {
         html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-freg").html(html);
-        $('#IdFecha').focus();
-        setTimeout(function () {
-            $("#alert-freg").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdPercha').val() == "0") {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-ph").html(html);
-        $('#IdPercha').focus();
-        setTimeout(function () {
-            $("#alert-ph").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdProducto').val() == 0) {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
+        html += 'SELECCIONE EL PRODUCTO';
         html += '</div>';
         $("#alert-prod").html(html);
         $('#IdProducto').focus();
@@ -238,72 +281,172 @@ function getAgregarOrdenSalida() {
             $("#alert-prod").fadeOut(1500);
         }, 3000);
         return false;
-    } if ($('#IdUMedida').val() == 0) {
+    } else {
+        $('#IdExistencia').val(' ')
+        $('#IdCantidad').val(0)
+        var idprod = $('#IdProducto').val();
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "index.php?c=Inventario&a=get_existencias",
+            data: "IdProducto=" + idprod,
+            success: function (response) {
+                $.each(response, function (key, value) {
+                    $('#IdExistencia').val(value.cantidad)
+                    $('#IdPVP').val(value.pvp)
+                });
+            }
+        });
+    }
+});
+function getAgregarOrdenSalida() {
+    var html = '';
+    if ($("#IdFecha").val() == '') {
         html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-umed").html(html);
-        $('#IdUMedida').focus();
-        setTimeout(function () {
-            $("#alert-umed").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdCantidad').val() == '') {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-cant").html(html);
-        $('#IdCantidad').focus();
-        setTimeout(function () {
-            $("#alert-cant").fadeOut(1500);
-        }, 3000);
-        return false;
-    } if ($('#IdPVP').val() == '') {
-        html += '<div class="alert alert-danger">';
-        html += 'Este campo es obligatorio!.';
-        html += '</div>';
-        $("#alert-prec").html(html);
-        $('#IdPVP').focus();
-        setTimeout(function () {
-            $("#alert-prec").fadeOut(1500);
-        }, 3000);
+        html += "*Campo requerido";
+        html += "</div>";
+        $("#alert-freg").html(html);
+        $("#alert-freg").fadeIn(500);
+        $("#IdFecha").focus();
         return false;
     } else {
+        setTimeout(function () {
+            $("#alert-freg").fadeOut(500);
+        }, 0);
+    }
+
+    if ($("#IdProducto").val() == 0) {
+        html += '<div class="alert alert-danger">';
+        html += "*Campo requerido";
+        html += "</div>";
+        $("#alert-prod").html(html);
+        $("#alert-prod").fadeIn(500);
+        $("#IdProducto").focus();
+        return false;
+    } else {
+        setTimeout(function () {
+            $("#alert-prod").fadeOut(500);
+        }, 0);
+    }
+
+
+    if ($("#IdUMedida").val() == 0) {
+        html += '<div class="alert alert-danger">';
+        html += "*Campo requerido";
+        html += "</div>";
+        $("#alert-umed").html(html);
+        $("#alert-umed").fadeIn(500);
+        $("#IdUMedida").focus();
+        return false;
+    } else {
+        setTimeout(function () {
+            $("#alert-umed").fadeOut(500);
+        }, 0);
+    }
+    /*************************acaaa******************** */
+    function validarDisponibilidad($solicito, $tengo) {
+        if ($solicito < $tengo) {
+            return true;
+        } else if ($solicito > $tengo) {
+            return false;
+        } else if ($solicito > $tengo) {
+            return true;
+        }
+    }
+
+    var RE = /^\d*(\.\d{1})?\d{0,1}$/;
+    if ($("#IdCantidad").val() == "") {
+        html += '<div class="alert alert-danger">';
+        html += "*Campo requerido";
+        html += "</div>";
+        $("#alert-cant").html(html);
+        $("#alert-cant").fadeIn(500);
+        $("#IdCantidad").focus();
+        return false;
+    } else if (validarDisponibilidad($("#IdCantidad").val(), $("#IdExistencia").val()) == false) {
+        html += '<div class="alert alert-danger">';
+        html += "*Las cantidades a despachar no pueden superar a las existencias.";
+        html += "</div>";
+        $("#alert-cant").html(html);
+        $("#alert-cant").fadeIn(500);
+        $("#IdCantidad").focus();
+        return false;
+    } else {
+        setTimeout(function () {
+            $("#alert-cant").fadeOut(500);
+        }, 0);
+    }
+
+    if ($("#IdPVP").val() == "") {
+        html += '<div class="alert alert-danger">';
+        html += "*Campo requerido";
+        html += "</div>";
+        $("#alert-prec").html(html);
+        $("#alert-prec").fadeIn(500);
+        $("#IdPVP").focus();
+        return false;
+    } else if (RE.test($("#IdPVP").val()) == false) {
+        html += '<div class="alert alert-danger">';
+        html += "*Verificar valor";
+        html += "</div>";
+        $("#alert-prec").html(html);
+        $("#alert-prec").fadeIn(500);
+        $("#IdPVP").focus();
+        return false;
+    } else {
+        setTimeout(function () {
+            $("#alert-prec").fadeOut(500);
+        }, 0);
+    }
+    if ($("#IdObs").val().trim().length == 0)
+        var obs = $("#IdObs").val('Sin novedades');
+
+
+    if (
+        $("#IdFecha").val() != 0 &&
+        $("#IdSecuencial").val() != 0 &&
+        $("#IdSecuencia").val() != 0 &&
+        $("#IdProducto").val() != 0 &&
+        $("#IdUMedida").val() != 0 &&
+        $("#IdCantidad").val() != "" &&
+        $("#IdPVP").val() != ""
+    ) {
         var freg = $("#IdFecha").val();
         var idsc = $("#IdSecuencial").val();
         var idsecu = $("#IdSecuencia").val();
-        var ph = $("#IdPercha").val();
+        var ph = 1; //NO SE CONTROLA PERCHAS (FUNCIONALIDAD A FUTURO)
         var prod = $("#IdProducto").val();
-        var cant = $("#IdCantidad").val();
         var um = $("#IdUMedida").val();
+        var cant = $("#IdCantidad").val();
         var prec = $("#IdPVP").val();
         var obs = $("#IdObs").val();
         Swal.fire({
-            title: "CONFIRMACION!",
+            title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Sí continuar"
+            cancelButtonText: "Cancelar",
+            confirmButtonText: "Confirmar",
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
                     type: "POST",
                     dataType: 'json',
                     url: "index.php?c=Inventario&a=save_new_orden_salida",
-                    data: "Fecha=" + freg + "&IdSecuencial=" + idsc + 
-                    "&IdSecu=" + idsecu + "&IdPercha=" + ph + 
-                    "&IdProducto=" + prod + "&Cantidad=" + cant + 
-                    "&IdUMedida=" + um + "&Precio=" + prec + "&Observacion=" + obs,
+                    data: "Fecha=" + freg + "&IdSecuencial=" + idsc +
+                        "&IdSecu=" + idsecu + "&IdPercha=" + ph +
+                        "&IdProducto=" + prod + "&Cantidad=" + cant +
+                        "&IdUMedida=" + um + "&Precio=" + prec + "&Observacion=" + obs,
                     success: function (response) {
                         if (response == 1) {
                             Swal.fire({
-                                html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
+                                html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
                             });
                             LimpiarCampos();
                         } if (response == 2) {
                             Swal.fire({
-                                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+                                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>REGISTRO INCORRECTO</b></div></div>',
                             });
                         }
                     }

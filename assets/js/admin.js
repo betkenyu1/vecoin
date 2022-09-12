@@ -11,7 +11,7 @@ function getSecuencial() {
         var n = ('000000000' + value.secuencial).slice(-9);
         $('#IdSecuencial').val(value.secuencial);
         $('#IdSecuencia').val(n);
-        $('#IdSecu').text('ÓRDEN NÚMERO: ' + n);
+        $('#IdSecu').text('ÓRDEN DE ENTRADA NÚMERO: ' + n);
       });
     }
   });
@@ -28,7 +28,7 @@ function getSecuencialOrdenSalida() {
         var n = ('000000000' + value.secuencial).slice(-9);
         $('#IdSecuencial').val(value.secuencial);
         $('#IdSecuencia').val(n);
-        $('#IdSecu').text('Secuencial: [ ' + n + ' ]');
+        $('#IdSecu').text('ÓRDEN DE SALIDA NÚMERO: ' + n);
       });
     }
   });

@@ -15,10 +15,10 @@ class Conexion
             die("error " . $e->getMessage());
         }
         return $conexion;*/
-        $database_username = 'root';
-        $database_password = '';
+        $database_username = 'desarrollo';
+        $database_password = 'armijo123.';
         $dbname = "vecoin_bd";
-        $dsn = 'mysql:host=192.168.100.11:3306;dbname=' . $dbname;
+        $dsn = 'mysql:host=88.99.30.217:3306;dbname=' . $dbname;
 
         $conexion = null;
         try {

@@ -23,6 +23,18 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
+
+    public function get_productos_activos_x_empresa()
+    {
+        $IdEmpresa = $_SESSION['idempresa'];
+        $exito = $this->inv->getProductosActivosxEmpresa($IdEmpresa);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_stock_productos()
     {
         $exito = $this->inv->getStockProductos();
@@ -56,18 +68,19 @@ class InventarioController
     }
     public function save_new_producto()
     {
-        $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
         $IdProveedor = (isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '';
-        $Fecha = date('Y-m-d');
-        $IdBodega = (isset($_REQUEST['IdBodega'])) ? $_REQUEST['IdBodega'] : '';
         $IdUMedida = (isset($_REQUEST['IdUMedida'])) ? $_REQUEST['IdUMedida'] : '';
+        $IdCatalogo = (isset($_REQUEST['IdCatalogo'])) ? $_REQUEST['IdCatalogo'] : '';
+        //$Fecha = date('Y-m-d');
+        //$IdBodega = (isset($_REQUEST['IdBodega'])) ? $_REQUEST['IdBodega'] : '';        
         $Cantidad = strtoupper((isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '');
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Prc_Utl = (isset($_REQUEST['Prc_Utl'])) ? $_REQUEST['Prc_Utl'] : '';
         $Utilidad = (isset($_REQUEST['Utilidad'])) ? $_REQUEST['Utilidad'] : '';
         $PVP = (isset($_REQUEST['PVP'])) ? $_REQUEST['PVP'] : '';
-        $IdUsuario = $_SESSION["idusuario"];
-        $exito = $this->inv->RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP, $IdUsuario);
+        //$IdUsuario = $_SESSION["idusuario"];
+        //$exito = $this->inv->RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP, $IdUsuario);
+        $exito = $this->inv->RegistroProducto($IdCatalogo, $IdProveedor, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP);
         if ($exito) {
             echo 1;
         } else {
@@ -92,6 +105,7 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
+
     public function save_new_orden_entrada()
     {
         date_default_timezone_set('America/Guayaquil');

@@ -394,7 +394,7 @@ class AdminModel
     public function registroSesion($IdUsuario)
     {
         date_default_timezone_set('America/Guayaquil');
-        $FechaActual = date('Y/m/d h:i:s a', time());
+        $FechaActual = date('Y/m/d H:i:s', time());
         $consulta = "INSERT INTO auditoria (id_usuario,observacion,registro_tiempo)
         VALUES(:id_usuario,'INGRESO AL SISTEMA',:registro_tiempo)";
         $sentencia = $this->db->prepare($consulta);
@@ -480,6 +480,19 @@ class AdminModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+
+    public function getProveedoresActivos()
+    {
+        $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email,
+        CASE WHEN id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado 
+        FROM proveedores
+        WHERE id_estado=1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function getProveedorId($IdProveedor)
     {
         $consulta = "SELECT id_proveedor,ruc,proveedor,direccion,telefono,email FROM proveedores

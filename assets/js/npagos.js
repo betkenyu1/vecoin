@@ -47,7 +47,7 @@ function setNuevoPago() {
     html += '<div id="alert-prec"></div>';
     html += '</div>';
     html += '</div>';
-    
+
     html += '</div>';
     html += '</div>';
     html += '</form>';
@@ -68,10 +68,10 @@ function getListaVentas() {
     html += '<th width="1%"></th>';
     html += '<th hidden class="text-nowrap"></th>';
     html += '<th class="text-nowrap">Fecha</th>';
-    html += '<th class="text-nowrap">Secuencial</th>';
+    html += '<th class="text-nowrap">Nro. Factura</th>';
     html += '<th class="text-nowrap">Producto</th>';
     html += '<th class="text-nowrap">Cantidad</th>';
-    html += '<th class="text-nowrap">PVP</th>';
+    html += '<th class="text-nowrap">P.V.P.</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
     html += '</thead>';
@@ -102,9 +102,9 @@ function getListaVentas() {
                 html += '</div>';
                 $("#lista-ventas").html(html);
                 $('#data-table-select').DataTable({
-                    "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json"},
-				select: true,
-				responsive: true
+                    "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
+                    select: true,
+                    responsive: true
                 });
             } else {
                 html = '';
@@ -174,7 +174,7 @@ function getRegistrarPago() {
                     type: "GET",
                     dataType: 'json',
                     url: "index.php?c=Venta&a=save_new_pago",
-                    data: "IdCabVenta=" + idcab +  "&NroFactura=" + nfact + "&Valor=" + vr,
+                    data: "IdCabVenta=" + idcab + "&NroFactura=" + nfact + "&Valor=" + vr,
                     success: function (response) {
                         response = JSON.stringify(response);
                         if (response == 1) {

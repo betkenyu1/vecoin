@@ -28,6 +28,19 @@ class CatalogoController
             echo json_encode($vacio);
         }
     }
+
+    public function get_catalogo_activos_X_empresa()
+    {
+        $IdEmpresa = $_SESSION['idempresa'];
+        $exito = $this->cat->getCatalogoActivosxEmpresa($IdEmpresa);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    
     public function get_perchas()
     {
         $exito = $this->cat->getPerchas();

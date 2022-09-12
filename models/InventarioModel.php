@@ -17,7 +17,20 @@ class InventarioModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    
+
+    public function getProductosActivosxEmpresa($id_empresa)
+    {
+        $consulta = "SELECT P.id_producto,C.producto
+        FROM productos P
+        INNER JOIN catalogo C 
+        ON (P.id_catalogo=C.id_catalogo)
+        WHERE C.id_empresa='$id_empresa';";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function getStockProductos()
     {
         $consulta = "SELECT PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
@@ -52,22 +65,22 @@ class InventarioModel
         return $resultados;
     }
 
-    public function RegistroProducto($IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP, $IdUsuario)
+    public function RegistroProducto($IdCatalogo, $IdProveedor, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP) //$IdCatalogo, $IdProveedor, $Fecha, $IdBodega, $IdUMedida, $Cantidad, $Precio, $Prc_Utl, $Utilidad, $PVP, $IdUsuario)
     {
-        $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,fecha,id_bodega,id_umedida,cantidad,precio,prc_utl,utilidad,pvp,id_usuario)
-        Values(:id_catalogo,:id_proveedor,:fecha,:id_bodega,:id_umedida,:cantidad,:precio,:prc_utl,:utilidad,:pvp,:id_usuario)";
+        $consulta = "INSERT INTO productos (id_catalogo,id_proveedor,id_umedida,cantidad,precio,prc_utl,utilidad,pvp)
+        Values(:id_catalogo,:id_proveedor,:id_umedida,:cantidad,:precio,:prc_utl,:utilidad,:pvp)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_catalogo', $IdCatalogo);
         $sentencia->bindParam(':id_proveedor', $IdProveedor);
-        $sentencia->bindParam(':fecha', $Fecha);
-        $sentencia->bindParam(':id_bodega', $IdBodega);
+        //$sentencia->bindParam(':fecha', $Fecha);
+        //$sentencia->bindParam(':id_bodega', $IdBodega);
         $sentencia->bindParam(':id_umedida', $IdUMedida);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':precio', $Precio);
         $sentencia->bindParam(':prc_utl', $Prc_Utl);
         $sentencia->bindParam(':utilidad', $Utilidad);
         $sentencia->bindParam(':pvp', $PVP);
-        $sentencia->bindParam(':id_usuario', $IdUsuario);
+        //$sentencia->bindParam(':id_usuario', $IdUsuario);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;
@@ -76,7 +89,7 @@ class InventarioModel
     }
     public function getOrdenesEntrada()
     {
-        $consulta = "SELECT OE.id_secuencial,OE.fecha,OE.secuencial,OE.nro_factura,P.proveedor,
+        $consulta = "SELECT OE.id_secuencial,DATE_FORMAT(OE.fecha ,'%d-%m-%Y') as fecha,OE.secuencial,OE.nro_factura,P.proveedor,
         E.estado FROM cab_oentrada OE
         INNER JOIN proveedores P ON (OE.id_proveedor = P.id_proveedor)
         INNER JOIN estados E ON (OE.id_estado = E.id_estado)

@@ -511,6 +511,17 @@ class AdminController
         }
     }
 
+    public function get_proveedor_activo()
+    {
+        $exito = $this->adm->getProveedoresActivos();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
     public function get_estados()
     {
         $exito = $this->adm->getEstados();

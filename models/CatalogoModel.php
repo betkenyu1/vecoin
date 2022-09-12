@@ -19,6 +19,21 @@ class CatalogoModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+
+    public function getCatalogoActivosxEmpresa($IdEmpresa)
+    {
+        $consulta = "SELECT C.id_catalogo,E.razon_social,C.codigo,C.producto,ES.estado 
+        FROM catalogo C
+        INNER JOIN empresas E ON (C.id_empresa=E.id_empresa)
+        INNER JOIN estados ES ON (C.id_estado=ES.id_estado)
+        WHERE C.id_empresa = '$IdEmpresa'
+        AND C.id_estado=1";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function getPerchas()
     {
         $consulta = "SELECT id_percha,percha FROM perchas";

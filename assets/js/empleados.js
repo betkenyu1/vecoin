@@ -1,6 +1,4 @@
 /********** VALIDACIONES **********/
-
-
 function validarPrimerNombre(evt) {
   // code is the decimal ASCII representation of the pressed key.
   var code = evt.which ? evt.which : evt.keyCode;
@@ -427,8 +425,7 @@ function getListaEmpleados() {
   html += '<div style="overflow: scroll" class="cerrar-emple">';
   html += '<div class="">';
   html += '<div class="note-content">';
-  html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -518,8 +515,7 @@ function setEmpleados() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Segundo nombre:</b> </br>';
-  html +=
-    '<input type="text" onkeypress="return validarSegundoNombre(event)" placeholder="Ingrese Segundo Nombre" class="form-control" id="IdNombre_2">';
+  html += '<input type="text" onkeypress="return validarSegundoNombre(event)" placeholder="Ingrese Segundo Nombre" class="form-control" id="IdNombre_2">';
   html += '<div id="alert-nom2"></div>';
   html += "</div>";
   html += "</div>";

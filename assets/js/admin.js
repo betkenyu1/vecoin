@@ -11,7 +11,7 @@ function getSecuencial() {
         var n = ('000000000' + value.secuencial).slice(-9);
         $('#IdSecuencial').val(value.secuencial);
         $('#IdSecuencia').val(n);
-        $('#IdSecu').text('Secuencial: [ ' + n + ' ]');
+        $('#IdSecu').text('ÓRDEN NÚMERO: ' + n);
       });
     }
   });
@@ -261,6 +261,41 @@ function getProveedor() {
   });
 }
 
+function getProveedorMod() {
+  $("#IdProveedorMod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_proveedor",
+    success: function (response) {
+      var $select = $("#IdProveedorMod");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
+        );
+      });
+    },
+  });
+}
+function getProveedorActivoMod() {
+  $("#IdProveedorMod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_proveedor_activo",
+    success: function (response) {
+      var $select = $("#IdProveedorMod");
+      //$select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
+        );
+      });
+    },
+  });
+}
+
 function getProveedorActivo() {
   $("#IdProveedor").empty();
   $.ajax({
@@ -312,6 +347,43 @@ function getCatalogo() {
     },
   });
 }
+
+function getCatalogoActivosMod() {
+  $("#IdCatalogoMod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Catalogo&a=get_catalogo_activos_X_empresa",
+    success: function (response) {
+      var $select = $("#IdCatalogoMod");
+      //$select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_catalogo + ">" + value.producto + "</option>"
+        );
+      });
+    },
+  });
+}
+
+function getCatalogoActivos() {
+  $("#IdCatalogo").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Catalogo&a=get_catalogo_activos_X_empresa",
+    success: function (response) {
+      var $select = $("#IdCatalogo");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" + value.id_catalogo + ">" + value.producto + "</option>"
+        );
+      });
+    },
+  });
+}
+
 function getEstados() {
   $("#IdEstado").empty();
   $.ajax({
@@ -378,21 +450,47 @@ function getUMedidas() {
     }
   });
 }
-function CalcularUtilidad() {
-  var prca = $('#IdPrecio_act').val();
-  var prc = $('#IdUtilidad').val();
-  var utl = Number(parseFloat(prca * prc / 100)).toFixed(2);
-  $('#IdUtl').val(utl);
-  r = Number(parseFloat(utl) + parseFloat(prca)).toFixed(2);
-  $('#IdPVP').val(r);
+
+function getUMedidasActivasMod() {
+  $("#IdUMedidaMod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: 'json',
+    url: "index.php?c=Producto&a=get_umedidas",
+    success: function (response) {
+      var $select = $('#IdUMedidaMod');
+      //$select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append('<option value=' + value.id_umedida + '>' + value.umedida + '</option>');
+      });
+    }
+  });
 }
+
+function CalcularUtilidad() {
+  if ($('#IdPrecio_act').val() != '' && $('#IdUtilidad').val() != '') {
+    var prca = $('#IdPrecio_act').val();
+    var prc = $('#IdUtilidad').val();
+    var utl = Number(parseFloat(prca * prc / 100)).toFixed(2);
+    $('#IdUtl').val(utl);
+    r = Number(parseFloat(utl) + parseFloat(prca)).toFixed(2);
+    $('#IdPVP').val(r);
+  } else {
+    $('#IdPVP').val('');
+  }
+}
+
 function CalcularUtilidadMod() {
-  var prca = $('#IdPrecio_actMod').val();
-  var prc = $('#IdUtilidadMod').val();
-  var utl = Number(parseFloat(prca * prc / 100)).toFixed(2);
-  $('#IdUtlMod').val(utl);
-  var r = Number(parseFloat(utl) + parseFloat(prca)).toFixed(2);
-  $('#IdPVPMod').val(r);
+  if ($('#IdPrecio_actMod').val() != '' && $('#IdUtilidadMod').val() != '') {
+    var prca = $('#IdPrecio_actMod').val();
+    var prc = $('#IdUtilidadMod').val();
+    var utl = Number(parseFloat(prca * prc / 100)).toFixed(2);
+    $('#IdUtlMod').val(utl);
+    r = Number(parseFloat(utl) + parseFloat(prca)).toFixed(2);
+    $('#IdPVPMod').val(r);
+  } else {
+    $('#IdPVPMod').val('');
+  }
 }
 function getBodegasMod() {
   $("#IdBodegaMod").empty();
@@ -422,23 +520,6 @@ function getUMedidasMod() {
         $select.append('<option value=' + value.id_umedida + '>' + value.umedida + '</option>');
       });
     }
-  });
-}
-function getProveedorMod() {
-  $("#IdProveedorMod").empty();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Admin&a=get_proveedor",
-    success: function (response) {
-      var $select = $("#IdProveedorMod");
-      $select.append('<option value="0">Seleccione...</option>');
-      $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
-        );
-      });
-    },
   });
 }
 

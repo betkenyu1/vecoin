@@ -394,7 +394,7 @@ class AdminModel
     public function registroSesion($IdUsuario)
     {
         date_default_timezone_set('America/Guayaquil');
-        $FechaActual = date('Y/m/d H:i:s', time());
+        $FechaActual = date("Y-m-d H:i:s",time());
         $consulta = "INSERT INTO auditoria (id_usuario,observacion,registro_tiempo)
         VALUES(:id_usuario,'INGRESO AL SISTEMA',:registro_tiempo)";
         $sentencia = $this->db->prepare($consulta);

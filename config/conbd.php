@@ -19,6 +19,7 @@ class Conexion
         $database_password = '';
         $dbname = "vecoin_bd";
         $dsn = 'mysql:host=192.168.100.11:3306;dbname=' . $dbname;
+
         $conexion = null;
         try {
             $conexion = new PDO($dsn, $database_username, $database_password);

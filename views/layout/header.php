@@ -226,7 +226,7 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-text">Órdenes de salida</div>
 									</a></div>
 								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_stock_productos" class="menu-link">
-										<div class="menu-text">Stock de Productos</div>
+										<div class="menu-text">Productos en Bodega</div>
 									</a></div>
 							</div>
 						</div>
@@ -316,7 +316,7 @@ if ($_SESSION["user"] === null) {
 						<div class="menu-item has-sub">
 							<a href="javascript:;" class="menu-link">
 								<div class="menu-icon">
-									<i class="material-icons">add_shopping_cart</i>
+									<i class="material-icons">shopping_cart</i>
 								</div>
 								<div class="menu-text">Ventas</div>
 								<div class="menu-caret"></div>

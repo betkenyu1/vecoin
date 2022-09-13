@@ -72,6 +72,8 @@ function getListaVentas() {
     html += '<th class="text-nowrap">Producto</th>';
     html += '<th class="text-nowrap">Cantidad</th>';
     html += '<th class="text-nowrap">P.V.P.</th>';
+    html += '<th class="text-nowrap">Subtotal</th>';
+    html += '<th class="text-nowrap">Total</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
     html += '</thead>';
@@ -90,7 +92,9 @@ function getListaVentas() {
                     html += '<td>' + value.nro_factura + '</td>';
                     html += '<td>' + value.producto + '</td>';
                     html += '<td>' + value.cantidad + '</td>';
-                    html += '<td>' + value.pvp + '</td>';
+                    html += '<td>' + '$ ' + value.pvp + '</td>';
+                    html += '<td>' + '$ ' + value.subtotal + '</td>';
+                    html += '<td>' + '$ ' + value.total + '</td>';
                     html += '<td>';
                     html += '<a href="#npg?1" class="btn btn-outline-green" onclick="getProcesarPago(' + value.id_cabventa + ');" title="Procesar Pago"><i class="fa-solid fa-dollar"></i></a>';
                     html += '</td>';
@@ -110,7 +114,7 @@ function getListaVentas() {
                 html = '';
                 html += '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
                 html += '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-                html += '<b>No hay datos</b>';
+                html += '<b>*NO DISPONE DE FACTURAS PENDIENTES DE PAGO.</b>';
                 html += '</div>';
                 $("#lista-ventas").html(html);
             }

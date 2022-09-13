@@ -17,13 +17,10 @@ class PDF extends FPDF
                 $_SESSION["dir"] = $scred["direccion"];
                 $_SESSION["tel"] = $scred["telefono"];
                 $title = 'ÓRDEN DE ENTRADA';
-                $ta = 'Elaborado por: ';
-                $fh = 'Fecha/Hora: ';
                 $this->SetFont('Arial', 'B', 10);
                 date_default_timezone_set('America/Guayaquil');
                 $DateAndTime = date('d/m/Y h:i:s a', time());
-                $fi = 'Fecha impresión: ';
-                $fh = 'Ciudad y Fecha: Guayaquil ';
+                //$fi = 'Fecha impresión: ';
                 $this->Image('../../assets/img/logo/logo_vecoin-1.png', 5, 8, 40);
                 //$this->Image('../../assets/img/logo/fd.png', '60', '90', '100', '100', 'PNG');
                 $this->SetFont('Arial', 'B', 14);
@@ -39,7 +36,7 @@ class PDF extends FPDF
                 $this->SetFont('Arial', 'I', 7);
                 $this->Ln(10);
                 $this->SetFont('Arial', 'I', 7);
-                $this->Cell(190, 5, utf8_decode($fi) . $DateAndTime, 0, 1, 'R', 0);
+                //$this->Cell(190, 5, utf8_decode($fi) . $DateAndTime, 0, 1, 'R', 0);
                 $this->SetFont('Arial', 'I', 8);
                 $FechaCred = date('d/m/Y', strtotime($scred["fecha"]));
                 //$this->Cell(30, 5, utf8_decode($fh . $FechaCred), 0, 1, '');
@@ -98,7 +95,7 @@ class PDF extends FPDF
 
 date_default_timezone_set('America/Guayaquil');
 $DateAndTime = date('m-d-Y h:i:s a', time());
-$sf = 'VECOIN_ORDEN DE ENTRADA';
+$sf = 'VECOIN_ORDEN_DE_ENTRADA';
 $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage();
@@ -110,7 +107,7 @@ $resultados = $rep->ReporteDetOrdenEntrada($IdSecuencial);
 if ($resultados) {
     $sum = 0;
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(190, 5, 'DETALLE DE PRODUCTOS INGRESADOS', 1, 1, 'C', true);
+    $pdf->Cell(190, 8, 'DETALLE DE PRODUCTOS INGRESADOS', 1, 1, 'C', true);
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(20, 5, utf8_decode('Cant.'), 1, 0, 'C', false);
@@ -124,17 +121,17 @@ if ($resultados) {
         $pdf->Cell(20, 5, utf8_decode($re["cantidad"]), 1, 0, 'C', false);
         $pdf->Cell(30, 5, utf8_decode($re["umedida"]), 1, 0, 'C', false);
         $pdf->Cell(70, 5, utf8_decode($re["producto"]), 1, 0, 'L', false);
-        $pdf->Cell(35, 5, utf8_decode($re["precio"]), 1, 0, 'C', false);
+        $pdf->Cell(35, 5, '$ ' . utf8_decode($re["precio"]), 1, 0, 'C', false);
         $pdf->Cell(35, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 1, 'C', false);
 
         $sum += $re["cantidad"] * $re["precio"];
     }
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(155, 5, 'TOTAL  ', 1, 0, 'R', true);
+    $pdf->Cell(155, 6, 'TOTAL  ', 1, 0, 'R', true);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(35, 5, '$ ' . number_format($sum, 2, ".", ","), 1, 1, 'C', false);
+    $pdf->Cell(35, 6, '$ ' . number_format($sum, 2, ".", ","), 1, 1, 'C', false);
 }
 $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
 $sol_cred = $rep->ReporteCabOrdenEntrada($IdSecuencial);
@@ -148,8 +145,8 @@ if ($sol_cred) {
     $sb = '_';
     date_default_timezone_set('America/Guayaquil');
     $DateAndTime = date('m-d-Y h:i:s a', time());
-    $pdf->Output('I', $sf . $sb . $sc["proveedor"] . $sb . $DateAndTime . $ext);
+    $pdf->Output('I', $sf . $sb . $sc["secuencial"] . $ext);
 } else {
-    $alert = "No hay datos para el reporte!, revise la fecha y el cliente";
+    $alert = "No hay datos para el reporte!, revise la fecha y la Orden de entrada seleccionada";
     echo json_encode($alert);
 }

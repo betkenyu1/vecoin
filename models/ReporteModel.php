@@ -37,8 +37,8 @@ class ReporteModel
     }
     public function ReporteCabOrdenSalida($IdSecuencial)
     {
-        $consulta = "SELECT OS.id_secuencial,OS.fecha,OS.secuencial,E.razon_social,
-        CONCAT(EP.nombres,' ',EP.apellidos) AS responsable,E.direccion,E.telefono
+        $consulta = "SELECT OS.id_secuencial,OS.fecha_osalida,OS.secuencial,E.razon_social,
+        CONCAT(EP.nombres,' ',EP.apellidos) AS responsable,E.direccion,E.telefono,OS.observacion
         FROM cab_osalida OS
         INNER JOIN usuarios US ON (OS.id_usuario = US.id_usuario)
         INNER JOIN empleados EP ON (US.id_empleado = EP.id_empleado)
@@ -65,13 +65,30 @@ class ReporteModel
     }
     public function ReporteStockProductos()
     {
-        $consulta = "SELECT PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
-        , CASE WHEN PR.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
+        $consulta = "SELECT C.codigo, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion', 
+        E.direccion,E.telefono, CASE WHEN PR.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
         INNER JOIN proveedores P ON P.id_proveedor = PR.id_proveedor
         INNER JOIN catalogo C ON C.id_catalogo = PR.id_catalogo
         INNER JOIN empresas E ON E.id_empresa = C.id_empresa
         INNER JOIN bodegas B ON B.id_bodega = PR.id_bodega
-        INNER JOIN unidad_medida UM ON UM.id_umedida = PR.id_umedida;";
+        INNER JOIN unidad_medida UM ON UM.id_umedida = PR.id_umedida
+        ORDER BY nombre_producto DESC;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+    public function CabeceraReporteStockProductos()
+    {
+        $consulta = "SELECT CONCAT(E.nombres,' ',E.apellidos) AS responsable,B.bodega,EM.direccion,EM.telefono,DATE_FORMAT(NOW() ,'%d-%m-%Y') AS fecha
+        FROM productos P
+        INNER JOIN usuarios U ON U.id_usuario = P.id_usuario
+        INNER JOIN empleados E ON U.id_empleado = E.id_empleado
+        INNER JOIN bodegas B ON B.id_bodega=P.id_bodega
+        INNER JOIN catalogo C ON C.id_catalogo=P.id_catalogo
+        INNER JOIN empresas EM ON C.id_empresa=EM.id_empresa
+        GROUP BY 1;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -80,16 +97,18 @@ class ReporteModel
 
     public function ReporteInicioSesion()
     {
-        $consulta = "SELECT A.id_auditoria,EM.razon_social,U.usuario,CONCAT (E.nombres,' ',E.apellidos) AS nombres,
-        EM.razon_social,A.observacion, DATE_FORMAT(A.registro_tiempo ,'%d-%m-%Y %h:%i:%s') AS registro_tiempo
-        FROM auditoria A
-        INNER JOIN usuarios U 
-        ON A.id_usuario=U.id_usuario
-        INNER JOIN empleados E
-        ON U.id_empleado = E.id_empleado
-        INNER JOIN empresas EM
-        ON E.id_empresa=EM.id_empresa
-        ORDER BY 1 DESC";
+        $consulta = "SELECT A.id_auditoria,EM.razon_social,U.usuario,CONCAT (E.nombres,' ',E.nombres_2,' ',E.apellidos,' ',E.apellidos_2) AS nombres,
+        A.observacion, DATE_FORMAT(A.registro_tiempo ,'%d-%m-%Y %h:%i:%s') AS registro_tiempo,
+                TIME_FORMAT(hora,'%H:%i:%s') AS hora,
+                DATE_FORMAT(fecha,'%d-%m-%Y') AS fecha
+                FROM auditoria A
+                INNER JOIN usuarios U 
+                ON A.id_usuario=U.id_usuario
+                INNER JOIN empleados E
+                ON U.id_empleado = E.id_empleado
+                INNER JOIN empresas EM
+                ON E.id_empresa=EM.id_empresa
+                ORDER BY 1 DESC";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

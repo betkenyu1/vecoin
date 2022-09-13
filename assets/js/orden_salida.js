@@ -120,6 +120,7 @@ function getListaOrdenSalida() {
             $("#lista-ord_salida").html(html);
             $('#data-table-select').DataTable({
                 "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
+                order: [[0, 'desc']],
                 select: false,
                 responsive: true,
             });
@@ -151,6 +152,7 @@ function LimpiarCampos() {
     $("#IdCantidad").val('');
     $("#IdPrecio").val('');
     $("#IdExistencia").val('');
+    $("#IdPVP").val('');
     getUMedidas();
 }
 function setNuevaOrdenSalida() {
@@ -239,8 +241,8 @@ function setNuevaOrdenSalida() {
     html += '</div>';
 
     html += '<div>';
-    html += '<b style="color: #000000;">Observación (Opcional):</b> </br>';
-    html += '<textarea type="text" row="3" class="form-control" id="IdObs"></textarea>';
+    html += '<b style="color: #000000;">Observación (Campo Opcional):</b> </br>';
+    html += '<textarea type="text" row="3" class="form-control" placeholder="En este recuadro puede escribir un comentario respecto a la órden de salida que se va a generar." id="IdObs"></textarea>';
     html += '<div id="alert-obs"></div>';
     html += '</div>';
 
@@ -345,17 +347,24 @@ function getAgregarOrdenSalida() {
     }
     /*************************acaaa******************** */
     function validarDisponibilidad($solicito, $tengo) {
-        if ($solicito < $tengo) {
-            return true;
-        } else if ($solicito > $tengo) {
+        if (parseInt($solicito == '0')) {
+            //alert($solicito + ' 0 ' + $tengo);
             return false;
-        } else if ($solicito > $tengo) {
+        } else if (parseInt($solicito) == parseInt($tengo)) {
+            //alert(parseInt($solicito) + ' == ' + parseInt($tengo));
             return true;
+        } else if (parseInt($solicito) < parseInt($tengo)) {
+            //alert($solicito + ' < ' + $tengo);
+            return true;
+        } else if (parseInt($solicito) > parseInt($tengo)) {
+            //alert($solicito + ' > ' + $tengo);
+            return false;
         }
+
     }
 
     var RE = /^\d*(\.\d{1})?\d{0,1}$/;
-    if ($("#IdCantidad").val() == "") {
+    if ($("#IdCantidad").val() == "" || $("#IdCantidad").val() == 0) {
         html += '<div class="alert alert-danger">';
         html += "*Campo requerido";
         html += "</div>";
@@ -398,8 +407,7 @@ function getAgregarOrdenSalida() {
             $("#alert-prec").fadeOut(500);
         }, 0);
     }
-    if ($("#IdObs").val().trim().length == 0)
-        var obs = $("#IdObs").val('Sin novedades');
+
 
 
     if (
@@ -411,6 +419,7 @@ function getAgregarOrdenSalida() {
         $("#IdCantidad").val() != "" &&
         $("#IdPVP").val() != ""
     ) {
+
         var freg = $("#IdFecha").val();
         var idsc = $("#IdSecuencial").val();
         var idsecu = $("#IdSecuencia").val();
@@ -419,7 +428,10 @@ function getAgregarOrdenSalida() {
         var um = $("#IdUMedida").val();
         var cant = $("#IdCantidad").val();
         var prec = $("#IdPVP").val();
-        var obs = $("#IdObs").val();
+        if ($("#IdObs").val().trim() == '')
+            var obs = 'Sin novedades';
+        else
+            var obs = $("#IdObs").val();
         Swal.fire({
             title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
             icon: "warning",
@@ -461,12 +473,13 @@ function getCerrarOrdenSalida() {
     var nex = 1;
     var secu = parseFloat(idsc) + parseFloat(nex);
     Swal.fire({
-        title: "Desea cerrar esta orden y generar una nueva?",
+        title: "¿ATENCÍON DESEA CERRAR ÓRDEN DE SALIDA?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sí continuar"
+        cancelButtonText: "Cancelar",
+        confirmButtonText: "Confirmar",
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
@@ -477,12 +490,12 @@ function getCerrarOrdenSalida() {
                 success: function (response) {
                     if (response == 1) {
                         Swal.fire({
-                            html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Cerrado OK!.</b></div></div>',
+                            html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>ÓRDEN CERRADA CON ÉXITO</b></div></div>',
                         });
                         CerrarNuevaOrdenSalida();
                     } if (response == 2) {
                         Swal.fire({
-                            html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error de registro!.</b></div></div>',
+                            html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>NO SE HA PODIDO CERRAR LA ÓRDEN DE SALIDA</b></div></div>',
                         });
                     }
                 }

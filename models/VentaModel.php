@@ -20,7 +20,7 @@ class VentaModel
     }
     public function getOSalidaProductos()
     {
-        $consulta = "SELECT OS.id_det_osalida,CO.id_secuencial,CO.fecha,CO.secuencial,C.producto,
+        $consulta = "SELECT OS.id_det_osalida,CO.id_secuencial,DATE_FORMAT(CO.fecha_osalida ,'%d-%m-%Y')AS fecha,CO.secuencial,C.producto,
         UM.umedida,B.bodega,OS.cantidad,OS.pvp
         FROM det_osalida OS
         INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
@@ -28,7 +28,7 @@ class VentaModel
         INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
-        WHERE OS.id_estado =1";
+        WHERE OS.id_estado =1;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -45,6 +45,22 @@ class VentaModel
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
         WHERE id_det_osalida = '$IdDetOSalida'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getUltimaFactura()
+    {
+        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
+        UM.umedida,B.bodega,OS.cantidad,OS.pvp
+        FROM det_osalida OS
+        INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
+        INNER JOIN productos P ON (OS.id_producto = P.id_producto)
+        INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
+        WHERE id_det_osalida = '$'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -129,7 +145,7 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function GetVentasParams($IdFDesde,$IdFHasta)
+    public function GetVentasParams($IdFDesde, $IdFHasta)
     {
         $consulta = "SELECT DV.pvp AS TotalVentas
         FROM det_venta DV
@@ -141,7 +157,7 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function GetPagosParams($IdFDesde,$IdFHasta)
+    public function GetPagosParams($IdFDesde, $IdFHasta)
     {
         $consulta = "SELECT DV.pvp AS TotalPagos
         FROM det_venta DV
@@ -153,7 +169,7 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function GetVentasChartsParams($IdFDesde,$IdFHasta)
+    public function GetVentasChartsParams($IdFDesde, $IdFHasta)
     {
         $consulta = "SELECT CV.fecha,DV.pvp AS PVP
         FROM det_venta DV
@@ -181,7 +197,7 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function GetCtasxCobrar($IdFDesde,$IdFHasta)
+    public function GetCtasxCobrar($IdFDesde, $IdFHasta)
     {
         $consulta = "SELECT CV.nro_factura AS NroFactura,DV.pvp AS Valor
         FROM det_venta DV
@@ -196,13 +212,16 @@ class VentaModel
     // NOTA DE CREDITO
     public function getListaVentas()
     {
-        $consulta = "SELECT DV.id_detventa,CV.id_cabventa,CV.freg,CV.nro_factura,C.producto,
-        DV.cantidad,DV.pvp
+        $consulta = "SELECT DV.id_detventa,
+        CV.id_cabventa,DATE_FORMAT( CV.fecha,'%d-%m-%Y')  AS fecha,CV.nro_factura,C.producto,
+        DV.cantidad,DV.pvp, CL.razon_social
         FROM det_venta DV
         INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        WHERE DV.id_estado =1";
+        INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)
+        WHERE DV.id_estado =1
+        AND CV.id_estado=1;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -211,12 +230,13 @@ class VentaModel
     public function getDetVenta($IdDetVenta)
     {
         $consulta = "SELECT DV.id_detventa,CV.freg,CV.nro_factura,P.id_producto,C.producto,
-        DV.cantidad,DV.pvp
+        DV.cantidad,DV.pvp,CL.id_cliente
         FROM det_venta DV
         INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
-        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        WHERE DV.id_detventa = '$IdDetVenta'";
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo) 
+        INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)       
+        WHERE DV.id_detventa= '$IdDetVenta'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -278,13 +298,23 @@ class VentaModel
     // NOTA DE CREDITO
     public function getListaVentaPagos()
     {
-        $consulta = "SELECT DV.id_detventa,CV.id_cabventa,CV.freg,CV.nro_factura,C.producto,
-        DV.cantidad,DV.pvp
+        /*$consulta = "SELECT DV.id_detventa,
+        CV.id_cabventa,DATE_FORMAT( CV.fecha,'%d-%m-%Y')  AS fecha,CV.nro_factura,C.producto,
+        DV.cantidad,DV.pvp, CL.razon_social
         FROM det_venta DV
         INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        WHERE CV.id_estado =1";
+        INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)
+        WHERE DV.id_estado =1";*/
+        $consulta = "SELECT DV.id_detventa,CV.id_cabventa, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS freg,CV.nro_factura, (DV.cantidad*DV.pvp) AS subtotal, ((DV.cantidad*DV.pvp)*0.12) AS iva,
+        ((DV.cantidad*DV.pvp)*1.12) AS total,CV.id_estado AS estado_pago,DV.id_estado AS nota,C.producto,DV.cantidad,DV.pvp
+        FROM cab_venta CV 
+        INNER JOIN det_venta DV ON DV.id_cabventa=CV.id_cabventa
+        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        WHERE CV.id_estado=1
+        AND DV.id_estado =1;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -342,5 +372,4 @@ class VentaModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-
 }

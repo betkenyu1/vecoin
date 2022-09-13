@@ -289,7 +289,7 @@ function getListaProductos() {
 				//html += '<td>' + value.estado + '</td>';
 				html += '<td>';
 				html += '<a class="btn btn-outline-warning" onclick="setModificarProducto(' + value.id_producto + ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
-				html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_producto + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+				//html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_producto + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
 				html += '</td>';
 				html += '</tr>';
 			});

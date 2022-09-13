@@ -24,7 +24,8 @@ class InventarioModel
         FROM productos P
         INNER JOIN catalogo C 
         ON (P.id_catalogo=C.id_catalogo)
-        WHERE C.id_empresa='$id_empresa';";
+        WHERE C.id_empresa='$id_empresa'
+        AND C.id_estado=1;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -114,7 +115,7 @@ class InventarioModel
     {
         $consulta = "SELECT 
         OS.id_secuencial,
-        OS.fecha,
+        date_format(OS.fecha_osalida, '%d-%m-%Y') as fecha,
         OS.secuencial,
         SUM(DS.cantidad*DS.pvp) AS monto,
         U.usuario,

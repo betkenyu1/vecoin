@@ -155,6 +155,7 @@ function getListaOrdenEntrada() {
             $("#lista-ord_entrada").html(html);
             $('#data-table-select').DataTable({
                 "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
+                order: [[0, 'desc']],
                 select: false,
                 responsive: true,
             });

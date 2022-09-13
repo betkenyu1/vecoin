@@ -11,7 +11,8 @@ function getListaAuditorias() {
   html += '<th class="text-nowrap">Usuario</th>';
   html += '<th class="text-nowrap">Nombres</th>';
   html += '<th class="text-nowrap">Acción</th>';
-  html += '<th class="text-nowrap">Fecha de la Acción</th>';
+  html += '<th class="text-nowrap">Fecha</th>';
+  html += '<th class="text-nowrap">Hora</th>';
   html += '</tr>';
   html += '</thead>';
   html += '<tbody style="background-color:#c1f8ff">';
@@ -27,7 +28,8 @@ function getListaAuditorias() {
         html += '<td>' + value.usuario + '</td>';
         html += '<td>' + value.nombres + '</td>';
         html += '<td>' + value.observacion + '</td>';
-        html += '<td>' + value.registro_tiempo + '</td>';
+        html += '<td>' + value.fecha + '</td>';
+        html += '<td>' + value.hora + '</td>';
         html += '</tr>';
       });
       html += '</tbody>';

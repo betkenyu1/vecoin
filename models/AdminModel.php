@@ -395,11 +395,16 @@ class AdminModel
     {
         date_default_timezone_set('America/Guayaquil');
         $FechaActual = date("Y-m-d H:i:s", time());
-        $consulta = "INSERT INTO auditoria (id_usuario,observacion,registro_tiempo)
-        VALUES(:id_usuario,'INGRESO AL SISTEMA',:registro_tiempo)";
+        $fecha = date("Y-m-d", time());
+        $hora = date("H:i:s", time());
+        $consulta = "INSERT INTO auditoria 
+        (id_usuario,observacion,registro_tiempo,fecha,hora)
+        VALUES(:id_usuario,'INGRESO AL SISTEMA',:registro_tiempo,:fecha,:hora)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_usuario', $IdUsuario);
         $sentencia->bindParam(':registro_tiempo', $FechaActual);
+        $sentencia->bindParam(':fecha', $fecha);
+        $sentencia->bindParam(':hora', $hora);
         $sentencia->execute();
         if ($sentencia->rowCount() <= 0) {
             return false;
@@ -408,8 +413,10 @@ class AdminModel
     }
     public function getListaAuditoriaSesiones()
     {
-        $consulta = "SELECT A.id_auditoria,EM.razon_social,U.usuario,CONCAT (E.nombres,' ',E.apellidos) AS nombres,EM.razon_social,A.observacion,
-        DATE_FORMAT(A.registro_tiempo ,'%d-%m-%Y %h:%i:%s') AS registro_tiempo
+        $consulta = "SELECT A.id_auditoria,EM.razon_social,U.usuario,CONCAT (E.nombres,' ',E.apellidos) AS nombres,A.observacion,
+        STR_TO_DATE(DATE_FORMAT(A.registro_tiempo ,'%d-%m-%Y %H:%i:%s'),'%d-%m-%Y %H:%i:%s') AS registro_tiempo,
+        TIME_FORMAT(hora,'%H:%i:%s') AS hora,
+        DATE_FORMAT(fecha,'%d-%m-%Y') AS fecha
         FROM auditoria A
         INNER JOIN usuarios U 
         ON A.id_usuario=U.id_usuario

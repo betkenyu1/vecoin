@@ -12,14 +12,14 @@ class PDF extends FPDF
         $idimpresor = $_SESSION["user"];
         $rep = new ReporteModel();
         $sol_cred = $rep->ReporteInicioSesion();
-        $title = 'REGISTROS DE INICIO DE SESIÓN AL SISTEMA';
+        $title = 'EVENTOS AUDITADOS POR EL SISTEMA';
         //$ta = 'Responsable: ';
         //$fh = 'Fecha/Hora: ';
         $this->SetFont('Arial', 'B', 10);
         date_default_timezone_set('America/Guayaquil');
         $DateAndTime = date('d/m/Y h:i:s a', time());
 
-        $fi = 'Nombre de empleado: ' . $idimpresor . ' | Fecha impresión: ';
+        $fi = 'Generado por: ' . $idimpresor . ' | Fecha impresión: ';
         $fh = 'Ciudad y Fecha: Guayaquil ';
         $this->Image('../../assets/img/logo/logo_vecoin-1.png', 5, 8, 40);
         //$this->Image('../../assets/img/logo/fd.png', '50', '30', '200', '200', 'PNG');
@@ -27,12 +27,15 @@ class PDF extends FPDF
         $this->Ln(1);
         $this->SetTextColor(255, 0, 0);
         $this->Ln(10);
-        $this->SetFont('Arial', 'B', 12);
-        $this->Cell(275, 5, utf8_decode($title), 0, 1, 'C');
+        $this->SetFont('Arial', 'B', 16);
+        $this->SetTextColor(13, 119, 60);
+        $this->Cell(0, 5, utf8_decode($title), 0, 1, 'C');
         $this->SetFont('Arial', 'I', 7);
         $this->Ln(10);
         $this->SetFont('Arial', 'I', 8);
         $this->SetTextColor(255, 0, 0);
+        $this->SetFont('Arial', 'B', 8);
+        $this->SetTextColor(13, 119, 60);
         $this->Cell(275, 5, utf8_decode($fi) . $DateAndTime, 0, 1, 'R', 0);
         $this->SetFont('Arial', 'I', 8);
     }
@@ -40,13 +43,18 @@ class PDF extends FPDF
     //}
     function Footer()
     {
+
         $this->SetFont('Arial', 'b', 8);
-        $dir = 'Dirección: Urdenor II Manzana 233 Solar 4';
-        $tel = 'Teléfono: (04) 2 136 875';
-        $this->SetY(-20);
-        $this->Cell(275, 3, utf8_decode($dir), 0, 1, 'C', 0);
-        $this->Cell(275, 3, utf8_decode($tel), 0, 1, 'C', 0);
+        $dir = 'Dirección: ';
+        $tel = 'Teléfono: ';
+        $this->SetY(-25);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: 042316885'), 0, 1, 'C', 0);
+        //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
         $this->Ln(3);
+        date_default_timezone_set('America/Guayaquil');
+        $DateAndTime = date('d/m/Y h:i:s a', time());
+        $this->SetFont('Arial', 'I', 7);
+        $this->Cell(0, 3, utf8_decode('Fecha de impresión:') . $DateAndTime, 0, 1, 'C', 0);
         $this->SetFont('Arial', 'I', 8);
         $this->Ln(5);
         $this->Cell(0, 0, utf8_decode('Página') . $this->PageNo() . '/{nb}', 0, 0, 'C');
@@ -60,7 +68,7 @@ $pdf = new PDF();
 $pdf->AliasNbPages();
 $pdf->AddPage('L');
 $rep = new ReporteModel();
-$pdf->SetFillColor(150, 150, 150);
+$pdf->SetFillColor(13, 119, 60);
 $pdf->SetTextColor(3, 3, 3);
 $resultados = $rep->ReporteInicioSesion();
 
@@ -72,18 +80,20 @@ if ($resultados) {
     $pdf->Cell(20, 5, utf8_decode('Codigo'), 1, 0, 'C', false);
     $pdf->Cell(50, 5, utf8_decode('Empresa'), 1, 0, 'C', false);
     $pdf->Cell(25, 5, utf8_decode('Usuario'), 1, 0, 'C', false);
-    $pdf->Cell(80, 5, utf8_decode('Nombres'), 1, 0, 'C', false);
+    $pdf->Cell(70, 5, utf8_decode('Empleado'), 1, 0, 'C', false);
     $pdf->Cell(50, 5, utf8_decode('Acción'), 1, 0, 'C', false);
-    $pdf->Cell(50, 5, utf8_decode('Fecha de la Acción'), 1, 1, 'C', false);
+    $pdf->Cell(30, 5, utf8_decode('Fecha'), 1, 0, 'C', false);
+    $pdf->Cell(30, 5, utf8_decode('Hora'), 1, 1, 'C', false);
     foreach ($resultados as $re) {
         date_default_timezone_set('America/Guayaquil');
         $pdf->SetFont('Arial', 'I', 8);
         $pdf->Cell(20, 5, utf8_decode($re["id_auditoria"]), 1, 0, 'C', false);
         $pdf->Cell(50, 5, utf8_decode($re["razon_social"]), 1, 0, 'C', false);
         $pdf->Cell(25, 5, utf8_decode($re["usuario"]), 1, 0, 'C', false);
-        $pdf->Cell(80, 5, utf8_decode($re["nombres"]), 1, 0, 'C', false);
+        $pdf->Cell(70, 5, utf8_decode($re["nombres"]), 1, 0, 'C', false);
         $pdf->Cell(50, 5, utf8_decode($re["observacion"]), 1, 0, 'C', false);
-        $pdf->Cell(50, 5, utf8_decode($re["registro_tiempo"]), 1, 1, 'C', false);
+        $pdf->Cell(30, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
+        $pdf->Cell(30, 5, utf8_decode($re["hora"]), 1, 1, 'C', false);
     }
 }
 //$IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';

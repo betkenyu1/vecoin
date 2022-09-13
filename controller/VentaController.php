@@ -13,13 +13,16 @@ class VentaController
         $this->vta = new VentaModel();
         $this->inv = new InventarioModel();
     }
-    public function gestion_ventas(){
+    public function gestion_ventas()
+    {
         require_once 'views/ventas/gestion_ventas.php';
     }
-    public function gestion_ncredito(){
+    public function gestion_ncredito()
+    {
         require_once 'views/ventas/gestion_ncredito.php';
     }
-    public function gestion_ctasxcobrar(){
+    public function gestion_ctasxcobrar()
+    {
         require_once 'views/ventas/gestion_pagos.php';
     }
     public function get_stock()
@@ -53,6 +56,18 @@ class VentaController
             echo json_encode($vacio);
         }
     }
+
+    public function get_ultima_factura()
+    {
+        $exito = $this->vta->getUltimaFactura();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
     public function save_new_venta()
     {
         date_default_timezone_set('America/Guayaquil');
@@ -84,7 +99,8 @@ class VentaController
             }
         }
     }
-    public function get_ventas_administrador(){
+    public function get_ventas_administrador()
+    {
         $exito = $this->vta->GetVentasAdministrador();
         if ($exito) {
             echo json_encode($exito);
@@ -93,7 +109,8 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    public function get_ventas_vendedor(){
+    public function get_ventas_vendedor()
+    {
         $exito = $this->vta->GetVentasVendedor();
         if ($exito) {
             echo json_encode($exito);
@@ -102,10 +119,11 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    public function get_ventas_params(){
+    public function get_ventas_params()
+    {
         $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
         $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
-        $exito = $this->vta->GetVentasParams($IdFDesde,$IdFHasta);
+        $exito = $this->vta->GetVentasParams($IdFDesde, $IdFHasta);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -113,10 +131,11 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    public function get_pagos_params(){
+    public function get_pagos_params()
+    {
         $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
         $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
-        $exito = $this->vta->GetPagosParams($IdFDesde,$IdFHasta);
+        $exito = $this->vta->GetPagosParams($IdFDesde, $IdFHasta);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -124,10 +143,11 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    public function get_ventas_charts_params(){
+    public function get_ventas_charts_params()
+    {
         $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
         $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
-        $exito = $this->vta->GetVentasChartsParams($IdFDesde,$IdFHasta);
+        $exito = $this->vta->GetVentasChartsParams($IdFDesde, $IdFHasta);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -135,7 +155,8 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    public function get_productomasvendido(){
+    public function get_productomasvendido()
+    {
         $exito = $this->vta->getProductoMasVendido();
         if ($exito) {
             echo json_encode($exito);
@@ -144,10 +165,11 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    public function get_ctasxcobrar(){
+    public function get_ctasxcobrar()
+    {
         $IdFDesde = (isset($_REQUEST['IdFDesde'])) ? $_REQUEST['IdFDesde'] : '';
         $IdFHasta = (isset($_REQUEST['IdFHasta'])) ? $_REQUEST['IdFHasta'] : '';
-        $exito = $this->vta->GetCtasxCobrar($IdFDesde,$IdFHasta);
+        $exito = $this->vta->GetCtasxCobrar($IdFDesde, $IdFHasta);
         if ($exito) {
             echo json_encode($exito);
         } else {
@@ -208,7 +230,7 @@ class VentaController
                 echo 2;
             }
         }
-    }//PAGOS
+    } //PAGOS
     public function get_ventapagos()
     {
         $exito = $this->vta->getListaVentaPagos();

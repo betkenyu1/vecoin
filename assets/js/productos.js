@@ -925,8 +925,8 @@ function getModificarProducto() {
 						"&IdCatalogo=" + ct +
 						"&Cantidad=" + cact +
 						"&Precio=" + pact +
-						"&Prc_Utl=" + utilidad +
-						"&Utilidad=" + utl +
+						"&Prc_Utl=" + utl +
+						"&Utilidad=" + utilidad +
 						"&PVP=" + pvp,
 					success: function (response) {
 						response = JSON.stringify(response);

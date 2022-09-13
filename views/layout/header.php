@@ -3,6 +3,8 @@ $Empresa = $_SESSION["n_comercial"];
 $Usuario = $_SESSION["user"];
 $Rol = $_SESSION["rol"];
 $IdRol = $_SESSION["idrol"];
+$Ruta = $_SESSION["fotoperfil"];
+$RutaFondo = $_SESSION["fotofondo"];
 if ($_SESSION["user"] === null) {
 	header('Location:index.php?c=Index&a=index');
 }
@@ -37,6 +39,41 @@ if ($_SESSION["user"] === null) {
 
 </head>
 
+<style type="text/css">
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	.caja {
+		display: flex;
+		flex-flow: column wrap;
+		justify-content: center;
+		align-items: center;
+		background: #333944;
+	}
+
+	.box {
+		width: 450px;
+		height: 300px;
+		background: #CCC;
+		overflow: hidden;
+	}
+
+	.box img {
+		width: 100%;
+		height: auto;
+	}
+
+	@supports(object-fit: cover) {
+		.box img {
+			height: 100%;
+			object-fit: cover;
+			object-position: center center;
+		}
+	}
+</style>
+
 <body>
 	<!-- BEGIN #loader -->
 	<div id="loader" class="app-loader">
@@ -65,7 +102,7 @@ if ($_SESSION["user"] === null) {
 					<span class="icon-bar"></span>
 				</button>
 				<a href="index.php?c=Index&a=home" class="navbar-brand">
-					Vecoin
+					VECOIN Cía. Ltda.
 				</a>
 			</div>
 			<!-- END navbar-header -->
@@ -77,10 +114,11 @@ if ($_SESSION["user"] === null) {
 			<div class="navbar-nav">
 				<div class="navbar-item navbar-user dropdown">
 					<a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-
 						<span class="d-none d-md-inline"><?php echo $Empresa . ' | ' . $Usuario; ?></span>
-						<img src="assets/img/user/user-13.jpg" alt="" />
+
+						<img src=<?php echo $Ruta ?> alt="" />
 						<b class="caret ms-6px"></b>
+
 
 					</a>
 					<div class="dropdown-menu dropdown-menu-end me-1">
@@ -102,23 +140,32 @@ if ($_SESSION["user"] === null) {
 			<div class="app-sidebar-content" data-scrollbar="true" data-height="100%">
 				<!-- BEGIN menu -->
 				<div class="menu">
+					<!--fondo-->
 					<div class="menu-profile">
+
 						<a href="javascript:;" class="menu-profile-link" data-toggle="app-sidebar-profile" data-target="#appSidebarProfileMenu">
-							<div class="menu-profile-cover with-shadow"></div>
+							<div class="menu-profile-cover with-shadow" id="menu-profile-cover ">
+								<div class="caja">
+									<div class="box">
+										<img src=<?php echo $RutaFondo ?> alt="Cargando imagen...">
+									</div>
+								</div>
+							</div>
 							<div class="menu-profile-image menu-profile-image-icon bg-gray-900 text-gray-600">
-								<i class="fa fa-user"></i>
+								<img src=<?php echo $Ruta ?> alt="" />
 							</div>
 							<div class="menu-profile-info">
 								<div class="d-flex align-items-center">
+
 									<div class="flex-grow-1">
 										<?php echo $Usuario; ?>
 									</div>
-									<!--<div class="menu-caret ms-auto"></div>-->
 								</div>
 								<small><?php echo $Rol; ?></small>
 							</div>
 						</a>
 					</div>
+					<!--fin fondo-->
 					<!--<div class="menu-header">Navegación</div>-->
 					<div class="menu-item active">
 						<a href="index.php?c=Index&a=home" class="menu-link">
@@ -247,9 +294,12 @@ if ($_SESSION["user"] === null) {
 								<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
 										<div class="menu-text"></div>
 									</a></div>
-								<div class="menu-item"><a href="index.php?c=Admin&a=lista_usuarios" class="menu-link">
-										<div class="menu-text">Usuarios</div>
-									</a></div>
+								<div class="menu-item">
+									<a href="index.php?c=Admin&a=fotos_perfil_fondo" class="menu-link">
+										<div class="menu-text">Gestión de imágenes</div>
+									</a>
+								</div>
+
 							</div>
 						</div>
 					<?php } ?>

@@ -40,6 +40,46 @@ class AdminController
             print('afuera');
         }
     }
+
+    public function subir_file()
+    {
+        $IdUsuario = (isset($_REQUEST['idusuario'])) ? $_REQUEST['idusuario'] : '';
+        //$IdUsuario = $_SESSION["idusuario"];
+        //$IdTipo = (isset($_REQUEST['IdTipo'])) ? $_REQUEST['IdTipo'] : '';
+        move_uploaded_file($_FILES['IdFoto']['tmp_name'], 'assets/img/foto-perfil/' . preg_replace('/\s+/', '-', $_FILES['IdFoto']['name']));
+        $Ruta = 'assets/img/foto-perfil/' .  $_FILES['IdFoto']['name'];
+        //$existe = $this->bien->ExisteFotoBien($IdUsuario, $Ruta);        
+
+        $exito = $this->adm->SubirFile($IdUsuario, preg_replace('/\s+/', '-', $Ruta));
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function subir_file_fondo()
+    {
+        $IdUsuario = (isset($_REQUEST['idusuario'])) ? $_REQUEST['idusuario'] : '';
+        //$IdUsuario = $_SESSION["idusuario"];
+        //$IdTipo = (isset($_REQUEST['IdTipo'])) ? $_REQUEST['IdTipo'] : '';
+        move_uploaded_file($_FILES['IdFotoFondo']['tmp_name'], 'assets/img/foto-fondo/' . preg_replace('/\s+/', '-', $_FILES['IdFotoFondo']['name']));
+        $Ruta = 'assets/img/foto-fondo/' .  $_FILES['IdFotoFondo']['name'];
+        //$existe = $this->bien->ExisteFotoBien($IdUsuario, $Ruta);        
+
+        $exito = $this->adm->SubirFileFondo($IdUsuario, preg_replace('/\s+/', '-', $Ruta));
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+
+
+    public function fotos_perfil_fondo()
+    {
+        require_once 'views/parametrizacion/fotos_perfil_fondo.php';
+    }
     public function lista_auditoria_sesiones()
     {
         require_once 'views/auditoria/lista_auditoria_sesiones.php';
@@ -440,7 +480,7 @@ class AdminController
             echo json_encode($vacio);
         }
     }
-    
+
     public function get_auditoria_sesion()
     {
         $exito = $this->adm->getListaAuditoriaSesiones();

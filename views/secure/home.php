@@ -65,7 +65,7 @@ include_once 'views/layout/header.php';
                         <!-- END col-7 -->
                         <!-- BEGIN col-5 -->
                         <div class="col-xl-5 col-lg-4 align-items-center d-flex justify-content-center">
-                            <img src="assets/img/logo/stock.png" height="150px" class="d-none d-lg-block" />
+                            <img src="assets/img/dashboard/stock.svg" height="150px" class="d-none d-lg-block" />
                         </div>
                         <!-- END col-5 -->
                     </div>
@@ -133,7 +133,7 @@ include_once 'views/layout/header.php';
                         <!-- END col-7 -->
                         <!-- BEGIN col-5 -->
                         <div class="col-xl-5 col-lg-4 align-items-center d-flex justify-content-center">
-                            <img src="assets/img/logo/dollar.png" height="150px" class="d-none d-lg-block" />
+                            <img src="assets/img/dashboard/trophy.svg" height="150px" class="d-none d-lg-block" />
                         </div>
                         <!-- END col-5 -->
                     </div>
@@ -154,6 +154,7 @@ include_once 'views/layout/header.php';
                 <span class="d-sm-block d-none">Top Vendedores</span>
             </a>
         </li>
+        <!--
         <li class="nav-item">
             <a href="#nav-pills-tab-2" data-bs-toggle="tab" class="nav-link">
                 <span class="d-sm-block d-none">∑ Ventas</span>
@@ -164,6 +165,7 @@ include_once 'views/layout/header.php';
                 <span class="d-sm-block d-none">∑ Cuentas x Cobrar</span>
             </a>
         </li>
+        -->
     </ul>
     <!-- END nav-pills -->
     <!-- BEGIN tab-content -->

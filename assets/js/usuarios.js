@@ -148,7 +148,6 @@ function setUsuarios() {
   html += "</div>";
   html += "</div>";
 
-
   html += '<div class="text-center">';
   html += '<a class="btn btn-outline-danger" onclick="getCerrarNewUsuario();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
   html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarNewUsuario();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';

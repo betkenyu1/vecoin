@@ -31,7 +31,7 @@ class AdminModel
     public function getUsuarios($usr)
     {
         $consulta = "SELECT id_usuario,usuario,password,
-        CONCAT(E.nombres,' ',E.apellidos) AS Nombres,EM.id_empresa,EM.nombre_comercial,
+        CONCAT(E.nombres,' ',E.apellidos) AS Nombres,EM.id_empresa,EM.nombre_comercial,U.foto_perfil,U.foto_fondo,
         R.id_rol,R.rol FROM usuarios U
         INNER JOIN empleados E ON (U.id_empleado = E.id_empleado)
         INNER JOIN empresas EM ON (E.id_empresa = EM.id_empresa)
@@ -179,6 +179,29 @@ class AdminModel
     {
         $consulta = "UPDATE clientes SET id_estado = 2
         WHERE id_cliente = '$IdCliente'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+
+    public function SubirFileFondo($IdUsuario, $Ruta)
+    {
+        $consulta = "UPDATE usuarios SET foto_fondo = '$Ruta'
+        WHERE id_usuario = '$IdUsuario'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function SubirFile($IdUsuario, $Ruta)
+    {
+        $consulta = "UPDATE usuarios SET foto_perfil = '$Ruta'
+        WHERE id_usuario = '$IdUsuario'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {

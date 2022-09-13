@@ -29,6 +29,8 @@ class LoginController
                     $_SESSION["user"] =  $dat['Nombres'];
                     $_SESSION["rol"] =  $dat['rol'];
                     $_SESSION["idrol"] = $dat['id_rol'];
+                    $_SESSION["fotoperfil"] = $dat['foto_perfil'];
+                    $_SESSION["fotofondo"] = $dat['foto_fondo'];
                     $idrol = $dat['id_rol'];
                 }
             }

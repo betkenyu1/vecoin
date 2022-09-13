@@ -46,7 +46,7 @@ include_once 'views/layout/header.php';
                                     <div class=" text-gray-300">Costo Compra</div>
                                     <div id="IdPrecio" class="fs-18px mb-5px fw-bold"> <span data-animation="number" data-value="0"></span></div>
                                     <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
-                                        <div class="progress-bar progress-bar-striped rounded-right bg-teal" data-animation="width" data-value="55%" style="width: 0%"></div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-teal" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                                     </div>
                                 </div>
                                 <!-- END col-6 -->
@@ -55,7 +55,7 @@ include_once 'views/layout/header.php';
                                     <div class=" text-gray-300">Utilidad</div>
                                     <div id="IdUtilidad" class="fs-18px mb-5px fw-bold"><span data-animation="number" data-value="0"></span></div>
                                     <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
-                                        <div class="progress-bar progress-bar-striped rounded-right" data-animation="width" data-value="60%" style="width: 0%"></div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                                     </div>
                                 </div>
                                 <!-- END col-6 -->
@@ -113,8 +113,9 @@ include_once 'views/layout/header.php';
                                 <div class="col-6">
                                     <div class=" text-gray-300">Cantidad</div>
                                     <div id="IdCantidadPV" class="fs-18px mb-5px fw-bold" data-animation="number" data-value="0"></div>
+
                                     <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
-                                        <div class="progress-bar progress-bar-striped rounded-right bg-teal" data-animation="width" data-value="55%" style="width: 0%"></div>
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-teal" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                                     </div>
                                 </div>
                                 <!-- END col-6 -->
@@ -122,8 +123,11 @@ include_once 'views/layout/header.php';
                                 <div class="col-6">
                                     <div class=" text-gray-300">Valor</div>
                                     <div id="IdValorPV" class="fs-18px mb-5px fw-bold">$<span data-animation="number" data-value="0"></span></div>
-                                    <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
+                                    <!--<div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
                                         <div class="progress-bar progress-bar-striped rounded-right" data-animation="width" data-value="60%" style="width: 0%"></div>
+                                    </div>-->
+                                    <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
                                     </div>
                                 </div>
                                 <!-- END col-6 -->
@@ -151,7 +155,7 @@ include_once 'views/layout/header.php';
     <ul class="nav nav-pills mb-2">
         <li class="nav-item">
             <a href="#nav-pills-tab-1" data-bs-toggle="tab" class="nav-link active">
-                <span class="d-sm-block d-none">Top Vendedores</span>
+                <span class="d-sm-block d-none">Mejores Vendedores</span>
             </a>
         </li>
         <!--
@@ -170,8 +174,37 @@ include_once 'views/layout/header.php';
     <!-- END nav-pills -->
     <!-- BEGIN tab-content -->
     <div class="tab-content p-3 rounded-top panel rounded-0 m-0">
-        <!-- BEGIN tab-pane -->
         <div class="tab-pane fade active show" id="nav-pills-tab-1">
+            <div class="card-group">
+                <div class="card">
+                    <img src="assets/img/dashboard/LPS_Slide.gif" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <!--<h5 class="card-title">Título de la tarjeta</h5>-->
+                        <p class="card-text">
+                        <h3 style="color: red;" id="IdRolAdmin" class="mt-10px"></h3>
+                        <h4 style="color: blue;" id="IdUserAdmin" class="mt-10px"></h4>
+                        <h4 style="color: green;" id="IdValor" class="mt-10px"></h4>
+                        </p>
+                        <p class="card-text"><small class="text-muted">*Imagen únicamente referencial</small></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="assets/img/dashboard/Devcon_Uretanos.gif" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <!--<h5 class="card-title">Título de la tarjeta</h5>-->
+                        <p class="card-text">
+                        <h3 style="color: red;" id="IdRolUser" class="mt-10px"></h3>
+                        <h3 style="color: blue;" id="IdVendedor" class="mt-10px"></h3>
+                        <h3 style="color: green;" id="IdValorVendedor" class="mt-10px"></h3>
+                        </p>
+                        <p class="card-text"><small class="text-muted">*Imagen únicamente referencial</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--
+
+        
             <h3 style="color: red;" id="IdRolAdmin" class="mt-10px"></h3>
             <h4 style="color: blue;" id="IdUserAdmin" class="mt-10px"></h4>
             <h4 style="color: green;" id="IdValor" class="mt-10px"></h4>
@@ -181,7 +214,7 @@ include_once 'views/layout/header.php';
             <h3 style="color: green;" id="IdValorVendedor" class="mt-10px"></h3>
             <hr>
         </div>
-        <!-- END tab-pane -->
+        -->
         <!-- BEGIN tab-pane -->
         <div class="tab-pane fade" id="nav-pills-tab-2">
             <h3 class="mt-10px">Consulta Parametrizada</h3>

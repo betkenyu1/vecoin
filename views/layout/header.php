@@ -102,7 +102,7 @@ if ($_SESSION["user"] === null) {
 					<span class="icon-bar"></span>
 				</button>
 				<a href="index.php?c=Index&a=home" class="navbar-brand">
-					VECOIN Cía. Ltda.
+					<?php echo $Empresa; ?>
 				</a>
 			</div>
 			<!-- END navbar-header -->
@@ -114,7 +114,8 @@ if ($_SESSION["user"] === null) {
 			<div class="navbar-nav">
 				<div class="navbar-item navbar-user dropdown">
 					<a href="#" class="navbar-link dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown">
-						<span class="d-none d-md-inline"><?php echo $Empresa . ' | ' . $Usuario; ?></span>
+						<!--<span class="d-none d-md-inline"><?php echo $Empresa . ' | ' . $Usuario; ?></span>-->
+						<span class="d-none d-md-inline"><?php echo 'Usuario: ' . $Usuario . ' | Rol:  ' . $Rol; ?></span>
 
 						<img src=<?php echo $Ruta ?> alt="" />
 						<b class="caret ms-6px"></b>

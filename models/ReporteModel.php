@@ -88,7 +88,7 @@ class ReporteModel
         INNER JOIN bodegas B ON B.id_bodega=P.id_bodega
         INNER JOIN catalogo C ON C.id_catalogo=P.id_catalogo
         INNER JOIN empresas EM ON C.id_empresa=EM.id_empresa
-        GROUP BY 1;";
+        GROUP BY 2;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

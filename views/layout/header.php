@@ -192,21 +192,23 @@ if ($_SESSION["user"] === null) {
 								<div class="menu-caret"></div>
 							</a>
 							<div class="menu-submenu">
-								<div class="menu-item"><a href="index.php?c=Catalogo&a=lista_catalogo" class="menu-link">
-										<div class="menu-text">Productos</div>
-									</a></div>
-								<div class="menu-item"><a href="index.php?c=Admin&a=lista_clientes" class="menu-link">
-										<div class="menu-text">Clientes</div>
-									</a></div>
-								<div class="menu-item"><a href="index.php?c=Admin&a=lista_proveedores" class="menu-link">
-										<div class="menu-text">Proveedores</div>
-									</a></div>
 								<div class="menu-item"><a href="index.php?c=Admin&a=lista_empresas" class="menu-link">
 										<div class="menu-text">Empresas</div>
 									</a></div>
 								<div class="menu-item"><a href="index.php?c=Admin&a=lista_empleados" class="menu-link">
 										<div class="menu-text">Empleados</div>
 									</a></div>
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_clientes" class="menu-link">
+										<div class="menu-text">Clientes</div>
+									</a></div>
+
+								<div class="menu-item"><a href="index.php?c=Admin&a=lista_proveedores" class="menu-link">
+										<div class="menu-text">Proveedores</div>
+									</a></div>
+								<div class="menu-item"><a href="index.php?c=Catalogo&a=lista_catalogo" class="menu-link">
+										<div class="menu-text">Productos</div>
+									</a></div>
+
 							</div>
 						</div>
 					<?php } ?>
@@ -245,7 +247,7 @@ if ($_SESSION["user"] === null) {
 							<div class="menu-submenu">
 								<div class="menu-item has-sub">
 									<a href="index.php?c=Venta&a=gestion_ctasxcobrar" class="menu-link">
-										<div class="menu-text">Cuentas por Cobrar</div>
+										<div class="menu-text">Cuentas por cobrar</div>
 									</a>
 								</div>
 							</div>
@@ -274,7 +276,7 @@ if ($_SESSION["user"] === null) {
 										<div class="menu-text">Órdenes de salida</div>
 									</a></div>
 								<div class="menu-item"><a href="index.php?c=Inventario&a=lista_stock_productos" class="menu-link">
-										<div class="menu-text">Productos en Bodega</div>
+										<div class="menu-text">Productos en bodega</div>
 									</a></div>
 							</div>
 						</div>
@@ -343,11 +345,11 @@ if ($_SESSION["user"] === null) {
 								</a>
 
 								<a href="javascript:;" class="menu-link">
-									<div class="menu-text">Ventas Mensuales</div>
+									<div class="menu-text">Ventas mensuales</div>
 								</a>
 
 								<a href="javascript:;" class="menu-link">
-									<div class="menu-text">Stock de Productos</div>
+									<div class="menu-text">Productos disponibles</div>
 								</a>
 
 								<a href="javascript:;" class="menu-link">

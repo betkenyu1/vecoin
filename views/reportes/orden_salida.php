@@ -16,7 +16,7 @@ class PDF extends FPDF
             foreach ($sol_cred as $scred) {
                 $_SESSION["dir"] = $scred["direccion"];
                 $_SESSION["tel"] = $scred["telefono"];
-                $title = 'ORDEN DE SALIDA';
+                $title = 'ÓRDEN DE SALIDA';
                 $this->SetFont('Arial', 'B', 10);
                 date_default_timezone_set('America/Guayaquil');
                 //$DateAndTime = date('d/m/Y h:i:s a', time());

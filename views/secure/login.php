@@ -14,15 +14,17 @@ include_once 'views/layout/header_login.php';
     <div class="login-container">
         <!-- BEGIN login-header -->
         <div class="login-header">
+            <div class="icon">
+
+                <img src="./assets/img/login-bg/logo-gear.png" height="80px" alt="">
+            </div>
             <div class="brand">
                 <div class="d-flex align-items-center">
-                    <span class="logo"></span> <b>V</b>ecoin
+                    <b>&nbspV</b>ecoin Cía. Ltda.
                 </div>
-                <small>La mejor inversión es un buen mantenimiento</small>
+                <small>&nbsp"La mejor inversión es un buen mantenimiento"</small>
             </div>
-            <div class="icon">
-                <i class="fa fa-gear"></i>
-            </div>
+
         </div>
         <!-- END login-header -->
 

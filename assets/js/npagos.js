@@ -1,5 +1,6 @@
 function CerrarListaVenta() {
     $(".cerrar-nc").hide();
+    getListaVentas();
 }
 function setNuevoPago() {
     var html = '';
@@ -58,8 +59,10 @@ function setNuevoPago() {
     $('.default-select2').select2();
 }
 function getListaVentas() {
+
     var html = '';
-    html += '<div>';
+    html += '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE.</b></div></div>',
+        html += '<div>';
     html += '<div style="overflow: scroll" class="cerrar-lventa">';
     html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
     html += '<div class="note note-blue">';
@@ -70,14 +73,16 @@ function getListaVentas() {
     html += '<th class="text-nowrap">Fecha</th>';
     html += '<th class="text-nowrap">Nro. Factura</th>';
     html += '<th class="text-nowrap">Producto</th>';
-    html += '<th class="text-nowrap">Cantidad</th>';
-    html += '<th class="text-nowrap">P.V.P.</th>';
+    //html += '<th class="text-nowrap">Cantidad</th>';
+    //html += '<th class="text-nowrap">P.V.P.</th>';
     html += '<th class="text-nowrap">Subtotal</th>';
+    html += '<th class="text-nowrap">I.V.A.</th>';
+
     html += '<th class="text-nowrap">Total</th>';
     html += '<th class="text-nowrap">Acciones</th>';
     html += '</tr>';
     html += '</thead>';
-    html += '<tbody>';
+    html += '<tbody style="background-color:#c1f8ff">';
     $.ajax({
         type: "GET",
         dataType: 'json',
@@ -91,9 +96,10 @@ function getListaVentas() {
                     html += '<td>' + value.freg + '</td>';
                     html += '<td>' + value.nro_factura + '</td>';
                     html += '<td>' + value.producto + '</td>';
-                    html += '<td>' + value.cantidad + '</td>';
-                    html += '<td>' + '$ ' + value.pvp + '</td>';
+                    //html += '<td>' + value.cantidad + '</td>';
+                    //html += '<td>' + '$ ' + value.pvp + '</td>';
                     html += '<td>' + '$ ' + value.subtotal + '</td>';
+                    html += '<td>' + '$ ' + value.iva + '</td>';
                     html += '<td>' + '$ ' + value.total + '</td>';
                     html += '<td>';
                     html += '<a href="#npg?1" class="btn btn-outline-green" onclick="getProcesarPago(' + value.id_cabventa + ');" title="Procesar Pago"><i class="fa-solid fa-dollar"></i></a>';
@@ -107,7 +113,7 @@ function getListaVentas() {
                 $("#lista-ventas").html(html);
                 $('#data-table-select').DataTable({
                     "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
-                    select: true,
+                    select: false,
                     responsive: true
                 });
             } else {
@@ -124,6 +130,7 @@ function getListaVentas() {
 
 function getProcesarPago(id_cabventa) {
     setNuevoPago();
+    $(".cerrar-lventa").hide();
     $.ajax({
         type: "GET",
         dataType: 'json',
@@ -183,12 +190,13 @@ function getRegistrarPago() {
                         response = JSON.stringify(response);
                         if (response == 1) {
                             Swal.fire({
-                                html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>Registrado OK!.</b></div></div>',
+                                html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE.</b></div></div>',
                             });
+                            $(".cerrar-nc").hide();
                             getListaVentas();
                         } if (response == 2) {
                             Swal.fire({
-                                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>Ha ocurrido un error al Registrar!.</b></div></div>',
+                                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ERROR AL REGISTRAR PAGO</b></div></div>',
                             });
                         }
                     }

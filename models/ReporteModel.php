@@ -118,10 +118,30 @@ class ReporteModel
     // REPORTES
     public function getRepCtasXCobrar()
     {
-        $consulta = "SELECT CV.id_cabventa,CV.freg,CL.razon_social AS Cliente,CV.nro_factura,EV.estado
+        $consulta = "SELECT CV.id_cabventa,
+        DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,
+        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, SUM((cantidad*pvp)*1.12) AS monto
+        FROM cab_venta CV
+        INNER JOIN det_venta DV ON (DV.id_cabventa = CV.id_cabventa)
+        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        WHERE CV.id_estado=1
+        GROUP BY nro_factura
+        ORDER BY 2;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getRepFactRegistradas()
+    {
+        $consulta = "SELECT CV.id_cabventa,
+        DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,
+        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado
         FROM cab_venta CV
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
-        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)";
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        ORDER BY 3;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

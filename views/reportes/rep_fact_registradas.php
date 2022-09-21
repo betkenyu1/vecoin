@@ -9,7 +9,7 @@ class PDF extends FPDF
 {
     function Header()
     {
-        $title = 'REPORTE DE CUENTAS POR COBRAR';
+        $title = 'REPORTE DE FACTURAS REGISTRADAS';
         $this->SetFont('Arial', 'B', 10);
         date_default_timezone_set('America/Guayaquil');
         $DateAndTime = date('d/m/Y h:i:s a', time());
@@ -22,6 +22,7 @@ class PDF extends FPDF
         $this->Ln(10);
         $this->SetFont('Arial', 'B', 16);
         $this->SetTextColor(13, 119, 60);
+        $this->Ln(10);
         $this->Cell(0, 5, utf8_decode($title), 0, 1, 'C');
         $this->SetFont('Arial', 'I', 7);
         $this->Ln(10);
@@ -69,33 +70,33 @@ $pdf->AddPage('P');
 $rep = new ReporteModel();
 $pdf->SetFillColor(13, 119, 60);
 $pdf->SetTextColor(255, 255, 255);
-$resultados = $rep->getRepCtasXCobrar();
+$resultados = $rep->getRepFactRegistradas();
 
 if ($resultados) {
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(0, 8, 'CUENTAS POR COBRAR A LA FECHA DE CONSULTA', 1, 1, 'C', true);
+    $pdf->Cell(0, 8, 'FACTURAS REGISTRADAS A LA FECHA DE CONSULTA', 1, 1, 'C', true);
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetTextColor(0, 0, 0);
     //$pdf->Cell(15, 5, utf8_decode('N°'), 1, 0, 'C', false);
-    $pdf->Cell(50, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
-    $pdf->Cell(30, 5, utf8_decode('Fecha Factura'), 1, 0, 'C', false);
-    $pdf->Cell(40, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
-    $pdf->Cell(35, 5, utf8_decode('Monto'), 1, 0, 'C', false);
+    $pdf->Cell(70, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
+    $pdf->Cell(35, 5, utf8_decode('Fecha Factura'), 1, 0, 'C', false);
+    $pdf->Cell(50, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
+    //$pdf->Cell(35, 5, utf8_decode('Monto'), 1, 0, 'C', false);
 
     $pdf->Cell(35, 5, utf8_decode('Estado'), 1, 1, 'C', false);
     foreach ($resultados as $re) {
         $pdf->SetFont('Arial', 'I', 8);
         //$pdf->Cell(15, 5, utf8_decode($re["id_cabventa"]), 1, 0, 'C', false);
-        $pdf->Cell(50, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
-        $pdf->Cell(30, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
-        $pdf->Cell(40, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', false);
-        $pdf->Cell(35, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 0, 'C', false);
+        $pdf->Cell(70, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
+        $pdf->Cell(35, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
+        $pdf->Cell(50, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', false);
+        //$pdf->Cell(35, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 0, 'C', false);
 
 
         $pdf->Cell(35, 5, utf8_decode($re["estado"]), 1, 1, 'C', false);
     }
 }
-$sol_cred = $rep->getRepCtasXCobrar();
+$sol_cred = $rep->getRepFactRegistradas();
 $pdf->SetFont('Arial', 'I', 10);
 if ($sol_cred) {
     foreach ($sol_cred as $sc) {

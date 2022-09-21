@@ -18,7 +18,7 @@ function getListaCtasXCobrar() {
     $.ajax({
         type: "GET",
         dataType: 'json',
-        url: 'index.php?c=Reporte&a=get_rep_ctasxcobrar',
+        url: 'index.php?c=Reporte&a=get_rep_facturas_registradas',
         success: function (response) {
             if (response != '') {
                 $.each(response, function (key, value) {

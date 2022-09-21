@@ -61,8 +61,7 @@ function setNuevoPago() {
 function getListaVentas() {
 
     var html = '';
-    html += '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE.</b></div></div>',
-        html += '<div>';
+
     html += '<div style="overflow: scroll" class="cerrar-lventa">';
     html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
     html += '<div class="note note-blue">';

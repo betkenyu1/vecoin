@@ -83,23 +83,18 @@ class VentaModel
         return $resultados;
     }
     public function GetOrdSalSecuencial($IdSecuencial){
-        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
-
-        UM.umedida,B.bodega,OS.cantidad,OS.pvp
-
+        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,UM.umedida,B.bodega,OS.cantidad,OS.pvp
         FROM det_osalida OS
-
         INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
-
         INNER JOIN productos P ON (OS.id_producto = P.id_producto)
-
         INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
-
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
-
         WHERE OS.id_secuencial = '$IdSecuencial'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
     }
     public function getDetOSalida($IdDetOSalida)
 

@@ -30,7 +30,7 @@ function getListaOrdenSalida() {
                     html += '<td>' + value.fecha + '</td>';
                     html += '<td>' + value.secuencial + '</td>';
                     html += '<td>';
-                    html += '<a href="#psf?1" class="btn btn-outline-orange" onclick="getProcesarOSalidaFactura(' + value.id_secuencial + ');" title="Procesar Factura"><i class="material-icons">add_shopping_cart</i></a>';
+                    html += '<a href="#pos?1" class="btn btn-outline-orange" onclick="getProcesarOSalidaFactura(' + value.id_secuencial + ');" title="Procesar Orden de Salida"><i class="material-icons">add_shopping_cart</i></a>';
                     html += '</td>';
                     html += '</tr>';
                 });
@@ -328,13 +328,13 @@ function getAgregarVenta() {
 }
 
 
-function getProcesarOSalidaFactura(id_det_osalida) {
+function getProcesarOSalidaFactura(id_secuencial) {
     var html = '';
     //$(".cerrar-lp").hide();
     html += '<div class="form-group">';
-    html += '<div id="psf?1" class="cerrar-vta-2">';
+    html += '<div id="pos?1" class="cerrar-vta-2">';
     html += '<div>';
-    html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+    html += '<table id="data-table-select2" class="table table-striped table-bordered align-middle ">';
     html += '<div>';
     html += '<thead>';
     html += '<tr>';
@@ -350,21 +350,16 @@ function getProcesarOSalidaFactura(id_det_osalida) {
     html += '</tr>';
     html += '</thead>';
     html += '<tbody style="background-color:#c1f8ff">';
-
-    
     $.ajax({
         type: "GET",
-        dataType: 'json',//OELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
-
-        //UM.umedida,B.bodega,OS.cantidad,OS.pvp
+        dataType: 'json',
         url: 'index.php?c=Venta&a=idsecu_osalida2',
-        data: "IdDetOSalida=" + id_det_osalida,
+        data: "IdSecuencial=" + id_secuencial,
         success: function (response) {
-            if (response != '') {
+            if (response) {
                 $.each(response, function (key, value) {
-                    alert(id_det_osalida);
                     html += '<tr class="odd gradeX">';
-                    html += '<td width="1%" class="fw-bold text-dark">' + value.id_secuencial + '</td>';
+                    html += '<td width="1%" class="fw-bold text-dark">' + value.id_det_osalida + '</td>';
                     html += '<td>' + value.fecha + '</td>';
                     html += '<td>' + value.secuencial + '</td>';
                     html += '<td>' + value.producto + '</td>';
@@ -373,7 +368,7 @@ function getProcesarOSalidaFactura(id_det_osalida) {
                     html += '<td>' + value.cantidad + '</td>';
                     html += '<td>' + '$ ' + value.pvp + '</td>';
                     html += '<td>';
-                    html += '<a href="#ps?1" class="btn btn-outline-orange" title="Procesar Factura"><i class="material-icons">add_shopping_cart</i></a>';
+                    html += '<a class="btn btn-outline-orange" onclick="ProcesarFacturaVenta(' + value.id_det_osalida + ');" title="Procesar Factura"><i class="material-icons">add_shopping_cart</i></a>';
                     html += '</td>';
                     html += '</tr>';
                 });
@@ -385,7 +380,7 @@ function getProcesarOSalidaFactura(id_det_osalida) {
                 html += '</div>';
 
                 $("#lista-osfact").html(html);
-                $('#data-table-select').DataTable({
+                $('#data-table-select2').DataTable({
                     "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
                     order: [[2, 'desc']],
                     select: false,
@@ -402,6 +397,11 @@ function getProcesarOSalidaFactura(id_det_osalida) {
         }
 
     });
+}
+function ProcesarFacturaVenta(id_det_osalida) {
+    $('#IdDetalleOS').val(id_det_osalida);
+	$("#modal-factura").modal("show");
+    getCliente();
 }
 function getProcesarOSalida(id_det_osalida) {
     $(".cerrar-lp").hide();

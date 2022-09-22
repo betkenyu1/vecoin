@@ -143,9 +143,8 @@ class VentaController
 
     {
 
-        $IdSecuencial = 33;
-
-        $exito = $this->vta->GetOrdSalSecuencial($$IdSecuencial);
+        $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
+        $exito = $this->vta->GetOrdSalSecuencial($IdSecuencial);
 
         if ($exito) {
 
@@ -159,6 +158,22 @@ class VentaController
 
         }
 
+    }
+    public function get_id_detosalida(){
+        $IdDetalleOS = (isset($_REQUEST['IdDetalleOS'])) ? $_REQUEST['IdDetalleOS'] : '';
+        $exito = $this->vta->GetOrdSalSecuencial($IdDetalleOS);
+
+        if ($exito) {
+
+            echo json_encode($exito);
+
+        } else {
+
+            $vacio = array('');
+
+            echo json_encode($vacio);
+
+        }
     }
 
 

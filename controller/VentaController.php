@@ -75,25 +75,49 @@ class VentaController
     }
 
     public function get_det_osalida()
-
     {
-
         $exito = $this->vta->getOSalidaProductos();
 
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
+    public function set_osalida()
+    {
+        $exito = $this->vta->getOSalidaProductos();
 
+        if ($exito) {
+
+            echo json_encode($exito);
+        } else {
+
+            $vacio = array('');
+
+            echo json_encode($vacio);
+        }
+    }
+    
+    public function idsecu_osalida()
+    {
+        
+        $exito = $this->vta->idsecu_ordensalida();
+
+        if ($exito) {
+
+            echo json_encode($exito);
+        } else {
+
+            $vacio = array('');
+
+            echo json_encode($vacio);
+        }
+    }
     public function get_iddet_osalida()
 
     {
@@ -115,7 +139,27 @@ class VentaController
         }
 
     }
+    public function idsecu_osalida2()
 
+    {
+
+        $IdSecuencial = 33;
+
+        $exito = $this->vta->GetOrdSalSecuencial($$IdSecuencial);
+
+        if ($exito) {
+
+            echo json_encode($exito);
+
+        } else {
+
+            $vacio = array('');
+
+            echo json_encode($vacio);
+
+        }
+
+    }
 
 
     public function get_ultima_factura()

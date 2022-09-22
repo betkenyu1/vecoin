@@ -260,7 +260,7 @@ function setNuevaNCredito() {
 
     html += '</div>';
 
-
+    html += '<div>';
 
     html += '<div>';
 

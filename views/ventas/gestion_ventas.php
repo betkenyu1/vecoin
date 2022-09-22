@@ -15,6 +15,8 @@ include_once 'views/layout/header.php';
             <div id="lista-ord_salida"></div>
             <br>
             <div id="n-venta"></div>
+            <br>
+            <div id="lista-osfact"></div>
         </div>
     </div>
     <!-- END panel -->

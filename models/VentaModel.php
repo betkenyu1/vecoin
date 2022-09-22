@@ -56,7 +56,7 @@ class VentaModel
 
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
 
-        WHERE OS.id_estado =1;";
+        WHERE OS.id_estado =1";
 
         $sentencia = $this->db->prepare($consulta);
 
@@ -66,7 +66,41 @@ class VentaModel
 
         return $resultados;
     }
+    public function idsecu_ordensalida()
+    {
+        $consulta = "SELECT OS.id_cabsalida,OS.id_secuencial,DATE_FORMAT(OS.fecha_osalida ,'%d-%m-%Y')AS fecha,OS.secuencial
 
+    FROM cab_osalida OS
+
+    WHERE OS.id_estado =1";
+
+        $sentencia = $this->db->prepare($consulta);
+
+        $sentencia->execute();
+
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+        return $resultados;
+    }
+    public function GetOrdSalSecuencial($IdSecuencial){
+        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
+
+        UM.umedida,B.bodega,OS.cantidad,OS.pvp
+
+        FROM det_osalida OS
+
+        INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
+
+        INNER JOIN productos P ON (OS.id_producto = P.id_producto)
+
+        INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
+
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+
+        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
+
+        WHERE OS.id_secuencial = '$IdSecuencial'";
+    }
     public function getDetOSalida($IdDetOSalida)
 
     {

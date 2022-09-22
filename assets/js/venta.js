@@ -90,7 +90,7 @@ function setNuevaFactura() {
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Clientes:</b> </br>';
+  html += '<b style="color: #000000;">Cliente:</b> </br>';
   html +=
     '<select class="default-select2 form-control" id="IdCliente"></select>';
   html += '<div id="alert-cli"></div>';
@@ -443,6 +443,10 @@ function getProcesarOSalidaFactura(id_secuencial) {
 }
 function ProcesarFacturaVenta(id_det_osalida) {
   $("#IdDetalleOS").val(id_det_osalida);
+  $("#IdFacturaNroModal").val($("#IdNroFactura").val());
+  $("#IdClienteModal").val($("#IdCliente").val());
+  $("#IdFechaModal").val($("#IdFecha").val());
+
   $("#modal-factura").modal("show");
   //getCliente();
 }

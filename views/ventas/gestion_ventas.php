@@ -37,28 +37,121 @@ include_once 'views/layout/header.php';
                                     <div class="col-md-6">
                                         <div class="mb-10px">
                                             <b style="color: #000000;">Fecha:</b> <br>
-                                            <input type="date" class="form-control" id="IdFecha">
+                                            <input type="date" class="form-control" id="IdFechaModal">
                                             <div id="alert-fecha"></div>
                                             <hr>
                                         </div>
                                     </div>
-                                    <!--<div class="col-md-6">
-                                    <div class="mb-10px">
-                                        <b style="color: #000000;">Cliente:</b> <br>
-                                        <select class="default-select2 form-control" id="IdCliente"></select>
-                                        <div id="alert-tpb"></div>
-                                        <hr>
+                                    <div class="col-md-6">
+                                        <div class="mb-10px">
+                                            <b style="color: #000000;">Cliente:</b> <br>
+                                            <input type="text" class="form-control" id="IdClienteModal">
+                                            <div id="alert-tpb"></div>
+                                            <hr>
+                                        </div>
                                     </div>
-                                </div>-->
                                     <div class="col-md-6">
                                         <div class="mb-10px">
                                             <b style="color: #000000;">Factura Nro:</b> <br>
-                                            <input type="hidden" class="form-control" id="IdDetalleOS">
-                                            <input type="text" class="form-control" id="IdFacturaNro">
+                                            <input type="text" class="form-control" id="IdDetalleOS">
+                                            <input type="text" class="form-control" id="IdFacturaNroModal">
                                             <div id="alert-nf"></div>
                                             <hr>
                                         </div>
                                     </div>
+
+                                    <script>
+                                        function RegistroFacturaVenta() {
+                                            var html = "";
+                                            if ($("#IdFecha").val() == "") {
+                                                html += '<div class="alert alert-danger">';
+                                                html += "*Campo requerido";
+                                                html += "</div>";
+                                                $("#alert-freg").html(html);
+                                                $("#IdFecha").focus();
+                                                setTimeout(function() {
+                                                    $("#alert-freg").fadeOut(1500);
+                                                }, 3000);
+                                                return false;
+                                            }
+                                            if ($("#IdCliente").val() == "0") {
+                                                html += '<div class="alert alert-danger">';
+                                                html += "*Campo requerido";
+                                                html += "</div>";
+                                                $("#alert-cli").html(html);
+                                                $("#IdCliente").focus();
+                                                setTimeout(function() {
+                                                    $("#alert-cli").fadeOut(1500);
+                                                }, 3000);
+                                                return false;
+                                            }
+                                            if ($("#IdNroFactura").val() == "") {
+                                                html += '<div class="alert alert-danger">';
+                                                html += "*Campo requerido";
+                                                html += "</div>";
+                                                $("#alert-nrofac").html(html);
+                                                $("#IdNroFactura").focus();
+                                                setTimeout(function() {
+                                                    $("#alert-nrofac").fadeOut(1500);
+                                                }, 3000);
+                                                return false;
+                                            } else {
+                                                var iddet = $("#IdDetPSalida").val();
+                                                var idfreg = $("#IdFecha").val();
+                                                var clien = $("#IdCliente").val();
+                                                var nfact = $("#IdNroFactura").val();
+                                                var prod = $("#IdProducto").val();
+                                                var cant = $("#IdCantidad").val();
+                                                var prec = $("#IdPrecio").val();
+                                                Swal.fire({
+                                                    title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
+                                                    icon: "warning",
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: "#3085d6",
+                                                    cancelButtonColor: "#d33",
+                                                    cancelButtonText: "Cancelar",
+                                                    confirmButtonText: "Confirmar",
+                                                }).then((result) => {
+                                                    if (result.isConfirmed) {
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            dataType: "json",
+                                                            url: "index.php?c=Venta&a=save_new_venta",
+                                                            data: "Fecha=" +
+                                                                idfreg +
+                                                                "&IdDetPSalida=" +
+                                                                iddet +
+                                                                "&IdCliente=" +
+                                                                clien +
+                                                                "&NroFactura=" +
+                                                                nfact +
+                                                                "&IdProducto=" +
+                                                                prod +
+                                                                "&Cantidad=" +
+                                                                cant +
+                                                                "&Precio=" +
+                                                                prec,
+                                                            success: function(response) {
+                                                                response = JSON.stringify(response);
+                                                                if (response == 1) {
+                                                                    Swal.fire({
+                                                                        html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
+                                                                    });
+                                                                    $(".cerrar-vta").hide();
+                                                                    getListaOrdenSalida();
+                                                                }
+                                                                if (response == 2) {
+                                                                    Swal.fire({
+                                                                        html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>REGISTRO INCORRECTO</b></div></div>',
+                                                                    });
+                                                                }
+                                                            },
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    </script>
                                     <div class="col-md-6">
                                         <div class="mb-10px">
                                             <br>

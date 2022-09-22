@@ -7,7 +7,6 @@ require_once 'models/VentaModel.php';
 if (!isset($_SESSION)) {
 
     session_start();
-
 }
 
 class VentaController
@@ -25,7 +24,6 @@ class VentaController
         $this->vta = new VentaModel();
 
         $this->inv = new InventarioModel();
-
     }
 
     public function gestion_ventas()
@@ -33,7 +31,6 @@ class VentaController
     {
 
         require_once 'views/ventas/gestion_ventas.php';
-
     }
 
     public function gestion_ncredito()
@@ -41,7 +38,6 @@ class VentaController
     {
 
         require_once 'views/ventas/gestion_ncredito.php';
-
     }
 
     public function gestion_ctasxcobrar()
@@ -49,10 +45,9 @@ class VentaController
     {
 
         require_once 'views/ventas/gestion_pagos.php';
-
     }
 
-    
+
 
     public function get_stock()
 
@@ -63,15 +58,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_det_osalida()
@@ -102,10 +94,10 @@ class VentaController
             echo json_encode($vacio);
         }
     }
-    
+
     public function idsecu_osalida()
     {
-        
+
         $exito = $this->vta->idsecu_ordensalida();
 
         if ($exito) {
@@ -129,15 +121,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
     public function idsecu_osalida2()
 
@@ -149,30 +138,26 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
-    public function get_id_detosalida(){
+    public function get_id_detosalida()
+    {
         $IdDetalleOS = (isset($_REQUEST['IdDetalleOS'])) ? $_REQUEST['IdDetalleOS'] : '';
         $exito = $this->vta->GetOrdSalSecuencial($IdDetalleOS);
 
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
     }
 
@@ -186,21 +171,70 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
 
+    public function save_new_venta_2()
+    {
+
+        date_default_timezone_set('America/Guayaquil');
+
+        $Fecha = date('m-d-Y h:i:s a', time());
+
+        $IdDetPSalida = (isset($_REQUEST['IdDetalleOS'])) ? $_REQUEST['IdDetalleOS'] : '';
+
+        $FechaFactura = (isset($_REQUEST['IdFechaModal'])) ? $_REQUEST['IdFechaModal'] : '';
+
+        $IdCliente = (isset($_REQUEST['IdClienteModal'])) ? $_REQUEST['IdClienteModal'] : '';
+
+        $NroFactura = (isset($_REQUEST['IdFacturaNroModal'])) ? $_REQUEST['IdFacturaNroModal'] : '';
+
+        $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
+
+        $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
+
+        $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
+
+        $IdUsuario = $_SESSION['idusuario'];
+
+        $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
+
+        if ($existe) {
+        } else {
+
+            $reg_cab = $this->vta->RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario);
+        }
+
+        $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
+
+        if ($existe) {
+
+            foreach ($existe as $ex) {
+
+                $IdCabVenta = $ex['id_cabventa'];
+            }
+
+            $exito = $this->vta->RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio);
+
+            if ($exito) {
+
+                $exito = $this->vta->ActualizaDetOSalida($IdDetPSalida);
+
+                echo 1;
+            } else {
+
+                echo 2;
+            }
+        }
+    }
 
     public function save_new_venta()
-
     {
 
         date_default_timezone_set('America/Guayaquil');
@@ -226,11 +260,9 @@ class VentaController
         $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
 
         if ($existe) {
-
         } else {
 
             $reg_cab = $this->vta->RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario);
-
         }
 
         $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
@@ -240,7 +272,6 @@ class VentaController
             foreach ($existe as $ex) {
 
                 $IdCabVenta = $ex['id_cabventa'];
-
             }
 
             $exito = $this->vta->RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio);
@@ -250,15 +281,11 @@ class VentaController
                 $exito = $this->vta->ActualizaDetOSalida($IdDetPSalida);
 
                 echo 1;
-
             } else {
 
                 echo 2;
-
             }
-
         }
-
     }
 
     public function get_ventas_administrador()
@@ -270,15 +297,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_ventas_vendedor()
@@ -290,15 +314,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_ventas_params()
@@ -314,15 +335,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_pagos_params()
@@ -338,15 +356,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_ventas_charts_params()
@@ -362,15 +377,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_productomasvendido()
@@ -382,15 +394,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_ctasxcobrar()
@@ -406,15 +415,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     //NOTA DE CREDITOgetListaVentaPagos
@@ -428,15 +434,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_iddet_venta()
@@ -450,15 +453,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function save_new_ncredito()
@@ -492,11 +492,9 @@ class VentaController
         $existe = $this->vta->ExisteRegistroCabNCredito($NroNCredito);
 
         if ($existe) {
-
         } else {
 
             $reg_cab = $this->vta->RegistroCabNCredito($FechaReg, $Fecha, $NroNCredito, $NroFactura, $IdCliente, $IdUsuario);
-
         }
 
         $existe = $this->vta->ExisteRegistroCabNCredito($NroNCredito);
@@ -506,25 +504,20 @@ class VentaController
             foreach ($existe as $ex) {
 
                 $IdCabNCredito = $ex['id_cabncredito'];
-
             }
 
             $exito = $this->vta->RegistroDetNCredito($IdCabNCredito, $IdProducto, $Cantidad, $Precio);
 
             if ($exito) {
 
-                $exito = $this->vta->ActualizaEstadoDetVenta($IdDetVenta,$IdCabVenta);
+                $exito = $this->vta->ActualizaEstadoDetVenta($IdDetVenta, $IdCabVenta);
 
                 echo 1;
-
             } else {
 
                 echo 2;
-
             }
-
         }
-
     } //PAGOS
 
     public function get_ventapagos()
@@ -536,15 +529,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function get_sum_ventapago()
@@ -558,15 +548,12 @@ class VentaController
         if ($exito) {
 
             echo json_encode($exito);
-
         } else {
 
             $vacio = array('');
 
             echo json_encode($vacio);
-
         }
-
     }
 
     public function save_new_pago()
@@ -594,14 +581,9 @@ class VentaController
             $act = $this->vta->ActualizaEstadoCabVenta($IdCabVenta);
 
             echo 1;
-
         } else {
 
             echo 2;
-
         }
-
     }
-
 }
-

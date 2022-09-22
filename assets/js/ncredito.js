@@ -1,595 +1,522 @@
 function CerrarListaVenta() {
+  $(".cerrar-nc").hide();
 
-    $(".cerrar-nc").hide();
-
-
-
-    getListaVentas();
-
+  getListaVentas();
 }
 
-
-
 function getListaVentas() {
+  var html = "";
 
-    var html = '';
+  html += "<div>";
 
-    html += '<div>';
+  html += '<div style="overflow: scroll" class="cerrar-lventa">';
 
-    html += '<div style="overflow: scroll" class="cerrar-lventa">';
+  html +=
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
 
-    html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+  html += '<div class="note note-blue">';
 
-    html += '<div class="note note-blue">';
+  html += "<thead>";
 
-    html += '<thead>';
+  html += "<tr>";
 
-    html += '<tr>';
+  html += '<th width="1%"></th>';
 
-    html += '<th width="1%"></th>';
+  html += '<th class="text-nowrap">Fecha</th>';
 
-    html += '<th class="text-nowrap">Fecha</th>';
+  html += '<th class="text-nowrap">Nro. Factura</th>';
 
-    html += '<th class="text-nowrap">Nro. Factura</th>';
+  html += '<th class="text-nowrap">Cliente</th>';
 
-    html += '<th class="text-nowrap">Cliente</th>';
+  html += '<th class="text-nowrap">Subtotal</th>';
 
-    html += '<th class="text-nowrap">Producto</th>';
+  html += '<th class="text-nowrap">I.V.A.</th>';
 
-    html += '<th class="text-nowrap">Cantidad</th>';
+  html += '<th class="text-nowrap">Total</th>';
 
-    html += '<th class="text-nowrap">P.V.P.</th>';
+  html += '<th class="text-nowrap">Acciones</th>';
 
-    html += '<th class="text-nowrap">Acciones</th>';
+  html += "</tr>";
 
-    html += '</tr>';
+  html += "</thead>";
 
-    html += '</thead>';
+  html += '<tbody style="background-color:#c1f8ff">';
 
-    html += '<tbody style="background-color:#c1f8ff">';
+  $.ajax({
+    type: "GET",
 
-    $.ajax({
+    dataType: "json",
 
-        type: "GET",
+    url: "index.php?c=Venta&a=get_ventas",
 
-        dataType: 'json',
+    success: function (response) {
+      if (response != "") {
+        $.each(response, function (key, value) {
+          html += '<tr class="odd gradeX">';
 
-        url: 'index.php?c=Venta&a=get_ventas',
+          html +=
+            '<td width="1%" class="fw-bold text-dark">' +
+            value.id_detventa +
+            "</td>";
 
-        success: function (response) {
+          html += "<td>" + value.fecha + "</td>";
 
-            if (response != '') {
+          html += "<td>" + value.nro_factura + "</td>";
 
-                $.each(response, function (key, value) {
+          html += "<td>" + value.razon_social + "</td>";
 
-                    html += '<tr class="odd gradeX">';
+          html += "<td>" + "$ " + value.pvp + "</td>";
 
-                    html += '<td width="1%" class="fw-bold text-dark">' + value.id_detventa + '</td>';
+          html += "<td>" + "$ " + value.iva + "</td>";
 
-                    html += '<td>' + value.fecha + '</td>';
+          html += "<td>" + "$ " + value.total + "</td>";
 
-                    html += '<td>' + value.nro_factura + '</td>';
+          html += "<td>";
 
-                    html += '<td>' + value.razon_social + '</td>';
+          html +=
+            '<a href="#nc?1" class="btn btn-outline-orange" onclick="getProcesarNCredito(' +
+            value.id_detventa +
+            ');" title="Procesar Nota de Crédito"><i class="material-icons">remove_shopping_cart</i></a>';
 
-                    html += '<td>' + value.producto + '</td>';
+          html += "</td>";
 
-                    html += '<td>' + value.cantidad + '</td>';
+          html += "</tr>";
+        });
 
-                    html += '<td>' + '$ ' + value.pvp + '</td>';
+        html += "</tbody>";
 
-                    html += '<td>';
+        html += "</table>";
 
-                    html += '<a href="#nc?1" class="btn btn-outline-orange" onclick="getProcesarNCredito(' + value.id_detventa + ');" title="Procesar Nota de Crédito"><i class="material-icons">remove_shopping_cart</i></a>';
+        html += "</div>";
 
-                    html += '</td>';
+        html += "</div>";
 
-                    html += '</tr>';
+        $("#lista-ventas").html(html);
 
-                });
+        $("#data-table-select").DataTable({
+          language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
 
-                html += '</tbody>';
+          order: [[2, "desc"]],
 
-                html += '</table>';
+          select: false,
 
-                html += '</div>';
+          responsive: true,
+        });
+      } else {
+        html = "";
 
-                html += '</div>';
+        html +=
+          '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
 
-                $("#lista-ventas").html(html);
+        html +=
+          '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
 
-                $('#data-table-select').DataTable({
+        html += "<b>*NO DISPONE FACTURAS PARA GESTIONAR.</b>";
 
-                    "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
+        html += "</div>";
 
-                    order: [[2, 'desc']],
-
-                    select: false,
-
-                    responsive: true,
-
-                });
-
-            } else {
-
-                html = '';
-
-                html += '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
-
-                html += '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-
-                html += '<b>*NO DISPONE FACTURAS PARA GESTIONAR.</b>';
-
-                html += '</div>';
-
-                $("#lista-ventas").html(html);
-
-            }
-
-        }
-
-    });
-
+        $("#lista-ventas").html(html);
+      }
+    },
+  });
 }
 
 function setNuevaNCredito() {
+  $(".cerrar-lventa").hide();
 
-    $(".cerrar-lventa").hide();
+  var html = "";
 
-    var html = '';
+  html += '<div id="nc?1" class="cerrar-nc">';
 
-    html += '<div id="nc?1" class="cerrar-nc">';
+  html += '<div class="note note-info">';
 
-    html += '<div class="note note-info">';
+  html += '<div class="note-content">';
 
-    html += '<div class="note-content">';
+  html += "<form>";
 
-    html += '<form>';
+  html += '<div class="form-group">';
 
-    html += '<div class="form-group">';
+  html += '<div class="row">';
 
-    html += '<div class="row">';
+  html += '<div style="color: #000000;" class="text-center">';
 
+  html += "<h3>* * * PROCESAR NOTA DE CRÉDITO * * *</h3>";
 
+  html += "</div>";
 
-    html += '<div style="color: #000000;" class="text-center">';
+  html += '<div class="col-md-6">';
 
-    html += '<h3>* * * PROCESAR NOTA DE CRÉDITO * * *</h3>';
+  html += '<div class="mb-10px">';
 
-    html += '</div>';
+  html += '<b style="color: #000000;">Fecha de nota de crédito:</b> </br>';
 
+  html += '<input type="date" class="form-control" id="IdFecha">';
 
+  html += '<div id="alert-freg"></div>';
 
-    html += '<div class="col-md-6">';
+  html += "</div>";
 
-    html += '<div class="mb-10px">';
+  html += "</div>";
 
-    html += '<b style="color: #000000;">Fecha de nota de crédito:</b> </br>';
+  html += '<div class="col-md-6">';
 
-    html += '<input type="date" class="form-control" id="IdFecha">';
+  html += '<div class="mb-10px">';
 
-    html += '<div id="alert-freg"></div>';
+  html += '<b style="color: #000000;">Cliente:</b> </br>';
 
-    html += '</div>';
+  html +=
+    '<select class="default-select2 form-control" name="IdCliente" id="IdCliente"></select>';
 
-    html += '</div>';
+  html += '<div id="alert-cli"></div>';
 
+  html += "</div>";
 
+  html += "</div>";
 
-    html += '<div class="col-md-6">';
+  html += '<div class="col-md-6">';
 
-    html += '<div class="mb-10px">';
+  html += '<div class="mb-10px">';
 
-    html += '<b style="color: #000000;">Cliente:</b> </br>';
+  html += '<b style="color: #000000;">Número de Nota de Crédito:</b> </br>';
 
-    html += '<select class="default-select2 form-control" name="IdCliente" id="IdCliente"></select>';
+  html += '<input type="hidden" class="form-control" id="IdDetVenta">';
 
-    html += '<div id="alert-cli"></div>';
+  html += '<input type="hidden" class="form-control" id="IdNroFactura">';
+  html += '<input type="hidden" class="form-control" id="IdCabVenta">';
+  html +=
+    '<input type="text" class="form-control" placeholder="Ingrese secuencial de la nota de crédito (XXX-XXX-XXXXXXXX)" id="IdNroNCredito">';
 
-    html += '</div>';
+  html += '<div id="alert-nrofac"></div>';
 
-    html += '</div>';
+  html += "</div>";
 
+  html += "</div>";
 
+  html += '<div class="col-md-6">';
 
-    html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
 
-    html += '<div class="mb-10px">';
+  //html += '<b style="color: #000000;">Productos:</b> </br>';
 
-    html += '<b style="color: #000000;">Número de Nota de Crédito:</b> </br>';
+  html += '<input type="hidden" class="form-control" id="IdProducto">';
 
-    html += '<input type="hidden" class="form-control" id="IdDetVenta">';
+  html +=
+    '<input type="hidden" class="form-control" disabled placeholder="Cargando..." id="IdDetProducto">';
 
-    html += '<input type="hidden" class="form-control" id="IdNroFactura">';
-    html += '<input type="hidden" class="form-control" id="IdCabVenta">';
-    html += '<input type="text" class="form-control" placeholder="Ingrese secuencial de la nota de crédito (XXX-XXX-XXXXXXXX)" id="IdNroNCredito">';
+  html += '<div id="alert-prod"></div>';
 
-    html += '<div id="alert-nrofac"></div>';
+  html += "</div>";
 
-    html += '</div>';
+  html += "</div>";
 
-    html += '</div>';
+  html += '<div class="col-md-6">';
 
+  html += '<div class="mb-10px">';
 
+  //html += '<b style="color: #000000;">Cantidad:</b> </br>';
 
-    html += '<div class="col-md-6">';
+  html +=
+    '<input type="hidden" disabled placeholder="Cargando..." class="form-control" id="IdCantidad">';
 
-    html += '<div class="mb-10px">';
+  html += '<div id="alert-cant"></div>';
 
-    html += '<b style="color: #000000;">Productos:</b> </br>';
+  html += "</div>";
 
-    html += '<input type="hidden" class="form-control" id="IdProducto">';
+  html += "</div>";
 
-    html += '<input type="text" class="form-control" disabled placeholder="Cargando..." id="IdDetProducto">';
+  html += '<div class="col-md-6">';
 
-    html += '<div id="alert-prod"></div>';
+  html += '<div class="mb-10px">';
 
-    html += '</div>';
+  //html += '<b style="color: #000000;">Precio:</b> </br>';
 
-    html += '</div>';
+  html +=
+    '<input type="hidden" disabled placeholder="Cargando..." class="form-control" id="IdPrecio">';
 
+  html += '<div id="alert-prec"></div>';
 
+  html += "</div>";
 
-    html += '<div class="col-md-6">';
+  html += "</div>";
 
-    html += '<div class="mb-10px">';
+  html += "<div>";
 
-    html += '<b style="color: #000000;">Cantidad:</b> </br>';
+  html += "<div>";
 
-    html += '<input type="text" disabled placeholder="Cargando..." class="form-control" id="IdCantidad">';
+  html += "<br>";
 
-    html += '<div id="alert-cant"></div>';
+  html += '<div class="text-center">';
 
-    html += '</div>';
+  html +=
+    '<a class="btn btn-danger" onclick="CerrarListaVenta();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
 
-    html += '</div>';
+  html +=
+    '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarNCredito();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
 
+  html += "</div>";
 
+  html += "</div>";
 
-    html += '<div class="col-md-6">';
+  html += "</div>";
 
-    html += '<div class="mb-10px">';
+  html += "</div>";
 
-    html += '<b style="color: #000000;">Precio:</b> </br>';
+  html += "</form>";
 
-    html += '<input type="text" disabled placeholder="Cargando..." class="form-control" id="IdPrecio">';
+  html += "</div>";
 
-    html += '<div id="alert-prec"></div>';
+  html += "</div>";
 
-    html += '</div>';
+  html += "</div>";
 
-    html += '</div>';
+  $("#n-ncredito").html(html);
 
-    html += '<div>';
+  $(".default-select2").select2({
+    placeholder: "Cargando datos...",
 
-    html += '<div>';
+    selectOnClose: "false",
 
-    html += '<br>';
+    language: {
+      noResults: function () {
+        //VACIO
 
-    html += '<div class="text-center">';
+        return "No hay registros";
+      },
 
-    html += '<a class="btn btn-danger" onclick="CerrarListaVenta();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
-
-    html += '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarNCredito();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
-
-    html += '</div>';
-
-    html += '</div>';
-
-
-
-    html += '</div>';
-
-    html += '</div>';
-
-    html += '</form>';
-
-    html += '</div>';
-
-    html += '</div>';
-
-    html += '</div>';
-
-    $("#n-ncredito").html(html);
-
-    $('.default-select2').select2({
-
-        placeholder: "Cargando datos...",
-
-        selectOnClose: "false",
-
-        language: {
-
-            noResults: function () {
-
-                //VACIO
-
-                return "No hay registros";
-
-            },
-
-            searching: function () {
-
-                return "Buscando..";
-
-            },
-
-        },
-
-    });
-
+      searching: function () {
+        return "Buscando..";
+      },
+    },
+  });
 }
 
-
-
-
-
 function getProcesarNCredito(id_detventa) {
+  setNuevaNCredito();
 
-    setNuevaNCredito();
+  getCliente();
 
-    getCliente();
+  $.ajax({
+    type: "GET",
 
-    $.ajax({
+    dataType: "json",
 
-        type: "GET",
+    url: "index.php?c=Venta&a=get_iddet_venta",
 
-        dataType: 'json',
+    data: "IdDetVenta=" + id_detventa,
 
-        url: 'index.php?c=Venta&a=get_iddet_venta',
+    success: function (response) {
+      $.each(response, function (key, value) {
+        $("#IdCliente").val(value.id_cliente).trigger("change");
 
-        data: "IdDetVenta=" + id_detventa,
+        $("#IdDetVenta").val(value.id_detventa);
 
-        success: function (response) {
+        $("#IdProducto").val(value.id_producto);
 
-            $.each(response, function (key, value) {
+        $("#IdDetProducto").val(value.producto);
 
-                $("#IdCliente").val(value.id_cliente).trigger('change');
+        $("#IdNroFactura").val(value.nro_factura);
 
-                $("#IdDetVenta").val(value.id_detventa);
+        $("#IdCantidad").val(value.cantidad);
 
-                $("#IdProducto").val(value.id_producto);
+        $("#IdPrecio").val(value.pvp);
 
-                $("#IdDetProducto").val(value.producto);
-
-                $("#IdNroFactura").val(value.nro_factura);
-
-                $("#IdCantidad").val(value.cantidad);
-
-                $("#IdPrecio").val(value.pvp);
-
-                $("#IdCabVenta").val(value.id_cabventa);
-            });
-
-        }
-
-    });
-
+        $("#IdCabVenta").val(value.id_cabventa);
+      });
+    },
+  });
 }
 
 function getAgregarNCredito() {
+  var html = "";
 
-    var html = '';
+  if ($("#IdFecha").val() == "") {
+    html += '<div class="alert alert-danger">';
 
-    if ($('#IdFecha').val() == '') {
+    html += "*Campo requerido";
 
-        html += '<div class="alert alert-danger">';
+    html += "</div>";
 
-        html += '*Campo requerido';
+    $("#alert-freg").html(html);
 
-        html += '</div>';
+    $("#IdFecha").focus();
 
-        $("#alert-freg").html(html);
+    setTimeout(function () {
+      $("#alert-freg").fadeOut(1500);
+    }, 3000);
 
-        $('#IdFecha').focus();
+    return false;
+  }
+  if ($("#IdCliente").val() == "0") {
+    html += '<div class="alert alert-danger">';
 
-        setTimeout(function () {
+    html += "*Campo requerido";
 
-            $("#alert-freg").fadeOut(1500);
+    html += "</div>";
 
-        }, 3000);
+    $("#alert-cli").html(html);
 
-        return false;
+    $("#IdCliente").focus();
 
-    } if ($('#IdCliente').val() == '0') {
+    setTimeout(function () {
+      $("#alert-cli").fadeOut(1500);
+    }, 3000);
 
-        html += '<div class="alert alert-danger">';
+    return false;
+  }
+  if ($("#IdNroFactura").val() == "") {
+    html += '<div class="alert alert-danger">';
 
-        html += '*Campo requerido';
+    html += "*Campo requerido";
 
-        html += '</div>';
+    html += "</div>";
 
-        $("#alert-cli").html(html);
+    $("#alert-nrofac").html(html);
 
-        $('#IdCliente').focus();
+    $("#IdNroFactura").focus();
 
-        setTimeout(function () {
+    setTimeout(function () {
+      $("#alert-nrofac").fadeOut(1500);
+    }, 3000);
 
-            $("#alert-cli").fadeOut(1500);
+    return false;
+  }
+  if ($("#IdDetProducto").val() == "") {
+    html += '<div class="alert alert-danger">';
 
-        }, 3000);
+    html += "*Campo requerido";
 
-        return false;
+    html += "</div>";
 
-    } if ($('#IdNroFactura').val() == '') {
+    $("#alert-prod").html(html);
 
-        html += '<div class="alert alert-danger">';
+    $("#IdDetProducto").focus();
 
-        html += '*Campo requerido';
+    setTimeout(function () {
+      $("#alert-prod").fadeOut(1500);
+    }, 3000);
 
-        html += '</div>';
+    return false;
+  }
+  if ($("#IdCantidad").val() == "") {
+    html += '<div class="alert alert-danger">';
 
-        $("#alert-nrofac").html(html);
+    html += "*Campo requerido";
 
-        $('#IdNroFactura').focus();
+    html += "</div>";
 
-        setTimeout(function () {
+    $("#alert-cant").html(html);
 
-            $("#alert-nrofac").fadeOut(1500);
+    $("#IdCantidad").focus();
 
-        }, 3000);
+    setTimeout(function () {
+      $("#alert-cant").fadeOut(1500);
+    }, 3000);
 
-        return false;
+    return false;
+  }
+  if ($("#IdPrecio").val() == "") {
+    html += '<div class="alert alert-danger">';
 
-    } if ($('#IdDetProducto').val() == '') {
+    html += "*Campo requerido";
 
-        html += '<div class="alert alert-danger">';
+    html += "</div>";
 
-        html += '*Campo requerido';
+    $("#alert-prec").html(html);
 
-        html += '</div>';
+    $("#IdPrecio").focus();
 
-        $("#alert-prod").html(html);
+    setTimeout(function () {
+      $("#alert-prec").fadeOut(1500);
+    }, 3000);
 
-        $('#IdDetProducto').focus();
+    return false;
+  } else {
+    var iddet = $("#IdDetVenta").val();
 
-        setTimeout(function () {
+    var idfreg = $("#IdFecha").val();
 
-            $("#alert-prod").fadeOut(1500);
+    var clien = $("#IdCliente").val();
 
-        }, 3000);
+    var nfact = $("#IdNroFactura").val();
 
-        return false;
+    var ncredito = $("#IdNroNCredito").val();
 
-    } if ($('#IdCantidad').val() == '') {
+    var prod = $("#IdProducto").val();
 
-        html += '<div class="alert alert-danger">';
+    var cant = $("#IdCantidad").val();
 
-        html += '*Campo requerido';
+    var prec = $("#IdPrecio").val();
+    var idcabv = $("#IdCabVenta").val();
 
-        html += '</div>';
+    Swal.fire({
+      title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
 
-        $("#alert-cant").html(html);
+      icon: "warning",
 
-        $('#IdCantidad').focus();
+      showCancelButton: true,
 
-        setTimeout(function () {
+      confirmButtonColor: "#3085d6",
 
-            $("#alert-cant").fadeOut(1500);
+      cancelButtonColor: "#d33",
 
-        }, 3000);
+      cancelButtonText: "Cancelar",
 
-        return false;
+      confirmButtonText: "Confirmar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          type: "GET",
 
-    } if ($('#IdPrecio').val() == '') {
+          dataType: "json",
 
-        html += '<div class="alert alert-danger">';
+          url: "index.php?c=Venta&a=save_new_ncredito",
 
-        html += '*Campo requerido';
+          data:
+            "Fecha=" +
+            idfreg +
+            "&IdDetVenta=" +
+            iddet +
+            "&IdCliente=" +
+            clien +
+            "&NroNCredito=" +
+            ncredito +
+            "&NroFactura=" +
+            nfact +
+            "&IdProducto=" +
+            prod +
+            "&Cantidad=" +
+            cant +
+            "&Precio=" +
+            prec +
+            "&IdCabVenta=" +
+            idcabv,
 
-        html += '</div>';
+          success: function (response) {
+            response = JSON.stringify(response);
 
-        $("#alert-prec").html(html);
+            if (response == 1) {
+              Swal.fire({
+                html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
+              });
 
-        $('#IdPrecio').focus();
+              $(".cerrar-lventa").hide();
 
-        setTimeout(function () {
+              $(".cerrar-nc").hide();
 
-            $("#alert-prec").fadeOut(1500);
-
-        }, 3000);
-
-        return false;
-
-    } else {
-
-        var iddet = $("#IdDetVenta").val();
-
-        var idfreg = $("#IdFecha").val();
-
-        var clien = $("#IdCliente").val();
-
-        var nfact = $("#IdNroFactura").val();
-
-        var ncredito = $("#IdNroNCredito").val();
-
-        var prod = $("#IdProducto").val();
-
-        var cant = $("#IdCantidad").val();
-
-        var prec = $("#IdPrecio").val();
-        var idcabv = $("#IdCabVenta").val();
-
-        Swal.fire({
-
-            title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
-
-            icon: "warning",
-
-            showCancelButton: true,
-
-            confirmButtonColor: "#3085d6",
-
-            cancelButtonColor: "#d33",
-
-            cancelButtonText: "Cancelar",
-
-            confirmButtonText: "Confirmar",
-
-        }).then((result) => {
-
-            if (result.isConfirmed) {
-
-                $.ajax({
-
-                    type: "GET",
-
-                    dataType: 'json',
-
-                    url: "index.php?c=Venta&a=save_new_ncredito",
-
-                    data: "Fecha=" + idfreg + "&IdDetVenta=" + iddet +
-
-                        "&IdCliente=" + clien + "&NroNCredito=" + ncredito +
-
-                        "&NroFactura=" + nfact + "&IdProducto=" + prod +
-
-                        "&Cantidad=" + cant + "&Precio=" + prec +
-
-                        "&IdCabVenta=" + idcabv,
-
-                    success: function (response) {
-
-                        response = JSON.stringify(response);
-
-                        if (response == 1) {
-
-                            Swal.fire({
-
-                                html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
-
-                            });
-
-                            $(".cerrar-lventa").hide();
-
-                            $(".cerrar-nc").hide();
-
-                            getListaVentas();
-
-                        } if (response == 2) {
-
-                            Swal.fire({
-
-                                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>REGISTRO INCORRECTO</b></div></div>',
-
-                            });
-
-                        }
-
-                    }
-
-                });
-
+              getListaVentas();
             }
-
+            if (response == 2) {
+              Swal.fire({
+                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>REGISTRO INCORRECTO</b></div></div>',
+              });
+            }
+          },
         });
-
-    }
-
+      }
+    });
+  }
 }
 
 $(document).ready(function () {
-
-    getListaVentas();
-
+  getListaVentas();
 });

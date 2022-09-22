@@ -68,7 +68,7 @@ class VentaModel
     }
     public function idsecu_ordensalida()
     {
-        $consulta = "SELECT OS.id_cabsalida,OS.id_secuencial,DATE_FORMAT(OS.fecha_osalida ,'%d-%m-%Y')AS fecha,OS.secuencial
+        $consulta = "SELECT OS.id_cabsalida,OS.id_secuencial,DATE_FORMAT(OS.fecha_osalida ,'%d-%m-%Y')AS fecha,OS.secuencial, OS.observacion
 
     FROM cab_osalida OS
 
@@ -82,7 +82,8 @@ class VentaModel
 
         return $resultados;
     }
-    public function GetOrdSalSecuencial($IdSecuencial){
+    public function GetOrdSalSecuencial($IdSecuencial)
+    {
         $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,UM.umedida,B.bodega,OS.cantidad,OS.pvp
         FROM det_osalida OS
         INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
@@ -436,25 +437,16 @@ class VentaModel
 
     {
 
-        $consulta = "SELECT DV.id_detventa,
-
-        CV.id_cabventa,DATE_FORMAT( CV.fecha,'%d-%m-%Y')  AS fecha,CV.nro_factura,C.producto,
-
-        DV.cantidad,DV.pvp, CL.razon_social
-
+        $consulta = "SELECT DV.id_detventa, CV.id_cabventa,DATE_FORMAT( CV.fecha,'%d-%m-%Y')  AS fecha,
+        CV.nro_factura,CL.razon_social,SUM(DV.pvp) AS pvp, (SUM(DV.pvp))*0.12 AS iva,(SUM(DV.pvp))*1.12 AS total        
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
-
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
-
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-
         INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)
-
         WHERE DV.id_estado =1
-
-        AND CV.id_estado=1;";
+        AND CV.id_estado=1
+        GROUP BY nro_factura;";
 
         $sentencia = $this->db->prepare($consulta);
 

@@ -16,6 +16,7 @@ function getListaOrdenSalida() {
   html += '<th width="1%"></th>';
   html += '<th class="text-nowrap">Fecha</th>';
   html += '<th class="text-nowrap">Nro.Orden de Salida</th>';
+  html += '<th class="text-nowrap">Observaciones</th>';
   html += '<th class="text-nowrap">Acciones</th>';
   html += "</tr>";
   html += "</thead>";
@@ -34,6 +35,7 @@ function getListaOrdenSalida() {
             "</td>";
           html += "<td>" + value.fecha + "</td>";
           html += "<td>" + value.secuencial + "</td>";
+          html += "<td>" + value.observacion + "</td>";
           html += "<td>";
           html +=
             '<a href="#pos?1" class="btn btn-outline-orange" onclick="getProcesarOSalidaFactura(' +
@@ -346,7 +348,7 @@ function getProcesarOSalidaFactura(id_secuencial) {
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Clientes:</b> </br>';
+  html += '<b style="color: #000000;">Cliente:</b> </br>';
   html +=
     '<select class="default-select2 form-control" id="IdCliente"></select>';
   html += '<div id="alert-cli"></div>';
@@ -413,7 +415,7 @@ function getProcesarOSalidaFactura(id_secuencial) {
         html += "<br>";
         html += '<div class="text-center">';
         html +=
-          '<a class="btn btn-danger" onclick="CerrarListaVenta();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
+          '<a class="btn btn-danger" onclick="CerrarListaVenta();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Regresar</a>';
         html += "</div>";
         html += "</div>";
         html += "</div>";
@@ -441,18 +443,50 @@ function getProcesarOSalidaFactura(id_secuencial) {
   });
   getCliente();
 }
-function ProcesarFacturaVenta(id_det_osalida) {
-  $("#IdDetalleOS").val(id_det_osalida);
-  $("#IdFacturaNroModal").val($("#IdNroFactura").val());
-  $("#IdClienteModal").val($("#IdCliente").val());
-  $("#IdFechaModal").val($("#IdFecha").val());
 
-  $("#modal-factura").modal("show");
+function ProcesarFacturaVenta(id_det_osalida) {
+  if ($("#IdCliente").val() == 0) {
+    var html = "";
+    html += '<div class="alert alert-danger">';
+    html += "*Campo requerido";
+    html += "</div>";
+    $("#alert-freg").html(html);
+    $("#IdFecha").focus();
+    setTimeout(function () {
+      $("#alert-freg").fadeOut(1500);
+    }, 3000);
+    return false;
+  } else {
+    $("#IdDetalleOS").val(id_det_osalida);
+    $("#IdFacturaNroModal").val($("#IdNroFactura").val());
+    $("#IdClienteModal").val($("#IdCliente").val());
+    $("#IdFechaModal").val($("#IdFecha").val());
+    getEnviarParametros(id_det_osalida);
+    $("#modal-factura").modal("show");
+  }
   //getCliente();
 }
 function getProcesarOSalida(id_det_osalida) {
   $(".cerrar-lp").hide();
   getCliente();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Venta&a=get_iddet_osalida",
+    data: "IdDetOSalida=" + id_det_osalida,
+    success: function (response) {
+      $.each(response, function (key, value) {
+        $("#IdDetPSalida").val(value.id_det_osalida);
+        $("#IdProducto").val(value.id_producto);
+        $("#IdDetProducto").val(value.producto);
+        $("#IdCantidad").val(value.cantidad);
+        $("#IdPrecio").val(value.pvp);
+      });
+    },
+  });
+}
+
+function getEnviarParametros(id_det_osalida) {
   $.ajax({
     type: "GET",
     dataType: "json",

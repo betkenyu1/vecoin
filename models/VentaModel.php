@@ -607,7 +607,7 @@ class VentaModel
 
         WHERE DV.id_estado =1";*/
 
-        $consulta = "SELECT DV.id_detventa,CV.id_cabventa, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS freg,CV.nro_factura, (DV.cantidad*DV.pvp) AS subtotal, ((DV.cantidad*DV.pvp)*0.12) AS iva,
+        $consulta = "SELECT DV.id_detventa,CV.id_cabventa, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS freg,CV.nro_factura, CL.razon_social,(DV.cantidad*DV.pvp) AS subtotal, ((DV.cantidad*DV.pvp)*0.12) AS iva,
 
         ((DV.cantidad*DV.pvp)*1.12) AS total,CV.id_estado AS estado_pago,DV.id_estado AS nota,C.producto,DV.cantidad,DV.pvp
 
@@ -618,6 +618,7 @@ class VentaModel
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
 
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN clientes CL ON (CL.id_cliente=CV.id_cliente)
 
         WHERE CV.id_estado=1
 

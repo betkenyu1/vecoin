@@ -73,6 +73,7 @@ function getListaVentas() {
   html += '<th hidden class="text-nowrap"></th>';
   html += '<th class="text-nowrap">Fecha</th>';
   html += '<th class="text-nowrap">Nro. Factura</th>';
+  html += '<th class="text-nowrap">Cliente</th>';
   //html += '<th class="text-nowrap">Producto</th>';
   //html += '<th class="text-nowrap">Cantidad</th>';
   //html += '<th class="text-nowrap">P.V.P.</th>';
@@ -99,6 +100,7 @@ function getListaVentas() {
           html += "<td hidden>" + value.id_cabventa + "</td>";
           html += "<td>" + value.freg + "</td>";
           html += "<td>" + value.nro_factura + "</td>";
+          html += "<td>" + value.razon_social + "</td>";
           //html += '<td>' + value.producto + '</td>';
           //html += '<td>' + value.cantidad + '</td>';
           //html += '<td>' + '$ ' + value.pvp + '</td>';

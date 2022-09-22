@@ -401,7 +401,7 @@ function getProcesarOSalidaFactura(id_secuencial) {
           html += "<td>" + value.umedida + "</td>";
           html += "<td>" + value.bodega + "</td>";
           html += "<td>" + value.cantidad + "</td>";
-          html += "<td  contenteditable='true'>" + "$ " + value.pvp + "</td>";
+          html += "<td  contenteditable='false'>" + "$ " + value.pvp + "</td>";
           html += "<td>";
           html +=
             '<a class="btn btn-outline-orange" onclick="ProcesarFacturaVenta(' +

@@ -74,7 +74,7 @@ function getListaVentas() {
           html += "<td>";
 
           html +=
-            '<a href="#nc?1" class="btn btn-outline-orange" onclick="getProcesarNCredito(' +
+            '<a href="#nc?1" class="btn btn-outline-red" onclick="getProcesarNCredito(' +
             value.id_detventa +
             ');" title="Procesar Nota de Crédito"><i class="material-icons">remove_shopping_cart</i></a>';
 

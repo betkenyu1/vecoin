@@ -40,7 +40,7 @@ function getListaOrdenSalida() {
           html +=
             '<a href="#pos?1" class="btn btn-outline-orange" onclick="getProcesarOSalidaFactura(' +
             value.id_secuencial +
-            ');" title="Procesar Orden de Salida"><i class="material-icons">add_shopping_cart</i></a>';
+            ');" title="Procesar Orden de Salida"><i class="material-icons">shopping_cart_checkout</i></a>';
           html += "</td>";
           html += "</tr>";
         });

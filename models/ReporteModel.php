@@ -36,7 +36,7 @@ class ReporteModel
         return $resultados;
     }
     public function ReporteCabOrdenSalida($IdSecuencial)
-    {
+    {        
         $consulta = "SELECT OS.id_secuencial,OS.fecha_osalida,OS.secuencial,E.razon_social,
         CONCAT(EP.nombres,' ',EP.apellidos) AS responsable,E.direccion,E.telefono,OS.observacion
         FROM cab_osalida OS
@@ -49,6 +49,43 @@ class ReporteModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
+
+    public function ReporteCabFacturaIndividual($IdSecuencial)
+    {
+        $consulta = "SELECT CV.id_cabventa,DATE_FORMAT(CV.fecha,'%d-%m-%Y')  AS fecha, 
+        CV.nro_factura,CV.id_cliente,C.razon_social,
+        CV.id_usuario,U.id_empleado,
+        CONCAT(E.nombres,' ', E.apellidos) AS creador,
+        CV.id_estado, EV.estado        
+        FROM cab_venta CV
+        INNER JOIN clientes C ON 
+        C.id_cliente=CV.id_cliente
+        INNER JOIN usuarios U ON
+        CV.id_usuario=U.id_usuario
+        INNER JOIN empleados E ON
+        E.id_empleado=U.id_empleado
+        INNER JOIN estado_ventas EV ON
+        EV.id_estado = CV.id_estado
+        WHERE id_cabventa='$IdSecuencial'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function ReporteDetFacturaIndividual($IdSecuencial)
+    {
+        $consulta = "SELECT DV.id_detventa,DV.id_cabventa,DV.id_producto,P.id_catalogo,C.codigo,DV.cantidad,C.producto,
+        DV.pvp,(DV.pvp*DV.cantidad) AS subtotal,(DV.pvp*DV.cantidad*0.12) AS iva,(DV.pvp*DV.cantidad*1.12) AS total, DV.id_estado
+        FROM det_venta DV
+        INNER JOIN productos P ON (P.id_producto = DV.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        WHERE id_cabventa= '$IdSecuencial'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function ReporteDetOrdenSalida($IdSecuencial)
     {
         $consulta = "SELECT OS.id_det_osalida,OS.cantidad,U.umedida,PH.percha,C.producto,OS.pvp,(OS.cantidad*OS.pvp) AS monto

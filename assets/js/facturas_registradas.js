@@ -12,6 +12,8 @@ function getListaCtasXCobrar() {
     html += '<th class="text-nowrap">Cliente</th>';
 
     html += '<th class="text-nowrap">Estado</th>';
+    html += '<th class="text-nowrap">Acciones</th>';
+
     html += '</tr>';
     html += '</thead>';
     html += '<tbody style="background-color:#c1f8ff">';
@@ -27,8 +29,10 @@ function getListaCtasXCobrar() {
                     //html += '<td>' + value.freg + '</td>';
                     html += '<td>' + value.nro_factura + '</td>';
                     html += '<td>' + value.Cliente + '</td>';
-
                     html += '<td>' + value.estado + '</td>';
+                    html += '<td>';
+                    html += '<a class="btn btn-outline-danger" onclick="getReporteFactura(' + value.id_cabventa + ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
+                    html += '</td>';
                     html += '</tr>';
                 });
                 html += '</tbody>';

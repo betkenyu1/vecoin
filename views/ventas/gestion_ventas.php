@@ -38,6 +38,7 @@ include_once 'views/layout/header.php';
                                         <div class="mb-10px">
                                             <b style="color: #000000;">Fecha:</b> <br>
                                             <input type="hidden" class="form-control" id="IdClienteModal">
+                                            <input type="text" class="form-control" id="IdSecuencial">
                                             <input type="date" disabled class="form-control" id="IdFechaModal">
                                             <div id="alert-fecha"></div>
                                             <hr>
@@ -92,6 +93,8 @@ include_once 'views/layout/header.php';
                                             var prod = $("#IdProducto").val();
                                             var cant = $("#IdCantidad").val();
                                             var prec = $("#IdPrecio").val();
+                                            var secu = $("#IdSecuencial").val();
+
                                             Swal.fire({
                                                 title: "¡ATENCIÓN CONFIRMAR REGISTRO!",
                                                 icon: "warning",
@@ -119,7 +122,9 @@ include_once 'views/layout/header.php';
                                                             "&Cantidad=" +
                                                             cant +
                                                             "&Precio=" +
-                                                            prec,
+                                                            prec +
+                                                            "&IdSecuencial=" +
+                                                            secu,
                                                         success: function(response) {
                                                             response = JSON.stringify(response);
                                                             if (response == 1) {

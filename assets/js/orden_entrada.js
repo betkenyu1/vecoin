@@ -291,7 +291,7 @@ function setNuevaOrdenEntrada() {
 
     html += '<div>';
     html += '<b style="color: #000000;">Observación (Campo Opcional):</b> </br>';
-    html += '<textarea type="text" row="3" class="form-control" placeholder="En este recuadro puede escribir un comentario respecto a la órden de entrada que se va a generar." id="IdObs"></textarea>';
+    html += '<textarea type="text" row="3" class="form-control" placeholder="En este recuadro puede escribir un comentario respecto a la orden de entrada que se va a generar." id="IdObs"></textarea>';
     html += '<div id="alert-obs"></div>';
     html += '</div>';
 
@@ -510,7 +510,7 @@ function getCerrarOrdenEntrada() {
     var nex = 1;
     var secu = parseFloat(idsc) + parseFloat(nex);
     Swal.fire({
-        title: "¿ATENCÍON DESEA CERRAR ÓRDEN DE ENTRADA?",
+        title: "¿ATENCÍON DESEA CERRAR ORDEN DE ENTRADA?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -527,12 +527,12 @@ function getCerrarOrdenEntrada() {
                 success: function (response) {
                     if (response == 1) {
                         Swal.fire({
-                            html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>ÓRDEN CERRADA CON ÉXITO</b></div></div>',
+                            html: '<div class="note note-success"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>ORDEN CERRADA CON ÉXITO</b></div></div>',
                         });
                         CerrarNuevaOrdenEntrada();
                     } if (response == 2) {
                         Swal.fire({
-                            html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>NO SE HA PODIDO CERRAR LA ÓRDEN DE ENTRADA</b></div></div>',
+                            html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>NO SE HA PODIDO CERRAR LA ORDEN DE ENTRADA</b></div></div>',
                         });
                     }
                 }

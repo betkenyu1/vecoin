@@ -41,6 +41,10 @@ function getListaOrdenSalida() {
             '<a href="#pos?1" class="btn btn-outline-orange" onclick="getProcesarOSalidaFactura(' +
             value.id_secuencial +
             ');" title="Procesar Orden de Salida"><i class="material-icons">shopping_cart_checkout</i></a>';
+          html +=
+            '&nbsp;<a href="#pos?1" class="btn btn-outline-red" onclick="getOcultarOrden(' +
+            value.id_secuencial +
+            ');" title="Cerrar Orden de Salida"><i class="material-icons">visibility_off</i></a>';
           html += "</td>";
           html += "</tr>";
         });
@@ -66,6 +70,40 @@ function getListaOrdenSalida() {
         $("#lista-ord_salida").html(html);
       }
     },
+  });
+}
+function getOcultarOrden(idOrden) {
+  Swal.fire({
+    title: "¡ATENCIÓN CONFIRMAR PROCESAMIENTO!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Cancelar",
+    confirmButtonText: "Confirmar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        type: "GET",
+        dataType: 'json',
+        url: "index.php?c=Venta&a=get_elim_orden",
+        data: "IdOrden=" + idOrden,
+        success: function (response) {
+          response = JSON.stringify(response);
+          if (response == 1) {
+            Swal.fire({
+              html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>ORDEN SALIDA PROCESADA</b></div></div>',
+            });
+            //CerrarModificarCliente();
+            getListaOrdenSalida();
+          } if (response == 2) {
+            Swal.fire({
+              html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ERROR ORDEN SALIDA PROCESADA</b></div></div>',
+            });
+          }
+        }
+      });
+    }
   });
 }
 
@@ -499,6 +537,7 @@ function getEnviarParametros(id_det_osalida) {
         $("#IdDetProducto").val(value.producto);
         $("#IdCantidad").val(value.cantidad);
         $("#IdPrecio").val(value.pvp);
+        $("#IdSecuencial").val(value.id_secuencial);
       });
     },
   });

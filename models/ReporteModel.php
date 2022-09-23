@@ -36,7 +36,7 @@ class ReporteModel
         return $resultados;
     }
     public function ReporteCabOrdenSalida($IdSecuencial)
-    {        
+    {
         $consulta = "SELECT OS.id_secuencial,OS.fecha_osalida,OS.secuencial,E.razon_social,
         CONCAT(EP.nombres,' ',EP.apellidos) AS responsable,E.direccion,E.telefono,OS.observacion
         FROM cab_osalida OS
@@ -56,7 +56,7 @@ class ReporteModel
         CV.nro_factura,CV.id_cliente,C.razon_social,
         CV.id_usuario,U.id_empleado,
         CONCAT(E.nombres,' ', E.apellidos) AS creador,
-        CV.id_estado, EV.estado        
+        CV.id_estado, EV.estado, CV.id_orden_salida        
         FROM cab_venta CV
         INNER JOIN clientes C ON 
         C.id_cliente=CV.id_cliente

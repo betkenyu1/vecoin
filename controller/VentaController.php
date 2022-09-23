@@ -80,6 +80,19 @@ class VentaController
             echo json_encode($vacio);
         }
     }
+
+
+    public function get_elim_orden()
+    {
+        $IdOrden = (isset($_REQUEST['IdOrden'])) ? $_REQUEST['IdOrden'] : '';
+        $exito = $this->vta->EliminarOrden($IdOrden);
+        if ($exito) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+
     public function set_osalida()
     {
         $exito = $this->vta->getOSalidaProductos();
@@ -201,6 +214,8 @@ class VentaController
 
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
 
+        $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
+
         $IdUsuario = $_SESSION['idusuario'];
 
         $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
@@ -208,7 +223,7 @@ class VentaController
         if ($existe) {
         } else {
 
-            $reg_cab = $this->vta->RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario);
+            $reg_cab = $this->vta->RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario, $IdSecuencial);
         }
 
         $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);
@@ -261,8 +276,8 @@ class VentaController
 
         if ($existe) {
         } else {
-
-            $reg_cab = $this->vta->RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario);
+            //comentada porque esciste save new venta 2
+            //$reg_cab = $this->vta->RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario);
         }
 
         $existe = $this->vta->ExisteRegistroCabVenta($NroFactura);

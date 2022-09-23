@@ -36,6 +36,18 @@ class VentaModel
         return $resultados;
     }
 
+    public function EliminarOrden($IdOrden)
+    {
+        $consulta = "UPDATE cab_osalida SET id_estado = 2
+        WHERE id_secuencial = '$IdOrden'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+
     public function getOSalidaProductos()
 
     {
@@ -103,7 +115,7 @@ class VentaModel
 
         $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
 
-        UM.umedida,B.bodega,OS.cantidad,OS.pvp
+        UM.umedida,B.bodega,OS.cantidad,OS.pvp,CO.id_secuencial
 
         FROM det_osalida OS
 
@@ -176,13 +188,13 @@ class VentaModel
         return $resultados;
     }
 
-    public function RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario)
+    public function RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario, $IdSecuencial)
 
     {
 
-        $consulta = "INSERT INTO cab_venta(freg,fecha,nro_factura,id_cliente,id_usuario)
+        $consulta = "INSERT INTO cab_venta(freg,fecha,nro_factura,id_cliente,id_usuario,id_orden_salida)
 
-        VALUES(:freg,:fecha,:nro_factura,:id_cliente,:id_usuario)";
+        VALUES(:freg,:fecha,:nro_factura,:id_cliente,:id_usuario,:id_orden_salida)";
 
         $sentencia = $this->db->prepare($consulta);
 
@@ -195,6 +207,9 @@ class VentaModel
         $sentencia->bindParam(':id_cliente', $IdCliente);
 
         $sentencia->bindParam(':id_usuario', $IdUsuario);
+
+        $sentencia->bindParam(':id_orden_salida', $IdSecuencial);
+
 
         $sentencia->execute();
 

@@ -113,6 +113,18 @@ class PDF extends FPDF
 
                 $this->SetTextColor(13, 119, 60);
 
+                $this->Cell(30, 5, utf8_decode('Orden de Salida:'), 0, 0, '');
+
+                $this->SetFont('Arial', 'I', 8);
+
+                $this->SetTextColor(0, 0, 0);
+
+                $this->Cell(30, 5, utf8_decode($scred["id_orden_salida"]), 0, 1, '');
+
+                $this->SetFont('Arial', 'B', 8);
+
+                $this->SetTextColor(13, 119, 60);
+
                 $this->Cell(30, 5, utf8_decode('Estado:'), 0, 0, '');
 
                 $this->SetFont('Arial', 'I', 8);

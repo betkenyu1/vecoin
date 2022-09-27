@@ -20,7 +20,7 @@ include_once 'views/layout/header.php';
                         <div class="col-xl-7 col-lg-8">
                             <!-- BEGIN title -->
                             <div class="mb-3 text-gray-300">
-                                <b>GESTION DE STOCK</b>
+                                <b>VALORIZACIÓN DE INVENTARIO</b>
                                 <span class="ms-2">
                                     <i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Totales" data-bs-placement="top" data-bs-content="Sumatoria de productos en stock, costo de compra y utilidad"></i>
                                 </span>
@@ -88,7 +88,7 @@ include_once 'views/layout/header.php';
                         <div class="col-xl-7 col-lg-8">
                             <!-- BEGIN title -->
                             <div class="mb-3 text-gray-300">
-                                <b>GESTION DE VENTAS</b>
+                                <b>PRODUCTO MÁS VENDIDO</b>
                                 <span class="ms-2">
                                     <i class="fa fa-info-circle" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-title="Totales" data-bs-placement="top" data-bs-content="Producto más vendido actualmente"></i>
                                 </span>
@@ -108,30 +108,7 @@ include_once 'views/layout/header.php';
                             <!-- END percentage -->
                             <hr class="bg-white bg-opacity-50" />
                             <!-- BEGIN row -->
-                            <div class="row text-truncate">
-                                <!-- BEGIN col-6 -->
-                                <div class="col-6">
-                                    <div class=" text-gray-300">Cantidad</div>
-                                    <div id="IdCantidadPV" class="fs-18px mb-5px fw-bold" data-animation="number" data-value="0"></div>
 
-                                    <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-teal" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-                                    </div>
-                                </div>
-                                <!-- END col-6 -->
-                                <!-- BEGIN col-6 -->
-                                <div class="col-6">
-                                    <div class=" text-gray-300">Valor</div>
-                                    <div id="IdValorPV" class="fs-18px mb-5px fw-bold">$<span data-animation="number" data-value="0"></span></div>
-                                    <!--<div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
-                                        <div class="progress-bar progress-bar-striped rounded-right" data-animation="width" data-value="60%" style="width: 0%"></div>
-                                    </div>-->
-                                    <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-                                    </div>
-                                </div>
-                                <!-- END col-6 -->
-                            </div>
                             <!-- END row -->
                         </div>
                         <!-- END col-7 -->

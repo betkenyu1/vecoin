@@ -38,7 +38,7 @@ include_once 'views/layout/header.php';
                                         <div class="mb-10px">
                                             <b style="color: #000000;">Fecha:</b> <br>
                                             <input type="hidden" class="form-control" id="IdClienteModal">
-                                            <input type="text" class="form-control" id="IdSecuencial">
+                                            <input type="hidden" class="form-control" id="IdSecuencial">
                                             <input type="date" disabled class="form-control" id="IdFechaModal">
                                             <div id="alert-fecha"></div>
                                             <hr>

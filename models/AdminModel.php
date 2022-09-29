@@ -102,9 +102,34 @@ class AdminModel
         return $resultados;
     }
 
+
+    public function getPorcentajeRenta()
+    {
+        $consulta = "SELECT valor
+        FROM porc_retenciones
+        WHERE id_tipo_retencion =1
+        AND id_estado=1 /*el 1 es para retenciones de renta */;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+    public function getPorcentajeIVA()
+    {
+        $consulta = "SELECT valor
+        FROM porc_retenciones
+        WHERE id_tipo_retencion =2
+        AND id_estado=1 /*el 2 es para retenciones de iva */;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
     public function getClientes()
     {
-        $consulta = "SELECT id_cliente,ruc, razon_social ,direccion,telefono,email,tiempo_credito,
+        $consulta = "SELECT id_cliente,ruc, razon_social ,direccion,telefono,email,tiempo_credito,porc_ret_renta,porc_ret_iva,
         CASE WHEN id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado FROM clientes";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -153,14 +178,16 @@ class AdminModel
         return true;
     }
 
-    public function RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito)
+    public function RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $IdPorRenta, $IdPorIVA)
     {
         $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
         $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $DireccionCAPITAL = ucwords(strtolower($Direccion));
         $TiempocreditoCAPITAL = ucwords(strtolower($Tiempocredito));
-        $consulta = "INSERT INTO clientes (ruc,razon_social,direccion,telefono,email,tiempo_credito)
-        VALUES(:ruc,:razon_social,:direccion,:telefono,:email,:tiempocredito)";
+        $fIdPorRenta = number_format($IdPorRenta, 2);
+        $fIdPorIVA = number_format($IdPorIVA, 2);
+        $consulta = "INSERT INTO clientes (ruc,razon_social,direccion,telefono,email,tiempo_credito,porc_ret_renta,porc_ret_iva)
+        VALUES(:ruc,:razon_social,:direccion,:telefono,:email,:tiempocredito,:porc_ret_renta,:porc_ret_iva)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':ruc', $Ruc);
         $sentencia->bindParam(':razon_social', $RazonSocialUPPER);
@@ -168,6 +195,8 @@ class AdminModel
         $sentencia->bindParam(':telefono', $Telefono);
         $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->bindParam(':tiempocredito', $TiempocreditoCAPITAL);
+        $sentencia->bindParam(':porc_ret_renta', $fIdPorRenta);
+        $sentencia->bindParam(':porc_ret_iva', $fIdPorIVA);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;

@@ -157,6 +157,29 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
+    public function get_porc_renta()
+    {
+        $exito = $this->adm->getPorcentajeRenta();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
+    public function get_porc_IVA()
+    {
+        $exito = $this->adm->getPorcentajeIVA();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
     public function get_empresa_id()
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
@@ -277,8 +300,10 @@ class AdminController
         $Direccion = (isset($_REQUEST['Direccion'])) ? $_REQUEST['Direccion'] : '';
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
-        $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
-        $exito = $this->adm->RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito);
+        $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';        
+        $IdPorRenta = (isset($_REQUEST['IdPorRenta'])) ? $_REQUEST['IdPorRenta'] : '';        
+        $IdPorIVA = (isset($_REQUEST['IdPorIVA'])) ? $_REQUEST['IdPorIVA'] : '';
+        $exito = $this->adm->RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito,$IdPorRenta,$IdPorIVA);
         if ($exito) {
             echo 1;
         } else {

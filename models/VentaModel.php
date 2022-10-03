@@ -765,7 +765,8 @@ class VentaModel
         FROM cab_venta CV
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
-        INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)";
+        INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
+        GROUP BY id_cabventa";
 
         $sentencia = $this->db->prepare($consulta);
 

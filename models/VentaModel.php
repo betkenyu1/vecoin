@@ -753,6 +753,29 @@ class VentaModel
 
 
 
+    public function getRepFactRetenciones()
+
+    {
+
+        $consulta = "SELECT CV.id_cabventa,CV.fecha,CL.razon_social AS Cliente,CV.nro_factura,EV.estado,
+        ROUND ((DV.pvp*DV.cantidad), 2) AS subtotal,
+        ROUND ((DV.pvp*DV.cantidad*0.12),2) AS iva,
+        ROUND (SUM(((DV.pvp*DV.cantidad*0.12)*0.30)),2) AS ret_iva,
+        ROUND (SUM(((DV.pvp*DV.cantidad)*0.0175)),2) AS ret_renta
+        FROM cab_venta CV
+        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)";
+
+        $sentencia = $this->db->prepare($consulta);
+
+        $sentencia->execute();
+
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+        return $resultados;
+    }
+
     public function getRepFactRegistradas()
 
     {

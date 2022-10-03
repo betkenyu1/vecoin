@@ -708,6 +708,12 @@ if ($_SESSION["user"] === null) {
 
 								</a>
 
+								<a href="index.php?c=Reporte&a=reporte_facturas_retenciones" class="menu-link">
+
+									<div class="menu-text">Retenciones de Facturas</div>
+
+								</a>
+
 							</div>
 
 						</div>

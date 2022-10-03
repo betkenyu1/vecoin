@@ -7,6 +7,9 @@ function getReporteOrdenSalida(os) {
 function getReporteFactura(cb) {
     window.open('views/reportes/factura_individual.php?IdCabVenta=' + cb + '');
 }
+function getReporteFacturasRetenciones(cb) {
+    window.open('views/reportes/facturas_retenciones.php?IdCabVenta=' + cb + '');
+}
 function getReporteStock() {
     window.open('views/reportes/stock_productos.php');
 }
@@ -19,6 +22,10 @@ function getReporteCtasXCobrar() {
 
 function getFacturasRegistradas() {
     window.open('views/reportes/rep_fact_registradas.php');
+}
+
+function getFacturasRetenciones() {
+    window.open('views/reportes/rep_fact_retenciones.php');
 }
 
 function getReporteInicioSesion() {

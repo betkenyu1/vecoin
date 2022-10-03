@@ -14,6 +14,11 @@ class ReporteController
     {
         require_once 'views/ventas/gestion_ctasxcobrar.php';
     }
+    
+    public function reporte_facturas_retenciones()
+    {
+        require_once 'views/ventas/facturas_retenciones.php';
+    }
     public function reporte_facturas_registradas()
     {
         require_once 'views/ventas/facturas_registradas.php';
@@ -35,6 +40,16 @@ class ReporteController
     public function get_rep_facturas_registradas()
     {
         $exito = $this->rep->getRepFactRegistradas();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    public function get_rep_facturas_retenciones()
+    {
+        $exito = $this->rep->getRepFactRetenciones();
         if ($exito) {
             echo json_encode($exito);
         } else {

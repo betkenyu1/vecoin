@@ -80,12 +80,12 @@ function getOcultarOrden(idOrden) {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     cancelButtonText: "Cancelar",
-    confirmButtonText: "Confirmar"
+    confirmButtonText: "Confirmar",
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({
         type: "GET",
-        dataType: 'json',
+        dataType: "json",
         url: "index.php?c=Venta&a=get_elim_orden",
         data: "IdOrden=" + idOrden,
         success: function (response) {
@@ -96,12 +96,13 @@ function getOcultarOrden(idOrden) {
             });
             //CerrarModificarCliente();
             getListaOrdenSalida();
-          } if (response == 2) {
+          }
+          if (response == 2) {
             Swal.fire({
               html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ERROR ORDEN SALIDA PROCESADA</b></div></div>',
             });
           }
-        }
+        },
       });
     }
   });
@@ -466,6 +467,19 @@ function getProcesarOSalidaFactura(id_secuencial) {
           order: [[2, "desc"]],
           select: false,
           responsive: true,
+        });
+        $(".default-select2").select2({
+          placeholder: "Cargando datos...",
+          selectOnClose: "false",
+          language: {
+            noResults: function () {
+              //VACIO
+              return "No hay registros";
+            },
+            searching: function () {
+              return "Buscando..";
+            },
+          },
         });
       } else {
         html = "";

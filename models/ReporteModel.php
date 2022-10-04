@@ -189,16 +189,17 @@ class ReporteModel
 
     {
 
-        $consulta = "SELECT CV.id_cabventa,CV.fecha,CL.razon_social AS Cliente,CV.nro_factura,EV.estado,
-        ROUND ((DV.pvp*DV.cantidad), 2) AS subtotal,
-        ROUND ((DV.pvp*DV.cantidad*0.12),2) AS iva,
-        ROUND (SUM(((DV.pvp*DV.cantidad*0.12)*(CL.porc_ret_iva/100))),2) AS ret_iva,
-        ROUND (SUM(((DV.pvp*DV.cantidad)*(CL.porc_ret_renta/100))),2) AS ret_renta
+        $consulta = "SELECT CV.id_cabventa AS id,CV.fecha,CL.razon_social AS Cliente,CV.nro_factura,EV.estado, 
+        (SELECT SUM(ROUND ((DV.pvp*DV.cantidad), 2))) AS subtotal,
+        (SELECT SUM(ROUND ((DV.pvp*DV.cantidad*0.12),2)))AS iva,      
+        (SELECT ROUND (SUM(((DV.pvp*DV.cantidad*0.12)*(CL.porc_ret_iva/100))),2) FROM det_venta DV WHERE DV.id_cabventa=id) AS ret_iva,       
+        (SELECT ROUND (SUM(((DV.pvp*DV.cantidad)*(CL.porc_ret_renta/100))),2) FROM det_venta DV WHERE DV.id_cabventa=id)  AS ret_renta
         FROM cab_venta CV
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
-        GROUP BY id_cabventa;";
+        GROUP BY CV.nro_factura
+        ORDER BY CL.razon_social, CV.nro_factura ASC; ";
 
         $sentencia = $this->db->prepare($consulta);
 

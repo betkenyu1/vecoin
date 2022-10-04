@@ -25,7 +25,8 @@ class InventarioModel
         INNER JOIN catalogo C 
         ON (P.id_catalogo=C.id_catalogo)
         WHERE C.id_empresa='$id_empresa'
-        AND C.id_estado=1;";
+        AND C.id_estado=1
+        ORDER BY C.producto;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

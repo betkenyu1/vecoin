@@ -30,9 +30,7 @@ function getListaCtasXCobrar() {
         $.each(response, function (key, value) {
           html += '<tr class="odd gradeX">';
           html +=
-            '<td width="1%" class="fw-bold text-dark">' +
-            value.id_cabventa +
-            "</td>";
+            '<td width="1%" class="fw-bold text-dark">' + value.id + "</td>";
           //html += '<td>' + value.freg + '</td>';
           html += "<td>" + value.nro_factura + "</td>";
           html += "<td>" + value.Cliente + "</td>";
@@ -44,7 +42,7 @@ function getListaCtasXCobrar() {
           html += "<td>";
           html +=
             '<a class="btn btn-outline-danger" onclick="getReporteFacturasRetenciones(' +
-            value.id_cabventa +
+            value.id +
             ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
           html += "</td>";
           html += "</tr>";
@@ -56,6 +54,7 @@ function getListaCtasXCobrar() {
         $("#lista-ctasxcobrar").html(html);
         $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
+          order: [[2, "asc"]],
           select: true,
           responsive: true,
         });

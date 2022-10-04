@@ -38,8 +38,8 @@ function getListaCtasXCobrar() {
           html += "<td>" + value.Cliente + "</td>";
           html += "<td>" + "$ " + value.subtotal + "</td>";
           html += "<td>" + "$ " + value.iva + "</td>";
-          html += "<td>" + "$ " + value.ret_iva + "</td>";
           html += "<td>" + "$ " + value.ret_renta + "</td>";
+          html += "<td>" + "$ " + value.ret_iva + "</td>";
           html += "<td>" + value.estado + "</td>";
           html += "<td>";
           html +=

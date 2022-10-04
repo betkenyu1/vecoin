@@ -105,12 +105,12 @@ if ($resultados) {
         $sum_ret_iva += $re["ret_iva"];
     }
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(75, 0, ' ', 0, 0, 'R', false);
+    $pdf->Cell(74, 0, ' ', 0, 0, 'R', false);
     $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(26, 6, 'TOTALES  ', 1, 0, 'R', true);
+    $pdf->Cell(28, 6, 'TOTALES', 1, 0, 'C', true);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(23, 6, '$ ' . number_format($sum_subt, 2, ".", ","), 1, 0, 'C', false);
+    $pdf->Cell(22, 6, '$ ' . number_format($sum_subt, 2, ".", ","), 1, 0, 'C', false);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(22, 6, '$ ' . number_format($sum_iva, 2, ".", ","), 1, 0, 'C', false);

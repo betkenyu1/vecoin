@@ -82,9 +82,9 @@ if ($resultados) {
     $pdf->SetTextColor(0, 0, 0);
     //$pdf->Cell(15, 5, utf8_decode('N°'), 1, 0, 'C', false);
     $pdf->Cell(50, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
-    $pdf->Cell(25, 5, utf8_decode('Fecha Factura'), 1, 0, 'C', false);
-    $pdf->Cell(26, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
-    $pdf->Cell(23, 5, utf8_decode('Subtotal'), 1, 0, 'C', false);
+    $pdf->Cell(24, 5, utf8_decode('Fecha Factura'), 1, 0, 'C', false);
+    $pdf->Cell(28, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
+    $pdf->Cell(22, 5, utf8_decode('Subtotal'), 1, 0, 'C', false);
     $pdf->Cell(22, 5, utf8_decode('IVA'), 1, 0, 'C', false);
     $pdf->Cell(22, 5, utf8_decode('% Ret. Renta'), 1, 0, 'C', false);
     $pdf->Cell(22, 5, utf8_decode('% Ret. IVA'), 1, 1, 'C', false);
@@ -93,9 +93,9 @@ if ($resultados) {
         $pdf->SetFont('Arial', 'I', 8);
         //$pdf->Cell(15, 5, utf8_decode($re["id_cabventa"]), 1, 0, 'C', false);
         $pdf->Cell(50, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
-        $pdf->Cell(25, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
-        $pdf->Cell(26, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', false);
-        $pdf->Cell(23, 5, "$ " . utf8_decode($re["subtotal"]), 1, 0, 'C', false);
+        $pdf->Cell(24, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
+        $pdf->Cell(28, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', false);
+        $pdf->Cell(22, 5, "$ " . utf8_decode($re["subtotal"]), 1, 0, 'C', false);
         $pdf->Cell(22, 5, "$ " . utf8_decode($re["iva"]), 1, 0, 'C', false);
         $pdf->Cell(22, 5, "$ " . utf8_decode($re["ret_renta"]), 1, 0, 'C', false);
         $pdf->Cell(22, 5, "$ " . utf8_decode($re["ret_iva"]), 1, 1, 'C', false);

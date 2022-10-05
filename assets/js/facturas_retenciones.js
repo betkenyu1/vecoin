@@ -52,12 +52,13 @@ function getListaCtasXCobrar() {
         html += "</div>";
         html += "</div>";
         $("#lista-ctasxcobrar").html(html);
-        $("#data-table-select").DataTable({
+        var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
           order: [[2, "asc"]],
           select: true,
           responsive: true,
         });
+        dtb.column(0).visible(false);
       } else {
         html = "";
         html +=

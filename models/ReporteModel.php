@@ -198,8 +198,9 @@ class ReporteModel
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
+        WHERE CV.id_estado =1 OR CV.id_estado=3
         GROUP BY CV.nro_factura
-        ORDER BY CL.razon_social, CV.nro_factura ASC; ";
+        ORDER BY CL.razon_social, CV.nro_factura ASC;";
 
         $sentencia = $this->db->prepare($consulta);
 

@@ -475,6 +475,9 @@ function getProcesarOSalidaFactura(id_secuencial) {
           responsive: true,
         });
         dtb.column(0).visible(false);
+        dtb.column(1).visible(false);
+        dtb.column(2).visible(false);
+
         $(".default-select2").select2({
           placeholder: "Cargando datos...",
           selectOnClose: "false",

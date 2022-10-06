@@ -131,7 +131,10 @@ include_once 'views/layout/header.php';
                                                                 Swal.fire({
                                                                     html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>REGISTRO CORRECTO</b></div></div>',
                                                                 });
-                                                                $('#modal-factura').modal('hide')
+                                                                $('#modal-factura').modal('hide');
+                                                                $("#IdPrecio").val('');
+                                                                $("#IdDetProducto").val('');
+                                                                $("#IdCantidad").val('');
                                                                 //getListaOrdenSalida();
                                                             }
                                                             if (response == 2) {

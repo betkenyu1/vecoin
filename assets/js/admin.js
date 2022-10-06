@@ -374,6 +374,8 @@ function getCliente() {
           "<option value=" +
             value.id_cliente +
             ">" +
+            value.ruc +
+            " | " +
             value.razon_social +
             "</option>"
         );

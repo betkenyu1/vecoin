@@ -93,7 +93,7 @@ function getListaVentas() {
 
         $("#lista-ventas").html(html);
 
-        $("#data-table-select").DataTable({
+        var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
 
           order: [[2, "desc"]],
@@ -102,6 +102,7 @@ function getListaVentas() {
 
           responsive: true,
         });
+        dtb.column(0).visible(false);
       } else {
         html = "";
 

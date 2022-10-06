@@ -45,7 +45,12 @@ function getListaOrdenSalida() {
             '&nbsp;<a href="#pos?1" class="btn btn-outline-red" onclick="getOcultarOrden(' +
             value.id_secuencial +
             ');" title="Cerrar Orden de Salida"><i class="material-icons">visibility_off</i></a>';
+          html +=
+            '&nbsp;<a class="btn btn-outline-green" onclick="getReporteOrdenSalida(' +
+            value.id_secuencial +
+            ');" title="Reporte"><i class="material-icons">print</i></a>';
           html += "</td>";
+
           html += "</tr>";
         });
         html += "</tbody>";

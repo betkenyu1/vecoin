@@ -44,7 +44,7 @@ function getListaCtasXCobrar() {
             '<a class="btn btn-outline-danger" onclick="getReporteFacturasRetenciones(' +
             value.id +
             ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
-          html += "</td>";
+          html += "</td>";          
           html += "</tr>";
         });
         html += "</tbody>";

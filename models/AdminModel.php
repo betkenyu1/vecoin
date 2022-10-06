@@ -140,7 +140,8 @@ class AdminModel
     public function getClientesActivos()
     {
         $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito FROM clientes
-        where id_estado=1";
+        where id_estado=1
+        ORDER BY razon_social";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

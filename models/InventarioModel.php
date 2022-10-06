@@ -20,11 +20,11 @@ class InventarioModel
 
     public function getProductosActivosxEmpresa($id_empresa)
     {
-        $consulta = "SELECT P.id_producto,C.producto
+        $consulta = "SELECT P.id_producto,CONCAT(C.codigo,' | ',C.producto) as producto
         FROM productos P
         INNER JOIN catalogo C 
         ON (P.id_catalogo=C.id_catalogo)
-        WHERE C.id_empresa='$id_empresa'
+        WHERE C.id_empresa=1
         AND C.id_estado=1
         ORDER BY C.producto;";
         $sentencia = $this->db->prepare($consulta);

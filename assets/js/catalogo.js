@@ -121,12 +121,13 @@ function getListaCatalogo() {
       html += "</div>";
       html += "</div>";
       $("#lista-catalogo").html(html);
-      $("#data-table-select").DataTable({
+      var dtb = $("#data-table-select").DataTable({
         language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
         order: [[3, "asc"]],
         select: false,
         responsive: true,
       });
+      dtb.column(0).visible(false);
     },
   });
 }

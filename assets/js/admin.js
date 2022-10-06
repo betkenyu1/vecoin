@@ -417,6 +417,8 @@ function getCatalogoActivosMod() {
           "<option value=" +
             value.id_catalogo +
             ">" +
+            value.codigo +
+            " | " +
             value.producto +
             "</option>"
         );
@@ -439,6 +441,8 @@ function getCatalogoActivos() {
           "<option value=" +
             value.id_catalogo +
             ">" +
+            value.codigo +
+            " | " +
             value.producto +
             "</option>"
         );

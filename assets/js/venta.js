@@ -58,12 +58,13 @@ function getListaOrdenSalida() {
         html += "</div>";
         html += "</div>";
         $("#lista-ord_salida").html(html);
-        $("#data-table-select").DataTable({
+        var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
           order: [[2, "desc"]],
           select: false,
           responsive: true,
         });
+        dtb.column(0).visible(false);
       } else {
         html = "";
         html +=
@@ -274,7 +275,7 @@ function getUltimaFactura() {
     url: "index.php?c=Venta&a=get_ultima_factura",
     success: function (response) {
       $.each(response, function (key, value) {
-        $("#IdNroFactura").val(value.id_ultima_factura);
+        $("#IdNroFactura").val(value.nro_factura);
       });
     },
   });
@@ -467,12 +468,13 @@ function getProcesarOSalidaFactura(id_secuencial) {
         html += "</div>";
 
         $("#lista-osfact").html(html);
-        $("#data-table-select2").DataTable({
+        var dtb = $("#data-table-select2").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
           order: [[2, "desc"]],
           select: false,
           responsive: true,
         });
+        dtb.column(0).visible(false);
         $(".default-select2").select2({
           placeholder: "Cargando datos...",
           selectOnClose: "false",
@@ -499,6 +501,7 @@ function getProcesarOSalidaFactura(id_secuencial) {
     },
   });
   getCliente();
+  getUltimaFactura();
 }
 
 function ProcesarFacturaVenta(id_det_osalida) {
@@ -557,19 +560,6 @@ function getEnviarParametros(id_det_osalida) {
         $("#IdCantidad").val(value.cantidad);
         $("#IdPrecio").val(value.pvp);
         $("#IdSecuencial").val(value.id_secuencial);
-      });
-    },
-  });
-}
-
-function getUltimaFactura() {
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Venta&a=get_ultima_factura",
-    success: function (response) {
-      $.each(response, function (key, value) {
-        $("#IdNroFactura").val(value.id_ultima_factura);
       });
     },
   });

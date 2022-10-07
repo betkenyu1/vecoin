@@ -33,33 +33,51 @@ function getReporteCtasXCobrar() {
 }
 
 function getFacturasRegistradas() {
-  window.open(
-    "views/reportes/rep_fact_registradas.php?startDate=" +
-      $("#startDate").val() +
-      "&endDate=" +
-      $("#endDate").val() +
-      ""
-  );
+  if ($("#startDate").val() != 0 && $("#endDate").val() != 0) {
+    window.open(
+      "views/reportes/rep_fact_registradas.php?startDate=" +
+        $("#startDate").val() +
+        "&endDate=" +
+        $("#endDate").val() +
+        ""
+    );
+  } else {
+    Swal.fire({
+      html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-warning"></i></div><div class="note-content"><b>ATENCIÓN: Verificar rango de búsqueda.</b></div></div>',
+    });
+  }
 }
 
 function getFacturasRetenciones() {
-  window.open(
-    "views/reportes/rep_fact_retenciones.php?startDate=" +
-      $("#startDate").val() +
-      "&endDate=" +
-      $("#endDate").val() +
-      ""
-  );
+  if ($("#startDate").val() != 0 && $("#endDate").val() != 0) {
+    window.open(
+      "views/reportes/rep_fact_retenciones.php?startDate=" +
+        $("#startDate").val() +
+        "&endDate=" +
+        $("#endDate").val() +
+        ""
+    );
+  } else {
+    Swal.fire({
+      html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-warning"></i></div><div class="note-content"><b>ATENCIÓN: Verificar rango de búsqueda.</b></div></div>',
+    });
+  }
 }
 
 function getFacturasRetencionesAgrupados() {
-  window.open(
-    "views/reportes/rep_fact_retenciones_agrupados.php?startDate=" +
-      $("#startDate").val() +
-      "&endDate=" +
-      $("#endDate").val() +
-      ""
-  );
+  if ($("#startDate").val() != 0 && $("#endDate").val() != 0) {
+    window.open(
+      "views/reportes/rep_fact_retenciones_agrupados.php?startDate=" +
+        $("#startDate").val() +
+        "&endDate=" +
+        $("#endDate").val() +
+        ""
+    );
+  } else {
+    Swal.fire({
+      html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-warning"></i></div><div class="note-content"><b>ATENCIÓN: Verificar rango de búsqueda.</b></div></div>',
+    });
+  }
 }
 
 function getReporteInicioSesion() {

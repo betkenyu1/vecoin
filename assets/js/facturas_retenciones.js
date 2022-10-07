@@ -1,30 +1,32 @@
 function getListaCtasXCobrar() {
   var html = "";
   html += "<div>";
-  html += '<div class="container shadow py-2 ">';
-  html += '<h5 class="text-center">Seleccione el rango de búsqueda</h5>';
-  html += "<div class=row justify-content-center>";
+  html += '<div class="container bg-success bg-gradient shadow py-2 ">';
+  html += "&nbsp;";
+  html +=
+    '<h5 class="text-center text-white">SELECCIONE EL RANGO DE BÚSQUEDA</h5>';
+  html += '<div class="row justify-content-center">';
   html += '<div class="col-lg-3 col-sm-6">';
-  html += '<label for="startDate">Desde</label>';
+  html += '<label for="startDate" class="text-white">Desde</label>';
   html += '<input id="startDate" class="form-control" type="date" />';
   html += '<span id="startDateSelected"></span>';
   html += "</div>";
   html += '<div class="col-lg-3 col-sm-6">';
-  html += '<label for="endDate">Hasta</label>';
+  html += '<label for="endDate" class="text-white">Hasta</label>';
   html += '<input id="endDate" class="form-control" type="date" />';
   html += '<span id="endDateSelected"></span>';
   html += "&nbsp;";
   html += "</div>";
-  html += "</div>";
-  html += "</div>";
-  
-  html += "<hr>";
-  html += '<div class="d-grid gap-2 d-md-block">';
+  html += '<div class="d-grid gap-2 d-md-flex justify-content-md-center">';
   html +=
-    '<a href="#" onclick="getFacturasRetenciones();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Inidividual</a>';
+    '<a href="#" onclick="getFacturasRetenciones();" class="btn btn-danger me-md-2 data-bs-toggle="modal" data-bs-target="#FechaInvalida""><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Individual</a>';
   html +=
-    '<a href="#" onclick="getFacturasRetencionesAgrupados();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Agrupado</a>';
+    '<a href="#" onclick="getFacturasRetencionesAgrupados();" class="btn btn-danger data-bs-toggle="modal" data-bs-target="#FechaInvalida""><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Agrupado</a>';
   html += "</div>";
+  html += "&nbsp;";
+  html += "</div>";
+  html += "</div>";
+
   html += '<div style="overflow: scroll">';
   html +=
     '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
@@ -78,7 +80,7 @@ function getListaCtasXCobrar() {
         var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
           order: [[2, "asc"]],
-          select: true,
+          select: false,
           responsive: true,
         });
         dtb.column(0).visible(false);

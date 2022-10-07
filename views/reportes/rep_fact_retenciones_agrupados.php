@@ -9,12 +9,13 @@ class PDF extends FPDF
 {
     function Header()
     {
-        $title = 'REPORTE DE FACTURAS REGISTRADAS';
+        $this->Ln(5);
+        $title = 'REPORTE DE FACTURAS CON RETENCIONES POR CLIENTE';
         $this->SetFont('Arial', 'B', 10);
         date_default_timezone_set('America/Guayaquil');
         $DateAndTime = date('d/m/Y h:i:s a', time());
         $fi = 'Fecha impresión: ';
-        $this->Image('../../assets/img/logo/logo_vecoin-1.png', 5, 8, 40);
+        $this->Image('../../assets/img/logo/logo_vecoin-1.png', 10, 8, 40);
         //$this->Image('../../assets/img/logo/fd.png', '96', '90', '35', '35', 'PNG');
         $this->SetFont('Arial', 'B', 14);
         $this->Ln(1);
@@ -47,7 +48,7 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'b', 8);
         $dir = 'Dirección: ';
         $tel = 'Teléfono: ';
-        $this->SetY(-25);
+        $this->SetY(-19);
         //$this->Cell(0, 3, utf8_decode($dir . $_SESSION["dir"] . ' | ' . $tel . $_SESSION["tel"]), 0, 1, 'C', 0);
         $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: 042316885'), 0, 1, 'C', 0);
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
@@ -71,33 +72,63 @@ $pdf->AddPage('P');
 $rep = new ReporteModel();
 $pdf->SetFillColor(13, 119, 60);
 $pdf->SetTextColor(255, 255, 255);
-$resultados = $rep->getRepFactRegistradas($startDate, $endDate);
+$startDate = (isset($_REQUEST['startDate'])) ? $_REQUEST['startDate'] : '';
+$endDate = (isset($_REQUEST['endDate'])) ? $_REQUEST['endDate'] : '';
 
+$resultados = $rep->getRepFactRetencionesAgrupadas($startDate, $endDate);
+$sum_subt = 0;
+$sum_iva = 0;
+$sum_ret_renta = 0;
+$sum_ret_iva = 0;
 if ($resultados) {
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->Cell(0, 8, 'FACTURAS REGISTRADAS A LA FECHA DE CONSULTA', 1, 1, 'C', true);
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetTextColor(0, 0, 0);
     //$pdf->Cell(15, 5, utf8_decode('N°'), 1, 0, 'C', false);
-    $pdf->Cell(70, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
-    $pdf->Cell(35, 5, utf8_decode('Fecha Factura'), 1, 0, 'C', false);
-    $pdf->Cell(50, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
-    //$pdf->Cell(35, 5, utf8_decode('Monto'), 1, 0, 'C', false);
-
-    $pdf->Cell(35, 5, utf8_decode('Estado'), 1, 1, 'C', false);
+    $pdf->Cell(10, 5, utf8_decode('Cant.'), 1, 0, 'C', false);
+    $pdf->Cell(73, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
+    $pdf->Cell(25, 5, utf8_decode('R.U.C.'), 1, 0, 'C', false);
+    $pdf->Cell(21, 5, utf8_decode('Subtotal'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('IVA'), 1, 0, 'C', false);
+    $pdf->Cell(21, 5, utf8_decode('% Ret. Renta'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('% Ret. IVA'), 1, 1, 'C', false);
     foreach ($resultados as $re) {
         $pdf->SetFont('Arial', 'I', 8);
-        //$pdf->Cell(15, 5, utf8_decode($re["id_cabventa"]), 1, 0, 'C', false);
-        $pdf->Cell(70, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
-        $pdf->Cell(35, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
-        $pdf->Cell(50, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', false);
-        //$pdf->Cell(35, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 0, 'C', false);
-
-
-        $pdf->Cell(35, 5, utf8_decode($re["estado"]), 1, 1, 'C', false);
+        //$pdf->Cell(15, 5, utf8_decode($re["id_cabventa"]), 1, 0, 'C', false);        
+        $pdf->Cell(10, 5, utf8_decode($re["fact_gen"]), 1, 0, 'C', false);
+        $pdf->Cell(73, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
+        $pdf->SetFillColor(255, 255, 255);
+        $pdf->Cell(25, 5, utf8_decode($re["ruc"]), 1, 0, 'R', true);
+        $pdf->Cell(21, 5, "$ " . number_format(utf8_decode($re["subtotal"]), 2, ".", ","), 1, 0, 'R', true);
+        $pdf->Cell(20, 5, "$ " . number_format(utf8_decode($re["iva"]), 2, ".", ","), 1, 0, 'R', true);
+        $pdf->Cell(21, 5, "$ " . number_format(utf8_decode($re["ret_renta"]), 2, ".", ","), 1, 0, 'R', true);
+        $pdf->Cell(20, 5, "$ " . number_format(utf8_decode($re["ret_iva"]), 2, ".", ","), 1, 1, 'R', true);
+        $sum_subt += $re["subtotal"];
+        $sum_iva += $re["iva"];
+        $sum_ret_renta += $re["ret_renta"];
+        $sum_ret_iva += $re["ret_iva"];
     }
+    $pdf->SetFillColor(13, 119, 60);
+
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(83, 0, ' ', 0, 0, 'R', false);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(25, 6, 'TOTALES', 1, 0, 'C', true);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(21, 6, '$ ' . number_format($sum_subt, 2, ".", ","), 1, 0, 'R', false);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(20, 6, '$ ' . number_format($sum_iva, 2, ".", ","), 1, 0, 'R', false);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(21, 6, '$ ' . number_format($sum_ret_renta, 2, ".", ","), 1, 0, 'R', false);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(20, 6, '$ ' . number_format($sum_ret_iva, 2, ".", ","), 1, 0, 'R', false);
 }
-$sol_cred = $rep->getRepFactRegistradas($startDate, $endDate);
+$sol_cred = $rep->getRepFactRetencionesAgrupadas($startDate, $endDate);
 $pdf->SetFont('Arial', 'I', 10);
 if ($sol_cred) {
     foreach ($sol_cred as $sc) {

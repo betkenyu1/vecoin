@@ -170,14 +170,17 @@ class ReporteModel
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
-    public function getRepFactRegistradas()
+    public function getRepFactRegistradas($startDate, $endDate)
     {
+        $formated_DATESTART =  date("Y-m-d", strtotime($startDate));
+        $formated_DATEEND =  date("Y-m-d", strtotime($endDate));
         $consulta = "SELECT CV.id_cabventa,
         DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,
         CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado
         FROM cab_venta CV
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        WHERE CV.fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
         ORDER BY 3;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -185,10 +188,52 @@ class ReporteModel
         return $resultados;
     }
 
-    public function getRepFactRetenciones()
+
+    public function getRepFactRetencionesAgrupadas($startDate, $endDate)
 
     {
 
+        $formated_DATESTART =  date("Y-m-d", strtotime($startDate));
+        $formated_DATEEND =  date("Y-m-d", strtotime($endDate));
+        $consulta = "SELECT CV.id_cabventa AS id,CL.razon_social AS Cliente,CL.ruc, CV.id_cliente AS id_2,
+        (SELECT COUNT(nro_factura)
+        FROM cab_venta CV 
+        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
+        WHERE  CV.id_cliente=id_2 AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado =1 OR CV.id_estado=3 
+        GROUP BY CL.id_cliente ORDER BY razon_social) AS fact_gen,
+        (SELECT SUM(ROUND ((DV.pvp*DV.cantidad), 2))) AS subtotal,
+        (SELECT SUM(ROUND ((DV.pvp*DV.cantidad*0.12),2)))AS iva,      
+        (SELECT ROUND (SUM(((DV.pvp*DV.cantidad*0.12)*(CL.porc_ret_iva/100))),2) 
+        FROM cab_venta CV             
+        WHERE  CV.id_cliente=id_2 AND DV.id_cabventa=id    AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado =1 OR CV.id_estado=3 
+        GROUP BY CL.id_cliente
+        ORDER BY razon_social) AS ret_iva, 
+        (SELECT ROUND (SUM(((DV.pvp*DV.cantidad)*(CL.porc_ret_renta/100))),2) 
+        FROM cab_venta CV             
+        WHERE  CV.id_cliente=id_2 AND DV.id_cabventa=id    AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado =1 OR CV.id_estado=3 
+        GROUP BY CL.id_cliente
+        ORDER BY razon_social) AS ret_renta
+        FROM cab_venta CV
+        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
+        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
+        INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
+        WHERE CV.fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
+        AND CV.id_estado =1 OR CV.id_estado=3 
+        GROUP BY CL.razon_social
+        ORDER BY CL.razon_social, CV.nro_factura ASC;";
+        $sentencia = $this->db->prepare($consulta);
+
+        $sentencia->execute();
+
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+        return $resultados;
+    }
+    public function getRepFactRetenciones($startDate, $endDate)
+
+    {
+        $formated_DATESTART =  date("Y-m-d", strtotime($startDate));
+        $formated_DATEEND =  date("Y-m-d", strtotime($endDate));
         $consulta = "SELECT CV.id_cabventa AS id,DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,CL.razon_social AS Cliente,CV.nro_factura,EV.estado, 
         (SELECT SUM(ROUND ((DV.pvp*DV.cantidad), 2))) AS subtotal,
         (SELECT SUM(ROUND ((DV.pvp*DV.cantidad*0.12),2)))AS iva,      
@@ -198,7 +243,7 @@ class ReporteModel
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
-        WHERE CV.fecha BETWEEN ('2022-09-01') AND ('2022-09-30')
+        WHERE CV.fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
         AND CV.id_estado =1 OR CV.id_estado=3 
         GROUP BY CV.nro_factura
         ORDER BY CL.razon_social, CV.nro_factura ASC;";

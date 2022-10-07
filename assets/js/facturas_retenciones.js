@@ -1,6 +1,30 @@
 function getListaCtasXCobrar() {
   var html = "";
   html += "<div>";
+  html += '<div class="container shadow py-2 ">';
+  html += '<h5 class="text-center">Seleccione el rango de búsqueda</h5>';
+  html += "<div class=row justify-content-center>";
+  html += '<div class="col-lg-3 col-sm-6">';
+  html += '<label for="startDate">Desde</label>';
+  html += '<input id="startDate" class="form-control" type="date" />';
+  html += '<span id="startDateSelected"></span>';
+  html += "</div>";
+  html += '<div class="col-lg-3 col-sm-6">';
+  html += '<label for="endDate">Hasta</label>';
+  html += '<input id="endDate" class="form-control" type="date" />';
+  html += '<span id="endDateSelected"></span>';
+  html += "&nbsp;";
+  html += "</div>";
+  html += "</div>";
+  html += "</div>";
+  
+  html += "<hr>";
+  html += '<div class="d-grid gap-2 d-md-block">';
+  html +=
+    '<a href="#" onclick="getFacturasRetenciones();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Inidividual</a>';
+  html +=
+    '<a href="#" onclick="getFacturasRetencionesAgrupados();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Agrupado</a>';
+  html += "</div>";
   html += '<div style="overflow: scroll">';
   html +=
     '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
@@ -17,7 +41,6 @@ function getListaCtasXCobrar() {
   html += '<th class="text-nowrap">% Ret. IVA</th>';
   html += '<th class="text-nowrap">Estado</th>';
   html += '<th class="text-nowrap">Acciones</th>';
-
   html += "</tr>";
   html += "</thead>";
   html += '<tbody style="background-color:#c1f8ff">';
@@ -44,7 +67,7 @@ function getListaCtasXCobrar() {
             '<a class="btn btn-outline-danger" onclick="getReporteFacturasRetenciones(' +
             value.id +
             ');" title="Reporte"><i class="fa-solid fa-file-pdf"></i></a>';
-          html += "</td>";          
+          html += "</td>";
           html += "</tr>";
         });
         html += "</tbody>";
@@ -72,6 +95,7 @@ function getListaCtasXCobrar() {
     },
   });
 }
+
 $(document).ready(function () {
   getListaCtasXCobrar();
 });

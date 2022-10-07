@@ -1,6 +1,7 @@
 <?php
 include_once 'views/layout/header.php';
 ?>
+
 <div id="content" class="app-content">
     <!-- BEGIN panel -->
     <div class="panel panel-inverse">
@@ -12,8 +13,6 @@ include_once 'views/layout/header.php';
         </div>
 
         <div class="panel-body">
-            <a href="#" onclick="getFacturasRetenciones();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar Reporte PDF</a>
-            <hr>
             <div id="lista-ctasxcobrar"></div>
         </div>
     </div>

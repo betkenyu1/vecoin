@@ -607,24 +607,21 @@ class VentaModel
 
         WHERE DV.id_estado =1";*/
 
-        $consulta = "SELECT DV.id_detventa,CV.id_cabventa, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS freg,CV.nro_factura, CL.razon_social,
-        SUM(DV.cantidad*DV.pvp) AS subtotal, SUM((DV.cantidad*DV.pvp)*0.12) AS iva,
-        
-                SUM((DV.cantidad*DV.pvp)*1.12) AS total,CV.id_estado AS estado_pago,DV.id_estado AS nota,C.producto
-        
-                FROM cab_venta CV 
-        
-                INNER JOIN det_venta DV ON DV.id_cabventa=CV.id_cabventa
-        
-                INNER JOIN productos P ON (DV.id_producto = P.id_producto)
-        
-                INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-                INNER JOIN clientes CL ON (CL.id_cliente=CV.id_cliente)
-        
-                WHERE CV.id_estado=1
-        
-                AND DV.id_estado =1
-                GROUP BY nro_factura";
+        $consulta = "SELECT DV.id_detventa,CV.id_cabventa AS id_1, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS freg,
+        CV.nro_factura, CL.razon_social,
+        SUM(DV.cantidad*DV.pvp) AS subtotal, 
+        SUM((DV.cantidad*DV.pvp)*0.12) AS iva,
+        SUM((DV.cantidad*DV.pvp)*1.12) AS total,
+        IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00) AS abonos,
+        CV.id_estado AS estado_pago,
+        DV.id_estado AS nota
+        FROM cab_venta CV 
+        INNER JOIN det_venta DV ON DV.id_cabventa=CV.id_cabventa
+        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN clientes CL ON (CL.id_cliente=CV.id_cliente)         
+        GROUP BY nro_factura
+        HAVING abonos!=total";
 
         $sentencia = $this->db->prepare($consulta);
 
@@ -639,7 +636,8 @@ class VentaModel
 
     {
 
-        $consulta = "SELECT CV.nro_factura,CV.id_cabventa,CL.razon_social AS Cliente,SUM((cantidad*pvp)*1.12) AS Valor
+        $consulta = "SELECT CV.nro_factura,CV.id_cabventa AS id_1,CL.razon_social AS Cliente,
+        ABS (((SUM((DV.cantidad*DV.pvp)*1.12))-(IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00)))) AS Valor
 
         FROM det_venta DV
 
@@ -716,9 +714,10 @@ class VentaModel
 
     {
 
-        $consulta = "SELECT CV.id_cabventa,
+        $consulta = "SELECT CV.id_cabventa AS id_1,
         DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,
-        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, SUM((cantidad*pvp)*1.12) AS monto
+        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, SUM((DV.cantidad*DV.pvp)*1.12) AS monto,
+        ABS (((SUM((DV.cantidad*DV.pvp)*1.12))-(IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00)))) AS deuda
         FROM cab_venta CV
         INNER JOIN det_venta DV ON (DV.id_cabventa = CV.id_cabventa)
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)

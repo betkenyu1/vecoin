@@ -576,28 +576,35 @@ class VentaController
     {
 
         date_default_timezone_set('America/Guayaquil');
-
         $FReg = date('m-d-Y h:i:s a', time());
-
         $Fecha = date('Y-m-d');
-
         $IdCabVenta = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
-
         $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
-
         $Valor = (isset($_REQUEST['Valor'])) ? $_REQUEST['Valor'] : '';
-
         $IdUsuario = $_SESSION['idusuario'];
-
         $exito = $this->vta->RegistroPago($FReg, $Fecha, $IdCabVenta, $NroFactura, $Valor, $IdUsuario);
-
         if ($exito) {
-
             $act = $this->vta->ActualizaEstadoCabVenta($IdCabVenta);
-
             echo 1;
         } else {
+            echo 2;
+        }
+    }
+    public function save_new_abono()
 
+    {
+
+        date_default_timezone_set('America/Guayaquil');
+        $FReg = date('m-d-Y h:i:s a', time());
+        $Fecha = date('Y-m-d');
+        $IdCabVenta = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
+        $NroFactura = (isset($_REQUEST['NroFactura'])) ? $_REQUEST['NroFactura'] : '';
+        $Valor = (isset($_REQUEST['Valor'])) ? $_REQUEST['Valor'] : '';
+        $IdUsuario = $_SESSION['idusuario'];
+        $exito = $this->vta->RegistroPago($FReg, $Fecha, $IdCabVenta, $NroFactura, $Valor, $IdUsuario);
+        if ($exito) {
+            echo 1;
+        } else {
             echo 2;
         }
     }

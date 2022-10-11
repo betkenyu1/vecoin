@@ -36,6 +36,7 @@ function setNuevoPago() {
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Valor:</b> </br>';
   html += '<input type="text" class="form-control" id="IdValor">';
+  html += '<input type="hidden" class="form-control" id="IdValor_Temp">';
   html += '<div id="alert-prec"></div>';
   html += "</div>";
   html += "</div>";
@@ -81,6 +82,8 @@ function getListaVentas() {
   html += '<th class="text-nowrap">I.V.A.</th>';
 
   html += '<th class="text-nowrap">Total</th>';
+  html += '<th class="text-nowrap">Abonos</th>';
+  html += '<th class="text-nowrap">Saldo</th>';
   html += '<th class="text-nowrap">Acciones</th>';
   html += "</tr>";
   html += "</thead>";
@@ -97,7 +100,7 @@ function getListaVentas() {
             '<td width="1%" class="fw-bold text-dark">' +
             value.id_detventa +
             "</td>";
-          html += "<td>" + value.id_cabventa + "</td>";
+          html += "<td>" + value.id_1 + "</td>";
           html += "<td>" + value.freg + "</td>";
           html += "<td>" + value.nro_factura + "</td>";
           html += "<td>" + value.razon_social + "</td>";
@@ -107,10 +110,12 @@ function getListaVentas() {
           html += "<td>" + "$ " + value.subtotal + "</td>";
           html += "<td>" + "$ " + value.iva + "</td>";
           html += "<td>" + "$ " + value.total + "</td>";
+          html += "<td>" + "$ " + value.abonos + "</td>";
+          html += "<td>" + "$ " + (value.total - value.abonos) + "</td>";
           html += "<td>";
           html +=
             '<a href="#npg?1" class="btn btn-outline-green" onclick="getProcesarPago(' +
-            value.id_cabventa +
+            value.id_1 +
             ');" title="Procesar Pago"><i class="fa-solid fa-dollar"></i></a>';
           html += "</td>";
           html += "</tr>";
@@ -152,10 +157,11 @@ function getProcesarPago(id_cabventa) {
     data: "IdCabVenta=" + id_cabventa,
     success: function (response) {
       $.each(response, function (key, value) {
-        $("#IdCabVenta").val(value.id_cabventa);
+        $("#IdCabVenta").val(value.id_1);
         $("#IdNroFactura").val(value.nro_factura);
         $("#IdClient").val(value.Cliente);
         $("#IdValor").val(value.Valor);
+        $("#IdValor_Temp").val(value.Valor);
       });
     },
   });
@@ -173,9 +179,20 @@ function getRegistrarPago() {
     }, 3000);
     return false;
   }
-  if ($("#IdValor").val() == "") {
+  if ($("#IdValor").val() == "" || $("#IdValor").val() == 0) {
     html += '<div class="alert alert-danger">';
     html += "Este campo es obligatorio!.";
+    html += "</div>";
+    $("#alert-prec").html(html);
+    $("#IdValor").focus();
+    setTimeout(function () {
+      $("#alert-prec").fadeOut(1500);
+    }, 3000);
+    return false;
+  }
+  if ($("#IdValor").val() > $("#IdValor_Temp").val()) {
+    html += '<div class="alert alert-danger">';
+    html += "Pagos no pueden exceder el valor de la factura";
     html += "</div>";
     $("#alert-prec").html(html);
     $("#IdValor").focus();
@@ -187,6 +204,7 @@ function getRegistrarPago() {
     var idcab = $("#IdCabVenta").val();
     var nfact = $("#IdNroFactura").val();
     var vr = $("#IdValor").val();
+    var vrtemp = $("#IdValor_Temp").val();
     Swal.fire({
       title: "CONFIRMACION!",
       icon: "warning",
@@ -196,27 +214,53 @@ function getRegistrarPago() {
       confirmButtonText: "Sí continuar",
     }).then((result) => {
       if (result.isConfirmed) {
-        $.ajax({
-          type: "GET",
-          dataType: "json",
-          url: "index.php?c=Venta&a=save_new_pago",
-          data: "IdCabVenta=" + idcab + "&NroFactura=" + nfact + "&Valor=" + vr,
-          success: function (response) {
-            response = JSON.stringify(response);
-            if (response == 1) {
-              Swal.fire({
-                html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE.</b></div></div>',
-              });
-              $(".cerrar-nc").hide();
-              getListaVentas();
-            }
-            if (response == 2) {
-              Swal.fire({
-                html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ERROR AL REGISTRAR PAGO</b></div></div>',
-              });
-            }
-          },
-        });
+        if (vr == vrtemp) {
+          $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "index.php?c=Venta&a=save_new_pago",
+            data:
+              "IdCabVenta=" + idcab + "&NroFactura=" + nfact + "&Valor=" + vr,
+            success: function (response) {
+              response = JSON.stringify(response);
+              if (response == 1) {
+                Swal.fire({
+                  html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE.</b></div></div>',
+                });
+                $(".cerrar-nc").hide();
+                getListaVentas();
+              }
+              if (response == 2) {
+                Swal.fire({
+                  html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ERROR AL REGISTRAR PAGO</b></div></div>',
+                });
+              }
+            },
+          });
+        } else if (vr < vrtemp) {
+          $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "index.php?c=Venta&a=save_new_abono",
+            data:
+              "IdCabVenta=" + idcab + "&NroFactura=" + nfact + "&Valor=" + vr,
+            success: function (response) {
+              response = JSON.stringify(response);
+              if (response == 1) {
+                Swal.fire({
+                  html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE.</b></div></div>',
+                });
+                $(".cerrar-nc").hide();
+                getListaVentas();
+              }
+              if (response == 2) {
+                Swal.fire({
+                  html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ERROR AL REGISTRAR PAGO</b></div></div>',
+                });
+              }
+            },
+          });
+        }
       }
     });
   }

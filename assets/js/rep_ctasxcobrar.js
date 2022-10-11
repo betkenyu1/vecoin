@@ -12,7 +12,7 @@ function getListaCtasXCobrar() {
   html += '<th class="text-nowrap">Nro. Factura</th>';
   html += '<th class="text-nowrap">Cliente</th>';
   html += '<th class="text-nowrap">Monto</th>';
-  html += '<th class="text-nowrap">Estado</th>';
+  html += '<th class="text-nowrap">Deuda</th>';
   html += "</tr>";
   html += "</thead>";
   html += '<tbody style="background-color:#c1f8ff">';
@@ -25,14 +25,12 @@ function getListaCtasXCobrar() {
         $.each(response, function (key, value) {
           html += '<tr class="odd gradeX">';
           html +=
-            '<td width="1%" class="fw-bold text-dark">' +
-            value.id_cabventa +
-            "</td>";
+            '<td width="1%" class="fw-bold text-dark">' + value.id_1 + "</td>";
           html += "<td>" + value.fecha + "</td>";
           html += "<td>" + value.nro_factura + "</td>";
           html += "<td>" + value.Cliente + "</td>";
-          html += "<td>" + value.monto + "</td>";
-          html += "<td>" + value.estado + "</td>";
+          html += "<td>" + "$ " + value.monto + "</td>";
+          html += "<td>" + "$ " + value.deuda + "</td>";
           html += "</tr>";
         });
         html += "</tbody>";
@@ -42,7 +40,7 @@ function getListaCtasXCobrar() {
         $("#lista-ctasxcobrar").html(html);
         var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-          select: true,
+          select: false,
           responsive: true,
         });
         dtb.column(0).visible(false);

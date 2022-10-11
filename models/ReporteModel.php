@@ -155,9 +155,10 @@ class ReporteModel
     // REPORTES
     public function getRepCtasXCobrar()
     {
-        $consulta = "SELECT CV.id_cabventa,
+        $consulta = "SELECT CV.id_cabventa AS id_1,
         DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,
-        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, SUM((cantidad*pvp)*1.12) AS monto
+        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, SUM((DV.cantidad*DV.pvp)*1.12) AS monto,
+        ABS (((SUM((DV.cantidad*DV.pvp)*1.12))-(IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00)))) AS deuda
         FROM cab_venta CV
         INNER JOIN det_venta DV ON (DV.id_cabventa = CV.id_cabventa)
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)

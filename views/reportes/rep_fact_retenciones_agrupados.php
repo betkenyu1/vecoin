@@ -9,8 +9,10 @@ class PDF extends FPDF
 {
     function Header()
     {
+        $startDate = (isset($_REQUEST['startDate'])) ? $_REQUEST['startDate'] : '';
+        $endDate = (isset($_REQUEST['endDate'])) ? $_REQUEST['endDate'] : '';
         $this->Ln(5);
-        $title = 'REPORTE DE FACTURAS CON RETENCIONES POR CLIENTE';
+        $title = 'CUADRO DE RETENCIONES POR CLIENTE';
         $this->SetFont('Arial', 'B', 10);
         date_default_timezone_set('America/Guayaquil');
         $DateAndTime = date('d/m/Y h:i:s a', time());
@@ -25,6 +27,9 @@ class PDF extends FPDF
         $this->SetTextColor(13, 119, 60);
         $this->Ln(10);
         $this->Cell(0, 5, utf8_decode($title), 0, 1, 'C');
+        $this->Ln(3);
+        $this->Cell(0, 5, 'Desde: ' . date("d-m-Y", strtotime($startDate)) . ' Hasta: ' . date("d-m-Y", strtotime($endDate)), 0, 0, 'C', 0);
+        $this->Cell(30, 5, '', 0, 0, '');
         $this->SetFont('Arial', 'I', 7);
         $this->Ln(10);
         $this->SetFont('Arial', 'B', 8);
@@ -50,7 +55,7 @@ class PDF extends FPDF
         $tel = 'Teléfono: ';
         $this->SetY(-19);
         //$this->Cell(0, 3, utf8_decode($dir . $_SESSION["dir"] . ' | ' . $tel . $_SESSION["tel"]), 0, 1, 'C', 0);
-        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: 042316885'), 0, 1, 'C', 0);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: (04)2316885 / (04)2316875 / (04)2316603 / 096 904 6278 | Email: info@vecoin.com.ec'), 0, 1, 'C', 0);
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
         $this->Ln(3);
         date_default_timezone_set('America/Guayaquil');
@@ -87,8 +92,8 @@ if ($resultados) {
     $pdf->SetTextColor(0, 0, 0);
     //$pdf->Cell(15, 5, utf8_decode('N°'), 1, 0, 'C', false);
     $pdf->Cell(10, 5, utf8_decode('Cant.'), 1, 0, 'C', false);
-    $pdf->Cell(73, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
-    $pdf->Cell(25, 5, utf8_decode('R.U.C.'), 1, 0, 'C', false);
+    $pdf->Cell(75, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
+    $pdf->Cell(23, 5, utf8_decode('R.U.C.'), 1, 0, 'C', false);
     $pdf->Cell(21, 5, utf8_decode('Subtotal'), 1, 0, 'C', false);
     $pdf->Cell(20, 5, utf8_decode('IVA'), 1, 0, 'C', false);
     $pdf->Cell(21, 5, utf8_decode('% Ret. Renta'), 1, 0, 'C', false);
@@ -97,9 +102,9 @@ if ($resultados) {
         $pdf->SetFont('Arial', 'I', 8);
         //$pdf->Cell(15, 5, utf8_decode($re["id_cabventa"]), 1, 0, 'C', false);        
         $pdf->Cell(10, 5, utf8_decode($re["fact_gen"]), 1, 0, 'C', false);
-        $pdf->Cell(73, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
+        $pdf->Cell(75, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
         $pdf->SetFillColor(255, 255, 255);
-        $pdf->Cell(25, 5, utf8_decode($re["ruc"]), 1, 0, 'R', true);
+        $pdf->Cell(23, 5, utf8_decode($re["ruc"]), 1, 0, 'R', true);
         $pdf->Cell(21, 5, "$ " . number_format(utf8_decode($re["subtotal"]), 2, ".", ","), 1, 0, 'R', true);
         $pdf->Cell(20, 5, "$ " . number_format(utf8_decode($re["iva"]), 2, ".", ","), 1, 0, 'R', true);
         $pdf->Cell(21, 5, "$ " . number_format(utf8_decode($re["ret_renta"]), 2, ".", ","), 1, 0, 'R', true);
@@ -112,9 +117,9 @@ if ($resultados) {
     $pdf->SetFillColor(13, 119, 60);
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(83, 0, ' ', 0, 0, 'R', false);
+    $pdf->Cell(85, 0, ' ', 0, 0, 'R', false);
     $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(25, 6, 'TOTALES', 1, 0, 'C', true);
+    $pdf->Cell(23, 6, 'TOTALES', 1, 0, 'C', true);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetTextColor(0, 0, 0);
     $pdf->Cell(21, 6, '$ ' . number_format($sum_subt, 2, ".", ","), 1, 0, 'R', false);
@@ -141,6 +146,6 @@ if ($sol_cred) {
     $DateAndTime = date('m-d-Y h:i:s a', time());
     $pdf->Output('I', $sf . $sb . $sc["Cliente"] . $sb . $DateAndTime . $ext);
 } else {
-    $alert = "No hay datos para el reporte!, revise la fecha y el cliente";
+    $alert = "NO HAY DATOS PARA EL REPORTE, REVISE LAS FECHAS SELECCIONADAS";
     echo json_encode($alert);
 }

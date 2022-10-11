@@ -18,7 +18,7 @@ function setNuevoPago() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Cliente:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdClient">';
+  html += '<input disabled type="text" class="form-control" id="IdClient">';
   html += '<div id="alert-cli"></div>';
   html += "</div>";
   html += "</div>";
@@ -27,7 +27,7 @@ function setNuevoPago() {
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Nro Factura:</b> </br>';
   html += '<input type="hidden" class="form-control" id="IdCabVenta">';
-  html += '<input type="text" class="form-control" id="IdNroFactura">';
+  html += '<input disabled type="text" class="form-control" id="IdNroFactura">';
   html += '<div id="alert-nrofac"></div>';
   html += "</div>";
   html += "</div>";
@@ -70,7 +70,7 @@ function getListaVentas() {
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
-  html += '<th hidden class="text-nowrap"></th>';
+  html += '<th class="text-nowrap"></th>';
   html += '<th class="text-nowrap">Fecha</th>';
   html += '<th class="text-nowrap">Nro. Factura</th>';
   html += '<th class="text-nowrap">Cliente</th>';
@@ -97,7 +97,7 @@ function getListaVentas() {
             '<td width="1%" class="fw-bold text-dark">' +
             value.id_detventa +
             "</td>";
-          html += "<td hidden>" + value.id_cabventa + "</td>";
+          html += "<td>" + value.id_cabventa + "</td>";
           html += "<td>" + value.freg + "</td>";
           html += "<td>" + value.nro_factura + "</td>";
           html += "<td>" + value.razon_social + "</td>";
@@ -120,11 +120,14 @@ function getListaVentas() {
         html += "</div>";
         html += "</div>";
         $("#lista-ventas").html(html);
-        $("#data-table-select").DataTable({
+        var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-          select: false,
+          select: true,
+          order: [[3, "asc"]],
           responsive: true,
         });
+        dtb.column(0).visible(false);
+        dtb.column(1).visible(false);
       } else {
         html = "";
         html +=

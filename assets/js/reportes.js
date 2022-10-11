@@ -33,7 +33,11 @@ function getReporteCtasXCobrar() {
 }
 
 function getFacturasRegistradas() {
-  if ($("#startDate").val() != 0 && $("#endDate").val() != 0) {
+  if (
+    $("#startDate").val() != 0 &&
+    $("#endDate").val() != 0 &&
+    Date.parse($("#startDate").val()) < Date.parse($("#endDate").val())
+  ) {
     window.open(
       "views/reportes/rep_fact_registradas.php?startDate=" +
         $("#startDate").val() +
@@ -49,7 +53,11 @@ function getFacturasRegistradas() {
 }
 
 function getFacturasRetenciones() {
-  if ($("#startDate").val() != 0 && $("#endDate").val() != 0) {
+  if (
+    $("#startDate").val() != 0 &&
+    $("#endDate").val() != 0 &&
+    Date.parse($("#startDate").val()) < Date.parse($("#endDate").val())
+  ) {
     window.open(
       "views/reportes/rep_fact_retenciones.php?startDate=" +
         $("#startDate").val() +
@@ -65,7 +73,11 @@ function getFacturasRetenciones() {
 }
 
 function getFacturasRetencionesAgrupados() {
-  if ($("#startDate").val() != 0 && $("#endDate").val() != 0) {
+  if (
+    $("#startDate").val() != 0 &&
+    $("#endDate").val() != 0 &&
+    Date.parse($("#startDate").val()) < Date.parse($("#endDate").val())
+  ) {
     window.open(
       "views/reportes/rep_fact_retenciones_agrupados.php?startDate=" +
         $("#startDate").val() +

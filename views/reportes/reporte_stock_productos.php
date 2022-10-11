@@ -19,7 +19,7 @@ class PDF extends FPDF
                 $_SESSION["tel"] = $scred["telefono"];
                 $title = 'REPORTE DE INVENTARIO ACTUAL';
                 $this->SetFont('Arial', 'B', 10);
-                $this->Image('../../assets/img/logo/logo_vecoin-1.png', 5, 8, 40);
+                $this->Image('../../assets/img/logo/logo_vecoin-1.png', 10, 8, 40);
                 //$this->Image('../../assets/img/logo/fd.png', '96', '90', '100', '100', 'PNG');
                 $this->SetFont('Arial', 'B', 14);
                 $this->Ln(1);
@@ -58,8 +58,8 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'b', 8);
         $dir = 'Dirección: ';
         $tel = 'Teléfono: ';
-        $this->SetY(-25);
-        $this->Cell(0, 3, utf8_decode($dir . $_SESSION["dir"] . ' | ' . $tel . $_SESSION["tel"]), 0, 1, 'C', 0);
+        $this->SetY(-19);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: (04)2316885 / (04)2316875 / (04)2316603 / 096 904 6278 | Email: info@vecoin.com.ec'), 0, 1, 'C', 0);
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
         $this->Ln(3);
         date_default_timezone_set('America/Guayaquil');
@@ -89,9 +89,9 @@ if ($resultados) {
     $pdf->Cell(0, 8, 'CANTIDADES DISPONIBLES A LA FECHA DE CONSULTA', 1, 1, 'C', true);
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(27, 5, utf8_decode('Codigo'), 1, 0, 'C', false);
-    $pdf->Cell(70, 5, utf8_decode('Producto'), 1, 0, 'C', false);
-    $pdf->Cell(70, 5, utf8_decode('Proveedor'), 1, 0, 'C', false);
+    $pdf->Cell(15, 5, utf8_decode('Codigo'), 1, 0, 'C', false);
+    $pdf->Cell(102, 5, utf8_decode('Producto'), 1, 0, 'C', false);
+    $pdf->Cell(50, 5, utf8_decode('Proveedor'), 1, 0, 'C', false);
     $pdf->Cell(20, 5, utf8_decode('U.Medida'), 1, 0, 'C', false);
     $pdf->Cell(20, 5, utf8_decode('Cantidad'), 1, 0, 'C', false);
     $pdf->Cell(20, 5, utf8_decode('Costo'), 1, 0, 'C', false);
@@ -99,9 +99,9 @@ if ($resultados) {
     $pdf->Cell(20, 5, utf8_decode('Estado'), 1, 1, 'C', false);
     foreach ($resultados as $re) {
         $pdf->SetFont('Arial', 'I', 8);
-        $pdf->Cell(27, 5, utf8_decode($re["codigo"]), 1, 0, 'C', false);
-        $pdf->Cell(70, 5, utf8_decode($re["nombre_producto"]), 1, 0, 'L', false);
-        $pdf->Cell(70, 5, utf8_decode($re["proveedor"]), 1, 0, 'L', false);
+        $pdf->Cell(15, 5, utf8_decode($re["codigo"]), 1, 0, 'C', false);
+        $pdf->Cell(102, 5, utf8_decode($re["nombre_producto"]), 1, 0, 'L', false);
+        $pdf->Cell(50, 5, utf8_decode($re["proveedor"]), 1, 0, 'L', false);
         $pdf->Cell(20, 5, utf8_decode($re["umedida"]), 1, 0, 'C', false);
         $pdf->Cell(20, 5, utf8_decode($re["cantidad"]), 1, 0, 'C', false);
         $pdf->Cell(20, 5, '$ ' . utf8_decode($re["precio"]), 1, 0, 'C', false);
@@ -130,6 +130,6 @@ if ($sol_cred) {
     $DateAndTime = date('m-d-Y h:i:s a', time());
     $pdf->Output('I', $sf . $sb . $sc["fecha"] . $ext);
 } else {
-    $alert = "No hay datos para el reporte!, revise la fecha y el cliente";
+    $alert = "NO HAY DATOS PARA EL REPORTE, REVISE LAS FECHAS SELECCIONADAS";
     echo json_encode($alert);
 }

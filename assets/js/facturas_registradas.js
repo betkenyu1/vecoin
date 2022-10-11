@@ -19,9 +19,7 @@ function getListaCtasXCobrar() {
   html += "</div>";
   html += '<div class="d-grid gap-2 d-md-flex justify-content-md-center">';
   html +=
-    '<a href="#" onclick="getFacturasRetenciones();" class="btn btn-danger me-md-2 data-bs-toggle="modal" data-bs-target="#FechaInvalida""><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Individual</a>';
-  html +=
-    '<a href="#" onclick="getFacturasRetencionesAgrupados();" class="btn btn-danger data-bs-toggle="modal" data-bs-target="#FechaInvalida""><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Reporte Agrupado</a>';
+    '<a href="#" onclick="getFacturasRegistradas();" class="btn btn-danger me-md-2 data-bs-toggle="modal" data-bs-target="#FechaInvalida""><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar Reporte</a>';
   html += "</div>";
   html += "&nbsp;";
   html += "</div>";
@@ -72,11 +70,12 @@ function getListaCtasXCobrar() {
         html += "</div>";
         html += "</div>";
         $("#lista-ctasxcobrar").html(html);
-        $("#data-table-select").DataTable({
+        var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
           select: true,
           responsive: true,
         });
+        dtb.column(0).visible(false);
       } else {
         html = "";
         html +=

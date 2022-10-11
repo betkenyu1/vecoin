@@ -9,7 +9,9 @@ class PDF extends FPDF
 {
     function Header()
     {
-        $title = 'REPORTE DE FACTURAS CON RETENCIONES';
+        $startDate = (isset($_REQUEST['startDate'])) ? $_REQUEST['startDate'] : '';
+        $endDate = (isset($_REQUEST['endDate'])) ? $_REQUEST['endDate'] : '';
+        $title = 'CUADRO DE RETENCIONES POR FACTURA';
         $this->SetFont('Arial', 'B', 10);
         date_default_timezone_set('America/Guayaquil');
         $DateAndTime = date('d/m/Y h:i:s a', time());
@@ -24,6 +26,9 @@ class PDF extends FPDF
         $this->SetTextColor(13, 119, 60);
         $this->Ln(10);
         $this->Cell(0, 5, utf8_decode($title), 0, 1, 'C');
+        $this->Ln(3);
+        $this->Cell(0, 5, 'Desde: ' . date("d-m-Y", strtotime($startDate)) . ' Hasta: ' . date("d-m-Y", strtotime($endDate)), 0, 0, 'C', 0);
+        $this->Cell(30, 5, '', 0, 0, '');
         $this->SetFont('Arial', 'I', 7);
         $this->Ln(10);
         $this->SetFont('Arial', 'B', 8);
@@ -49,7 +54,7 @@ class PDF extends FPDF
         $tel = 'Teléfono: ';
         $this->SetY(-19);
         //$this->Cell(0, 3, utf8_decode($dir . $_SESSION["dir"] . ' | ' . $tel . $_SESSION["tel"]), 0, 1, 'C', 0);
-        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: 042316885'), 0, 1, 'C', 0);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: (04)2316885 / (04)2316875 / (04)2316603 / 096 904 6278 | Email: info@vecoin.com.ec'), 0, 1, 'C', 0);
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
         $this->Ln(3);
         date_default_timezone_set('America/Guayaquil');
@@ -141,6 +146,6 @@ if ($sol_cred) {
     $DateAndTime = date('m-d-Y h:i:s a', time());
     $pdf->Output('I', $sf . $sb . $sc["Cliente"] . $sb . $DateAndTime . $ext);
 } else {
-    $alert = "No hay datos para el reporte!, revise la fecha y el cliente";
+    $alert = "NO HAY DATOS PARA EL REPORTE, REVISE LAS FECHAS SELECCIONADAS";
     echo json_encode($alert);
 }

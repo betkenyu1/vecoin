@@ -46,8 +46,8 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'b', 8);
         $dir = 'Dirección: ';
         $tel = 'Teléfono: ';
-        $this->SetY(-25);
-        $this->Cell(0, 3, utf8_decode($dir . $_SESSION["dir"] . ' | ' . $tel . $_SESSION["tel"]), 0, 1, 'C', 0);
+        $this->SetY(-19);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: (04)2316885 / (04)2316875 / (04)2316603 / 096 904 6278 | Email: info@vecoin.com.ec'), 0, 1, 'C', 0);
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
         $this->Ln(3);
         date_default_timezone_set('America/Guayaquil');
@@ -77,22 +77,20 @@ if ($resultados) {
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetTextColor(0, 0, 0);
     //$pdf->Cell(15, 5, utf8_decode('N°'), 1, 0, 'C', false);
-    $pdf->Cell(50, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
-    $pdf->Cell(30, 5, utf8_decode('Fecha Factura'), 1, 0, 'C', false);
-    $pdf->Cell(40, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
-    $pdf->Cell(35, 5, utf8_decode('Monto'), 1, 0, 'C', false);
-
+    $pdf->Cell(85, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('Fecha Fact.'), 1, 0, 'C', false);
+    $pdf->Cell(30, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('Monto'), 1, 0, 'C', false);
     $pdf->Cell(35, 5, utf8_decode('Estado'), 1, 1, 'C', false);
+    $pdf->SetFillColor(255, 255, 255);
     foreach ($resultados as $re) {
         $pdf->SetFont('Arial', 'I', 8);
         //$pdf->Cell(15, 5, utf8_decode($re["id_cabventa"]), 1, 0, 'C', false);
-        $pdf->Cell(50, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
-        $pdf->Cell(30, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
-        $pdf->Cell(40, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', false);
-        $pdf->Cell(35, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 0, 'C', false);
-
-
-        $pdf->Cell(35, 5, utf8_decode($re["estado"]), 1, 1, 'C', false);
+        $pdf->Cell(85, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
+        $pdf->Cell(20, 5, utf8_decode($re["fecha"]), 1, 0, 'C', true);
+        $pdf->Cell(30, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', true);
+        $pdf->Cell(20, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 0, 'R', true);
+        $pdf->Cell(35, 5, utf8_decode($re["estado"]), 1, 1, 'C', true);
     }
 }
 $sol_cred = $rep->getRepCtasXCobrar();
@@ -108,6 +106,6 @@ if ($sol_cred) {
     $DateAndTime = date('m-d-Y h:i:s a', time());
     $pdf->Output('I', $sf . $sb . $sc["Cliente"] . $sb . $DateAndTime . $ext);
 } else {
-    $alert = "No hay datos para el reporte!, revise la fecha y el cliente";
+    $alert = "NO HAY DATOS PARA EL REPORTE, REVISE LAS FECHAS SELECCIONADAS";
     echo json_encode($alert);
 }

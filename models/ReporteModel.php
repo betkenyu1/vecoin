@@ -109,7 +109,7 @@ class ReporteModel
         INNER JOIN empresas E ON E.id_empresa = C.id_empresa
         INNER JOIN bodegas B ON B.id_bodega = PR.id_bodega
         INNER JOIN unidad_medida UM ON UM.id_umedida = PR.id_umedida
-        ORDER BY nombre_producto DESC;";
+        ORDER BY nombre_producto ASC;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -164,7 +164,7 @@ class ReporteModel
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         WHERE CV.id_estado=1
         GROUP BY nro_factura
-        ORDER BY 2;";
+        ORDER BY CL.razon_social, fecha DESC;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

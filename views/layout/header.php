@@ -565,7 +565,7 @@ if ($_SESSION["user"] === null) {
 
 					<?php
 
-					if ($IdRol == 1) {
+					if ($IdRol != 99) {
 
 					?>
 
@@ -724,7 +724,7 @@ if ($_SESSION["user"] === null) {
 
 					<?php
 
-					if ($IdRol == 1 || $IdRol == 3) {
+					if ($IdRol == 1 || $IdRol == 3 || $IdRol == 4) {
 
 					?>
 

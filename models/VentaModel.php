@@ -619,8 +619,9 @@ class VentaModel
         INNER JOIN det_venta DV ON DV.id_cabventa=CV.id_cabventa
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        INNER JOIN clientes CL ON (CL.id_cliente=CV.id_cliente)         
-        GROUP BY nro_factura
+        INNER JOIN clientes CL ON (CL.id_cliente=CV.id_cliente)        
+        WHERE CV.id_estado=1 
+        GROUP BY nro_factura        
         HAVING abonos!=total";
 
         $sentencia = $this->db->prepare($consulta);

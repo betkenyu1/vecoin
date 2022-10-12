@@ -50,7 +50,7 @@ include_once 'views/layout/header_login.php';
 
         <div class="form-floating mb-20px">
             <!--<div class="checkboxvai"><input onclick="RecuperarPassword();" type="checkbox">¿Olvidaste tu contraseña?</div>-->
-            <div onclick="RecuperarPassword();" class="text-center fs-15px "><a style="text-decoration:none;" href="#">¿Olvidaste tu contraseña?</a></div>
+            <div onclick="" class="text-center fs-15px "><a style="text-decoration:none;" href="#">¿Olvidaste tu contraseña?</a></div>
             <br>
             <a type="button" class="btn btn-cyan d-block w-100 h-45px btn-lg" onclick="login();">Ingresar</a>
         </div>

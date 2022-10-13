@@ -106,6 +106,18 @@ class InventarioController
         }
     }
 
+    public function get_det_ord_entrda()
+    {
+        $IdSecu = (isset($_REQUEST['IdSecu'])) ? $_REQUEST['IdSecu'] : '';
+        $exito = $this->inv->getDetalleOrdenEntrada($IdSecu);
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
     public function save_new_orden_entrada()
     {
         date_default_timezone_set('America/Guayaquil');

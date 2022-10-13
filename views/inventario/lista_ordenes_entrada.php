@@ -31,6 +31,9 @@ include_once 'views/layout/header.php';
             <div id="lista-ord_entrada"></div>
 
             <div id="new-ord-entrada"></div>
+
+            <div id="lista-items"></div>
+
             <!--<div id="mod-prod"></div>-->
 
         </div>

@@ -108,8 +108,7 @@ class InventarioController
 
     public function get_det_ord_entrda()
     {
-        $IdSecu = (isset($_REQUEST['IdSecu'])) ? $_REQUEST['IdSecu'] : '';
-        $exito = $this->inv->getDetalleOrdenEntrada($IdSecu);
+        $exito = $this->inv->getDetalleOrdenEntrada();
         if ($exito) {
             echo json_encode($exito);
         } else {

@@ -15,6 +15,7 @@ function getSecuencial() {
   });
 }
 
+
 function getSecuencialOrdenSalida() {
   $.ajax({
     type: "GET",
@@ -43,10 +44,10 @@ function getEmpresasMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -65,10 +66,10 @@ function getEmpresas() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -120,10 +121,10 @@ function getEmpresasActivas() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -142,10 +143,10 @@ function getEmpresasActivasMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -164,10 +165,10 @@ function getEmpleados() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -186,10 +187,10 @@ function getEmpleadosModUsuario() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -208,10 +209,10 @@ function getEmpleadosActivos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -230,10 +231,10 @@ function getEmpleadosActivosModificarUsuario() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -286,10 +287,10 @@ function getProveedor() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          value.id_proveedor +
+          ">" +
+          value.proveedor +
+          "</option>"
         );
       });
     },
@@ -308,10 +309,10 @@ function getProveedorMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          value.id_proveedor +
+          ">" +
+          value.proveedor +
+          "</option>"
         );
       });
     },
@@ -329,10 +330,10 @@ function getProveedorActivoMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          value.id_proveedor +
+          ">" +
+          value.proveedor +
+          "</option>"
         );
       });
     },
@@ -351,10 +352,10 @@ function getProveedorActivo() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          value.id_proveedor +
+          ">" +
+          value.proveedor +
+          "</option>"
         );
       });
     },
@@ -372,12 +373,12 @@ function getCliente() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_cliente +
-            ">" +
-            value.ruc +
-            " | " +
-            value.razon_social +
-            "</option>"
+          value.id_cliente +
+          ">" +
+          value.ruc +
+          " | " +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -395,10 +396,10 @@ function getCatalogo() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_catalogo +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -417,12 +418,12 @@ function getCatalogoActivosMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.codigo +
-            " | " +
-            value.producto +
-            "</option>"
+          value.id_catalogo +
+          ">" +
+          value.codigo +
+          " | " +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -441,12 +442,12 @@ function getCatalogoActivos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.codigo +
-            " | " +
-            value.producto +
-            "</option>"
+          value.id_catalogo +
+          ">" +
+          value.codigo +
+          " | " +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -516,10 +517,10 @@ function getUMedidas() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_umedida +
-            ">" +
-            value.umedida +
-            "</option>"
+          value.id_umedida +
+          ">" +
+          value.umedida +
+          "</option>"
         );
       });
     },
@@ -538,10 +539,10 @@ function getUMedidasActivasMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_umedida +
-            ">" +
-            value.umedida +
-            "</option>"
+          value.id_umedida +
+          ">" +
+          value.umedida +
+          "</option>"
         );
       });
     },
@@ -602,10 +603,10 @@ function getUMedidasMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_umedida +
-            ">" +
-            value.umedida +
-            "</option>"
+          value.id_umedida +
+          ">" +
+          value.umedida +
+          "</option>"
         );
       });
     },
@@ -624,10 +625,10 @@ function getClienteMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_cliente +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_cliente +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -645,10 +646,10 @@ function getCatalogoMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_catalogo +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },

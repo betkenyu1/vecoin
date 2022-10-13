@@ -176,10 +176,10 @@ function getProductos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_producto +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_producto +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -197,10 +197,10 @@ function getProductosActivosxEmpresa() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_producto +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_producto +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -217,10 +217,10 @@ function LimpiarCampos() {
   $("#IdPrecio").val("");
   getUMedidas();
   getProveedorActivo();
+  $('#data-table-select-2').DataTable().ajax.reload();
 }
 function setNuevaOrdenEntrada() {
   CerrarListaOrdenEntrada();
-
   $(".cerrar-mp").hide();
   var html = "";
 
@@ -327,6 +327,7 @@ function setNuevaOrdenEntrada() {
   html += "</div>";
   html += "</div>";
   html += "</div>";
+
   //$("#new-ord-entrada").html(html);
 
   /***************** */
@@ -335,31 +336,30 @@ function setNuevaOrdenEntrada() {
   html += '<div class="note-content">';
   html +=
     '<table id="data-table-select-2" class="table table-striped table-bordered align-middle">';
-  html += "<thead>";
-  html += "<tr>";
-  html += '<th width="1%"></th>';
-  html += '<th class="text-nowrap">Fecha</th>';
-  html += '<th class="text-nowrap">Secuencial</th>';
-  html += '<th class="text-nowrap">Nro. Factura</th>';
-  html += '<th class="text-nowrap">Proveedor</th>';
-  html += '<th class="text-nowrap">Proveedor</th>';
-  html += '<th class="text-nowrap">Producto</th>';
-  html += '<th class="text-nowrap">Producto</th>';
-  html += '<th class="text-nowrap">U. Medida</th>';
-  html += '<th class="text-nowrap">U. Medida</th>';
-  html += '<th class="text-nowrap">Cantidad</th>';
-  html += '<th class="text-nowrap">Precio</th>';
-  html += "</tr>";
-  html += "</thead>";
-  html += '<tbody style="background-color:#c1f8ff">';
+
   $.ajax({
     type: "GET",
     dataType: "json",
     url: "index.php?c=Inventario&a=get_det_ord_entrda",
-    data: "IdSecu=" + $("#IdSecu").val(),
-
     success: function (response) {
-      if (response) {
+      if (response != "") {
+        html += "<thead>";
+        html += "<tr>";
+        html += '<th width="1%"></th>';
+        html += '<th class="text-nowrap">Fecha</th>';
+        html += '<th class="text-nowrap">Secuencial</th>';
+        html += '<th class="text-nowrap">Nro. Factura</th>';
+        html += '<th class="text-nowrap">Proveedor</th>';
+        html += '<th class="text-nowrap">Proveedor</th>';
+        html += '<th class="text-nowrap">Producto</th>';
+        html += '<th class="text-nowrap">Producto</th>';
+        html += '<th class="text-nowrap">U. Medida</th>';
+        html += '<th class="text-nowrap">U. Medida</th>';
+        html += '<th class="text-nowrap">Cantidad</th>';
+        html += '<th class="text-nowrap">Precio</th>';
+        html += "</tr>";
+        html += "</thead>";
+        html += '<tbody style="background-color:#c1f8ff">';
         $.each(response, function (key, value) {
           html += '<tr class="odd gradeX">';
           html +=
@@ -375,7 +375,7 @@ function setNuevaOrdenEntrada() {
           html += "<td>" + value.producto + "</td>";
           html += "<td>" + value.id_umedida + "</td>";
           html += "<td>" + value.umedida + "</td>";
-          html += "<td>" + "$ " + value.cantidad + "</td>";
+          html += "<td>" + value.cantidad + "</td>";
           html += "<td>" + "$ " + value.precio + "</td>";
           html += "</tr>";
         });
@@ -404,27 +404,47 @@ function setNuevaOrdenEntrada() {
             },
           },
         });
+        alert('if' + $("#IdSecu").val());
       } else {
-        html = "";
-        html +=
-          '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
-        html +=
-          '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-        html += "<b>*NO DISPONE DE ITEMS EN LA ORDEN DE ENTRADA*</b>";
+        $.each(response, function (key, value) {
+          html += "<thead>";
+          html += "<tr>";
+          html += '<th width="1%">* NO DISPONE DE ITEMS EN LA ORDEN DE ENTRADA *</th>';
+          html += "</thead>";
+        });
+        html += "</table>";
+        html += "</div>";
+        html += "</div>";
         html += "</div>";
         $("#lista-items").html(html);
+        $("#data-table-select-2").DataTable({
+          language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
+          order: [[1, "desc"]],
+          select: false,
+          responsive: true,
+        });
+        $(".default-select2").select2({
+          placeholder: "Cargando datos...",
+          selectOnClose: "false",
+          language: {
+            noResults: function () {
+              //VACIO
+              return "No hay registros";
+            },
+            searching: function () {
+              return "Buscando..";
+            },
+          },
+        });
       }
     },
   });
+
   /*********** */
   getSecuencial();
   getProductosActivosxEmpresa();
   getUMedidas();
   getProveedorActivo();
-  alert($("#IdSecu").val());
-  alert($("#IdSecuenc").val());
-  alert($("#IdSecuencial").val());
-  alert($("#IdSecuencia").val());
 }
 function getAgregarOrdenEntrada() {
   var html = "";

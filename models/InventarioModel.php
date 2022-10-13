@@ -90,7 +90,7 @@ class InventarioModel
         return true;
     }
 
-    public function getDetalleOrdenEntrada($IdSecu)
+    public function getDetalleOrdenEntrada()
     {
         $consulta = "SELECT DOE.id_det_oentrada,DOE.id_secuencial,DOE.id_producto,C.producto,
         DOE.id_umedida,UM.umedida,
@@ -103,7 +103,9 @@ class InventarioModel
         INNER JOIN productos PRD ON (PRD.id_producto=DOE.id_producto)
         INNER JOIN catalogo C ON (C.id_catalogo=PRD.id_catalogo)
         INNER JOIN unidad_medida UM ON (UM.id_umedida=DOE.id_umedida)
-        WHERE DOE.id_secuencial='$IdSecu'
+        WHERE DOE.id_secuencial=(SELECT secuencial
+        FROM secuenciales
+        WHERE id_tipo = 1 AND id_estado =1)
         ORDER BY DOE.id_det_oentrada;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

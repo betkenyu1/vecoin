@@ -89,6 +89,27 @@ class InventarioModel
         }
         return true;
     }
+
+    public function getDetalleOrdenEntrada($IdSecu)
+    {
+        $consulta = "SELECT DOE.id_det_oentrada,DOE.id_secuencial,DOE.id_producto,C.producto,
+        DOE.id_umedida,UM.umedida,
+        DOE.cantidad,DOE.precio,
+        DATE_FORMAT(COE.fecha_compra ,'%d-%m-%Y') AS fecha,COE.nro_factura,
+        COE.id_proveedor,P.proveedor
+        FROM det_oentrada DOE 
+        INNER JOIN cab_oentrada COE ON (DOE.id_secuencial=COE.id_secuencial)
+        INNER JOIN proveedores P ON (P.id_proveedor=COE.id_proveedor)
+        INNER JOIN productos PRD ON (PRD.id_producto=DOE.id_producto)
+        INNER JOIN catalogo C ON (C.id_catalogo=PRD.id_catalogo)
+        INNER JOIN unidad_medida UM ON (UM.id_umedida=DOE.id_umedida)
+        WHERE DOE.id_secuencial='$IdSecu'
+        ORDER BY DOE.id_det_oentrada;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function getOrdenesEntrada()
     {
         $consulta = "SELECT 

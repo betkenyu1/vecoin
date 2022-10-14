@@ -218,8 +218,6 @@ function LimpiarCampos() {
   $("#IdPrecio").val("");
   getUMedidas();
   getProveedorActivo();
-  CerrarNuevaOrdenEntrada();
-  setNuevaOrdenEntrada();
 }
 function setNuevaOrdenEntrada() {
   CerrarListaOrdenEntrada();

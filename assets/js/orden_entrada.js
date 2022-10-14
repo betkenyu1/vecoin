@@ -155,12 +155,13 @@ function getListaOrdenEntrada() {
       html += "</div>";
       html += "</div>";
       $("#lista-ord_entrada").html(html);
-      $("#data-table-select").DataTable({
+      var dtb = $("#data-table-select").DataTable({
         language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-        order: [[0, "desc"]],
+        order: [[2, "desc"]],
         select: false,
         responsive: true,
       });
+      dtb.column(0).visible(false);
     },
   });
 }
@@ -176,10 +177,10 @@ function getProductos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_producto +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_producto +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -197,10 +198,10 @@ function getProductosActivosxEmpresa() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_producto +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_producto +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -209,18 +210,20 @@ function getProductosActivosxEmpresa() {
 
 function CerrarNuevaOrdenEntrada() {
   $(".cerrar-noe").hide();
+  $(".cerrar-litems").hide();
   getListaOrdenEntrada();
 }
 function LimpiarCampos() {
+  getProveedorActivo();
   getProductosActivosxEmpresa();
   $("#IdCantidad").val("");
   $("#IdPrecio").val("");
   getUMedidas();
-  getProveedorActivo();
+
+  detalleOrden();
 }
 function setNuevaOrdenEntrada() {
   CerrarListaOrdenEntrada();
-
   $(".cerrar-mp").hide();
   var html = "";
 
@@ -327,39 +330,64 @@ function setNuevaOrdenEntrada() {
   html += "</div>";
   html += "</div>";
   html += "</div>";
-  //$("#new-ord-entrada").html(html);
 
+  $("#new-ord-entrada").html(html);
+  $(".default-select2").select2({
+    placeholder: "Cargando datos...",
+    selectOnClose: "false",
+    language: {
+      noResults: function () {
+        //VACIO
+        return "No hay registros";
+      },
+      searching: function () {
+        return "Buscando..";
+      },
+    },
+  });
+  /*********** */
+  getSecuencial();
+  getProveedorActivo();
+  getProductosActivosxEmpresa();
+  getUMedidas();
+
+  detalleOrden();
+}
+
+function detalleOrden() {
+  var html = "";
   /***************** */
+
   html += '<div class="cerrar-litems">';
-  html += '<div class="">';
+
+  html += '<div style="overflow: scroll" class="cerrar-lp">';
   html += '<div class="note-content">';
   html +=
     '<table id="data-table-select-2" class="table table-striped table-bordered align-middle">';
-  html += "<thead>";
-  html += "<tr>";
-  html += '<th width="1%"></th>';
-  html += '<th class="text-nowrap">Fecha</th>';
-  html += '<th class="text-nowrap">Secuencial</th>';
-  html += '<th class="text-nowrap">Nro. Factura</th>';
-  html += '<th class="text-nowrap">Proveedor</th>';
-  html += '<th class="text-nowrap">Proveedor</th>';
-  html += '<th class="text-nowrap">Producto</th>';
-  html += '<th class="text-nowrap">Producto</th>';
-  html += '<th class="text-nowrap">U. Medida</th>';
-  html += '<th class="text-nowrap">U. Medida</th>';
-  html += '<th class="text-nowrap">Cantidad</th>';
-  html += '<th class="text-nowrap">Precio</th>';
-  html += "</tr>";
-  html += "</thead>";
-  html += '<tbody style="background-color:#c1f8ff">';
+
   $.ajax({
     type: "GET",
     dataType: "json",
     url: "index.php?c=Inventario&a=get_det_ord_entrda",
-    data: "IdSecu=" + $("#IdSecu").val(),
-
     success: function (response) {
-      if (response) {
+      if (response != "") {
+        html += "<thead>";
+        html += "<tr>";
+        html += '<th width="1%"></th>';
+        html += '<th class="text-nowrap">Fecha</th>';
+        html += '<th class="text-nowrap">Secuencial</th>';
+        html += '<th class="text-nowrap">Nro. Factura</th>';
+        html += '<th class="text-nowrap">Proveedor</th>';
+        html += '<th class="text-nowrap">Proveedor</th>';
+        html += '<th class="text-nowrap">Producto</th>';
+        html += '<th class="text-nowrap">Producto</th>';
+        html += '<th class="text-nowrap">U. Medida</th>';
+        html += '<th class="text-nowrap">U. Medida</th>';
+        html += '<th class="text-nowrap">Cantidad</th>';
+        html += '<th class="text-nowrap">Precio</th>';
+        html += "</tr>";
+        html += "</thead>";
+        html += '<tbody style="background-color:#c1f8ff">';
         $.each(response, function (key, value) {
           html += '<tr class="odd gradeX">';
           html +=
@@ -375,7 +403,7 @@ function setNuevaOrdenEntrada() {
           html += "<td>" + value.producto + "</td>";
           html += "<td>" + value.id_umedida + "</td>";
           html += "<td>" + value.umedida + "</td>";
-          html += "<td>" + "$ " + value.cantidad + "</td>";
+          html += "<td>" + value.cantidad + "</td>";
           html += "<td>" + "$ " + value.precio + "</td>";
           html += "</tr>";
         });
@@ -385,12 +413,49 @@ function setNuevaOrdenEntrada() {
         html += "</div>";
         html += "</div>";
         $("#lista-items").html(html);
-        $("#data-table-select-2").DataTable({
+        var dtb = $("#data-table-select-2").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-          order: [[1, "desc"]],
+          order: [[0, "desc"]],
           select: false,
           responsive: true,
         });
+        dtb.column(0).visible(false);
+        dtb.column(2).visible(false);
+        dtb.column(4).visible(false);
+        dtb.column(6).visible(false);
+        dtb.column(8).visible(false);
+        dtb.column(10).visible(false);
+      } else {
+        $.each(response, function (key, value) {
+          html += "<thead>";
+          html += "<tr>";
+          html += '<th width="1%"></th>';
+          html += '<th class="text-nowrap">Fecha</th>';
+          html += '<th class="text-nowrap">Secuencial</th>';
+          html += '<th class="text-nowrap">Nro. Factura</th>';
+          html += '<th class="text-nowrap">Proveedor</th>';
+          html += '<th class="text-nowrap">Proveedor</th>';
+          html += '<th class="text-nowrap">Producto</th>';
+          html += '<th class="text-nowrap">Producto</th>';
+          html += '<th class="text-nowrap">U. Medida</th>';
+          html += '<th class="text-nowrap">U. Medida</th>';
+          html += '<th class="text-nowrap">Cantidad</th>';
+          html += '<th class="text-nowrap">Precio</th>';
+          html += "</tr>";
+          html += "</thead>";
+        });
+        html += "</table>";
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+        $("#lista-items").html(html);
+        $("#data-table-select-2").DataTable({
+          language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
+          order: [[0, "desc"]],
+          select: false,
+          responsive: true,
+        });
+
         $(".default-select2").select2({
           placeholder: "Cargando datos...",
           selectOnClose: "false",
@@ -404,28 +469,11 @@ function setNuevaOrdenEntrada() {
             },
           },
         });
-      } else {
-        html = "";
-        html +=
-          '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
-        html +=
-          '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-        html += "<b>*NO DISPONE DE ITEMS EN LA ORDEN DE ENTRADA*</b>";
-        html += "</div>";
-        $("#lista-items").html(html);
       }
     },
   });
-  /*********** */
-  getSecuencial();
-  getProductosActivosxEmpresa();
-  getUMedidas();
-  getProveedorActivo();
-  alert($("#IdSecu").val());
-  alert($("#IdSecuenc").val());
-  alert($("#IdSecuencial").val());
-  alert($("#IdSecuencia").val());
 }
+
 function getAgregarOrdenEntrada() {
   var html = "";
   if ($("#IdFecha").val() == "") {

@@ -209,6 +209,7 @@ function getProductosActivosxEmpresa() {
 
 function CerrarNuevaOrdenEntrada() {
   $(".cerrar-noe").hide();
+  $(".cerrar-litems").hide();
   getListaOrdenEntrada();
 }
 function LimpiarCampos() {

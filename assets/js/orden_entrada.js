@@ -155,12 +155,13 @@ function getListaOrdenEntrada() {
       html += "</div>";
       html += "</div>";
       $("#lista-ord_entrada").html(html);
-      $("#data-table-select").DataTable({
+      var dtb = $("#data-table-select").DataTable({
         language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-        order: [[0, "desc"]],
+        order: [[2, "desc"]],
         select: false,
         responsive: true,
       });
+      dtb.column(0).visible(false);
     },
   });
 }
@@ -176,10 +177,10 @@ function getProductos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_producto +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_producto +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -197,10 +198,10 @@ function getProductosActivosxEmpresa() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_producto +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_producto +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -213,11 +214,12 @@ function CerrarNuevaOrdenEntrada() {
   getListaOrdenEntrada();
 }
 function LimpiarCampos() {
+  getProveedorActivo();
   getProductosActivosxEmpresa();
   $("#IdCantidad").val("");
   $("#IdPrecio").val("");
   getUMedidas();
-  getProveedorActivo();
+
   detalleOrden();
 }
 function setNuevaOrdenEntrada() {
@@ -345,9 +347,10 @@ function setNuevaOrdenEntrada() {
   });
   /*********** */
   getSecuencial();
+  getProveedorActivo();
   getProductosActivosxEmpresa();
   getUMedidas();
-  getProveedorActivo();
+
   detalleOrden();
 }
 
@@ -357,7 +360,7 @@ function detalleOrden() {
 
   html += '<div class="cerrar-litems">';
 
-  html += '<div class="">';
+  html += '<div style="overflow: scroll" class="cerrar-lp">';
   html += '<div class="note-content">';
   html +=
     '<table id="data-table-select-2" class="table table-striped table-bordered align-middle">';

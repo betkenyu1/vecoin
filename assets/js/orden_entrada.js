@@ -176,10 +176,10 @@ function getProductos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-          value.id_producto +
-          ">" +
-          value.producto +
-          "</option>"
+            value.id_producto +
+            ">" +
+            value.producto +
+            "</option>"
         );
       });
     },
@@ -197,10 +197,10 @@ function getProductosActivosxEmpresa() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-          value.id_producto +
-          ">" +
-          value.producto +
-          "</option>"
+            value.id_producto +
+            ">" +
+            value.producto +
+            "</option>"
         );
       });
     },
@@ -218,6 +218,7 @@ function LimpiarCampos() {
   $("#IdPrecio").val("");
   getUMedidas();
   getProveedorActivo();
+  detalleOrden();
 }
 function setNuevaOrdenEntrada() {
   CerrarListaOrdenEntrada();
@@ -328,10 +329,34 @@ function setNuevaOrdenEntrada() {
   html += "</div>";
   html += "</div>";
 
-  //$("#new-ord-entrada").html(html);
+  $("#new-ord-entrada").html(html);
+  $(".default-select2").select2({
+    placeholder: "Cargando datos...",
+    selectOnClose: "false",
+    language: {
+      noResults: function () {
+        //VACIO
+        return "No hay registros";
+      },
+      searching: function () {
+        return "Buscando..";
+      },
+    },
+  });
+  /*********** */
+  getSecuencial();
+  getProductosActivosxEmpresa();
+  getUMedidas();
+  getProveedorActivo();
+  detalleOrden();
+}
 
+function detalleOrden() {
+  var html = "";
   /***************** */
+
   html += '<div class="cerrar-litems">';
+
   html += '<div class="">';
   html += '<div class="note-content">';
   html +=
@@ -385,31 +410,35 @@ function setNuevaOrdenEntrada() {
         html += "</div>";
         html += "</div>";
         $("#lista-items").html(html);
-        $("#data-table-select-2").DataTable({
+        var dtb = $("#data-table-select-2").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-          order: [[1, "desc"]],
+          order: [[0, "desc"]],
           select: false,
           responsive: true,
         });
-        $(".default-select2").select2({
-          placeholder: "Cargando datos...",
-          selectOnClose: "false",
-          language: {
-            noResults: function () {
-              //VACIO
-              return "No hay registros";
-            },
-            searching: function () {
-              return "Buscando..";
-            },
-          },
-        });
-        alert('if' + $("#IdSecu").val());
+        dtb.column(0).visible(false);
+        dtb.column(2).visible(false);
+        dtb.column(4).visible(false);
+        dtb.column(6).visible(false);
+        dtb.column(8).visible(false);
+        dtb.column(10).visible(false);
       } else {
         $.each(response, function (key, value) {
           html += "<thead>";
           html += "<tr>";
-          html += '<th width="1%">* NO DISPONE DE ITEMS EN LA ORDEN DE ENTRADA *</th>';
+          html += '<th width="1%"></th>';
+          html += '<th class="text-nowrap">Fecha</th>';
+          html += '<th class="text-nowrap">Secuencial</th>';
+          html += '<th class="text-nowrap">Nro. Factura</th>';
+          html += '<th class="text-nowrap">Proveedor</th>';
+          html += '<th class="text-nowrap">Proveedor</th>';
+          html += '<th class="text-nowrap">Producto</th>';
+          html += '<th class="text-nowrap">Producto</th>';
+          html += '<th class="text-nowrap">U. Medida</th>';
+          html += '<th class="text-nowrap">U. Medida</th>';
+          html += '<th class="text-nowrap">Cantidad</th>';
+          html += '<th class="text-nowrap">Precio</th>';
+          html += "</tr>";
           html += "</thead>";
         });
         html += "</table>";
@@ -419,10 +448,11 @@ function setNuevaOrdenEntrada() {
         $("#lista-items").html(html);
         $("#data-table-select-2").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-          order: [[1, "desc"]],
+          order: [[0, "desc"]],
           select: false,
           responsive: true,
         });
+
         $(".default-select2").select2({
           placeholder: "Cargando datos...",
           selectOnClose: "false",
@@ -439,13 +469,8 @@ function setNuevaOrdenEntrada() {
       }
     },
   });
-
-  /*********** */
-  getSecuencial();
-  getProductosActivosxEmpresa();
-  getUMedidas();
-  getProveedorActivo();
 }
+
 function getAgregarOrdenEntrada() {
   var html = "";
   if ($("#IdFecha").val() == "") {

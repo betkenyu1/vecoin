@@ -90,6 +90,23 @@ class InventarioModel
         return true;
     }
 
+    public function getDetalleOrdenSalida()
+    {
+        $consulta = "SELECT DOS.id_det_osalida, DOS.id_secuencial, DOS.id_umedida, UM.umedida, DOS.id_producto, C.producto,DOS.cantidad,  DOS.pvp, DOS.id_estado,
+        DATE_FORMAT(COSL.fecha_osalida ,'%d-%m-%Y') AS fecha,COSL.id_usuario
+        FROM det_osalida DOS
+        INNER JOIN cab_osalida COSL ON (DOS.id_secuencial=COSL.id_secuencial)
+        INNER JOIN productos PRD ON (PRD.id_producto=DOS.id_producto)
+        INNER JOIN catalogo C ON (C.id_catalogo=PRD.id_catalogo)
+        INNER JOIN unidad_medida UM ON (UM.id_umedida=DOS.id_umedida)
+        WHERE DOS.id_secuencial=(SELECT secuencial
+                FROM secuenciales
+                WHERE id_tipo = 2 AND id_estado =1);";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
     public function getDetalleOrdenEntrada()
     {
         $consulta = "SELECT DOE.id_det_oentrada,DOE.id_secuencial,DOE.id_producto,C.producto,

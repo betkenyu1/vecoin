@@ -449,13 +449,18 @@ function detalleOrden() {
         html += "</div>";
         html += "</div>";
         $("#lista-items").html(html);
-        $("#data-table-select-2").DataTable({
+        var dtb = $("#data-table-select-2").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
           order: [[0, "desc"]],
           select: false,
           responsive: true,
         });
-
+        dtb.column(0).visible(false);
+        dtb.column(2).visible(false);
+        dtb.column(4).visible(false);
+        dtb.column(6).visible(false);
+        dtb.column(8).visible(false);
+        dtb.column(10).visible(false);
         $(".default-select2").select2({
           placeholder: "Cargando datos...",
           selectOnClose: "false",

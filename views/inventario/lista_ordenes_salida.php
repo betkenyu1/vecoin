@@ -32,6 +32,8 @@ include_once 'views/layout/header.php';
 
             <div id="new-ord-salida"></div>
 
+            <div id="lista-items"></div>
+
         </div>
 
     </div>

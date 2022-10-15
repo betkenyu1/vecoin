@@ -40,7 +40,7 @@ class PDF extends FPDF
 
                 //$fi = 'Fecha impresión: ';
 
-                $this->Image('../../assets/img/logo/logo_vecoin-1.png', 5, 8, 40);
+                $this->Image('../../assets/img/logo/logo_vecoin-1.png', 10, 8, 40);
 
                 //                $this->Image('../../assets/img/logo/fd.png', '60', '90', '100', '100', 'PNG');
 

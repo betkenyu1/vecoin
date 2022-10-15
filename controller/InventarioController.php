@@ -105,7 +105,16 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
-
+    public function get_det_ord_salida()
+    {
+        $exito = $this->inv->getDetalleOrdenSalida();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
     public function get_det_ord_entrda()
     {
         $exito = $this->inv->getDetalleOrdenEntrada();

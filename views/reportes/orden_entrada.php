@@ -9,7 +9,6 @@ require_once '../../models/ReporteModel.php';
 if (!isset($_SESSION)) {
 
     session_start();
-
 }
 
 class PDF extends FPDF
@@ -44,7 +43,7 @@ class PDF extends FPDF
 
                 //$fi = 'Fecha impresión: ';
 
-                $this->Image('../../assets/img/logo/logo_vecoin-1.png', 5, 8, 40);
+                $this->Image('../../assets/img/logo/logo_vecoin-1.png', 10, 8, 40);
 
                 //$this->Image('../../assets/img/logo/fd.png', '60', '90', '100', '100', 'PNG');
 
@@ -143,11 +142,8 @@ class PDF extends FPDF
                 $this->Cell(30, 5, utf8_decode($scred["observacion"]), 0, 1, '');
 
                 $this->Ln(5);
-
             }
-
         }
-
     }
 
     function Footer()
@@ -160,9 +156,9 @@ class PDF extends FPDF
 
         $tel = 'Teléfono: ';
 
-        $this->SetY(-25);
+        $this->SetY(-19);
 
-        $this->Cell(190, 3, utf8_decode($dir . $_SESSION["dir"] . ' | ' . $tel . $_SESSION["tel"]), 0, 1, 'C', 0);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: (04)2316885 / (04)2316875 / (04)2316603 / 096 904 6278 | Email: info@vecoin.com.ec'), 0, 1, 'C', 0);
 
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
 
@@ -181,9 +177,7 @@ class PDF extends FPDF
         $this->Ln(5);
 
         $this->Cell(0, 0, utf8_decode('Página') . $this->PageNo() . '/{nb}', 0, 0, 'C');
-
     }
-
 }
 
 
@@ -251,7 +245,6 @@ if ($resultados) {
 
 
         $sum += $re["cantidad"] * $re["precio"];
-
     }
 
     $pdf->SetFont('Arial', 'B', 10);
@@ -265,7 +258,6 @@ if ($resultados) {
     $pdf->SetTextColor(0, 0, 0);
 
     $pdf->Cell(35, 6, '$ ' . number_format($sum, 2, ".", ","), 1, 1, 'C', false);
-
 }
 
 $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
@@ -277,7 +269,6 @@ $pdf->SetFont('Arial', 'I', 10);
 if ($sol_cred) {
 
     foreach ($sol_cred as $sc) {
-
     }
 
     $pdf->Ln(5);
@@ -293,12 +284,9 @@ if ($sol_cred) {
     $DateAndTime = date('m-d-Y h:i:s a', time());
 
     $pdf->Output('I', $sf . $sb . $sc["secuencial"] . $ext);
-
 } else {
 
     $alert = "No hay datos para el reporte!, revise la fecha y la Orden de entrada seleccionada";
 
     echo json_encode($alert);
-
 }
-

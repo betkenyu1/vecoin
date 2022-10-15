@@ -119,7 +119,7 @@ function getListaOrdenSalida() {
       html += "</div>";
       html += "</div>";
       $("#lista-ord_salida").html(html);
-     var dtb= $("#data-table-select").DataTable({
+      var dtb = $("#data-table-select").DataTable({
         language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
         order: [[2, "desc"]],
         select: false,
@@ -141,10 +141,10 @@ function getProductosActivosxEmpresa() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_producto +
-            ">" +
-            value.producto +
-            "</option>"
+          value.id_producto +
+          ">" +
+          value.producto +
+          "</option>"
         );
       });
     },
@@ -152,15 +152,18 @@ function getProductosActivosxEmpresa() {
 }
 function CerrarNuevaOrdenSalida() {
   $(".cerrar-nos").hide();
+  $(".cerrar-litems").hide();
   getListaOrdenSalida();
 }
 function LimpiarCampos() {
   getProductosActivosxEmpresa();
+
   //getCliente();
   $("#IdCantidad").val("");
   $("#IdPrecio").val("");
   $("#IdExistencia").val("");
   $("#IdPVP").val("");
+  detalleOrden();
   getUMedidas();
 }
 function setNuevaOrdenSalida() {
@@ -287,7 +290,121 @@ function setNuevaOrdenSalida() {
   getProductosActivosxEmpresa();
   getUMedidas();
   //getPerchas();
+  detalleOrden();
 }
+
+function detalleOrden() {
+  var html = "";
+  /***************** */
+
+  html += '<div class="cerrar-litems">';
+
+  html += '<div style="overflow: scroll" class="cerrar-lp">';
+  html += '<div class="note-content">';
+  html +=
+    '<table id="data-table-select-2" class="table table-striped table-bordered align-middle">';
+
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Inventario&a=get_det_ord_salida",
+    success: function (response) {
+      if (response != "") {
+        html += "<thead>";
+        html += "<tr>";
+        html += '<th width="1%"></th>';
+        html += '<th class="text-nowrap">Fecha</th>';
+        html += '<th class="text-nowrap">Secuencial</th>';
+        html += '<th class="text-nowrap">U. Medida</th>';
+        html += '<th class="text-nowrap">U. Medida</th>';
+        html += '<th class="text-nowrap">Producto</th>';
+        html += '<th class="text-nowrap">Producto</th>';
+        html += '<th class="text-nowrap">Cantidad</th>';
+        html += '<th class="text-nowrap">Precio</th>';
+        html += "</tr>";
+        html += "</thead>";
+        html += '<tbody style="background-color:#c1f8ff">';
+        $.each(response, function (key, value) {
+          html += '<tr class="odd gradeX">';
+          html +=
+            '<td width="1%" class="fw-bold text-dark">' +
+            value.id_det_osalida +
+            "</td>";
+          html += "<td>" + value.fecha + "</td>";
+          html += "<td>" + value.id_secuencial + "</td>";
+          html += "<td>" + value.id_umedida + "</td>";
+          html += "<td>" + value.umedida + "</td>";
+          html += "<td>" + value.id_producto + "</td>";
+          html += "<td>" + value.producto + "</td>";
+          html += "<td>" + value.cantidad + "</td>";
+          html += "<td>" + "$ " + value.pvp + "</td>";
+          html += "</tr>";
+        });
+        html += "</tbody>";
+        html += "</table>";
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+        $("#lista-items").html(html);
+        var dtb = $("#data-table-select-2").DataTable({
+          language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
+          order: [[0, "desc"]],
+          select: false,
+          responsive: true,
+        });
+        dtb.column(0).visible(false);
+        dtb.column(2).visible(false);
+        dtb.column(3).visible(false);
+        dtb.column(5).visible(false);
+      } else {
+        $.each(response, function (key, value) {
+          html += "<thead>";
+          html += "<tr>";
+          html += '<th width="1%"></th>';
+          html += '<th class="text-nowrap">Fecha</th>';
+          html += '<th class="text-nowrap">Secuencial</th>';
+          html += '<th class="text-nowrap">U. Medida</th>';
+          html += '<th class="text-nowrap">U. Medida</th>';
+          html += '<th class="text-nowrap">Producto</th>';
+          html += '<th class="text-nowrap">Producto</th>';
+          html += '<th class="text-nowrap">Cantidad</th>';
+          html += '<th class="text-nowrap">Precio</th>';
+          html += "</tr>";
+          html += "</thead>";
+        });
+        html += "</table>";
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+        $("#lista-items").html(html);
+        var dtb = $("#data-table-select-2").DataTable({
+          language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
+          order: [[0, "desc"]],
+          select: false,
+          responsive: true,
+        });
+        dtb.column(0).visible(false);
+        dtb.column(2).visible(false);
+        dtb.column(3).visible(false);
+        dtb.column(5).visible(false);
+        $(".default-select2").select2({
+          placeholder: "Cargando datos...",
+          selectOnClose: "false",
+          language: {
+            noResults: function () {
+              //VACIO
+              return "No hay registros";
+            },
+            searching: function () {
+              return "Buscando..";
+            },
+          },
+        });
+      }
+    },
+  });
+}
+
 $(document).on("change", "#IdProducto", function () {
   var html = "";
   if ($("#IdProducto").val() == 0) {

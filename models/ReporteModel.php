@@ -200,26 +200,26 @@ class ReporteModel
         (SELECT COUNT(nro_factura)
         FROM cab_venta CV 
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
-        WHERE  CV.id_cliente=id_2 AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado =1 OR CV.id_estado=3 
+        WHERE  CV.id_cliente=id_2 AND CV.id_estado NOT LIKE(2) AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')  
         GROUP BY CL.id_cliente ORDER BY razon_social) AS fact_gen,
         (SELECT SUM(ROUND ((DV.pvp*DV.cantidad), 2))) AS subtotal,
         (SELECT SUM(ROUND ((DV.pvp*DV.cantidad*0.12),2)))AS iva,      
         (SELECT ROUND (SUM(((DV.pvp*DV.cantidad*0.12)*(CL.porc_ret_iva/100))),2) 
         FROM cab_venta CV             
-        WHERE  CV.id_cliente=id_2 AND DV.id_cabventa=id    AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado =1 OR CV.id_estado=3 
+        WHERE  CV.id_cliente=id_2 AND DV.id_cabventa=id  AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado NOT LIKE (2)
         GROUP BY CL.id_cliente
         ORDER BY razon_social) AS ret_iva, 
         (SELECT ROUND (SUM(((DV.pvp*DV.cantidad)*(CL.porc_ret_renta/100))),2) 
         FROM cab_venta CV             
-        WHERE  CV.id_cliente=id_2 AND DV.id_cabventa=id    AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado =1 OR CV.id_estado=3 
+        WHERE  CV.id_cliente=id_2 AND DV.id_cabventa=id    AND fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND') AND CV.id_estado NOT LIKE (2)
         GROUP BY CL.id_cliente
         ORDER BY razon_social) AS ret_renta
         FROM cab_venta CV
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
-        WHERE CV.fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
-        AND CV.id_estado =1 OR CV.id_estado=3 
+        WHERE CV.id_estado NOT LIKE(2)
+        AND CV.fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
         GROUP BY CL.razon_social
         ORDER BY CL.razon_social, CV.nro_factura ASC;";
         $sentencia = $this->db->prepare($consulta);
@@ -244,8 +244,8 @@ class ReporteModel
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
-        WHERE CV.fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
-        AND CV.id_estado =1 OR CV.id_estado=3 
+        WHERE CV.id_estado NOT LIKE(2)
+        AND CV.fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
         GROUP BY CV.nro_factura
         ORDER BY CL.razon_social, CV.nro_factura ASC;";
 

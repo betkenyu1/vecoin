@@ -742,7 +742,7 @@ function setModificarProducto(id_producto) {
   //getEstados();
   setTimeout(function () {
     getPrepareModificarProducto(id_producto);
-  }, 1000);
+  }, 500);
 }
 function getPrepareModificarProducto(id_producto) {
   $.ajax({

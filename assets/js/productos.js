@@ -738,7 +738,9 @@ function setModificarProducto(id_producto) {
   //getBodegasMod();
 
   //getEstados();
-  getPrepareModificarProducto(id_producto);
+  setTimeout(function () {
+    getPrepareModificarProducto(id_producto);
+  }, 1000);
 }
 function getPrepareModificarProducto(id_producto) {
   $.ajax({

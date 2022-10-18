@@ -245,6 +245,7 @@ function getListaProductos() {
   html += '<th class="text-nowrap">Empresa</th>';
   html += '<th class="text-nowrap">Código</th>';
   html += '<th class="text-nowrap">Nombre</th>';
+  html += '<th class="text-nowrap">Proveedor</th>';
   html += '<th class="text-nowrap">Unidad de Medida</th>';
   html += '<th class="text-nowrap">Cantidad</th>';
   html += '<th class="text-nowrap">Costo</th>';
@@ -270,6 +271,7 @@ function getListaProductos() {
         html += "<td>" + value.razon_social + "</td>";
         html += "<td>" + value.codigo + "</td>";
         html += "<td>" + value.producto + "</td>";
+        html += "<td>" + value.proveedor + "</td>";
         html += "<td>" + value.umedida + "</td>";
         html += "<td>" + value.cantidad + "</td>";
         html += "<td>" + "$ " + value.precio + "</td>";

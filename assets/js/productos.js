@@ -795,9 +795,9 @@ function getPrepareModificarProducto(id_producto) {
     success: function (response) {
       $.each(response, function (key, value) {
         $("#IdProducto").val(id_producto);
-        $("#IdProveedorMod").val(value.id_proveedor).trigger("change");
+        /*$("#IdProveedorMod").val(value.id_proveedor).trigger("change");
         $("#IdUMedidaMod").val(value.id_umedida).trigger("change");
-        $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");
+        $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");*/
         $("#IdCant_actMod").val(value.cantidad);
         $("#IdPrecio_actMod").val(value.precio);
         $("#IdUtilidadMod").val(value.prc_utl);

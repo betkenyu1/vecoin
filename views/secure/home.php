@@ -10,7 +10,7 @@ include_once 'views/layout/header.php';
         <!-- BEGIN col-6 -->
         <div class="col-xl-6">
             <!-- BEGIN card -->
-            <div class="card border-0 mb-3 overflow-hidden bg-gray-900 text-white">
+            <div class="card border-0 mb-0 overflow-hidden bg-gray-900 text-white">
                 <!-- BEGIN card-body -->
                 <div class="card-body">
 
@@ -28,7 +28,6 @@ include_once 'views/layout/header.php';
                             <!-- END title -->
                             <!-- BEGIN total-sales -->
                             <div class="d-flex mb-1">
-                                <p></p>
                                 <h2 id="IdCantidad" class="mb-0"></h2>
                                 <div class="ms-auto mt-n1 mb-n1">
                                     <div id="total-sales-sparkline"></div>
@@ -76,12 +75,12 @@ include_once 'views/layout/header.php';
             <!-- END card -->
         </div>
         <!-- END col-6 -->
+        <hr class="opacity-0">
         <div class="col-xl-6">
             <!-- BEGIN card -->
-            <div class="card border-0 mb-3 overflow-hidden bg-gray-900 text-white">
+            <div class="card border-0 mb-0 overflow-hidden bg-gray-900 text-white">
                 <!-- BEGIN card-body -->
                 <div class="card-body">
-
                     <!-- BEGIN row -->
                     <div class="row">
                         <!-- BEGIN col-7 -->
@@ -108,13 +107,32 @@ include_once 'views/layout/header.php';
                             <!-- END percentage -->
                             <hr class="bg-white bg-opacity-50" />
                             <!-- BEGIN row -->
-
+                            <div class="row text-truncate">
+                                <!-- BEGIN col-6 -->
+                                <div class="col-6">
+                                    <div class=" text-gray-300">Unidades</div>
+                                    <div id="IdCantidadPV" class="fs-18px mb-5px fw-bold"> <span data-animation="number" data-value="0"></span></div>
+                                    <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-teal" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <!-- END col-6 -->
+                                <!-- BEGIN col-6 -->
+                                <div class="col-6">
+                                    <div class=" text-gray-300">Monto de Venta</div>
+                                    <div id="IdValorPV" class="fs-18px mb-5px fw-bold"><span data-animation="number" data-value="0"></span></div>
+                                    <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <!-- END col-6 -->
+                            </div>
                             <!-- END row -->
                         </div>
                         <!-- END col-7 -->
                         <!-- BEGIN col-5 -->
                         <div class="col-xl-5 col-lg-4 align-items-center d-flex justify-content-center">
-                            <img src="assets/img/dashboard/trophy.svg" height="150px" class="d-none d-lg-block" />
+                            <img src="assets/img/dashboard/trophy.svg" height="150x" class="d-none d-lg-block" />
                         </div>
                         <!-- END col-5 -->
                     </div>
@@ -129,13 +147,13 @@ include_once 'views/layout/header.php';
     <!-- END row -->
     <!-- BEGIN row -->
     <!-- BEGIN nav-pills -->
-    <ul class="nav nav-pills mb-2">
+    <!--<ul class="nav nav-pills mb-2">
         <li class="nav-item">
             <a href="#nav-pills-tab-1" data-bs-toggle="tab" class="nav-link active">
                 <span class="d-sm-block d-none">Mejores Vendedores</span>
             </a>
         </li>
-        <!--
+    
         <li class="nav-item">
             <a href="#nav-pills-tab-2" data-bs-toggle="tab" class="nav-link">
                 <span class="d-sm-block d-none">∑ Ventas</span>
@@ -146,17 +164,17 @@ include_once 'views/layout/header.php';
                 <span class="d-sm-block d-none">∑ Cuentas x Cobrar</span>
             </a>
         </li>
-        -->
-    </ul>
+    
+    </ul>-->
     <!-- END nav-pills -->
-    <!-- BEGIN tab-content -->
+    <!-- BEGIN tab-content 
     <div class="tab-content p-3 rounded-top panel rounded-0 m-0">
         <div class="tab-pane fade active show" id="nav-pills-tab-1">
             <div class="card-group">
                 <div class="card">
                     <img src="assets/img/dashboard/LPS_Slide.gif" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <!--<h5 class="card-title">Título de la tarjeta</h5>-->
+                        <h5 class="card-title">Título de la tarjeta</h5>
                         <p class="card-text">
                         <h3 style="color: red;" id="IdRolAdmin" class="mt-10px"></h3>
                         <h4 style="color: blue;" id="IdUserAdmin" class="mt-10px"></h4>
@@ -168,7 +186,7 @@ include_once 'views/layout/header.php';
                 <div class="card">
                     <img src="assets/img/dashboard/Devcon_Uretanos.gif" class="card-img-top" alt="...">
                     <div class="card-body">
-                        <!--<h5 class="card-title">Título de la tarjeta</h5>-->
+                        <h5 class="card-title">Título de la tarjeta</h5>
                         <p class="card-text">
                         <h3 style="color: red;" id="IdRolUser" class="mt-10px"></h3>
                         <h3 style="color: blue;" id="IdVendedor" class="mt-10px"></h3>
@@ -178,8 +196,8 @@ include_once 'views/layout/header.php';
                     </div>
                 </div>
             </div>
-        </div>
-        <!--
+        </div>-->
+    <!--
 
         
             <h3 style="color: red;" id="IdRolAdmin" class="mt-10px"></h3>
@@ -192,64 +210,65 @@ include_once 'views/layout/header.php';
             <hr>
         </div>
         -->
-        <!-- BEGIN tab-pane -->
-        <div class="tab-pane fade" id="nav-pills-tab-2">
-            <h3 class="mt-10px">Consulta Parametrizada</h3>
-            <div class="row">
-                <div class="col-xl-6">
-                    <b>Fecha Desde:</b>
-                    <input type="date" class="form-control" id="IdFDesde">
-                    <div id="alert-fd"></div>
-                    <b>Total Ventas:</b>
-                    <input type="text" class="form-control" id="IdTVentas" style="color: green" readonly>
-                </div>
-                <div class="col-xl-6">
-                    <b>Fecha Hasta:</b>
-                    <input type="date" class="form-control" onchange="getVentasParametros();" id="IdFHasta">
-                    <div id="alert-fh"></div>
-                    <b>Total Pagos:</b>
-                    <input type="text" class="form-control" id="IdTPagos" style="color: green" readonly>
-                    <br>
-                </div>
-                <!-- BEGIN hljs-wrapper -->
-                <div class="col-md-12">
-                    <div class="card border-0 mb-3 bg-gray-900 text-white">
-                        <div class="card-body">
-                            <canvas id="myChart" width="1000" height="300"></canvas>
-                        </div>
-                    </div>
-                </div>
+    <!-- BEGIN tab-pane -->
+    <!--
+    <div class="tab-pane fade" id="nav-pills-tab-2">
+        <h3 class="mt-10px">Consulta Parametrizada</h3>
+        <div class="row">
+            <div class="col-xl-6">
+                <b>Fecha Desde:</b>
+                <input type="date" class="form-control" id="IdFDesde">
+                <div id="alert-fd"></div>
+                <b>Total Ventas:</b>
+                <input type="text" class="form-control" id="IdTVentas" style="color: green" readonly>
+            </div>
+            <div class="col-xl-6">
+                <b>Fecha Hasta:</b>
+                <input type="date" class="form-control" onchange="getVentasParametros();" id="IdFHasta">
+                <div id="alert-fh"></div>
+                <b>Total Pagos:</b>
+                <input type="text" class="form-control" id="IdTPagos" style="color: green" readonly>
+                <br>
+            </div>
+            <!-- BEGIN hljs-wrapper -->
+    <!--<div class="col-md-12">
+        <div class="card border-0 mb-3 bg-gray-900 text-white">
+            <div class="card-body">
+                <canvas id="myChart" width="1000" height="300"></canvas>
             </div>
         </div>
-        <!-- END tab-pane -->
-        <!-- BEGIN tab-pane -->
-        <div class="tab-pane fade" id="nav-pills-tab-3">
-            <h3 class="mt-10px">Consulta Parametrizada</h3>
-            <div class="row">
-                <div class="col-xl-6">
-                    <b>Fecha Desde:</b>
-                    <input type="date" class="form-control" id="IdFDesdeCXC">
-                    <div id="alert-fdesde"></div>
-                </div>
-                <div class="col-xl-6">
-                    <b>Fecha Hasta:</b>
-                    <input type="date" class="form-control" onchange="GenerarGraficaCtasXCobrar();" id="IdFHastaCXC">
-                    <div id="alert-fhasta"></div>
-                    <br>
-                </div>
-                <!-- BEGIN hljs-wrapper -->
-                <div class="col-md-12">
-                    <div class="card border-0 mb-3 bg-gray-900 text-white">
-                        <div class="card-body">
-                            <canvas id="myChartCXC" width="1000" height="300"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END tab-pane -->
     </div>
-    <br>
+</div>
+<!--</div>-->
+<!-- END tab-pane -->
+<!-- BEGIN tab-pane -->
+<!--<div class="tab-pane fade" id="nav-pills-tab-3">
+        <h3 class="mt-10px">Consulta Parametrizada</h3>
+        <div class="row">
+            <div class="col-xl-6">
+                <b>Fecha Desde:</b>
+                <input type="date" class="form-control" id="IdFDesdeCXC">
+                <div id="alert-fdesde"></div>
+            </div>
+            <div class="col-xl-6">
+                <b>Fecha Hasta:</b>
+                <input type="date" class="form-control" onchange="GenerarGraficaCtasXCobrar();" id="IdFHastaCXC">
+                <div id="alert-fhasta"></div>
+                <br>
+            </div>
+            <!-- BEGIN hljs-wrapper -->
+<!--<div class="col-md-12">
+                <div class="card border-0 mb-3 bg-gray-900 text-white">
+                    <div class="card-body">
+                        <canvas id="myChartCXC" width="1000" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END tab-pane -->
+</div>
+<br>
 </div>
 <!-- END #content -->
 <?php

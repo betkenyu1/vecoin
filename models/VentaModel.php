@@ -380,23 +380,15 @@ class VentaModel
 
     {
 
-        $consulta = "SELECT CT.producto AS Producto,SUM(DV.cantidad) AS Cantidad,SUM(DV.pvp) AS Valor
-
+        $consulta = "SELECT CT.producto AS Producto,SUM(DV.cantidad) AS Cantidad,SUM(DV.pvp*DV.cantidad) AS Valor
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-
         INNER JOIN productos P ON (DV.id_producto=P.id_producto)
-
         INNER JOIN catalogo CT ON (P.id_catalogo=CT.id_catalogo)
-
         WHERE DV.id_estado =1
-
         GROUP BY P.id_producto
-
         ORDER BY SUM(DV.cantidad) DESC
-
-        LIMIT 0 , 1";
+        LIMIT 0 , 1;";
 
         $sentencia = $this->db->prepare($consulta);
 

@@ -108,8 +108,8 @@ class ReporteModel
         INNER JOIN catalogo C ON C.id_catalogo = PR.id_catalogo
         INNER JOIN empresas E ON E.id_empresa = C.id_empresa
         INNER JOIN bodegas B ON B.id_bodega = PR.id_bodega
-        INNER JOIN unidad_medida UM ON UM.id_umedida = PR.id_umedida
-        ORDER BY nombre_producto ASC;";
+        INNER JOIN unidad_medida UM ON UM.id_umedida = PR.id_umedida        
+        ORDER BY P.proveedor,nombre_producto ASC;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

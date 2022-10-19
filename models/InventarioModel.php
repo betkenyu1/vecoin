@@ -35,7 +35,7 @@ class InventarioModel
 
     public function getStockProductos()
     {
-        $consulta = "SELECT PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
+        $consulta = "SELECT C.codigo, PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
         , CASE WHEN PR.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
         INNER JOIN proveedores P ON P.id_proveedor = PR.id_proveedor
         INNER JOIN catalogo C ON C.id_catalogo = PR.id_catalogo

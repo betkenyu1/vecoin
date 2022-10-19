@@ -330,12 +330,12 @@ function setNuevoProducto() {
   html += "</div>";
 
   /*html += '<div class="col-md-6">';
-	html += '<div class="mb-10px">';
-	html += '<b style="color: #000000;">Bodegas:</b> </br>';
-	html += '<select class="default-select2 form-control" id="IdBodega"></select>';
-	html += '<div id="alert-bp"></div>';
-	html += '</div>';
-	html += '</div>';*/
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Bodegas:</b> </br>';
+  html += '<select class="default-select2 form-control" id="IdBodega"></select>';
+  html += '<div id="alert-bp"></div>';
+  html += '</div>';
+  html += '</div>';*/
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
@@ -644,12 +644,12 @@ function setModificarProducto(id_producto) {
   html += "</div>";
 
   /*html += '<div class="col-md-6">';
-	html += '<div class="mb-10px">';
-	html += '<b style="color: #000000;">Bodegas:</b> </br>';
-	html += '<select class="default-select2 form-control" id="IdBodegaMod"></select>';
-	html += '<div id="alert-bp"></div>';
-	html += '</div>';
-	html += '</div>';*/
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Bodegas:</b> </br>';
+  html += '<select class="default-select2 form-control" id="IdBodegaMod"></select>';
+  html += '<div id="alert-bp"></div>';
+  html += '</div>';
+  html += '</div>';*/
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
@@ -735,16 +735,58 @@ function setModificarProducto(id_producto) {
     },
   });
 
-  getProveedorActivoMod();
-  getCatalogoActivosMod();
-  getUMedidasActivasMod();
+
   //getBodegasMod();
 
   //getEstados();
 
   getPrepareModificarProducto(id_producto);
+  if ($('#IdCatalogoMod').hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Producto&a=get_pmod_producto",
+      data: "IdProducto=" + id_producto,
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");
+        });
+      },
+    });
+  }
+  if ($('#IdProveedorMod').hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Producto&a=get_pmod_producto",
+      data: "IdProducto=" + id_producto,
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdProveedorMod").val(value.id_proveedor).trigger("change");
+        });
+      },
+    });
+  }
+  if ($('#IdUMedidaMod').hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Producto&a=get_pmod_producto",
+      data: "IdProducto=" + id_producto,
+      success: function (response) {
+        $.each(response, function (key, value) {
+
+          $("#IdUMedidaMod").val(value.id_umedida).trigger("change");
+
+        });
+      },
+    });
+  }
 }
 function getPrepareModificarProducto(id_producto) {
+  getProveedorActivoMod();
+  getCatalogoActivosMod();
+  getUMedidasActivasMod();
   $.ajax({
     type: "GET",
     dataType: "json",
@@ -754,10 +796,8 @@ function getPrepareModificarProducto(id_producto) {
       $.each(response, function (key, value) {
         $("#IdProducto").val(id_producto);
         $("#IdProveedorMod").val(value.id_proveedor).trigger("change");
-
         $("#IdUMedidaMod").val(value.id_umedida).trigger("change");
         $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");
-
         $("#IdCant_actMod").val(value.cantidad);
         $("#IdPrecio_actMod").val(value.precio);
         $("#IdUtilidadMod").val(value.prc_utl);
@@ -767,6 +807,7 @@ function getPrepareModificarProducto(id_producto) {
     },
   });
 }
+
 function getModificarProducto() {
   var html = "";
   if ($("#IdProveedorMod").val() == 0) {
@@ -892,16 +933,16 @@ function getModificarProducto() {
   }
 
   /*if ($('#IdEstado').val() == '0') {
-		html += '<div class="alert alert-danger">';
-		html += 'Este campo es obligatorio!.';
-		html += '</div>';
-		$("#alert-es").html(html);
-		$('#IdEstado').focus();
-		setTimeout(function () {
-			$("#alert-es").fadeOut(1500);
-		}, 3000);
-		return false;
-	} else{*/
+    html += '<div class="alert alert-danger">';
+    html += 'Este campo es obligatorio!.';
+    html += '</div>';
+    $("#alert-es").html(html);
+    $('#IdEstado').focus();
+    setTimeout(function () {
+      $("#alert-es").fadeOut(1500);
+    }, 3000);
+    return false;
+  } else{*/
 
   if (
     $("#IdProducto").val() != "" &&

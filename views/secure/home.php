@@ -52,7 +52,7 @@ include_once 'views/layout/header.php';
                                 <!-- END col-6 -->
                                 <!-- BEGIN col-6 -->
                                 <div class="col-6">
-                                    <div class=" text-gray-300">Utilidad</div>
+                                    <div class=" text-gray-300">Proyección de Venta</div>
                                     <div id="IdUtilidad" class="fs-18px mb-5px fw-bold"><span data-animation="number" data-value="0"></span></div>
                                     <div class="progress h-5px rounded-3 bg-gray-800 mb-5px">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>

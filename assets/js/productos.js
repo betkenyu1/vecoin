@@ -734,15 +734,15 @@ function setModificarProducto(id_producto) {
       },
     },
   });
+
   getProveedorActivoMod();
   getCatalogoActivosMod();
   getUMedidasActivasMod();
   //getBodegasMod();
 
   //getEstados();
-  setTimeout(function () {
-    getPrepareModificarProducto(id_producto);
-  }, 500);
+
+  getPrepareModificarProducto(id_producto);
 }
 function getPrepareModificarProducto(id_producto) {
   $.ajax({
@@ -754,8 +754,10 @@ function getPrepareModificarProducto(id_producto) {
       $.each(response, function (key, value) {
         $("#IdProducto").val(id_producto);
         $("#IdProveedorMod").val(value.id_proveedor).trigger("change");
+
         $("#IdUMedidaMod").val(value.id_umedida).trigger("change");
         $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");
+
         $("#IdCant_actMod").val(value.cantidad);
         $("#IdPrecio_actMod").val(value.precio);
         $("#IdUtilidadMod").val(value.prc_utl);

@@ -25,9 +25,7 @@ function getReporteFacturasRetenciones(cb) {
 function getReporteStock() {
   window.open("views/reportes/stock_productos.php");
 }
-function getReporteProductosDisponibles() {
-  window.open("views/reportes/reporte_stock_productos.php");
-}
+
 function getReporteCtasXCobrar() {
   window.open("views/reportes/rep_ctasxcobrar.php");
 }

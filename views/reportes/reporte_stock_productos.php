@@ -104,8 +104,8 @@ if ($resultados) {
         $pdf->Cell(50, 5, utf8_decode($re["proveedor"]), 1, 0, 'L', false);
         $pdf->Cell(20, 5, utf8_decode($re["umedida"]), 1, 0, 'C', false);
         $pdf->Cell(20, 5, utf8_decode($re["cantidad"]), 1, 0, 'C', false);
-        $pdf->Cell(20, 5, '$ ' . utf8_decode($re["precio"]), 1, 0, 'C', false);
-        $pdf->Cell(30, 5, '$ ' . number_format(utf8_decode($re["valorizacion"]), 2, ".", ","), 1, 0, 'C', false);
+        $pdf->Cell(20, 5, '$ ' . utf8_decode($re["precio"]), 1, 0, 'R', false);
+        $pdf->Cell(30, 5, '$ ' . number_format(utf8_decode($re["valorizacion"]), 2, ".", ","), 1, 0, 'R', false);
         $pdf->Cell(20, 5, utf8_decode($re["id_estado"]), 1, 1, 'C', false);
         $sum += $re["valorizacion"];
     }

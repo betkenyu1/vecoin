@@ -14,7 +14,7 @@ class ReporteController
     {
         require_once 'views/ventas/gestion_ctasxcobrar.php';
     }
-    
+
     public function reporte_facturas_retenciones()
     {
         require_once 'views/ventas/facturas_retenciones.php';
@@ -25,7 +25,7 @@ class ReporteController
     }
     public function reporte_prod_disponibles()
     {
-        require_once 'views/inventario/productos_disponibles.php';
+        require_once 'views/inventario/lista_stock_productos.php';
     }
     public function get_rep_ctasxcobrar()
     {

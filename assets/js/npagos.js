@@ -2,6 +2,43 @@ function CerrarListaVenta() {
   $(".cerrar-nc").hide();
   getListaVentas();
 }
+
+function validarPrecio(evt) {
+  var code = evt.which ? evt.which : evt.keyCode;
+  if ($("#IdValor").val().length < 1 || $("#IdValor").val() != "") {
+    if (code == 8) {
+      // backspace.
+      return true;
+    } else if ((code >= 48 && code <= 57) || code == 46) {
+      // is a number.
+      setTimeout(function () {
+        $("#alert-prec").fadeOut(500);
+      }, 0);
+      return true;
+    } else if (code == 44) {
+      var html = "";
+      html += '<div class="alert alert-danger">';
+      html += "*Use el (.) como separador de decimales.";
+      html += "</div>";
+      $("#alert-prec").html(html);
+      $("#alert-prec").fadeIn(1000);
+      $("#IdValor").focus();
+      return false;
+    } else {
+      // other keys.
+      var html = "";
+      html += '<div class="alert alert-danger">';
+      html += "*Ingrese solo dígitos del [0] al [9]";
+      html += "</div>";
+      $("#alert-prec").html(html);
+      $("#alert-prec").fadeIn(1000);
+      $("#IdValor").focus();
+      return false;
+    }
+  } else {
+    alert("else");
+  }
+}
 function setNuevoPago() {
   var html = "";
   html += '<div id="npg?1" class="cerrar-nc">';
@@ -11,8 +48,8 @@ function setNuevoPago() {
   html += '<div class="form-group">';
   html += '<div class="row">';
 
-  html += '<div style="color: white;" class="text-center">';
-  html += "<h3>REGISTRO DE PAGO</h3>";
+  html += '<div style="color: black;" class="text-center">';
+  html += "<h3>* * * REGISTRO DE PAGOS * * *</h3>";
   html += "</div>";
 
   html += '<div class="col-md-6">';
@@ -35,7 +72,8 @@ function setNuevoPago() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Valor:</b> </br>';
-  html += '<input type="text" class="form-control" id="IdValor">';
+  html +=
+    '<input onkeypress="return validarPrecio(event)" type="text" class="form-control" id="IdValor">';
   html += '<input type="hidden" class="form-control" id="IdValor_Temp">';
   html += '<div id="alert-prec"></div>';
   html += "</div>";
@@ -64,10 +102,10 @@ function setNuevoPago() {
 function getListaVentas() {
   var html = "";
 
-  html += '<div style="overflow: scroll" class="cerrar-lventa">';
+  html += '<div class="cerrar-lventa">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
-  html += '<div class="note note-blue">';
+    '<table id="data-table-select"  class="table table-striped table-bordered align-middle" style="width:100%">';
+  html += '<div class="">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -104,9 +142,6 @@ function getListaVentas() {
           html += "<td>" + value.freg + "</td>";
           html += "<td>" + value.nro_factura + "</td>";
           html += "<td>" + value.razon_social + "</td>";
-          //html += '<td>' + value.producto + '</td>';
-          //html += '<td>' + value.cantidad + '</td>';
-          //html += '<td>' + '$ ' + value.pvp + '</td>';
           html += "<td>" + "$ " + value.subtotal + "</td>";
           html += "<td>" + "$ " + value.iva + "</td>";
           html += "<td>" + "$ " + value.total + "</td>";
@@ -116,7 +151,7 @@ function getListaVentas() {
           html +=
             '<a href="#npg?1" class="btn btn-outline-green" onclick="getProcesarPago(' +
             value.id_1 +
-            ');" title="Procesar Pago"><i class="fa-solid fa-dollar"></i></a>';
+            ');" title="Procesar Pago"><i class="material-icons">price_check</i></a>';
           html += "</td>";
           html += "</tr>";
         });
@@ -127,7 +162,7 @@ function getListaVentas() {
         $("#lista-ventas").html(html);
         var dtb = $("#data-table-select").DataTable({
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-          select: true,
+          select: false,
           order: [[3, "asc"]],
           responsive: true,
         });
@@ -139,7 +174,7 @@ function getListaVentas() {
           '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
         html +=
           '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-        html += "<b>*NO DISPONE DE FACTURAS PENDIENTES DE PAGO.</b>";
+        html += "<b>* NO DISPONE DE FACTURAS PENDIENTES DE PAGO *</b>";
         html += "</div>";
         $("#lista-ventas").html(html);
       }
@@ -225,7 +260,7 @@ function getRegistrarPago() {
               response = JSON.stringify(response);
               if (response == 1) {
                 Swal.fire({
-                  html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE.</b></div></div>',
+                  html: '<div class="note note-info"><div class="note-icon"><i class="fa-solid fa-thumbs-up"></i></div><div class="note-content"><b>PAGO REGISTRADO CORRECTAMENTE</b></div></div>',
                 });
                 $(".cerrar-nc").hide();
                 getListaVentas();

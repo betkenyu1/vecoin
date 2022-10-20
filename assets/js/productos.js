@@ -1,4 +1,4 @@
-/********** FIN VALIDACIONES **********/
+/********** VALIDACIONES **********/
 function validarCorrecion(evt) {
   // code is the decimal ASCII representation of the pressed key.
   var code = evt.which ? evt.which : evt.keyCode;
@@ -232,13 +232,23 @@ function validarUtilidadMod(evt) {
 function CerrarListaProducto() {
   $(".cerrar-lp").hide();
 }
+
+function CerrarNuevoProducto() {
+  $(".cerrar-np").hide();
+  getListaProductos();
+}
+
+function CerrarModificarProducto() {
+  $(".cerrar-mp").hide();
+  getListaProductos();
+}
+
 function getListaProductos() {
   var html = "";
-  html += '<div style="overflow: scroll" class="cerrar-lp">';
-  html += '<div class="">';
+  html += '<div  class="cerrar-lp">';
   html += '<div class="note-content">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    '<table id="data-table-select"  class="table table-striped table-bordered align-middle" style="width:100%">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -251,7 +261,6 @@ function getListaProductos() {
   html += '<th class="text-nowrap">Costo</th>';
   html += '<th class="text-nowrap">Utilidad</th>';
   html += '<th class="text-nowrap">P.V.P.</th>';
-  //html += '<th class="text-nowrap">Estado</th>';
   html += '<th class="text-nowrap">Acciones</th>';
   html += "</tr>";
   html += "</thead>";
@@ -259,7 +268,6 @@ function getListaProductos() {
   $.ajax({
     type: "GET",
     dataType: "json",
-
     url: "index.php?c=Producto&a=get_productos_x_empresa",
     success: function (response) {
       $.each(response, function (key, value) {
@@ -277,19 +285,16 @@ function getListaProductos() {
         html += "<td>" + "$ " + value.precio + "</td>";
         html += "<td>" + value.prc_utl + " %" + "</td>";
         html += "<td>" + "$ " + value.pvp + "</td>";
-        //html += '<td>' + value.estado + '</td>';
         html += "<td>";
         html +=
           '<a class="btn btn-outline-warning" onclick="setModificarProducto(' +
           value.id_producto +
           ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
-        //html += '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarProducto(' + value.id_producto + ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
         html += "</td>";
         html += "</tr>";
       });
       html += "</tbody>";
       html += "</table>";
-      html += "</div>";
       html += "</div>";
       html += "</div>";
       $("#lista-productos").html(html);
@@ -305,10 +310,6 @@ function getListaProductos() {
   });
 }
 
-function CerrarNuevoProducto() {
-  $(".cerrar-np").hide();
-  getListaProductos();
-}
 function setNuevoProducto() {
   CerrarListaProducto();
   $(".cerrar-mp").hide();
@@ -328,14 +329,6 @@ function setNuevoProducto() {
   html += '<div id="alert-prov"></div>';
   html += "</div>";
   html += "</div>";
-
-  /*html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Bodegas:</b> </br>';
-  html += '<select class="default-select2 form-control" id="IdBodega"></select>';
-  html += '<div id="alert-bp"></div>';
-  html += '</div>';
-  html += '</div>';*/
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
@@ -422,7 +415,6 @@ function setNuevoProducto() {
   getProveedorActivo();
   getUMedidas();
   getCatalogoActivos();
-  //getBodegas();
 }
 
 function getGuardarProducto() {
@@ -618,10 +610,7 @@ function getGuardarProducto() {
     });
   }
 }
-function CerrarModificarProducto() {
-  $(".cerrar-mp").hide();
-  getListaProductos();
-}
+
 function setModificarProducto(id_producto) {
   CerrarListaProducto();
   $(".cerrar-np").hide();
@@ -642,14 +631,6 @@ function setModificarProducto(id_producto) {
   html += '<div id="alert-prov"></div>';
   html += "</div>";
   html += "</div>";
-
-  /*html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Bodegas:</b> </br>';
-  html += '<select class="default-select2 form-control" id="IdBodegaMod"></select>';
-  html += '<div id="alert-bp"></div>';
-  html += '</div>';
-  html += '</div>';*/
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
@@ -726,7 +707,6 @@ function setModificarProducto(id_producto) {
     selectOnClose: "false",
     language: {
       noResults: function () {
-        //VACIO
         return "No hay registros";
       },
       searching: function () {
@@ -735,26 +715,30 @@ function setModificarProducto(id_producto) {
     },
   });
 
-
-  //getBodegasMod();
-
-  //getEstados();
-
   getPrepareModificarProducto(id_producto);
-  if ($('#IdCatalogoMod').hasClass("select2-hidden-accessible")) {
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: "index.php?c=Producto&a=get_pmod_producto",
-      data: "IdProducto=" + id_producto,
-      success: function (response) {
-        $.each(response, function (key, value) {
-          $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");
-        });
-      },
-    });
-  }
-  if ($('#IdProveedorMod').hasClass("select2-hidden-accessible")) {
+}
+
+function getPrepareModificarProducto(id_producto) {
+  getProveedorActivoMod();
+  getUMedidasActivasMod();
+  getCatalogoActivosMod();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Producto&a=get_pmod_producto",
+    data: "IdProducto=" + id_producto,
+    success: function (response) {
+      $.each(response, function (key, value) {
+        $("#IdProducto").val(id_producto);
+        $("#IdCant_actMod").val(value.cantidad);
+        $("#IdPrecio_actMod").val(value.precio);
+        $("#IdUtilidadMod").val(value.prc_utl);
+        $("#IdUtlMod").val(value.utilidad);
+        $("#IdPVPMod").val(value.pvp);
+      });
+    },
+  });
+  if ($("#IdProveedorMod").hasClass("select2-hidden-accessible")) {
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -767,7 +751,7 @@ function setModificarProducto(id_producto) {
       },
     });
   }
-  if ($('#IdUMedidaMod').hasClass("select2-hidden-accessible")) {
+  if ($("#IdUMedidaMod").hasClass("select2-hidden-accessible")) {
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -775,37 +759,24 @@ function setModificarProducto(id_producto) {
       data: "IdProducto=" + id_producto,
       success: function (response) {
         $.each(response, function (key, value) {
-
           $("#IdUMedidaMod").val(value.id_umedida).trigger("change");
-
         });
       },
     });
   }
-}
-function getPrepareModificarProducto(id_producto) {
-  getProveedorActivoMod();
-  getCatalogoActivosMod();
-  getUMedidasActivasMod();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Producto&a=get_pmod_producto",
-    data: "IdProducto=" + id_producto,
-    success: function (response) {
-      $.each(response, function (key, value) {
-        $("#IdProducto").val(id_producto);
-        /*$("#IdProveedorMod").val(value.id_proveedor).trigger("change");
-        $("#IdUMedidaMod").val(value.id_umedida).trigger("change");
-        $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");*/
-        $("#IdCant_actMod").val(value.cantidad);
-        $("#IdPrecio_actMod").val(value.precio);
-        $("#IdUtilidadMod").val(value.prc_utl);
-        $("#IdUtlMod").val(value.utilidad);
-        $("#IdPVPMod").val(value.pvp);
-      });
-    },
-  });
+  if ($("#IdCatalogoMod").hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Producto&a=get_pmod_producto",
+      data: "IdProducto=" + id_producto,
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdCatalogoMod").val(value.id_catalogo).trigger("change");
+        });
+      },
+    });
+  }
 }
 
 function getModificarProducto() {
@@ -932,18 +903,6 @@ function getModificarProducto() {
     }, 0);
   }
 
-  /*if ($('#IdEstado').val() == '0') {
-    html += '<div class="alert alert-danger">';
-    html += 'Este campo es obligatorio!.';
-    html += '</div>';
-    $("#alert-es").html(html);
-    $('#IdEstado').focus();
-    setTimeout(function () {
-      $("#alert-es").fadeOut(1500);
-    }, 3000);
-    return false;
-  } else{*/
-
   if (
     $("#IdProducto").val() != "" &&
     $("#IdProveedorMod").val() != 0 &&
@@ -1016,40 +975,7 @@ function getModificarProducto() {
     });
   }
 }
-function getEliminarProducto(id_producto) {
-  Swal.fire({
-    title: "¡ATENCIÓN CONFIRMAR ELIMINACIÓN!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    cancelButtonText: "Cancelar",
-    confirmButtonText: "Confirmar",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      $.ajax({
-        type: "GET",
-        dataType: "json",
-        url: "index.php?c=Producto&a=delete_producto",
-        data: "IdProducto=" + id_producto,
-        success: function (response) {
-          response = JSON.stringify(response);
-          if (response == 1) {
-            Swal.fire({
-              html: '<div class="note note-danger"><div class="note-icon"><i class="fa-solid fa-trash"></i></div><div class="note-content"><b>ELIMINACIÓN CORRECTA</b></div></div>',
-            });
-            getListaProductos();
-          }
-          if (response == 2) {
-            Swal.fire({
-              html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-thumbs-down"></i></div><div class="note-content"><b>ELIMINACIÓN INCORRECTA</b></div></div>',
-            });
-          }
-        },
-      });
-    }
-  });
-}
+
 $(document).ready(function () {
   getListaProductos();
 });

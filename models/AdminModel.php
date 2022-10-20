@@ -105,7 +105,7 @@ class AdminModel
 
     public function getPorcentajeRenta()
     {
-        $consulta = "SELECT valor
+        $consulta = "SELECT id_porc_retenciones,valor
         FROM porc_retenciones
         WHERE id_tipo_retencion =1
         AND id_estado=1 /*el 1 es para retenciones de renta */;";
@@ -117,7 +117,7 @@ class AdminModel
 
     public function getPorcentajeIVA()
     {
-        $consulta = "SELECT valor
+        $consulta = "SELECT id_porc_retenciones,valor
         FROM porc_retenciones
         WHERE id_tipo_retencion =2
         AND id_estado=1 /*el 2 es para retenciones de iva */;";
@@ -274,14 +274,16 @@ class AdminModel
         return true;
     }
 
-    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $Estado)
+    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $PorRetRenta, $PorRetIVA, $IdEstado)
     {
         $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
         $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $DireccionCAPITAL = ucwords(strtolower($Direccion));
         $TiempocreditoCAPITAL = ucwords(strtolower($Tiempocredito));
         $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocialUPPER', 
-        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', tiempo_credito='$TiempocreditoCAPITAL',id_estado='$Estado'
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', tiempo_credito='$TiempocreditoCAPITAL',
+        porc_ret_renta ='$PorRetRenta',porc_ret_iva='$PorRetIVA',
+        id_estado='$IdEstado'
         WHERE id_cliente = '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -292,8 +294,13 @@ class AdminModel
     }
     public function getClienteId($IdCliente)
     {
-        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,C.id_estado,E.estado FROM clientes C inner join estados E on E.id_estado=C.id_estado
-        WHERE id_cliente = '$IdCliente'";
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,
+        (SELECT id_porc_retenciones FROM porc_retenciones WHERE valor=porc_ret_renta AND id_tipo_retencion=1) AS id_porc_ret_renta,porc_ret_renta,
+        (SELECT id_porc_retenciones FROM porc_retenciones WHERE valor=porc_ret_iva AND id_tipo_retencion=2) AS id_porc_ret_iva, porc_ret_iva,
+        C.id_estado,E.estado
+        FROM clientes C 
+        INNER JOIN estados E ON E.id_estado=C.id_estado
+        WHERE id_cliente= '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

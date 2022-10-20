@@ -72,11 +72,11 @@ function CerrarListaCatalogo() {
 }
 function getListaCatalogo() {
   var html = "";
-  html += '<div style="overflow: scroll" class="cerrar-lcat">';
+  html += '<div class="cerrar-lcat">';
   html += '<div class="">';
   html += '<div class="note-content">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+    '<table id="data-table-select"  class="table table-striped table-bordered align-middle" style="width:100%">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -127,7 +127,6 @@ function getListaCatalogo() {
         select: false,
         responsive: true,
       });
-      dtb.column(0).visible(false);
     },
   });
 }
@@ -387,12 +386,13 @@ function setModificarCatalogo(id_catalogo) {
       },
     },
   });
-  getEmpresasActivasMod();
-  getEstadosModificar();
+
   getPrepareModificarCatalogo(id_catalogo);
 }
 
 function getPrepareModificarCatalogo(id_catalogo) {
+  getEmpresasActivasMod();
+  getEstadosModificar();
   $.ajax({
     type: "GET",
     dataType: "json",
@@ -400,26 +400,38 @@ function getPrepareModificarCatalogo(id_catalogo) {
     data: "IdCatalogo=" + id_catalogo,
     success: function (response) {
       $.each(response, function (key, value) {
-        //primero traer valores luego hacer triggers consulta debe traer id y descripcion
-        //$('#IdEmpresaM').val(null).trigger('change');
-
-        //alert($('#IdEmpresaM').val())
-        /*$('#IdEstado').val(value.ID_ESTADO) + "";
-				$('#IdEstado').trigger('change'); // Notify only Select2 of changes								
-				alert($('#IdEstado').val() + "");*/
-        $("#IdEmpresaM").val(value.id_empresa).trigger("change");
         $("#IdCatalogo").val(value.id_catalogo);
         $("#IdCodigoM").val(value.codigo);
         $("#IdDescripcionM").val(value.producto);
-        $("#IdEstado").val(value.id_estado).trigger("change");
-        //alert(value.ID_EMPRESA);
-        //alert('dentro');
-        //selectestado=$('#IdEstado').val();
-        //alert($('#IdEstado').val());
-        //$('#IdEstado').val(value.ID_ESTADO).trigger('change');
       });
     },
   });
+  if ($("#IdEmpresaM").hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Catalogo&a=get_mod_item",
+      data: "IdCatalogo=" + id_catalogo,
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdEmpresaM").val(value.id_empresa).trigger("change");
+        });
+      },
+    });
+  }
+  if ($("#IdEstado").hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Catalogo&a=get_mod_item",
+      data: "IdCatalogo=" + id_catalogo,
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdEstado").val(value.id_estado).trigger("change");
+        });
+      },
+    });
+  }
 }
 function getModificarCatalogo() {
   var html = "";

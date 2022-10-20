@@ -135,11 +135,11 @@ function validarCorrecion(evt) {
 /********** FIN VALIDACIONES **********/
 function getListaClientes() {
   var html = "";
-  html += '<div style="overflow: scroll" class="cerrar-lclie">';
+  html += '<div class="cerrar-lclie">';
   html += '<div class="">';
   html += '<div class="note-content">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    '<table id="data-table-select"  class="table table-striped table-bordered align-middle" style="width:100%">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -182,7 +182,7 @@ function getListaClientes() {
           value.id_cliente +
           ');" title="Modificar"><i class="fa fa-pencil" aria-hidden="true"></i></a>';
         html +=
-          '&nbsp;<a class="btn btn-outline-danger" onclick="getEliminarCliente(' +
+          '<a class="btn btn-outline-danger" onclick="getEliminarCliente(' +
           value.id_cliente +
           ');" title="Eliminar"><i class="fa fa-trash" aria-hidden="true"></i></a>';
         html += "</td>";
@@ -588,6 +588,24 @@ function setModificarCliente(id_cliente) {
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Retención Impuesto a la Renta:</b> </br>';
+  html +=
+    '<select class="default-select2 form-control" name="IdPorRentaMod" id="IdPorRentaMod"></select>';
+  html += '<div id="alert-pir"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Retención Impuesto al IVA:</b> </br>';
+  html +=
+    '<select class="default-select2 form-control" name="IdPorIVAMod" id="IdPorIVAMod"></select>';
+  html += '<div id="alert-piva"></div>';
+  html += "</div>";
+  html += "</div>";
+
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Estado:</b> </br>';
   html +=
     '<select class="default-select2 form-control" name="IdEstado" id="IdEstado"></select>';
@@ -622,10 +640,13 @@ function setModificarCliente(id_cliente) {
       },
     },
   });
-  getEstadosModificar();
+
   getPrepareModificarCliente(id_cliente);
 }
 function getPrepareModificarCliente(id_cliente) {
+  getPorcentajeRentaMod();
+  getPorcentajeIVAMod();
+  getEstadosModificar();
   $.ajax({
     type: "GET",
     dataType: "json",
@@ -640,10 +661,49 @@ function getPrepareModificarCliente(id_cliente) {
         $("#IdTelefono_mod").val(value.telefono);
         $("#IdEmail_mod").val(value.email);
         $("#IdTiempocredito_mod").val(value.tiempo_credito);
-        $("#IdEstado").val(value.id_estado).trigger("change");
       });
     },
   });
+  if ($("#IdPorRentaMod").hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Admin&a=get_cliente_id",
+      data: "IdCliente=" + id_cliente,
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdPorRentaMod").val(value.id_porc_ret_renta).trigger("change");
+        });
+      },
+    });
+  }
+
+  if ($("#IdPorIVAMod").hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: "index.php?c=Admin&a=get_cliente_id",
+      data: "IdCliente=" + id_cliente,
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdPorIVAMod").val(value.id_porc_ret_iva).trigger("change");
+        });
+      },
+    });
+    if ($("#IdEstado").hasClass("select2-hidden-accessible")) {
+      $.ajax({
+        type: "GET",
+        dataType: "json",
+        url: "index.php?c=Admin&a=get_cliente_id",
+        data: "IdCliente=" + id_cliente,
+        success: function (response) {
+          $.each(response, function (key, value) {
+            $("#IdEstado").val(value.id_estado).trigger("change");
+          });
+        },
+      });
+    }
+  }
 }
 function getModificarCliente() {
   var html = "";
@@ -803,6 +863,8 @@ function getModificarCliente() {
     var tel = $("#IdTelefono_mod").val();
     var ema = $("#IdEmail_mod").val();
     var tcr = $("#IdTiempocredito_mod").val();
+    var prr = $("#IdPorRentaMod option:selected").html();
+    var pri = $("#IdPorIVAMod option:selected").html();
     var es = $("#IdEstado").val();
     Swal.fire({
       title: "¡ATENCIÓN CONFIRMAR ACTUALIZACIÓN!",
@@ -833,6 +895,10 @@ function getModificarCliente() {
             ema +
             "&Tiempocredito=" +
             tcr +
+            "&PorRetRenta="+
+            prr+
+            "&PorRetIVA="+
+            pri+
             "&IdEstado=" +
             es,
           success: function (response) {

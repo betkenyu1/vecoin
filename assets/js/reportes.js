@@ -91,5 +91,21 @@ function getFacturasRetencionesAgrupados() {
 }
 
 function getReporteInicioSesion() {
-  window.open("views/reportes/inicio_sesion.php");
+  if (
+    $("#startDate").val() != 0 &&
+    $("#endDate").val() != 0 &&
+    Date.parse($("#startDate").val()) <= Date.parse($("#endDate").val())
+  ) {
+    window.open(
+      "views/reportes/inicio_sesion.php?startDate=" +
+        $("#startDate").val() +
+        "&endDate=" +
+        $("#endDate").val() +
+        ""
+    );
+  } else {
+    Swal.fire({
+      html: '<div class="note note-warning"><div class="note-icon"><i class="fa-solid fa-warning"></i></div><div class="note-content"><b>ATENCIÓN: Verificar rango de búsqueda.</b></div></div>',
+    });
+  }
 }

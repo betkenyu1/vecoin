@@ -132,8 +132,10 @@ class ReporteModel
         return $resultados;
     }
 
-    public function ReporteInicioSesion()
+    public function ReporteInicioSesion($startDate, $endDate)
     {
+        $formated_DATESTART =  date("Y-m-d", strtotime($startDate));
+        $formated_DATEEND =  date("Y-m-d", strtotime($endDate));
         $consulta = "SELECT A.id_auditoria,EM.razon_social,U.usuario,CONCAT (E.nombres,' ',E.nombres_2,' ',E.apellidos,' ',E.apellidos_2) AS nombres,
         A.observacion, DATE_FORMAT(A.registro_tiempo ,'%d-%m-%Y %h:%i:%s') AS registro_tiempo,
                 TIME_FORMAT(hora,'%H:%i:%s') AS hora,
@@ -145,6 +147,7 @@ class ReporteModel
                 ON U.id_empleado = E.id_empleado
                 INNER JOIN empresas EM
                 ON E.id_empresa=EM.id_empresa
+                WHERE fecha BETWEEN ('$formated_DATESTART') AND ('$formated_DATEEND')
                 ORDER BY 1 DESC";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

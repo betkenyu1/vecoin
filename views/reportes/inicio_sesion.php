@@ -7,29 +7,34 @@ if (!isset($_SESSION)) {
 }
 class PDF extends FPDF
 {
+
     function Header()
     {
+        $startDate = (isset($_REQUEST['startDate'])) ? $_REQUEST['startDate'] : '';
+        $endDate = (isset($_REQUEST['endDate'])) ? $_REQUEST['endDate'] : '';
         $idimpresor = $_SESSION["user"];
         $rep = new ReporteModel();
-        $sol_cred = $rep->ReporteInicioSesion();
+        $sol_cred = $rep->ReporteInicioSesion($startDate, $endDate);
         $title = 'EVENTOS AUDITADOS POR EL SISTEMA';
         //$ta = 'Responsable: ';
         //$fh = 'Fecha/Hora: ';
         $this->SetFont('Arial', 'B', 10);
         date_default_timezone_set('America/Guayaquil');
         $DateAndTime = date('d/m/Y h:i:s a', time());
-
-        $fi = 'Generado por: ' . $idimpresor . ' | Fecha impresión: ';
-        $fh = 'Ciudad y Fecha: Guayaquil ';
-        $this->Image('../../assets/img/logo/logo_vecoin-1.png', 5, 8, 40);
-        //$this->Image('../../assets/img/logo/fd.png', '50', '30', '200', '200', 'PNG');
+        $fi = 'Fecha impresión: ';
+        $this->Image('../../assets/img/logo/logo_vecoin-1.png', 10, 8, 40);
+        //$this->Image('../../assets/img/logo/fd.png', '96', '90', '35', '35', 'PNG');
         $this->SetFont('Arial', 'B', 14);
         $this->Ln(1);
         $this->SetTextColor(255, 0, 0);
         $this->Ln(10);
         $this->SetFont('Arial', 'B', 16);
         $this->SetTextColor(13, 119, 60);
+        $this->Ln(10);
         $this->Cell(0, 5, utf8_decode($title), 0, 1, 'C');
+        $this->Ln(3);
+        $this->Cell(0, 5, 'Desde: ' . date("d-m-Y", strtotime($startDate)) . ' Hasta: ' . date("d-m-Y", strtotime($endDate)), 0, 0, 'C', 0);
+        $this->Cell(30, 5, '', 0, 0, '');
         $this->SetFont('Arial', 'I', 7);
         $this->Ln(10);
         $this->SetFont('Arial', 'I', 8);
@@ -47,8 +52,8 @@ class PDF extends FPDF
         $this->SetFont('Arial', 'b', 8);
         $dir = 'Dirección: ';
         $tel = 'Teléfono: ';
-        $this->SetY(-20);
-        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: 042316885'), 0, 1, 'C', 0);
+        $this->SetY(-19);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: (04)2316885 / (04)2316875 / (04)2316603 / 096 904 6278 | Email: info@vecoin.com.ec'), 0, 1, 'C', 0);
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
         $this->Ln(3);
         date_default_timezone_set('America/Guayaquil');
@@ -60,7 +65,8 @@ class PDF extends FPDF
         $this->Cell(0, 0, utf8_decode('Página') . $this->PageNo() . '/{nb}', 0, 0, 'C');
     }
 }
-
+$startDate = (isset($_REQUEST['startDate'])) ? $_REQUEST['startDate'] : '';
+$endDate = (isset($_REQUEST['endDate'])) ? $_REQUEST['endDate'] : '';
 date_default_timezone_set('America/Guayaquil');
 $DateAndTime = date('m-d-Y h:i:s a', time());
 $sf = 'VECOIN_REGISTROS_INICIO_SESION';
@@ -70,16 +76,16 @@ $pdf->AddPage('L');
 $rep = new ReporteModel();
 $pdf->SetFillColor(13, 119, 60);
 $pdf->SetTextColor(3, 3, 3);
-$resultados = $rep->ReporteInicioSesion();
+$resultados = $rep->ReporteInicioSesion($startDate, $endDate);
 
 if ($resultados) {
     $sum = 0;
     $pdf->SetFont('Arial', 'B', 10);
     $pdf->Cell(275, 5, '', 1, 1, 'C', true);
     $pdf->SetFont('Arial', 'B', 8);
-    $pdf->Cell(20, 5, utf8_decode('Codigo'), 1, 0, 'C', false);
-    $pdf->Cell(50, 5, utf8_decode('Empresa'), 1, 0, 'C', false);
-    $pdf->Cell(25, 5, utf8_decode('Usuario'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('Evento Nro.'), 1, 0, 'C', false);
+    $pdf->Cell(45, 5, utf8_decode('Empresa'), 1, 0, 'C', false);
+    $pdf->Cell(30, 5, utf8_decode('Usuario'), 1, 0, 'C', false);
     $pdf->Cell(70, 5, utf8_decode('Empleado'), 1, 0, 'C', false);
     $pdf->Cell(50, 5, utf8_decode('Acción'), 1, 0, 'C', false);
     $pdf->Cell(30, 5, utf8_decode('Fecha'), 1, 0, 'C', false);
@@ -88,8 +94,8 @@ if ($resultados) {
         date_default_timezone_set('America/Guayaquil');
         $pdf->SetFont('Arial', 'I', 8);
         $pdf->Cell(20, 5, utf8_decode($re["id_auditoria"]), 1, 0, 'C', false);
-        $pdf->Cell(50, 5, utf8_decode($re["razon_social"]), 1, 0, 'C', false);
-        $pdf->Cell(25, 5, utf8_decode($re["usuario"]), 1, 0, 'C', false);
+        $pdf->Cell(45, 5, utf8_decode($re["razon_social"]), 1, 0, 'C', false);
+        $pdf->Cell(30, 5, utf8_decode($re["usuario"]), 1, 0, 'C', false);
         $pdf->Cell(70, 5, utf8_decode($re["nombres"]), 1, 0, 'C', false);
         $pdf->Cell(50, 5, utf8_decode($re["observacion"]), 1, 0, 'C', false);
         $pdf->Cell(30, 5, utf8_decode($re["fecha"]), 1, 0, 'C', false);
@@ -97,7 +103,7 @@ if ($resultados) {
     }
 }
 //$IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
-$sol_cred = $rep->ReporteInicioSesion();
+$sol_cred = $rep->ReporteInicioSesion($startDate, $endDate);
 $pdf->SetFont('Arial', 'I', 10);
 if ($sol_cred) {
     foreach ($sol_cred as $sc) {

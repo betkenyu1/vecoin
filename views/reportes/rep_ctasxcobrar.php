@@ -77,30 +77,32 @@ if ($resultados) {
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetTextColor(0, 0, 0);
     //$pdf->Cell(15, 5, utf8_decode('N°'), 1, 0, 'C', false);
-    $pdf->Cell(90, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
+    $pdf->Cell(80, 5, utf8_decode('Cliente'), 1, 0, 'C', false);
     $pdf->Cell(20, 5, utf8_decode('Fecha Fact.'), 1, 0, 'C', false);
     $pdf->Cell(30, 5, utf8_decode('N° de Factura'), 1, 0, 'C', false);
-    $pdf->Cell(25, 5, utf8_decode('Monto'), 1, 0, 'C', false);
-    $pdf->Cell(25, 5, utf8_decode('Deuda'), 1, 1, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('Días Transc.'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('Monto'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('Deuda'), 1, 1, 'C', false);
     $pdf->SetFillColor(255, 255, 255);
     foreach ($resultados as $re) {
         $pdf->SetFont('Arial', 'I', 8);
         //$pdf->Cell(15, 5, utf8_decode($re["id_cabventa"]), 1, 0, 'C', false);
-        $pdf->Cell(90, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
+        $pdf->Cell(80, 5, utf8_decode($re["Cliente"]), 1, 0, 'L', false);
         $pdf->Cell(20, 5, utf8_decode($re["fecha"]), 1, 0, 'C', true);
         $pdf->Cell(30, 5, utf8_decode($re["nro_factura"]), 1, 0, 'C', true);
-        $pdf->Cell(25, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 0, 'R', true);
-        $pdf->Cell(25, 5, '$ ' . utf8_decode(number_format($re["deuda"], 2, ".", ",")), 1, 1, 'R', true);
+        $pdf->Cell(20, 5, utf8_decode($re["dias_transcurridos"]), 1, 0, 'C', true);
+        $pdf->Cell(20, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 0, 'R', true);
+        $pdf->Cell(20, 5, '$ ' . utf8_decode(number_format($re["deuda"], 2, ".", ",")), 1, 1, 'R', true);
         $total_x_cobrar += $re["deuda"];
     }
     $pdf->SetFillColor(13, 119, 60);
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(140, 0, ' ', 0, 0, 'R', false);
+    $pdf->Cell(150, 0, ' ', 0, 0, 'R', false);
     $pdf->SetTextColor(255, 255, 255);
-    $pdf->Cell(25, 6, 'TOTAL', 1, 0, 'C', true);
+    $pdf->Cell(20, 6, 'TOTAL', 1, 0, 'C', true);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(25, 6, '$ ' . number_format($total_x_cobrar, 2, ".", ","), 1, 0, 'R', false);
+    $pdf->Cell(20, 6, '$ ' . number_format($total_x_cobrar, 2, ".", ","), 1, 0, 'R', false);
 }
 $sol_cred = $rep->getRepCtasXCobrar();
 $pdf->SetFont('Arial', 'I', 10);

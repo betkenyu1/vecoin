@@ -158,9 +158,10 @@ class ReporteModel
     // REPORTES
     public function getRepCtasXCobrar()
     {
-        $consulta = "SELECT CV.id_cabventa AS id_1,
+        $consulta = "SELECT CV.id_cabventa AS id_1,TIMESTAMPDIFF(DAY, CV.fecha, NOW()) AS dias_transcurridos,
         DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,
-        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, SUM((DV.cantidad*DV.pvp)*1.12) AS monto,
+        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, 
+        SUM((DV.cantidad*DV.pvp)*1.12) AS monto,
         ABS (((SUM((DV.cantidad*DV.pvp)*1.12))-(IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00)))) AS deuda
         FROM cab_venta CV
         INNER JOIN det_venta DV ON (DV.id_cabventa = CV.id_cabventa)
@@ -168,7 +169,7 @@ class ReporteModel
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         WHERE CV.id_estado=1
         GROUP BY nro_factura
-        ORDER BY CL.razon_social, fecha DESC;";
+        ORDER BY CL.razon_social, CV.fecha ASC;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

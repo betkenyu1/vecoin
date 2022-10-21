@@ -101,11 +101,10 @@ function CerrarListaOrdenEntrada() {
 }
 function getListaOrdenEntrada() {
   var html = "";
-  html += '<div style="overflow: scroll" class="cerrar-lp">';
-  html += '<div class="">';
+  html += '<div class="cerrar-lp">';
   html += '<div class="note-content">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle" style="width:100%">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -153,7 +152,6 @@ function getListaOrdenEntrada() {
       html += "</table>";
       html += "</div>";
       html += "</div>";
-      html += "</div>";
       $("#lista-ord_entrada").html(html);
       var dtb = $("#data-table-select").DataTable({
         language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
@@ -177,10 +175,10 @@ function getProductos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-          value.id_producto +
-          ">" +
-          value.producto +
-          "</option>"
+            value.id_producto +
+            ">" +
+            value.producto +
+            "</option>"
         );
       });
     },
@@ -198,10 +196,10 @@ function getProductosActivosxEmpresa() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-          value.id_producto +
-          ">" +
-          value.producto +
-          "</option>"
+            value.id_producto +
+            ">" +
+            value.producto +
+            "</option>"
         );
       });
     },
@@ -320,7 +318,7 @@ function setNuevaOrdenEntrada() {
   html += "<div>";
   html += '<b style="color: #000000;">Observación (Campo Opcional):</b> </br>';
   html +=
-    '<textarea type="text" row="3" class="form-control" placeholder="En este recuadro puede escribir un comentario respecto a la orden de entrada que se va a generar." id="IdObs"></textarea>';
+    '<textarea type="text" rows="5" class="form-control" placeholder="En este recuadro puede escribir un comentario respecto a la orden de entrada que se va a generar." id="IdObs"></textarea>';
   html += '<div id="alert-obs"></div>';
   html += "</div>";
 
@@ -357,14 +355,17 @@ function setNuevaOrdenEntrada() {
 function detalleOrden() {
   var html = "";
   /***************** */
-
   html += '<div class="cerrar-litems">';
-
-  html += '<div style="overflow: scroll" class="cerrar-lp">';
+  html += '<div   class="cerrar-lp">';
   html += '<div class="note-content">';
-  html +=
-    '<table id="data-table-select-2" class="table table-striped table-bordered align-middle">';
+  html += "<div>";
+  html += '<p class="text-center h4">';
+  html += '<b style="color: #000000;">DETALLE DE LA ORDEN</b>';
+  html += "</p>";
+  html += "</div>";
 
+  html +=
+    '<table id="data-table-select-2" class="table table-striped table-bordered align-middle" style="width:100%">';
   $.ajax({
     type: "GET",
     dataType: "json",

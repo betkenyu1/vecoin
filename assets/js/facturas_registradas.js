@@ -24,9 +24,9 @@ function getListaCtasXCobrar() {
   html += "&nbsp;";
   html += "</div>";
   html += "</div>";
-  html += '<div style="overflow: scroll">';
+  html += "<div>";
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle" style="width:100%">';
   html += '<div class="note note-blue">';
   html += "<thead>";
   html += "<tr>";

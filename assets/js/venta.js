@@ -7,9 +7,9 @@ function CerrarListaVenta() {
 function getListaOrdenSalida() {
   var html = "";
   html += "<div>";
-  html += '<div style="overflow: scroll" class="cerrar-lp">';
+  html += '<div class="cerrar-lp">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle" style="width:100%">';
   html += '<div class="">';
   html += "<thead>";
   html += "<tr>";
@@ -71,7 +71,7 @@ function getListaOrdenSalida() {
           '<div class="alert alert-success alert-dismissible fade show h-100 mb-0">';
         html +=
           '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
-        html += "<b>*NO DISPONE DE ORDENES DE SALIDA POR GESTIONAR.</b>";
+        html += "<b>* NO DISPONE DE ORDENES DE SALIDA POR GESTIONAR *</b>";
         html += "</div>";
         $("#lista-ord_salida").html(html);
       }
@@ -111,173 +111,6 @@ function getOcultarOrden(idOrden) {
         },
       });
     }
-  });
-}
-
-function setNuevaFactura() {
-  var html = "";
-  html += '<div id="ps?2" class="cerrar-vta-2">';
-  html += '<div class="note note-info">';
-  html += '<div class="note-content">';
-  html += '<form style="overflow: scroll" >';
-  html += '<div class="form-group">';
-  html += '<div class="row">';
-
-  html += '<div style="color: #000000;" class="text-center">';
-  html += "<h3>* * * * PROCESAR FACTURA * * *</h3>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Fecha de factura:</b> </br>';
-  html += '<input type="date" class="form-control"  id="IdFecha">';
-  html += '<div id="alert-freg"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Cliente:</b> </br>';
-  html +=
-    '<select class="default-select2 form-control" id="IdCliente"></select>';
-  html += '<div id="alert-cli"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Número de Factura:</b> </br>';
-  html += '<input type="hidden" class="form-control" id="IdDetPSalida">';
-  html +=
-    '<input type="text" placeholder="Ingrese secuencial de la factura (XXX-XXX-XXXXXXXX)" class="form-control" id="IdNroFactura">';
-  html += '<div id="alert-nrofac"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Producto:</b> </br>';
-  html += '<input type="hidden" class="form-control" id="IdProducto">';
-  html +=
-    '<input type="text" disabled placeholder="Cargando..." class="form-control" id="IdDetProducto">';
-  html += '<div id="alert-prod"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Cantidad:</b> </br>';
-  html +=
-    '<input type="text" disabled class="form-control" placeholder="Cargando..." id="IdCantidad">';
-  html += '<div id="alert-cant"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">P.V.P.:</b> </br>';
-  html +=
-    '<input type="text" disabled class="form-control" placeholder="Cargando..." id="IdPrecio">';
-  html += '<div id="alert-prec"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  /****************************** */
-  html += "<div>";
-  html +=
-    '<table id="data-table-select-2" class="table table-striped table-bordered align-middle ">';
-  html += "<div>";
-  html += "<thead>";
-  html += "<tr>";
-  html += '<th width="1%"></th>';
-  html += '<th class="text-nowrap">Fecha</th>';
-  html += '<th class="text-nowrap">Nro.Orden de Salida</th>';
-  html += '<th class="text-nowrap">Producto</th>';
-  html += '<th class="text-nowrap">U.Medida</th>';
-  html += '<th class="text-nowrap">Bodega</th>';
-  html += '<th class="text-nowrap">Cantidad</th>';
-  html += '<th class="text-nowrap">P.V.P.</th>';
-  html += '<th class="text-nowrap">Acciones</th>';
-  html += "</tr>";
-  html += "</thead>";
-  html += '<tbody style="background-color:#c1f8ff">';
-  $.ajax({
-    type: "GET",
-    dataType: "json", //OS.id_cabsalida,OS.id_secuencial,DATE_FORMAT(OS.fecha_osalida ,'%d-%m-%Y')AS fecha,OS.secuencial
-    url: "index.php?c=Venta&a=idsecu_osalida",
-    success: function (response) {
-      if (response != "") {
-        $.each(response, function (key, value) {
-          html += '<tr class="odd gradeX">';
-          html +=
-            '<td width="1%" class="fw-bold text-dark">' +
-            value.id_secuencial +
-            "</td>";
-          html += "<td>" + value.fecha + "</td>";
-          html += "<td>" + value.secuencial + "</td>";
-          html += "<td>";
-          //html += '<a href="#ps?2" class="btn btn-outline-orange" onclick="getProcesarOSalidaFactura(' + value.id_secuencial + ');" title="Procesar Factura"><i class="material-icons">add_shopping_cart</i></a>';
-          html += "</td>";
-          html += "</tr>";
-        });
-        html += "</tbody>";
-        html += "</table>";
-        html += "</div>";
-        html += "</div>";
-        $("#lista-cab-fact").html(html);
-        $("#data-table-select-2").DataTable({
-          language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
-          order: [[2, "desc"]],
-          select: false,
-          responsive: true,
-        });
-      }
-    },
-  });
-  /****************************** */
-
-  html += "<div>";
-  html += "<br>";
-  html += '<div class="text-center">';
-  html +=
-    '<a class="btn btn-danger" onclick="CerrarListaVenta();" title="Cancelar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cancelar</a>';
-  html +=
-    '&nbsp;<a class="btn btn-primary" title="Agregar" onclick="getAgregarVenta();"><i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar</a>';
-  html += "</div>";
-  html += "</div>";
-
-  html += "</div>";
-  html += "</div>";
-  html += "</form>";
-  html += "</div>";
-  html += "</div>";
-  html += "</div>";
-  $("#n-venta").html(html);
-  $(".default-select2").select2({
-    placeholder: "Cargando datos...",
-    selectOnClose: "false",
-    language: {
-      noResults: function () {
-        //VACIO
-        return "No hay registros";
-      },
-      searching: function () {
-        return "Buscando..";
-      },
-    },
-  });
-}
-
-function getUltimaFactura() {
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Venta&a=get_ultima_factura",
-    success: function (response) {
-      $.each(response, function (key, value) {
-        $("#IdNroFactura").val(value.nro_factura);
-      });
-    },
   });
 }
 
@@ -376,11 +209,10 @@ function getAgregarVenta() {
 function getProcesarOSalidaFactura(id_secuencial) {
   var html = "";
   $(".cerrar-lp").hide();
-
   html += '<div class="form-group">';
   html += '<div id="pos?1" class="cerrar-vta-2">';
   html += '<div style="color: #000000;" class="text-center">';
-  html += "<h3>* * * * PROCESAR FACTURA * * *</h3>";
+  html += "<h3>* * * PROCESAR FACTURA * * *</h3>";
   html += "</div>";
 
   html += '<div class="col-md-6">';
@@ -409,9 +241,10 @@ function getProcesarOSalidaFactura(id_secuencial) {
   html += '<div id="alert-nrofac"></div>';
   html += "</div>";
   html += "</div>";
+
   html += "<div>";
   html +=
-    '<table id="data-table-select2" class="table table-editable table-striped table-bordered align-middle ">';
+    '<table id="data-table-select2" class="table table-editable table-striped table-bordered align-middle " style="width:100%">';
   html += "<div>";
   html += "<thead>";
   html += "<tr>";
@@ -491,6 +324,8 @@ function getProcesarOSalidaFactura(id_secuencial) {
             },
           },
         });
+        getCliente();
+        getUltimaFactura();
       } else {
         html = "";
         html +=
@@ -503,8 +338,6 @@ function getProcesarOSalidaFactura(id_secuencial) {
       }
     },
   });
-  getCliente();
-  getUltimaFactura();
 }
 
 function ProcesarFacturaVenta(id_det_osalida) {

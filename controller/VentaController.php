@@ -417,6 +417,23 @@ class VentaController
         }
     }
 
+    public function get_cuentas_x_cobrar()
+
+    {
+
+        $exito = $this->vta->getCuentasxCobrar();
+
+        if ($exito) {
+
+            echo json_encode($exito);
+        } else {
+
+            $vacio = array('');
+
+            echo json_encode($vacio);
+        }
+    }
+
     public function get_ctasxcobrar()
 
     {

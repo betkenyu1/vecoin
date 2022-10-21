@@ -222,6 +222,48 @@ function getEmpleados() {
     },
   });
 }
+function getEmpleadosSinUsuario() {
+  $("#IdEmpleado").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_empleados_sin_usuario",
+    success: function (response) {
+      var $select = $("#IdEmpleado");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" +
+            value.id_empleado +
+            ">" +
+            value.Empleados +
+            "</option>"
+        );
+      });
+    },
+  });
+}
+function getEmpleadosSinUsuarioMod() {
+  $("#IdEmpleado_mod").empty();
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Admin&a=get_empleados_sin_usuario",
+    success: function (response) {
+      var $select = $("#IdEmpleado_mod");
+      $select.append('<option value="0">Seleccione...</option>');
+      $.each(response, function (key, value) {
+        $select.append(
+          "<option value=" +
+            value.id_empleado +
+            ">" +
+            value.Empleados +
+            "</option>"
+        );
+      });
+    },
+  });
+}
 
 function getEmpleadosModUsuario() {
   $("#IdEmpleado_mod").empty();
@@ -409,6 +451,20 @@ function getProveedorActivo() {
     },
   });
 }
+
+function getUltimaFactura() {
+  $.ajax({
+    type: "GET",
+    dataType: "json",
+    url: "index.php?c=Venta&a=get_ultima_factura",
+    success: function (response) {
+      $.each(response, function (key, value) {
+        $("#IdNroFactura").val(value.nro_factura);
+      });
+    },
+  });
+}
+
 function getCliente() {
   $("#IdCliente").empty();
   $.ajax({

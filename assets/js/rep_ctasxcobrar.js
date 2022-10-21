@@ -1,9 +1,9 @@
 function getListaCtasXCobrar() {
   var html = "";
   html += "<div>";
-  html += '<div style="overflow: scroll">';
+  html += "<div>";
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle" style="width:100%">';
   html += '<div class="note note-blue">';
   html += "<thead>";
   html += "<tr>";
@@ -42,6 +42,7 @@ function getListaCtasXCobrar() {
           language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
           select: false,
           responsive: true,
+          order: [[3, "asc"]],
         });
         dtb.column(0).visible(false);
       } else {

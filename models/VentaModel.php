@@ -376,10 +376,23 @@ class VentaModel
         return $resultados;
     }
 
-    public function getProductoMasVendido()
-
+    public function getCuentasxCobrar()
     {
+        $consulta = "SELECT (SUM((cantidad*pvp))) AS subtotal,(SUM((cantidad*pvp)*0.12)) AS iva,(SUM((cantidad*pvp)*1.12)) AS total
+        FROM det_venta DV 
+        INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
+        WHERE CV.id_estado=1;";
 
+        $sentencia = $this->db->prepare($consulta);
+
+        $sentencia->execute();
+
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+        return $resultados;
+    }
+    public function getProductoMasVendido()
+    {
         $consulta = "SELECT CT.producto AS Producto,SUM(DV.cantidad) AS Cantidad,SUM(DV.pvp*DV.cantidad) AS Valor
         FROM det_venta DV
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)

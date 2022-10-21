@@ -388,6 +388,22 @@ class AdminModel
         return $resultados;
     }
 
+    public function getEmpleadosSinUsuario()
+    {
+        $consulta = "SELECT E.id_empleado,EP.razon_social,CONCAT(E.nombres,' ',E.apellidos) AS Empleados,
+        E.telefono,E.email
+        FROM empleados E
+        INNER JOIN empresas EP ON (E.id_empresa=EP.id_empresa)
+        WHERE E.id_estado = 1 AND E.id_empleado NOT IN (SELECT id_empleado FROM usuarios)
+        ORDER BY Empleados ASC;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+
+
+
     public function getEmpleadosAdmin()
     {
         $consulta = "SELECT E.id_empleado, EP.razon_social, CONCAT(E.nombres,' ', E.nombres_2) AS nombres, CONCAT(E.apellidos,' ', E.apellidos_2) AS apellidos, E.telefono, E.direccion, E.email,
@@ -411,7 +427,7 @@ class AdminModel
     }
     public function getRoles()
     {
-        $consulta = "SELECT id_rol,rol FROM roles";
+        $consulta = "SELECT id_rol,rol FROM roles ORDER BY ROL ASC";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

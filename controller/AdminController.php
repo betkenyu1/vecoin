@@ -449,6 +449,17 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+    public function get_empleados_sin_usuario()
+    {
+        $exito = $this->adm->getEmpleadosSinUsuario();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    
 
     public function get_empleados_admin()
     {

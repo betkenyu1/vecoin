@@ -9,10 +9,10 @@ function getListaVentas() {
 
   html += "<div>";
 
-  html += '<div style="overflow: scroll" class="cerrar-lventa">';
+  html += '<div class="cerrar-lventa">';
 
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle " style="width:100%">';
 
   html += '<div class="note note-blue">';
 
@@ -293,9 +293,7 @@ function setNuevaNCredito() {
 
 function getProcesarNCredito(id_detventa) {
   setNuevaNCredito();
-
   getCliente();
-
   $.ajax({
     type: "GET",
 
@@ -307,7 +305,7 @@ function getProcesarNCredito(id_detventa) {
 
     success: function (response) {
       $.each(response, function (key, value) {
-        $("#IdCliente").val(value.id_cliente).trigger("change");
+        //$("#").val(value.id_cliente).trigger("change");
 
         $("#IdDetVenta").val(value.id_detventa);
 
@@ -325,6 +323,23 @@ function getProcesarNCredito(id_detventa) {
       });
     },
   });
+  if ($("#IdCliente").hasClass("select2-hidden-accessible")) {
+    $.ajax({
+      type: "GET",
+
+      dataType: "json",
+
+      url: "index.php?c=Venta&a=get_iddet_venta",
+
+      data: "IdDetVenta=" + id_detventa,
+
+      success: function (response) {
+        $.each(response, function (key, value) {
+          $("#IdCliente").val(value.id_cliente).trigger("change");
+        });
+      },
+    });
+  }
 }
 
 function getAgregarNCredito() {

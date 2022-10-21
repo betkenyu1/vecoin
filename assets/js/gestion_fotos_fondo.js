@@ -115,11 +115,11 @@ function getListaUsuarios() {
   $(".cerrar-nuser").hide();
   $(".cerrar-pass_mod").hide();
   var html = "";
-  html += '<div style="overflow: scroll" class="cerrar-luser">';
+  html += '<div class="cerrar-luser">';
   html += '<div class="">';
   html += '<div class="note-content">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle" style="width:100%">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';

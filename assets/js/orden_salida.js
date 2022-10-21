@@ -71,11 +71,11 @@ function CerrarListaOrdenSalida() {
 }
 function getListaOrdenSalida() {
   var html = "";
-  html += '<div style="overflow: scroll" class="cerrar-lp">';
+  html += '<div class="cerrar-lp">';
   html += '<div class="">';
   html += '<div class="note-content">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle" style="width:100%">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -141,10 +141,10 @@ function getProductosActivosxEmpresa() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-          value.id_producto +
-          ">" +
-          value.producto +
-          "</option>"
+            value.id_producto +
+            ">" +
+            value.producto +
+            "</option>"
         );
       });
     },
@@ -157,14 +157,11 @@ function CerrarNuevaOrdenSalida() {
 }
 function LimpiarCampos() {
   getProductosActivosxEmpresa();
-
-  //getCliente();
   $("#IdCantidad").val("");
   $("#IdPrecio").val("");
   $("#IdExistencia").val("");
   $("#IdPVP").val("");
   detalleOrden();
-  getUMedidas();
 }
 function setNuevaOrdenSalida() {
   CerrarListaOrdenSalida();
@@ -194,14 +191,6 @@ function setNuevaOrdenSalida() {
   html += "</div>";
   html += "</div>";
 
-  /*html += '<div class="col-md-6">';
-    html += '<div class="mb-10px">';
-    html += '<b style="color: #000000;">Perchas:</b> </br>';
-    html += '<select class="default-select2 form-control" id="IdPercha"></select>';
-    html += '<div id="alert-ph"></div>';
-    html += '</div>';
-    html += '</div>';*/
-
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Productos:</b> </br>';
@@ -213,10 +202,10 @@ function setNuevaOrdenSalida() {
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Unidad de Medida:</b> </br>';
+  html += '<b style="color: #000000;">P.V.P.:</b> </br>';
   html +=
-    '<select class="default-select2 form-control" id="IdUMedida"></select>';
-  html += '<div id="alert-umed"></div>';
+    '<input type="text" onkeypress="return validarPrecio(event)" placeholder ="Precio de Venta al Público" class="form-control" id="IdPVP">';
+  html += '<div id="alert-prec"></div>';
   html += "</div>";
   html += "</div>";
 
@@ -226,15 +215,6 @@ function setNuevaOrdenSalida() {
   html +=
     '<input type="text" disabled class="form-control" placeholder="Unidades Disponibles de Producto" id="IdExistencia">';
   html += '<div id="alert-exist"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">P.V.P.:</b> </br>';
-  html +=
-    '<input type="text" onkeypress="return validarPrecio(event)" placeholder ="Precio de Venta al Público" class="form-control" id="IdPVP">';
-  html += '<div id="alert-prec"></div>';
   html += "</div>";
   html += "</div>";
 
@@ -262,7 +242,7 @@ function setNuevaOrdenSalida() {
   html += "<div>";
   html += '<b style="color: #000000;">Observación (Campo Opcional):</b> </br>';
   html +=
-    '<textarea type="text" row="3" class="form-control" placeholder="En este recuadro puede escribir un comentario respecto a la orden de salida que se va a generar." id="IdObs"></textarea>';
+    '<textarea type="text" rows="5" class="form-control" placeholder="En este recuadro puede escribir un comentario respecto a la orden de salida que se va a generar." id="IdObs"></textarea>';
   html += '<div id="alert-obs"></div>';
   html += "</div>";
 
@@ -288,8 +268,6 @@ function setNuevaOrdenSalida() {
   });
   getSecuencialOrdenSalida();
   getProductosActivosxEmpresa();
-  getUMedidas();
-  //getPerchas();
   detalleOrden();
 }
 
@@ -299,11 +277,15 @@ function detalleOrden() {
 
   html += '<div class="cerrar-litems">';
 
-  html += '<div style="overflow: scroll" class="cerrar-lp">';
+  html += '<div class="cerrar-lp">';
   html += '<div class="note-content">';
+  html += "<div>";
+  html += '<p class="text-center h4">';
+  html += '<b style="color: #000000;">DETALLE DE LA ORDEN</b>';
+  html += "</p>";
+  html += "</div>";
   html +=
-    '<table id="data-table-select-2" class="table table-striped table-bordered align-middle">';
-
+    '<table id="data-table-select-2" class="table table-striped table-bordered align-middle" style="width:100%">';
   $.ajax({
     type: "GET",
     dataType: "json",
@@ -465,19 +447,6 @@ function getAgregarOrdenSalida() {
     }, 0);
   }
 
-  if ($("#IdUMedida").val() == 0) {
-    html += '<div class="alert alert-danger">';
-    html += "*Campo requerido";
-    html += "</div>";
-    $("#alert-umed").html(html);
-    $("#alert-umed").fadeIn(500);
-    $("#IdUMedida").focus();
-    return false;
-  } else {
-    setTimeout(function () {
-      $("#alert-umed").fadeOut(500);
-    }, 0);
-  }
   /*************************acaaa******************** */
   function validarDisponibilidad($solicito, $tengo) {
     if (parseInt($solicito == "0")) {
@@ -548,7 +517,6 @@ function getAgregarOrdenSalida() {
     $("#IdSecuencial").val() != 0 &&
     $("#IdSecuencia").val() != 0 &&
     $("#IdProducto").val() != 0 &&
-    $("#IdUMedida").val() != 0 &&
     $("#IdCantidad").val() != "" &&
     $("#IdPVP").val() != ""
   ) {
@@ -557,7 +525,6 @@ function getAgregarOrdenSalida() {
     var idsecu = $("#IdSecuencia").val();
     var ph = 1; //NO SE CONTROLA PERCHAS (FUNCIONALIDAD A FUTURO)
     var prod = $("#IdProducto").val();
-    var um = $("#IdUMedida").val();
     var cant = $("#IdCantidad").val();
     var prec = $("#IdPVP").val();
     if ($("#IdObs").val().trim() == "") var obs = "Sin novedades";
@@ -589,8 +556,6 @@ function getAgregarOrdenSalida() {
             prod +
             "&Cantidad=" +
             cant +
-            "&IdUMedida=" +
-            um +
             "&Precio=" +
             prec +
             "&Observacion=" +

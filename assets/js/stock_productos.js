@@ -1,9 +1,8 @@
 function getListaStockProductos() {
   var html = "";
-  html += '<div style="overflow: scroll">';
   html += '<div class="note-content">';
   html +=
-    '<table id="data-table-select" class="table table-striped table-bordered align-middle">';
+    '<table id="data-table-select" class="table table-striped table-bordered align-middle" style="width:100%">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -47,7 +46,6 @@ function getListaStockProductos() {
       });
       html += "</tbody>";
       html += "</table>";
-      html += "</div>";
       html += "</div>";
       html += "</div>";
       $("#lista-stock-productos").html(html);

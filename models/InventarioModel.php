@@ -228,14 +228,13 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $IdUMedida, $Cantidad, $Precio)
+    public function RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO det_oentrada (id_secuencial,id_producto,id_umedida,cantidad,precio)
-        VALUES(:id_secuencial,:id_producto,:id_umedida,:cantidad,:precio)";
+        VALUES(:id_secuencial,:id_producto,(SELECT id_umedida FROM productos WHERE id_producto='$IdProducto'),:cantidad,:precio)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
         $sentencia->bindParam(':id_producto', $IdProducto);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':precio', $Precio);
         $sentencia->execute();
@@ -244,13 +243,12 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida, $IdPercha, $IdProducto, $Cantidad, $Precio)
+    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdPercha, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO det_osalida (id_secuencial,id_umedida,id_percha,id_producto,cantidad,pvp)
-        VALUES(:id_secuencial,:id_umedida,:id_percha,:id_producto,:cantidad,:pvp)";
+        VALUES(:id_secuencial,(SELECT id_umedida FROM productos WHERE id_producto='$IdProducto'),:id_percha,:id_producto,:cantidad,:pvp)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
         $sentencia->bindParam(':id_percha', $IdPercha);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':cantidad', $Cantidad);
@@ -261,14 +259,13 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdUMedida, $IdProducto, $Cantidad, $Precio)
+    public function RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO stock (id_secuencial,id_percha,id_umedida,id_producto,cantidad,pvp)
-        VALUES(:id_secuencial,:id_percha,:id_umedida,:id_producto,:cantidad,:pvp)";
+        VALUES(:id_secuencial,:id_percha,(SELECT id_umedida FROM productos WHERE id_producto='$IdProducto'),:id_producto,:cantidad,:pvp)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
         $sentencia->bindParam(':id_percha', $IdPercha);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':pvp', $Precio);

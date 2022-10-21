@@ -103,7 +103,7 @@ class ReporteModel
     public function ReporteStockProductos()
     {
         $consulta = "SELECT C.codigo, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion', 
-        E.direccion,E.telefono, CASE WHEN PR.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
+        E.direccion,E.telefono, CASE WHEN C.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
         INNER JOIN proveedores P ON P.id_proveedor = PR.id_proveedor
         INNER JOIN catalogo C ON C.id_catalogo = PR.id_catalogo
         INNER JOIN empresas E ON E.id_empresa = C.id_empresa

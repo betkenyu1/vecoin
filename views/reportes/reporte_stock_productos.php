@@ -114,7 +114,7 @@ if ($resultados) {
     $pdf->Cell(227, 6, 'TOTAL  ', 1, 0, 'R', true);
     $pdf->SetFont('Arial', 'B', 9);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->Cell(30, 6, '$ ' . number_format($sum, 2, ".", ","), 1, 1, 'C', false);
+    $pdf->Cell(30, 6, '$ ' . number_format($sum, 2, ".", ","), 1, 1, 'R', false);
 }
 //$IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
 $sol_cred = $rep->CabeceraReporteStockProductos();

@@ -11,7 +11,7 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
-            <a href="#" onclick="getReporteProductosDisponibles();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar Reporte PDF</a>
+            <a href="#" onclick="getReporteStock();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar Reporte PDF</a>
             <hr>
             <div id="lista-stock-productos"></div>
         </div>

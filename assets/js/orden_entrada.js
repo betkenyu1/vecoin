@@ -216,8 +216,6 @@ function LimpiarCampos() {
   getProductosActivosxEmpresa();
   $("#IdCantidad").val("");
   $("#IdPrecio").val("");
-  getUMedidas();
-
   detalleOrden();
 }
 function setNuevaOrdenEntrada() {
@@ -273,15 +271,6 @@ function setNuevaOrdenEntrada() {
   html +=
     '<select class="default-select2 form-control" id="IdProveedor"></select>';
   html += '<div id="alert-prov"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Unidad de Medida:</b> </br>';
-  html +=
-    '<select class="default-select2 form-control" id="IdUMedida"></select>';
-  html += '<div id="alert-umed"></div>';
   html += "</div>";
   html += "</div>";
 
@@ -347,8 +336,6 @@ function setNuevaOrdenEntrada() {
   getSecuencial();
   getProveedorActivo();
   getProductosActivosxEmpresa();
-  getUMedidas();
-
   detalleOrden();
 }
 
@@ -538,20 +525,6 @@ function getAgregarOrdenEntrada() {
     }, 0);
   }
 
-  if ($("#IdUMedida").val() == 0) {
-    html += '<div class="alert alert-danger">';
-    html += "*Campo requerido";
-    html += "</div>";
-    $("#alert-umed").html(html);
-    $("#alert-umed").fadeIn(500);
-    $("#IdUMedida").focus();
-    return false;
-  } else {
-    setTimeout(function () {
-      $("#alert-umed").fadeOut(500);
-    }, 0);
-  }
-
   var RE = /^\d*(\.\d{1})?\d{0,1}$/;
   if ($("#IdCantidad").val() == "") {
     html += '<div class="alert alert-danger">';
@@ -607,7 +580,6 @@ function getAgregarOrdenEntrada() {
     $("#IdNroFactura").val() != "" &&
     $("#IdProducto").val() != 0 &&
     $("#IdProveedor").val() != 0 &&
-    $("#IdUMedida").val() != 0 &&
     $("#IdCantidad").val() != "" &&
     $("#IdPrecio").val() != ""
   ) {
@@ -618,7 +590,6 @@ function getAgregarOrdenEntrada() {
     var prod = $("#IdProducto").val();
     var prov = $("#IdProveedor").val();
     var cant = $("#IdCantidad").val();
-    var um = $("#IdUMedida").val();
     var prec = $("#IdPrecio").val();
     var obs = $("#IdObs").val();
 
@@ -651,8 +622,6 @@ function getAgregarOrdenEntrada() {
             prov +
             "&Cantidad=" +
             cant +
-            "&IdUMedida=" +
-            um +
             "&Precio=" +
             prec +
             "&Observacion=" +

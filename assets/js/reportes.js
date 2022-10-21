@@ -23,7 +23,7 @@ function getReporteFacturasRetenciones(cb) {
   window.open("views/reportes/facturas_retenciones.php?IdCabVenta=" + cb + "");
 }
 function getReporteStock() {
-  window.open("views/reportes/stock_productos.php");
+  window.open("views/reportes/reporte_stock_productos.php");
 }
 
 function getReporteCtasXCobrar() {

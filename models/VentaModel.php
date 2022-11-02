@@ -376,6 +376,54 @@ class VentaModel
         return $resultados;
     }
 
+    public function getVentasAnuales()
+    {
+        $consulta = "SELECT fecha,SUM(total) AS total FROM 
+        (
+        (
+        SELECT YEAR(fecha) AS fecha, total FROM ventas_old
+        WHERE tipo=2
+        )
+        UNION
+        (
+        SELECT YEAR(CV.fecha) AS fecha,IFNULL((SUM((cantidad*pvp)*1.12)),'0') AS total
+        FROM det_venta DV 
+        INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
+        WHERE CV.id_estado NOT LIKE (2) AND CV.fecha BETWEEN ('2022-10-01') AND ('2022-12-31')
+        )
+        ) tabla
+        GROUP BY fecha;";
+
+        $sentencia = $this->db->prepare($consulta);
+
+        $sentencia->execute();
+
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+        return $resultados;
+    }
+    public function getVentasMensuales()
+    {
+        $consulta = "SELECT fecha,CONCAT(ELT(MONTH(fecha), 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),' ',YEAR(fecha)) AS mes, total FROM ventas_old
+        WHERE tipo=1
+        UNION
+        SELECT CV.fecha,CONCAT(ELT(MONTH(CV.fecha), 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),' ',YEAR(CV.fecha)) AS mes
+        ,IFNULL((SUM((cantidad*pvp)*1.12)),'0') AS total
+        FROM det_venta DV 
+        INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
+        WHERE CV.id_estado NOT LIKE (2) AND CV.fecha BETWEEN ('2022-10-01') AND ('2022-12-31')
+        GROUP BY MONTH(CV.fecha)
+        ORDER BY 1;";
+
+        $sentencia = $this->db->prepare($consulta);
+
+        $sentencia->execute();
+
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+
+        return ($resultados);
+    }
+
     public function getCuentasxCobrar()
     {
         $consulta = "SELECT (SUM((cantidad*pvp))) AS subtotal,(SUM((cantidad*pvp)*0.12)) AS iva,(SUM((cantidad*pvp)*1.12)) AS total

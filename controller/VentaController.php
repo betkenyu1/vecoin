@@ -416,6 +416,40 @@ class VentaController
             echo json_encode($vacio);
         }
     }
+    
+    public function get_ventas_anuales()
+
+    {
+
+        $exito = $this->vta->getVentasAnuales();
+
+        if ($exito) {
+
+            echo json_encode($exito);
+        } else {
+
+            $vacio = array('');
+
+            echo json_encode($vacio);
+        }
+    }
+
+    public function get_ventas_mensuales()
+
+    {
+
+        $exito = $this->vta->getVentasMensuales();
+
+        if ($exito) {
+
+            echo json_encode($exito);
+        } else {
+
+            $vacio = array('');
+
+            echo json_encode($vacio);
+        }
+    }
 
     public function get_cuentas_x_cobrar()
 

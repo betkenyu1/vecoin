@@ -511,6 +511,37 @@ if ($_SESSION["user"] === null) {
 						</div>
 					<?php } ?>
 
+					
+
+					<?php if ($IdRol == 1 || $IdRol == 3 || $IdRol == 4) { ?>
+						<div class="menu-item has-sub">
+							<a href="javascript:;" class="menu-link">
+								<div class="menu-icon">
+									<i class="material-icons">shopping_cart</i>
+								</div>
+								<div class="menu-text">Ventas</div>
+								<div class="menu-caret"></div>
+							</a>
+
+							<div class="menu-submenu">
+								<div class="menu-item">
+									<a href="index.php?c=Venta&a=gestion_ventas" class="menu-link">
+										<div class="menu-text">Facturas</div>
+									</a>
+								</div>
+								<div class="menu-item">
+									<a href="index.php?c=Venta&a=gestion_ncredito" class="menu-link">
+										<div class="menu-text">Notas de crédito</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					<?php } ?>
+					<hr class="p-0 m-0">
+					<hr class="p-0 m-0">
+					<hr class="p-0 m-0">
+					<hr class="p-0 m-0">
+					<hr class="p-0 m-0">
 					<div class="menu-item has-sub">
 						<a href="javascript:;" class="menu-link">
 							<div class="menu-icon">
@@ -543,31 +574,6 @@ if ($_SESSION["user"] === null) {
 							</div>
 						</div>
 					</div>
-
-					<?php if ($IdRol == 1 || $IdRol == 3 || $IdRol == 4) { ?>
-						<div class="menu-item has-sub">
-							<a href="javascript:;" class="menu-link">
-								<div class="menu-icon">
-									<i class="material-icons">shopping_cart</i>
-								</div>
-								<div class="menu-text">Ventas</div>
-								<div class="menu-caret"></div>
-							</a>
-
-							<div class="menu-submenu">
-								<div class="menu-item">
-									<a href="index.php?c=Venta&a=gestion_ventas" class="menu-link">
-										<div class="menu-text">Facturas</div>
-									</a>
-								</div>
-								<div class="menu-item">
-									<a href="index.php?c=Venta&a=gestion_ncredito" class="menu-link">
-										<div class="menu-text">Notas de crédito</div>
-									</a>
-								</div>
-							</div>
-						</div>
-					<?php } ?>
 					<!--FIN MENU AFUERA-->
 					<div class="menu-item d-flex">
 						<a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i class="fa fa-angle-double-left"></i></a>

@@ -386,7 +386,7 @@ class VentaModel
         )
         UNION
         (
-        SELECT YEAR(CV.fecha) AS fecha,IFNULL((SUM((cantidad*pvp)*1.12)),'0') AS total
+        SELECT YEAR(CV.fecha) AS fecha,IFNULL((SUM((cantidad*pvp))),'0') AS total
         FROM det_venta DV 
         INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
         WHERE CV.id_estado NOT LIKE (2) AND CV.fecha BETWEEN ('2022-10-01') AND ('2022-12-31')
@@ -408,7 +408,7 @@ class VentaModel
         WHERE tipo=1
         UNION
         SELECT CV.fecha,CONCAT(ELT(MONTH(CV.fecha), 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),' ',YEAR(CV.fecha)) AS mes
-        ,IFNULL((SUM((cantidad*pvp)*1.12)),'0') AS total
+        ,IFNULL((SUM((cantidad*pvp))),'0') AS total
         FROM det_venta DV 
         INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
         WHERE CV.id_estado NOT LIKE (2) AND CV.fecha BETWEEN ('2022-10-01') AND ('2022-12-31')

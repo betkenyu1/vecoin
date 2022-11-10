@@ -102,7 +102,7 @@ if ($_SESSION["user"] === null) {
 					<span class="icon-bar"></span>
 				</button>
 				<a href="index.php?c=Index&a=home" class="navbar-brand">
-					<?php echo $Empresa; ?>
+					VECOIN Cía. Ltda.
 				</a>
 			</div>
 			<!-- END navbar-header -->

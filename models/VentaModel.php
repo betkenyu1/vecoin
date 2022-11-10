@@ -1,447 +1,189 @@
 <?php
-
 include_once 'config/conbd.php';
-
 class VentaModel
-
 {
-
     private $db;
 
-
-
     public function __construct()
-
     {
-
         $this->db = Conexion::getConexion();
     }
-
     public function getStockVenta()
-
     {
-
         $consulta = "SELECT ST.id_stock,C.producto FROM stock ST
-
         INNER JOIN productos P ON (ST.id_producto = P.id_producto)
-
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
-    public function EliminarOrden($IdOrden)
-    {
-        $consulta = "UPDATE cab_osalida SET id_estado = 2
-        WHERE id_secuencial = '$IdOrden'";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-            return false;
-        }
-        return true;
-    }
-
     public function getOSalidaProductos()
-
     {
-
         $consulta = "SELECT OS.id_det_osalida,CO.id_secuencial,DATE_FORMAT(CO.fecha_osalida ,'%d-%m-%Y')AS fecha,CO.secuencial,C.producto,
-
         UM.umedida,B.bodega,OS.cantidad,OS.pvp
-
-        FROM det_osalida OS
-
-        INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
-
-        INNER JOIN productos P ON (OS.id_producto = P.id_producto)
-
-        INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
-
-        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-
-        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
-
-        WHERE OS.id_estado =1";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-    public function idsecu_ordensalida()
-    {
-        $consulta = "SELECT OS.id_cabsalida,OS.id_secuencial,DATE_FORMAT(OS.fecha_osalida ,'%d-%m-%Y')AS fecha,OS.secuencial, OS.observacion
-
-    FROM cab_osalida OS
-
-    WHERE OS.id_estado =1";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-    public function GetOrdSalSecuencial($IdSecuencial)
-    {
-        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,UM.umedida,B.bodega,OS.cantidad,OS.pvp
         FROM det_osalida OS
         INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
         INNER JOIN productos P ON (OS.id_producto = P.id_producto)
         INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
-        WHERE OS.id_secuencial = '$IdSecuencial'";
+        WHERE OS.id_estado =1;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
         return $resultados;
     }
     public function getDetOSalida($IdDetOSalida)
-
     {
-
         $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
-
-        UM.umedida,B.bodega,OS.cantidad,OS.pvp,CO.id_secuencial
-
+        UM.umedida,B.bodega,OS.cantidad,OS.pvp
         FROM det_osalida OS
-
         INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
-
         INNER JOIN productos P ON (OS.id_producto = P.id_producto)
-
         INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
-
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
-
         WHERE id_det_osalida = '$IdDetOSalida'";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     public function getUltimaFactura()
-
     {
-
-        $consulta = "SELECT MAX(nro_factura) as nro_factura FROM cab_venta;";
-
+        $consulta = "SELECT OS.id_det_osalida,CO.fecha,CO.secuencial,P.id_producto,C.producto,
+        UM.umedida,B.bodega,OS.cantidad,OS.pvp
+        FROM det_osalida OS
+        INNER JOIN cab_osalida CO ON (OS.id_secuencial = CO.id_secuencial)
+        INNER JOIN productos P ON (OS.id_producto = P.id_producto)
+        INNER JOIN unidad_medida UM ON (P.id_umedida = UM.id_umedida)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
+        WHERE id_det_osalida = '$'";
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     public function ExisteRegistroCabVenta($NroFactura)
-
     {
-
         $consulta = "SELECT id_cabventa FROM cab_venta
-
         WHERE nro_factura = '$NroFactura'";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
-    public function RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario, $IdSecuencial)
-
+    public function RegistroCabVenta($Fecha, $FechaFactura, $NroFactura, $IdCliente, $IdUsuario)
     {
-
-        $consulta = "INSERT INTO cab_venta(freg,fecha,nro_factura,id_cliente,id_usuario,id_orden_salida)
-
-        VALUES(:freg,:fecha,:nro_factura,:id_cliente,:id_usuario,:id_orden_salida)";
-
+        $consulta = "INSERT INTO cab_venta(freg,fecha,nro_factura,id_cliente,id_usuario)
+        VALUES(:freg,:fecha,:nro_factura,:id_cliente,:id_usuario)";
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->bindParam(':freg', $Fecha);
-
         $sentencia->bindParam(':fecha', $FechaFactura);
-
         $sentencia->bindParam(':nro_factura', $NroFactura);
-
         $sentencia->bindParam(':id_cliente', $IdCliente);
-
         $sentencia->bindParam(':id_usuario', $IdUsuario);
-
-        $sentencia->bindParam(':id_orden_salida', $IdSecuencial);
-
-
         $sentencia->execute();
-
         if ($sentencia->rowCount() < -0) {
-
             return false;
         }
-
         return true;
     }
-
     public function RegistroDetVenta($IdCabVenta, $IdProducto, $Cantidad, $Precio)
-
     {
-
         $consulta = "INSERT INTO det_venta(id_cabventa,id_producto,cantidad,pvp)
-
         VALUES(:id_cabventa,:id_producto,:cantidad,:pvp)";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->bindParam(':id_cabventa', $IdCabVenta);
-
         $sentencia->bindParam(':id_producto', $IdProducto);
-
         $sentencia->bindParam(':cantidad', $Cantidad);
-
         $sentencia->bindParam(':pvp', $Precio);
-
         $sentencia->execute();
-
         if ($sentencia->rowCount() < -0) {
-
             return false;
         }
-
         return true;
     }
-
     public function ActualizaDetOSalida($IdDetPSalida)
-
     {
-
         $consulta = "UPDATE det_osalida SET id_estado =2
-
         WHERE id_det_osalida = '$IdDetPSalida'";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         if ($sentencia->rowCount() < -0) {
-
             return false;
         }
-
         return true;
     }
-
     public function GetVentasAdministrador()
-
     {
-
         $consulta = "SELECT CONCAT(E.Nombres,' ',E.Apellidos) AS Empleado,SUM(DV.pvp) AS PVP,R.rol
-
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-
         INNER JOIN usuarios U ON (CV.id_usuario=U.id_usuario)
-
         INNER JOIN empleados E ON (U.id_empleado=E.id_empleado)
-
         INNER JOIN roles R ON (U.id_rol=R.id_rol)
-
         WHERE U.id_rol =1 AND CV.id_estado =1";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     public function GetVentasVendedor()
-
     {
-
         $consulta = "SELECT CONCAT(E.Nombres,' ',E.Apellidos) AS Empleado,SUM(DV.pvp) AS PVP,R.rol
-
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-
         INNER JOIN usuarios U ON (CV.id_usuario=U.id_usuario)
-
         INNER JOIN empleados E ON (U.id_empleado=E.id_empleado)
-
         INNER JOIN roles R ON (U.id_rol=R.id_rol)
-
         WHERE U.id_rol =3 AND DV.id_estado =1";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     public function GetVentasParams($IdFDesde, $IdFHasta)
-
     {
-
         $consulta = "SELECT DV.pvp AS TotalVentas
-
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
-
         WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND CV.id_estado=1";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     public function GetPagosParams($IdFDesde, $IdFHasta)
-
     {
-
         $consulta = "SELECT DV.pvp AS TotalPagos
-
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
-
         WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND CV.id_estado=2";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     public function GetVentasChartsParams($IdFDesde, $IdFHasta)
-
     {
-
         $consulta = "SELECT CV.fecha,DV.pvp AS PVP
-
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
-
         WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND DV.id_estado =1";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-
-    public function getVentasAnuales()
-    {
-        $consulta = "SELECT fecha,SUM(total) AS total FROM 
-        (
-        (
-        SELECT YEAR(fecha) AS fecha, total FROM ventas_old
-        WHERE tipo=2
-        )
-        UNION
-        (
-        SELECT YEAR(CV.fecha) AS fecha,IFNULL((SUM((cantidad*pvp))),'0') AS total
-        FROM det_venta DV 
-        INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
-        WHERE CV.id_estado NOT LIKE (2) AND CV.fecha BETWEEN ('2022-10-01') AND ('2022-12-31')
-        )
-        ) tabla
-        GROUP BY fecha;";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-    public function getVentasMensuales()
-    {
-        $consulta = "SELECT fecha,CONCAT(ELT(MONTH(fecha), 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),' ',YEAR(fecha)) AS mes, total FROM ventas_old
-        WHERE tipo=1
-        UNION
-        SELECT CV.fecha,CONCAT(ELT(MONTH(CV.fecha), 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'),' ',YEAR(CV.fecha)) AS mes
-        ,IFNULL((SUM((cantidad*pvp))),'0') AS total
-        FROM det_venta DV 
-        INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
-        WHERE CV.id_estado NOT LIKE (2) AND CV.fecha BETWEEN ('2022-10-01') AND ('2022-12-31')
-        GROUP BY MONTH(CV.fecha)
-        ORDER BY 1;";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return ($resultados);
-    }
-
-    public function getCuentasxCobrar()
-    {
-        $consulta = "SELECT (SUM((cantidad*pvp))) AS subtotal,(SUM((cantidad*pvp)*0.12)) AS iva,(SUM((cantidad*pvp)*1.12)) AS total
-        FROM det_venta DV 
-        INNER JOIN cab_venta CV ON (CV.id_cabventa=DV.id_cabventa)
-        WHERE CV.id_estado=1;";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
     public function getProductoMasVendido()
     {
-        $consulta = "SELECT CT.producto AS Producto,SUM(DV.cantidad) AS Cantidad,SUM(DV.pvp*DV.cantidad) AS Valor
+        $consulta = "SELECT CT.producto AS Producto,SUM(DV.cantidad) AS Cantidad,SUM(DV.pvp) AS Valor
         FROM det_venta DV
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
         INNER JOIN productos P ON (DV.id_producto=P.id_producto)
@@ -449,393 +191,185 @@ class VentaModel
         WHERE DV.id_estado =1
         GROUP BY P.id_producto
         ORDER BY SUM(DV.cantidad) DESC
-        LIMIT 0 , 1;";
-
+        LIMIT 0 , 1";
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     public function GetCtasxCobrar($IdFDesde, $IdFHasta)
-
     {
-
         $consulta = "SELECT CV.nro_factura AS NroFactura,DV.pvp AS Valor
-
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa=CV.id_cabventa)
-
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
-
         WHERE CV.fecha BETWEEN '$IdFDesde' AND '$IdFHasta' AND CV.id_estado=1";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
     // NOTA DE CREDITO
-
     public function getListaVentas()
-
     {
-
-        $consulta = "SELECT DV.id_detventa,CV.id_cabventa, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS fecha,CV.nro_factura, CL.razon_social,
-        SUM(DV.cantidad*DV.pvp) AS pvp, SUM((DV.cantidad*DV.pvp)*0.12) AS iva,SUM((DV.cantidad*DV.pvp)*1.12) AS total,
-        CV.id_estado AS estado_pago,DV.id_estado AS nota,C.producto
-        FROM cab_venta CV 
-        INNER JOIN det_venta DV ON DV.id_cabventa=CV.id_cabventa
-        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
-        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        INNER JOIN clientes CL ON (CL.id_cliente=CV.id_cliente)
-        WHERE CV.id_estado=1
-        AND DV.id_estado =1
-        GROUP BY nro_factura;";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-
-    public function getDetVenta($IdDetVenta)
-
-    {
-
-        $consulta = "SELECT DV.id_detventa,CV.freg,CV.nro_factura,P.id_producto,C.producto,
-
-        DV.cantidad,DV.pvp,CL.id_cliente, CV.id_cabventa
-
-        FROM det_venta DV
-
-        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
-
-        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
-
-        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo) 
-
-        INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)       
-
-        WHERE DV.id_detventa= '$IdDetVenta'";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-
-    public function ExisteRegistroCabNCredito($NroNCredito)
-
-    {
-
-        $consulta = "SELECT id_cabncredito FROM cab_ncredito
-
-        WHERE nro_ncredito = '$NroNCredito'";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-
-    public function RegistroCabNCredito($FReg, $Fecha, $NroNCredito, $NroFactura, $IdCliente, $IdUsuario)
-
-    {
-
-        $consulta = "INSERT INTO cab_ncredito(freg,fecha,nro_ncredito,nro_factura,id_cliente,id_usuario)
-
-        VALUES(:freg,:fecha,:nro_ncredito,:nro_factura,:id_cliente,:id_usuario)";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->bindParam(':freg', $FReg);
-
-        $sentencia->bindParam(':fecha', $Fecha);
-
-        $sentencia->bindParam(':nro_ncredito', $NroNCredito);
-
-        $sentencia->bindParam(':nro_factura', $NroFactura);
-
-        $sentencia->bindParam(':id_cliente', $IdCliente);
-
-        $sentencia->bindParam(':id_usuario', $IdUsuario);
-
-        $sentencia->execute();
-
-        if ($sentencia->rowCount() < -0) {
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function RegistroDetNCredito($IdCabNCredito, $IdProducto, $Cantidad, $Precio)
-
-    {
-
-        $consulta = "INSERT INTO det_ncredito(id_cabncredito,id_producto,cantidad,pvp)
-
-        VALUES(:id_cabncredito,:id_producto,:cantidad,:pvp)";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->bindParam(':id_cabncredito', $IdCabNCredito);
-
-        $sentencia->bindParam(':id_producto', $IdProducto);
-
-        $sentencia->bindParam(':cantidad', $Cantidad);
-
-        $sentencia->bindParam(':pvp', $Precio);
-
-        $sentencia->execute();
-
-        if ($sentencia->rowCount() < -0) {
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function ActualizaEstadoDetVenta($IdDetVenta, $IdCabVenta)
-
-    {
-
-        $consulta = "UPDATE det_venta SET id_estado =2 WHERE id_detventa = '$IdDetVenta'";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $consulta = "UPDATE cab_venta SET id_estado =2 WHERE id_cabventa = '$IdCabVenta'";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        if ($sentencia->rowCount() < -0) {
-
-            return false;
-        }
-
-        return true;
-    }
-
-    // PAGO
-
-    // NOTA DE CREDITO
-
-    public function getListaVentaPagos()
-
-    {
-
-        /*$consulta = "SELECT DV.id_detventa,
-
+        $consulta = "SELECT DV.id_detventa,
         CV.id_cabventa,DATE_FORMAT( CV.fecha,'%d-%m-%Y')  AS fecha,CV.nro_factura,C.producto,
-
         DV.cantidad,DV.pvp, CL.razon_social
-
         FROM det_venta DV
-
         INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
-
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
-
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-
         INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)
-
+        WHERE DV.id_estado =1
+        AND CV.id_estado=1;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getDetVenta($IdDetVenta)
+    {
+        $consulta = "SELECT DV.id_detventa,CV.freg,CV.nro_factura,P.id_producto,C.producto,
+        DV.cantidad,DV.pvp,CL.id_cliente
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
+        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo) 
+        INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)       
+        WHERE DV.id_detventa= '$IdDetVenta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function ExisteRegistroCabNCredito($NroNCredito)
+    {
+        $consulta = "SELECT id_cabncredito FROM cab_ncredito
+        WHERE nro_ncredito = '$NroNCredito'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function RegistroCabNCredito($FReg, $Fecha, $NroNCredito, $NroFactura, $IdCliente, $IdUsuario)
+    {
+        $consulta = "INSERT INTO cab_ncredito(freg,fecha,nro_ncredito,nro_factura,id_cliente,id_usuario)
+        VALUES(:freg,:fecha,:nro_ncredito,:nro_factura,:id_cliente,:id_usuario)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':freg', $FReg);
+        $sentencia->bindParam(':fecha', $Fecha);
+        $sentencia->bindParam(':nro_ncredito', $NroNCredito);
+        $sentencia->bindParam(':nro_factura', $NroFactura);
+        $sentencia->bindParam(':id_cliente', $IdCliente);
+        $sentencia->bindParam(':id_usuario', $IdUsuario);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function RegistroDetNCredito($IdCabNCredito, $IdProducto, $Cantidad, $Precio)
+    {
+        $consulta = "INSERT INTO det_ncredito(id_cabncredito,id_producto,cantidad,pvp)
+        VALUES(:id_cabncredito,:id_producto,:cantidad,:pvp)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':id_cabncredito', $IdCabNCredito);
+        $sentencia->bindParam(':id_producto', $IdProducto);
+        $sentencia->bindParam(':cantidad', $Cantidad);
+        $sentencia->bindParam(':pvp', $Precio);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function ActualizaEstadoDetVenta($IdDetVenta)
+    {
+        $consulta = "UPDATE det_venta SET id_estado =2
+        WHERE id_detventa = '$IdDetVenta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    // PAGO
+    // NOTA DE CREDITO
+    public function getListaVentaPagos()
+    {
+        /*$consulta = "SELECT DV.id_detventa,
+        CV.id_cabventa,DATE_FORMAT( CV.fecha,'%d-%m-%Y')  AS fecha,CV.nro_factura,C.producto,
+        DV.cantidad,DV.pvp, CL.razon_social
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
+        INNER JOIN productos P ON (DV.id_producto = P.id_producto)
+        INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
+        INNER JOIN clientes CL ON (CL.id_cliente = CV.id_cliente)
         WHERE DV.id_estado =1";*/
-
-        $consulta = "SELECT DV.id_detventa,CV.id_cabventa AS id_1, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS freg,
-        CV.nro_factura, CL.razon_social,
-        SUM(DV.cantidad*DV.pvp) AS subtotal, 
-        SUM((DV.cantidad*DV.pvp)*0.12) AS iva,
-        SUM((DV.cantidad*DV.pvp)*1.12) AS total,
-        IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00) AS abonos,
-        CV.id_estado AS estado_pago,
-        DV.id_estado AS nota
+        $consulta = "SELECT DV.id_detventa,CV.id_cabventa, DATE_FORMAT( CV.fecha,'%d-%m-%Y') AS freg,CV.nro_factura, (DV.cantidad*DV.pvp) AS subtotal, ((DV.cantidad*DV.pvp)*0.12) AS iva,
+        ((DV.cantidad*DV.pvp)*1.12) AS total,CV.id_estado AS estado_pago,DV.id_estado AS nota,C.producto,DV.cantidad,DV.pvp
         FROM cab_venta CV 
         INNER JOIN det_venta DV ON DV.id_cabventa=CV.id_cabventa
         INNER JOIN productos P ON (DV.id_producto = P.id_producto)
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
-        INNER JOIN clientes CL ON (CL.id_cliente=CV.id_cliente)        
-        WHERE CV.id_estado=1 
-        GROUP BY nro_factura        
-        HAVING abonos!=total";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-
-    public function getSumaFactura($IdCabVenta)
-
-    {
-
-        $consulta = "SELECT CV.nro_factura,CV.id_cabventa AS id_1,CL.razon_social AS Cliente,
-        ABS (((SUM((DV.cantidad*DV.pvp)*1.12))-(IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00)))) AS Valor
-
-        FROM det_venta DV
-
-        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
-
-        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
-
-        WHERE CV.id_cabventa = '$IdCabVenta'";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
-        return $resultados;
-    }
-
-    public function RegistroPago($FReg, $Fecha, $IdCabVenta, $NroFactura, $Valor, $IdUsuario)
-
-    {
-
-        $consulta = "INSERT INTO pagos(freg,fecha,id_cabventa,nro_factura,valor,id_usuario)
-
-        VALUES(:freg,:fecha,:id_cabventa,:nro_factura,:valor,:id_usuario)";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->bindParam(':freg', $FReg);
-
-        $sentencia->bindParam(':fecha', $Fecha);
-
-        $sentencia->bindParam(':id_cabventa', $IdCabVenta);
-
-        $sentencia->bindParam(':nro_factura', $NroFactura);
-
-        $sentencia->bindParam(':valor', $Valor);
-
-        $sentencia->bindParam(':id_usuario', $IdUsuario);
-
-        $sentencia->execute();
-
-        if ($sentencia->rowCount() < -0) {
-
-            return false;
-        }
-
-        return true;
-    }
-
-    public function ActualizaEstadoCabVenta($IdCabVenta)
-
-    {
-
-        $consulta = "UPDATE cab_venta SET id_estado =3
-
-        WHERE id_cabventa = '$IdCabVenta'";
-
-        $sentencia = $this->db->prepare($consulta);
-
-        $sentencia->execute();
-
-        if ($sentencia->rowCount() < -0) {
-
-            return false;
-        }
-
-        return true;
-    }
-
-    //LISTA REPORTES
-
-    public function getRepCtasXCobrar()
-
-    {
-
-        $consulta = "SELECT CV.id_cabventa AS id_1,
-        DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,
-        CL.razon_social AS Cliente,CV.nro_factura,EV.estado, CV.id_estado, SUM((DV.cantidad*DV.pvp)*1.12) AS monto,
-        ABS (((SUM((DV.cantidad*DV.pvp)*1.12))-(IFNULL((SELECT SUM(valor) FROM pagos WHERE id_cabventa=id_1),0.00)))) AS deuda
-        FROM cab_venta CV
-        INNER JOIN det_venta DV ON (DV.id_cabventa = CV.id_cabventa)
-        INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
-        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
         WHERE CV.id_estado=1
-        GROUP BY nro_factura
-        ORDER BY CL.razon_social, fecha DESC;";
-
+        AND DV.id_estado =1;";
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-
-
-    /****************no hace nada  */
-    public function getRepFactRetenciones()
-
+    public function getSumaFactura($IdCabVenta)
     {
-
-        $consulta = "SELECT CV.id_cabventa AS id,DATE_FORMAT(CV.fecha ,'%d-%m-%Y') AS fecha,CL.razon_social AS Cliente,CV.nro_factura,EV.estado, 
-        (SELECT SUM(ROUND ((DV.pvp*DV.cantidad), 2))) AS subtotal,
-        (SELECT SUM(ROUND ((DV.pvp*DV.cantidad*0.12),2)))AS iva,      
-        (SELECT ROUND (SUM(((DV.pvp*DV.cantidad*0.12)*(CL.porc_ret_iva/100))),2) FROM det_venta DV WHERE DV.id_cabventa=id) AS ret_iva,       
-        (SELECT ROUND (SUM(((DV.pvp*DV.cantidad)*(CL.porc_ret_renta/100))),2) FROM det_venta DV WHERE DV.id_cabventa=id)  AS ret_renta
-        FROM cab_venta CV
+        $consulta = "SELECT CV.nro_factura,CV.id_cabventa,CL.razon_social AS Cliente,SUM(DV.pvp) AS Valor
+        FROM det_venta DV
+        INNER JOIN cab_venta CV ON (DV.id_cabventa = CV.id_cabventa)
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
-        INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)
-        INNER JOIN det_venta DV ON (CV.id_cabventa=DV.id_cabventa)
-        WHERE CV.id_estado =1 OR CV.id_estado=3
-        GROUP BY CV.nro_factura
-        ORDER BY CL.razon_social, CV.nro_factura ASC;";
-
+        WHERE CV.id_cabventa = '$IdCabVenta'";
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
-    /****************no hace nada  */
-
-    public function getRepFactRegistradas()
-
+    public function RegistroPago($FReg, $Fecha, $IdCabVenta, $NroFactura, $Valor, $IdUsuario)
     {
-
+        $consulta = "INSERT INTO pagos(freg,fecha,id_cabventa,nro_factura,valor,id_usuario)
+        VALUES(:freg,:fecha,:id_cabventa,:nro_factura,:valor,:id_usuario)";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->bindParam(':freg', $FReg);
+        $sentencia->bindParam(':fecha', $Fecha);
+        $sentencia->bindParam(':id_cabventa', $IdCabVenta);
+        $sentencia->bindParam(':nro_factura', $NroFactura);
+        $sentencia->bindParam(':valor', $Valor);
+        $sentencia->bindParam(':id_usuario', $IdUsuario);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    public function ActualizaEstadoCabVenta($IdCabVenta)
+    {
+        $consulta = "UPDATE cab_venta SET id_estado =3
+        WHERE id_cabventa = '$IdCabVenta'";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        if ($sentencia->rowCount() < -0) {
+            return false;
+        }
+        return true;
+    }
+    //LISTA REPORTES
+    public function getRepCtasXCobrar()
+    {
         $consulta = "SELECT CV.id_cabventa,CV.freg,CL.razon_social AS Cliente,CV.nro_factura,EV.estado
-
         FROM cab_venta CV
-
         INNER JOIN clientes CL ON (CV.id_cliente=CL.id_cliente)
-
         INNER JOIN estado_ventas EV ON (CV.id_estado=EV.id_estado)";
-
         $sentencia = $this->db->prepare($consulta);
-
         $sentencia->execute();
-
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-
         return $resultados;
     }
 }

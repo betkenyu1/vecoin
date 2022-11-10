@@ -422,10 +422,10 @@ function validarCorrecion(evt) {
 /********** FIN VALIDACIONES **********/
 function getListaEmpleados() {
   var html = "";
-  html += '<div class="cerrar-emple">';
+  html += '<div style="overflow: scroll" class="cerrar-emple">';
+  html += '<div class="">';
   html += '<div class="note-content">';
-  html +=
-    '<table id="data-table-select"  class="table table-striped table-bordered align-middle" style="width:100%">';
+  html += '<table id="data-table-select" class="table table-striped table-bordered align-middle ">';
   html += "<thead>";
   html += "<tr>";
   html += '<th width="1%"></th>';
@@ -474,9 +474,10 @@ function getListaEmpleados() {
       html += "</table>";
       html += "</div>";
       html += "</div>";
+      html += "</div>";
       $("#lista-empleados").html(html);
       $("#data-table-select").DataTable({
-        language: { url: "./assets/idioma-espaniol/datatable-espaniol.json" },
+        "language": { "url": "./assets/idioma-espaniol/datatable-espaniol.json" },
         select: false,
         responsive: true,
       });
@@ -497,8 +498,7 @@ function setEmpleados() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Empresa Afiliada:</b> </br>';
-  html +=
-    '<select class="default-select2 form-control" name="IdEmpresa" id="IdEmpresa"></select>';
+  html += '<select class="default-select2 form-control" name="IdEmpresa" id="IdEmpresa"></select>';
   html += '<div id="alert-emp"></div>';
   html += "</div>";
   html += "</div>";
@@ -515,8 +515,7 @@ function setEmpleados() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Segundo nombre:</b> </br>';
-  html +=
-    '<input type="text" onkeypress="return validarSegundoNombre(event)" placeholder="Ingrese Segundo Nombre" class="form-control" id="IdNombre_2">';
+  html += '<input type="text" onkeypress="return validarSegundoNombre(event)" placeholder="Ingrese Segundo Nombre" class="form-control" id="IdNombre_2">';
   html += '<div id="alert-nom2"></div>';
   html += "</div>";
   html += "</div>";
@@ -524,8 +523,7 @@ function setEmpleados() {
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
   html += '<b style="color: #000000;">Primer Apellido:</b> </br>';
-  html +=
-    '<input type="text" onkeypress="return validarPrimerApellido(event)" placeholder="Ingrese Primer Apellido" class="form-control" id="IdApellido_1">';
+  html += '<input type="text" onkeypress="return validarPrimerApellido(event)" placeholder="Ingrese Primer Apellido" class="form-control" id="IdApellido_1">';
   html += '<div id="alert-ape1"></div>';
   html += "</div>";
   html += "</div>";
@@ -567,10 +565,8 @@ function setEmpleados() {
   html += "</div>";
 
   html += '<div class="text-center">';
-  html +=
-    '<a class="btn btn-outline-danger" onclick="CerrarNuevoEmpleado();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
-  html +=
-    '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarEmpleado();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
+  html += '<a class="btn btn-outline-danger" onclick="CerrarNuevoEmpleado();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
+  html += '&nbsp;<a class="btn btn-outline-primary" title="Registrar" onclick="getGuardarEmpleado();"><i class="fa-solid fa-save" aria-hidden="true"></i> Registrar</a>';
   html += "</div>";
 
   html += "</div>";
@@ -843,15 +839,6 @@ function setModificaEmpleado(id_empleado) {
 
   html += '<div class="col-md-6">';
   html += '<div class="mb-10px">';
-  html += '<b style="color: #000000;">Estado:</b> </br>';
-  html +=
-    '<select class="default-select2 form-control" name="IdEstado" id="IdEstado"></select>';
-  html += '<div id="alert-es"></div>';
-  html += "</div>";
-  html += "</div>";
-
-  html += '<div class="col-md-6">';
-  html += '<div class="mb-10px">';
   html += '<input type="hidden" class="form-control" id="IdEmpleado_mod">';
   html += '<b style="color: #000000;">Primer nombre:</b> </br>';
   html +=
@@ -914,6 +901,14 @@ function setModificaEmpleado(id_empleado) {
   html += "</div>";
   html += "</div>";
 
+  html += '<div class="col-md-6">';
+  html += '<div class="mb-10px">';
+  html += '<b style="color: #000000;">Estado:</b> </br>';
+  html += '<select class="default-select2 form-control" name="IdEstado" id="IdEstado"></select>';
+  html += '<div id="alert-es"></div>';
+  html += '</div>';
+  html += '</div>';
+
   html += '<div class="text-center">';
   html +=
     '<a class="btn btn-outline-danger" onclick="setCerrarModificaEmpleado();" title="Cerrar"><i class="fa-solid fa-cancel" aria-hidden="true"></i> Cerrar</a>';
@@ -940,11 +935,11 @@ function setModificaEmpleado(id_empleado) {
       },
     },
   });
+  getEmpresasActivasMod();
+  getEstadosModificar();
   getPrepareModificarEmpleado(id_empleado);
 }
 function getPrepareModificarEmpleado(id_empleado) {
-  getEmpresasActivasMod();
-  getEstadosModificar();
   $.ajax({
     type: "GET",
     dataType: "json",
@@ -953,6 +948,8 @@ function getPrepareModificarEmpleado(id_empleado) {
     success: function (response) {
       $.each(response, function (key, value) {
         $("#IdEmpleado_mod").val(value.id_empleado);
+        $("#IdEmpresaM").val(value.id_empresa).trigger('change');
+        $("#IdEstado").val(value.id_estado).trigger('change');
         $("#IdNombre_1_mod").val(value.nombres);
         $("#IdNombre_2_mod").val(value.nombres_2);
         $("#IdApellido_1_mod").val(value.apellidos);
@@ -960,46 +957,21 @@ function getPrepareModificarEmpleado(id_empleado) {
         $("#IdDireccion_mod").val(value.direccion);
         $("#IdTelefono_mod").val(value.telefono);
         $("#IdEmail_mod").val(value.email);
+
       });
     },
   });
-  if ($("#IdEmpresaM").hasClass("select2-hidden-accessible")) {
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: "index.php?c=Admin&a=get_empleado_id",
-      data: "IdEmpleado=" + id_empleado,
-      success: function (response) {
-        $.each(response, function (key, value) {
-          $("#IdEmpresaM").val(value.id_empresa).trigger("change");
-        });
-      },
-    });
-  }
-  if ($("#IdEstado").hasClass("select2-hidden-accessible")) {
-    $.ajax({
-      type: "GET",
-      dataType: "json",
-      url: "index.php?c=Admin&a=get_empleado_id",
-      data: "IdEmpleado=" + id_empleado,
-      success: function (response) {
-        $.each(response, function (key, value) {
-          $("#IdEstado").val(value.id_estado).trigger("change");
-        });
-      },
-    });
-  }
 }
 
 function getModificarEmpleado() {
   var html = "";
-  if ($("#IdEmpresaM").val() == 0) {
+  if ($('#IdEmpresaM').val() == 0) {
     html += '<div class="alert alert-danger">';
-    html += "*Campo requerido";
-    html += "</div>";
+    html += '*Campo requerido';
+    html += '</div>';
     $("#alert-emp").html(html);
     $("#alert-emp").fadeIn(500);
-    $("#IdEmpresaM").focus();
+    $('#IdEmpresaM').focus();
     return false;
   } else {
     setTimeout(function () {
@@ -1134,17 +1106,15 @@ function getModificarEmpleado() {
     }, 0);
   }
 
-  if (
-    $("#IdEmpresaM").val() != 0 &&
-    $("#IdNombre_1_mod").val() != "" &&
-    $("#IdNombre_2_mod").val() != "" &&
-    $("#IdApellido_1_mod").val() != "" &&
-    $("#IdApellido_2_mod").val() != "" &&
-    $("#IdDireccion_mod").val() != "" &&
-    $("#IdTelefono_mod").val() != "" &&
-    $("#IdEmail_mod").val() != "" &&
-    $("#IdEstado").val() != 0
-  ) {
+  if ($('#IdEmpresaM').val() != 0 &&
+    $('#IdNombre_1_mod').val() != '' &&
+    $('#IdNombre_2_mod').val() != '' &&
+    $('#IdApellido_1_mod').val() != '' &&
+    $('#IdApellido_2_mod').val() != '' &&
+    $('#IdDireccion_mod').val() != '' &&
+    $('#IdTelefono_mod').val() != '' &&
+    $('#IdEmail_mod').val() != '' &&
+    $('#IdEstado').val() != 0) {
     var idemple = $("#IdEmpleado_mod").val();
     var idempre = $("#IdEmpresaM").val();
     var nom1 = $("#IdNombre_1_mod").val();
@@ -1218,7 +1188,7 @@ function getEliminarEmpleado(id_empleado) {
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
     cancelButtonText: "Cancelar",
-    confirmButtonText: "Confirmar",
+    confirmButtonText: "Confirmar"
   }).then((result) => {
     if (result.isConfirmed) {
       $.ajax({

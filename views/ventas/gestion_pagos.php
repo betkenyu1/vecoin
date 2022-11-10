@@ -11,8 +11,6 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
-            <a href="#" onclick="getReporteCtasXCobrar();" class="btn btn-danger"><i class="fa-solid fa-file-pdf" aria-hidden="true"></i> Generar Lista de Cobranzas</a>
-            <hr>
             <div id="lista-ventas"></div>
             <br>
             <div id="n-npago"></div>

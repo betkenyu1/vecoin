@@ -1,34 +1,36 @@
+
+
 function getSecuencial() {
   $.ajax({
     type: "GET",
-    url: "index.php?c=Admin&a=get_secuencial",
+    url: 'index.php?c=Admin&a=get_secuencial',
     success: function (response) {
       response = JSON.parse(response);
       $.each(response, function (key, value) {
-        $("#IdSecuenc").val(value.id_secuencial);
-        var n = ("000000000" + value.secuencial).slice(-9);
-        $("#IdSecuencial").val(value.secuencial);
-        $("#IdSecuencia").val(n);
-        $("#IdSecu").text("ORDEN DE ENTRADA NÚMERO: " + n);
+        $('#IdSecuenc').val(value.id_secuencial);
+        var n = ('000000000' + value.secuencial).slice(-9);
+        $('#IdSecuencial').val(value.secuencial);
+        $('#IdSecuencia').val(n);
+        $('#IdSecu').text('ÓRDEN DE ENTRADA NÚMERO: ' + n);
       });
-    },
+    }
   });
 }
 
 function getSecuencialOrdenSalida() {
   $.ajax({
     type: "GET",
-    url: "index.php?c=Admin&a=get_secuencial_orden_salida",
+    url: 'index.php?c=Admin&a=get_secuencial_orden_salida',
     success: function (response) {
       response = JSON.parse(response);
       $.each(response, function (key, value) {
-        $("#IdSecuenc").val(value.id_secuencial);
-        var n = ("000000000" + value.secuencial).slice(-9);
-        $("#IdSecuencial").val(value.secuencial);
-        $("#IdSecuencia").val(n);
-        $("#IdSecu").text("ORDEN DE SALIDA NÚMERO: " + n);
+        $('#IdSecuenc').val(value.id_secuencial);
+        var n = ('000000000' + value.secuencial).slice(-9);
+        $('#IdSecuencial').val(value.secuencial);
+        $('#IdSecuencia').val(n);
+        $('#IdSecu').text('ÓRDEN DE SALIDA NÚMERO: ' + n);
       });
-    },
+    }
   });
 }
 function getEmpresasMod() {
@@ -43,10 +45,10 @@ function getEmpresasMod() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -65,99 +67,16 @@ function getEmpresas() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
   });
 }
-function getPorcentajeRenta() {
-  $("#IdPorRenta").empty();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Admin&a=get_porc_renta",
-    success: function (response) {
-      var $select = $("#IdPorRenta");
-      $select.append('<option value="0">Seleccione...</option>');
-      $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_porc_retenciones +
-            ">" +
-            value.valor +
-            "</option>"
-        );
-      });
-    },
-  });
-}
-function getPorcentajeRentaMod() {
-  $("#IdPorRentaMod").empty();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Admin&a=get_porc_renta",
-    success: function (response) {
-      var $select = $("#IdPorRentaMod");
-      //$select.append('<option value="0">Seleccione...</option>');
-      $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_porc_retenciones +
-            ">" +
-            value.valor +
-            "</option>"
-        );
-      });
-    },
-  });
-}
-function getPorcentajeIVA() {
-  $("#IdPorIVA").empty();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Admin&a=get_porc_IVA",
-    success: function (response) {
-      var $select = $("#IdPorIVA");
-      $select.append('<option value="0">Seleccione...</option>');
-      $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_porc_retenciones +
-            ">" +
-            value.valor +
-            "</option>"
-        );
-      });
-    },
-  });
-}
-function getPorcentajeIVAMod() {
-  $("#IdPorIVAMod").empty();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Admin&a=get_porc_IVA",
-    success: function (response) {
-      var $select = $("#IdPorIVAMod");
-      //$select.append('<option value="0">Seleccione...</option>');
-      $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_porc_retenciones +
-            ">" +
-            value.valor +
-            "</option>"
-        );
-      });
-    },
-  });
-}
+
 function getEmpresasActivas() {
   $("#IdEmpresa").empty();
   $.ajax({
@@ -170,10 +89,10 @@ function getEmpresasActivas() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -188,13 +107,14 @@ function getEmpresasActivasMod() {
     url: "index.php?c=Admin&a=get_empresas_activas",
     success: function (response) {
       var $select = $("#IdEmpresaM");
+      $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empresa +
-            ">" +
-            value.razon_social +
-            "</option>"
+          value.id_empresa +
+          ">" +
+          value.razon_social +
+          "</option>"
         );
       });
     },
@@ -213,52 +133,10 @@ function getEmpleados() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
-        );
-      });
-    },
-  });
-}
-function getEmpleadosSinUsuario() {
-  $("#IdEmpleado").empty();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Admin&a=get_empleados_sin_usuario",
-    success: function (response) {
-      var $select = $("#IdEmpleado");
-      $select.append('<option value="0">Seleccione...</option>');
-      $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
-        );
-      });
-    },
-  });
-}
-function getEmpleadosSinUsuarioMod() {
-  $("#IdEmpleado_mod").empty();
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Admin&a=get_empleados_sin_usuario",
-    success: function (response) {
-      var $select = $("#IdEmpleado_mod");
-      $select.append('<option value="0">Seleccione...</option>');
-      $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -277,10 +155,10 @@ function getEmpleadosModUsuario() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -299,10 +177,10 @@ function getEmpleadosActivos() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -321,10 +199,10 @@ function getEmpleadosActivosModificarUsuario() {
       $.each(response, function (key, value) {
         $select.append(
           "<option value=" +
-            value.id_empleado +
-            ">" +
-            value.Empleados +
-            "</option>"
+          value.id_empleado +
+          ">" +
+          value.Empleados +
+          "</option>"
         );
       });
     },
@@ -376,11 +254,7 @@ function getProveedor() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
         );
       });
     },
@@ -398,11 +272,7 @@ function getProveedorMod() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
         );
       });
     },
@@ -419,11 +289,7 @@ function getProveedorActivoMod() {
       //$select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
         );
       });
     },
@@ -441,30 +307,12 @@ function getProveedorActivo() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_proveedor +
-            ">" +
-            value.proveedor +
-            "</option>"
+          "<option value=" + value.id_proveedor + ">" + value.proveedor + "</option>"
         );
       });
     },
   });
 }
-
-function getUltimaFactura() {
-  $.ajax({
-    type: "GET",
-    dataType: "json",
-    url: "index.php?c=Venta&a=get_ultima_factura",
-    success: function (response) {
-      $.each(response, function (key, value) {
-        $("#IdNroFactura").val(value.nro_factura);
-      });
-    },
-  });
-}
-
 function getCliente() {
   $("#IdCliente").empty();
   $.ajax({
@@ -476,13 +324,7 @@ function getCliente() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_cliente +
-            ">" +
-            value.ruc +
-            " | " +
-            value.razon_social +
-            "</option>"
+          "<option value=" + value.id_cliente + ">" + value.razon_social + "</option>"
         );
       });
     },
@@ -499,11 +341,7 @@ function getCatalogo() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.producto +
-            "</option>"
+          "<option value=" + value.id_catalogo + ">" + value.producto + "</option>"
         );
       });
     },
@@ -521,13 +359,7 @@ function getCatalogoActivosMod() {
       //$select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.codigo +
-            " | " +
-            value.producto +
-            "</option>"
+          "<option value=" + value.id_catalogo + ">" + value.producto + "</option>"
         );
       });
     },
@@ -545,13 +377,7 @@ function getCatalogoActivos() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.codigo +
-            " | " +
-            value.producto +
-            "</option>"
+          "<option value=" + value.id_catalogo + ">" + value.producto + "</option>"
         );
       });
     },
@@ -571,6 +397,7 @@ function getEstados() {
         $select.append(
           "<option value=" + value.id_estado + ">" + value.estado + "</option>"
         );
+
       });
     },
   });
@@ -588,6 +415,7 @@ function getEstadosModificar() {
         $select.append(
           "<option value=" + value.id_estado + ">" + value.estado + "</option>"
         );
+
       });
     },
   });
@@ -596,38 +424,30 @@ function getBodegas() {
   $("#IdBodega").empty();
   $.ajax({
     type: "GET",
-    dataType: "json",
+    dataType: 'json',
     url: "index.php?c=Producto&a=get_bodegas",
     success: function (response) {
-      var $select = $("#IdBodega");
+      var $select = $('#IdBodega');
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" + value.id_bodega + ">" + value.bodega + "</option>"
-        );
+        $select.append('<option value=' + value.id_bodega + '>' + value.bodega + '</option>');
       });
-    },
+    }
   });
 }
 function getUMedidas() {
   $("#IdUMedida").empty();
   $.ajax({
     type: "GET",
-    dataType: "json",
+    dataType: 'json',
     url: "index.php?c=Producto&a=get_umedidas",
     success: function (response) {
-      var $select = $("#IdUMedida");
+      var $select = $('#IdUMedida');
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_umedida +
-            ">" +
-            value.umedida +
-            "</option>"
-        );
+        $select.append('<option value=' + value.id_umedida + '>' + value.umedida + '</option>');
       });
-    },
+    }
   });
 }
 
@@ -635,85 +455,71 @@ function getUMedidasActivasMod() {
   $("#IdUMedidaMod").empty();
   $.ajax({
     type: "GET",
-    dataType: "json",
+    dataType: 'json',
     url: "index.php?c=Producto&a=get_umedidas",
     success: function (response) {
-      var $select = $("#IdUMedidaMod");
+      var $select = $('#IdUMedidaMod');
       //$select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_umedida +
-            ">" +
-            value.umedida +
-            "</option>"
-        );
+        $select.append('<option value=' + value.id_umedida + '>' + value.umedida + '</option>');
       });
-    },
+    }
   });
 }
 
 function CalcularUtilidad() {
-  if ($("#IdPrecio_act").val() != "" && $("#IdUtilidad").val() != "") {
-    var prca = $("#IdPrecio_act").val();
-    var prc = $("#IdUtilidad").val();
-    var utl = Number(parseFloat((prca * prc) / 100)).toFixed(2);
-    $("#IdUtl").val(utl);
+  if ($('#IdPrecio_act').val() != '' && $('#IdUtilidad').val() != '') {
+    var prca = $('#IdPrecio_act').val();
+    var prc = $('#IdUtilidad').val();
+    var utl = Number(parseFloat(prca * prc / 100)).toFixed(2);
+    $('#IdUtl').val(utl);
     r = Number(parseFloat(utl) + parseFloat(prca)).toFixed(2);
-    $("#IdPVP").val(r);
+    $('#IdPVP').val(r);
   } else {
-    $("#IdPVP").val("");
+    $('#IdPVP').val('');
   }
 }
 
 function CalcularUtilidadMod() {
-  if ($("#IdPrecio_actMod").val() != "" && $("#IdUtilidadMod").val() != "") {
-    var prca = $("#IdPrecio_actMod").val();
-    var prc = $("#IdUtilidadMod").val();
-    var utl = Number(parseFloat((prca * prc) / 100)).toFixed(2);
-    $("#IdUtlMod").val(utl);
+  if ($('#IdPrecio_actMod').val() != '' && $('#IdUtilidadMod').val() != '') {
+    var prca = $('#IdPrecio_actMod').val();
+    var prc = $('#IdUtilidadMod').val();
+    var utl = Number(parseFloat(prca * prc / 100)).toFixed(2);
+    $('#IdUtlMod').val(utl);
     r = Number(parseFloat(utl) + parseFloat(prca)).toFixed(2);
-    $("#IdPVPMod").val(r);
+    $('#IdPVPMod').val(r);
   } else {
-    $("#IdPVPMod").val("");
+    $('#IdPVPMod').val('');
   }
 }
 function getBodegasMod() {
   $("#IdBodegaMod").empty();
   $.ajax({
     type: "GET",
-    dataType: "json",
+    dataType: 'json',
     url: "index.php?c=Producto&a=get_bodegas",
     success: function (response) {
-      var $select = $("#IdBodegaMod");
+      var $select = $('#IdBodegaMod');
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" + value.id_bodega + ">" + value.bodega + "</option>"
-        );
+        $select.append('<option value=' + value.id_bodega + '>' + value.bodega + '</option>');
       });
-    },
+    }
   });
 }
 function getUMedidasMod() {
   $("#IdUMedidaMod").empty();
   $.ajax({
     type: "GET",
-    dataType: "json",
+    dataType: 'json',
     url: "index.php?c=Producto&a=get_umedidas",
     success: function (response) {
-      var $select = $("#IdUMedidaMod");
+      var $select = $('#IdUMedidaMod');
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
-        $select.append(
-          "<option value=" +
-            value.id_umedida +
-            ">" +
-            value.umedida +
-            "</option>"
-        );
+        $select.append('<option value=' + value.id_umedida + '>' + value.umedida + '</option>');
       });
-    },
+    }
   });
 }
 
@@ -728,11 +534,7 @@ function getClienteMod() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_cliente +
-            ">" +
-            value.razon_social +
-            "</option>"
+          "<option value=" + value.id_cliente + ">" + value.razon_social + "</option>"
         );
       });
     },
@@ -749,11 +551,7 @@ function getCatalogoMod() {
       $select.append('<option value="0">Seleccione...</option>');
       $.each(response, function (key, value) {
         $select.append(
-          "<option value=" +
-            value.id_catalogo +
-            ">" +
-            value.producto +
-            "</option>"
+          "<option value=" + value.id_catalogo + ">" + value.producto + "</option>"
         );
       });
     },

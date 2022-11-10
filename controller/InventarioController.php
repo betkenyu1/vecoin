@@ -105,26 +105,6 @@ class InventarioController
             echo json_encode($vacio);
         }
     }
-    public function get_det_ord_salida()
-    {
-        $exito = $this->inv->getDetalleOrdenSalida();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
-    }
-    public function get_det_ord_entrda()
-    {
-        $exito = $this->inv->getDetalleOrdenEntrada();
-        if ($exito) {
-            echo json_encode($exito);
-        } else {
-            $vacio = array('');
-            echo json_encode($vacio);
-        }
-    }
 
     public function save_new_orden_entrada()
     {
@@ -138,6 +118,7 @@ class InventarioController
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
         $IdProveedor = strtoupper((isset($_REQUEST['IdProveedor'])) ? $_REQUEST['IdProveedor'] : '');
         $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
+        $IdUMedida = (isset($_REQUEST['IdUMedida'])) ? $_REQUEST['IdUMedida'] : '';
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Observacion = (isset($_REQUEST['Observacion'])) ? $_REQUEST['Observacion'] : '';
         $IdUsuario = $_SESSION['idusuario'];
@@ -151,7 +132,7 @@ class InventarioController
             foreach ($existe as $ex) {
                 $CabIdSecuencial = $ex['id_secuencial'];
             }
-            $exito = $this->inv->RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $Cantidad, $Precio);
+            $exito = $this->inv->RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $IdUMedida, $Cantidad, $Precio);
             if ($exito) {
                 echo 1;
                 $act = $this->inv->getBuscarCantidadProducto($IdProducto);
@@ -192,6 +173,7 @@ class InventarioController
         $IdPercha = (isset($_REQUEST['IdPercha'])) ? $_REQUEST['IdPercha'] : '';
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
         $Cantidad = (isset($_REQUEST['Cantidad'])) ? $_REQUEST['Cantidad'] : '';
+        $IdUMedida = (isset($_REQUEST['IdUMedida'])) ? $_REQUEST['IdUMedida'] : '';
         $Precio = (isset($_REQUEST['Precio'])) ? $_REQUEST['Precio'] : '';
         $Observacion = (isset($_REQUEST['Observacion'])) ? $_REQUEST['Observacion'] : '';
         $IdUsuario = $_SESSION['idusuario'];
@@ -205,10 +187,10 @@ class InventarioController
             foreach ($existe as $ex) {
                 $CabIdSecuencial = $ex['id_secuencial'];
             }
-            $exito = $this->inv->RegistroDetOrdenSalida($CabIdSecuencial, $IdPercha, $IdProducto, $Cantidad, $Precio);
+            $exito = $this->inv->RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida, $IdPercha, $IdProducto, $Cantidad, $Precio);
             if ($exito) {
                 echo 1;
-                $st = $this->inv->RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdProducto, $Cantidad, $Precio);
+                $st = $this->inv->RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdUMedida, $IdProducto, $Cantidad, $Precio);
                 $act = $this->inv->getBuscarCantidadProducto($IdProducto);
                 if ($act) {
                     foreach ($act as $cant) {

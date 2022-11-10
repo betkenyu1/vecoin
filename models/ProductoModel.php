@@ -28,7 +28,7 @@ class ProductoModel
 
     public function getProductosxEmpresa($IdEmpresa)
     {
-        $consulta = "SELECT P.id_producto,EM.razon_social,C.codigo,C.producto,B.bodega,U.umedida,PR.proveedor,
+        $consulta = "SELECT P.id_producto,EM.razon_social,C.codigo,C.producto,B.bodega,U.umedida,
         P.cantidad,P.precio,P.prc_utl,P.pvp,E.estado 
         FROM productos P
         INNER JOIN catalogo C ON (P.id_catalogo = C.id_catalogo)
@@ -36,7 +36,6 @@ class ProductoModel
         INNER JOIN bodegas B ON (P.id_bodega = B.id_bodega)
         INNER JOIN unidad_medida U ON (P.id_umedida = U.id_umedida)
         INNER JOIN estados E ON (P.id_estado = E.id_estado)
-        INNER JOIN proveedores PR ON (PR.id_proveedor=P.id_proveedor)
         WHERE C.id_estado=1 AND C.id_empresa ='$IdEmpresa'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();

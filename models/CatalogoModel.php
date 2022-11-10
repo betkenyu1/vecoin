@@ -27,8 +27,7 @@ class CatalogoModel
         INNER JOIN empresas E ON (C.id_empresa=E.id_empresa)
         INNER JOIN estados ES ON (C.id_estado=ES.id_estado)
         WHERE C.id_empresa = '$IdEmpresa'
-        AND C.id_estado=1
-        ORDER BY C.producto";
+        AND C.id_estado=1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

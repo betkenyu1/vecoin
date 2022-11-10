@@ -13,7 +13,9 @@ include_once 'views/layout/header.php';
             </div>
         </div>
         <div class="panel-body">
+            <hr>
             <div id="new-usuarios"></div>
+
             <div id="lista-usuarios"></div>
             <div id="mod-usuario"></div>
 

@@ -1,0 +1,12 @@
+orden de entrada: alimenta cantidades de productos en bodega
+orden de salida: disminuye cantidades de productos en bodega y 
+alimenta cantidades de productos en stock
+venta: disminuye cantidades de productos en stock
+http://www.mailxmail.com/curso-empresa-costo-materiales/departamento-recepcion-formato-entrada-materiales  **formato de entrada a bodega
+//html += '<td>' + Number(value.monto).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + '</td>';
+
+https://www.youtube.com/watch?v=569i3MSSMWQ&ab_channel=ManuelJ.D%C3%A1vila
+https://www.youtube.com/watch?v=IGo7CUOtCps ***graficas js
+
+https://www.chartjs.org/docs/latest/charts/bar.html
+

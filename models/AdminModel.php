@@ -102,34 +102,9 @@ class AdminModel
         return $resultados;
     }
 
-
-    public function getPorcentajeRenta()
-    {
-        $consulta = "SELECT id_porc_retenciones,valor
-        FROM porc_retenciones
-        WHERE id_tipo_retencion =1
-        AND id_estado=1 /*el 1 es para retenciones de renta */;";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-
-    public function getPorcentajeIVA()
-    {
-        $consulta = "SELECT id_porc_retenciones,valor
-        FROM porc_retenciones
-        WHERE id_tipo_retencion =2
-        AND id_estado=1 /*el 2 es para retenciones de iva */;";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-
     public function getClientes()
     {
-        $consulta = "SELECT id_cliente,ruc, razon_social ,direccion,telefono,email,tiempo_credito,porc_ret_renta,porc_ret_iva,
+        $consulta = "SELECT id_cliente,ruc, razon_social ,direccion,telefono,email,tiempo_credito,
         CASE WHEN id_estado = '1' THEN 'Activo' ELSE 'Inactivo'  END AS id_estado FROM clientes";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -140,8 +115,7 @@ class AdminModel
     public function getClientesActivos()
     {
         $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito FROM clientes
-        where id_estado=1
-        ORDER BY razon_social";
+        where id_estado=1";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -179,16 +153,14 @@ class AdminModel
         return true;
     }
 
-    public function RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $IdPorRenta, $IdPorIVA)
+    public function RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito)
     {
         $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
         $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $DireccionCAPITAL = ucwords(strtolower($Direccion));
         $TiempocreditoCAPITAL = ucwords(strtolower($Tiempocredito));
-        $fIdPorRenta = number_format($IdPorRenta, 2);
-        $fIdPorIVA = number_format($IdPorIVA, 2);
-        $consulta = "INSERT INTO clientes (ruc,razon_social,direccion,telefono,email,tiempo_credito,porc_ret_renta,porc_ret_iva)
-        VALUES(:ruc,:razon_social,:direccion,:telefono,:email,:tiempocredito,:porc_ret_renta,:porc_ret_iva)";
+        $consulta = "INSERT INTO clientes (ruc,razon_social,direccion,telefono,email,tiempo_credito)
+        VALUES(:ruc,:razon_social,:direccion,:telefono,:email,:tiempocredito)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':ruc', $Ruc);
         $sentencia->bindParam(':razon_social', $RazonSocialUPPER);
@@ -196,8 +168,6 @@ class AdminModel
         $sentencia->bindParam(':telefono', $Telefono);
         $sentencia->bindParam(':email', $EmailLOWER);
         $sentencia->bindParam(':tiempocredito', $TiempocreditoCAPITAL);
-        $sentencia->bindParam(':porc_ret_renta', $fIdPorRenta);
-        $sentencia->bindParam(':porc_ret_iva', $fIdPorIVA);
         $sentencia->execute();
         if ($sentencia->rowCount() < -0) {
             return false;
@@ -274,16 +244,14 @@ class AdminModel
         return true;
     }
 
-    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $PorRetRenta, $PorRetIVA, $IdEstado)
+    public function ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $Estado)
     {
         $RazonSocialUPPER = mb_strtoupper($RazonSocial, 'UTF-8');
         $EmailLOWER = mb_strtolower($Email, 'UTF-8');
         $DireccionCAPITAL = ucwords(strtolower($Direccion));
         $TiempocreditoCAPITAL = ucwords(strtolower($Tiempocredito));
         $consulta = "UPDATE clientes SET ruc = '$Ruc', razon_social = '$RazonSocialUPPER', 
-        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', tiempo_credito='$TiempocreditoCAPITAL',
-        porc_ret_renta ='$PorRetRenta',porc_ret_iva='$PorRetIVA',
-        id_estado='$IdEstado'
+        direccion = '$DireccionCAPITAL', telefono = '$Telefono', email = '$EmailLOWER', tiempo_credito='$TiempocreditoCAPITAL',id_estado='$Estado'
         WHERE id_cliente = '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
@@ -294,13 +262,8 @@ class AdminModel
     }
     public function getClienteId($IdCliente)
     {
-        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,
-        (SELECT id_porc_retenciones FROM porc_retenciones WHERE valor=porc_ret_renta AND id_tipo_retencion=1) AS id_porc_ret_renta,porc_ret_renta,
-        (SELECT id_porc_retenciones FROM porc_retenciones WHERE valor=porc_ret_iva AND id_tipo_retencion=2) AS id_porc_ret_iva, porc_ret_iva,
-        C.id_estado,E.estado
-        FROM clientes C 
-        INNER JOIN estados E ON E.id_estado=C.id_estado
-        WHERE id_cliente= '$IdCliente'";
+        $consulta = "SELECT id_cliente,ruc,razon_social,direccion,telefono,email,tiempo_credito,C.id_estado,E.estado FROM clientes C inner join estados E on E.id_estado=C.id_estado
+        WHERE id_cliente = '$IdCliente'";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -388,22 +351,6 @@ class AdminModel
         return $resultados;
     }
 
-    public function getEmpleadosSinUsuario()
-    {
-        $consulta = "SELECT E.id_empleado,EP.razon_social,CONCAT(E.nombres,' ',E.apellidos) AS Empleados,
-        E.telefono,E.email
-        FROM empleados E
-        INNER JOIN empresas EP ON (E.id_empresa=EP.id_empresa)
-        WHERE E.id_estado = 1 AND E.id_empleado NOT IN (SELECT id_empleado FROM usuarios)
-        ORDER BY Empleados ASC;";
-        $sentencia = $this->db->prepare($consulta);
-        $sentencia->execute();
-        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
-        return $resultados;
-    }
-
-
-
     public function getEmpleadosAdmin()
     {
         $consulta = "SELECT E.id_empleado, EP.razon_social, CONCAT(E.nombres,' ', E.nombres_2) AS nombres, CONCAT(E.apellidos,' ', E.apellidos_2) AS apellidos, E.telefono, E.direccion, E.email,
@@ -427,7 +374,7 @@ class AdminModel
     }
     public function getRoles()
     {
-        $consulta = "SELECT id_rol,rol FROM roles ORDER BY ROL ASC";
+        $consulta = "SELECT id_rol,rol FROM roles";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);

@@ -21,39 +21,32 @@ class PDF extends FPDF
 
         $rep = new ReporteModel();
 
-        $IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
+        $IdSecuencial = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
 
-        $sol_cred = $rep->ReporteCabOrdenEntrada($IdSecuencial);
+        $sol_cred = $rep->ReporteCabFacturaIndividual($IdSecuencial);
 
         if ($sol_cred) {
 
             foreach ($sol_cred as $scred) {
 
-                $_SESSION["dir"] = $scred["direccion"];
 
-                $_SESSION["tel"] = $scred["telefono"];
-
-                $title = 'ORDEN DE ENTRADA';
+                $title = 'FACTURA #';
 
                 $this->SetFont('Arial', 'B', 10);
 
                 date_default_timezone_set('America/Guayaquil');
 
-                $DateAndTime = date('d/m/Y h:i:s a', time());
+                //$DateAndTime = date('d/m/Y h:i:s a', time());
 
                 //$fi = 'Fecha impresión: ';
 
                 $this->Image('../../assets/img/logo/logo_vecoin-1.png', 10, 8, 40);
 
-                //$this->Image('../../assets/img/logo/fd.png', '60', '90', '100', '100', 'PNG');
+                //                $this->Image('../../assets/img/logo/fd.png', '60', '90', '100', '100', 'PNG');
 
                 $this->SetFont('Arial', 'B', 14);
 
-                $this->Ln(1);
-
-                $this->SetTextColor(255, 0, 0);
-
-                $this->Cell(190, 5, utf8_decode('Nro. ' . $scred["secuencial"]), 0, 1, 'R');
+                $this->Ln(15);
 
                 $this->SetTextColor(3, 3, 3);
 
@@ -63,7 +56,7 @@ class PDF extends FPDF
 
                 $this->SetTextColor(13, 119, 60);
 
-                $this->Cell(190, 5, utf8_decode($title), 0, 1, 'C');
+                $this->Cell(190, 5, utf8_decode($title) . $scred["nro_factura"], 0, 1, 'C');
 
                 $this->SetTextColor(0, 0, 0);
 
@@ -97,50 +90,48 @@ class PDF extends FPDF
 
                 $this->SetTextColor(13, 119, 60);
 
+                $this->Cell(30, 5, utf8_decode('Cliente:'), 0, 0, '');
+
+                $this->SetFont('Arial', 'I', 8);
+
+                $this->SetTextColor(0, 0, 0);
+
+                $this->Cell(30, 5, utf8_decode($scred["razon_social"]), 0, 1, '');
+
+                $this->SetFont('Arial', 'B', 8);
+
+                $this->SetTextColor(13, 119, 60);
+
                 $this->Cell(30, 5, utf8_decode('Elaborado por:'), 0, 0, '');
 
                 $this->SetFont('Arial', 'I', 8);
 
                 $this->SetTextColor(0, 0, 0);
 
-                $this->Cell(30, 5, utf8_decode($scred["responsable"]), 0, 1, '');
-
+                $this->Cell(30, 5, utf8_decode($scred["creador"]), 0, 1, '');
                 $this->SetFont('Arial', 'B', 8);
 
                 $this->SetTextColor(13, 119, 60);
 
-                $this->Cell(30, 5, utf8_decode('Proveedor:'), 0, 0, '');
+                $this->Cell(30, 5, utf8_decode('Orden de Salida:'), 0, 0, '');
 
                 $this->SetFont('Arial', 'I', 8);
 
                 $this->SetTextColor(0, 0, 0);
 
-                $this->Cell(30, 5, utf8_decode($scred["proveedor"]), 0, 1, '');
+                $this->Cell(30, 5, utf8_decode($scred["id_orden_salida"]), 0, 1, '');
 
                 $this->SetFont('Arial', 'B', 8);
 
                 $this->SetTextColor(13, 119, 60);
 
-                $this->Cell(30, 5, utf8_decode('Número de factura:'), 0, 0, '');
+                $this->Cell(30, 5, utf8_decode('Estado:'), 0, 0, '');
 
                 $this->SetFont('Arial', 'I', 8);
 
                 $this->SetTextColor(0, 0, 0);
 
-                $this->Cell(30, 5, utf8_decode($scred["nro_factura"]), 0, 1, '');
-
-                $this->SetFont('Arial', 'B', 8);
-
-                $this->SetTextColor(13, 119, 60);
-
-                $this->Cell(30, 5, utf8_decode('Observaciones:'), 0, 0, '');
-
-                $this->SetFont('Arial', 'I', 8);
-
-                $this->SetTextColor(0, 0, 0);
-
-                $this->Cell(30, 5, utf8_decode($scred["observacion"]), 0, 1, '');
-
+                $this->Cell(30, 5, utf8_decode($scred["estado"]), 0, 1, '');
                 $this->Ln(5);
             }
         }
@@ -156,10 +147,10 @@ class PDF extends FPDF
 
         $tel = 'Teléfono: ';
 
-        $this->SetY(-19);
+        $this->SetY(-25);
 
-        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: (04)2316885 / (04)2316875 / (04)2316603 / 096 904 6278 | Email: info@vecoin.com.ec'), 0, 1, 'C', 0);
-
+        //$this->Cell(190, 3, utf8_decode($dir . $_SESSION["dir"] . ' | ' . $tel . $_SESSION["tel"]), 0, 1, 'C', 0);
+        $this->Cell(0, 3, utf8_decode('Dirección: Urdenor II Manzana 233 Solar 4 | Teléfono: 042316885'), 0, 1, 'C', 0);
         //$this->Cell(190, 3, utf8_decode($tel . $_SESSION["tel"]), 0, 1, 'C', 0);
 
         $this->Ln(3);
@@ -186,7 +177,7 @@ date_default_timezone_set('America/Guayaquil');
 
 $DateAndTime = date('m-d-Y h:i:s a', time());
 
-$sf = 'VECOIN_ORDEN_DE_ENTRADA';
+$sf = 'VECOIN_FACTURA';
 
 $pdf = new PDF();
 
@@ -200,69 +191,85 @@ $pdf->SetFillColor(13, 119, 60);
 
 $pdf->SetTextColor(255, 255, 255);
 
-$IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
+$IdSecuencial = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
 
-$resultados = $rep->ReporteDetOrdenEntrada($IdSecuencial);
+$resultados = $rep->ReporteDetFacturaIndividual($IdSecuencial);
 
 if ($resultados) {
-
-    $sum = 0;
+    $sum0 = 0;
+    $sum1 = 0;
+    $sum2 = 0;
 
     $pdf->SetFont('Arial', 'B', 10);
 
-    $pdf->Cell(190, 8, 'DETALLE DE PRODUCTOS INGRESADOS', 1, 1, 'C', true);
+    $pdf->Cell(190, 8, 'DETALLE DE FACTURA', 1, 1, 'C', true);
 
     $pdf->SetFont('Arial', 'B', 8);
 
     $pdf->SetTextColor(0, 0, 0);
 
-    $pdf->Cell(20, 5, utf8_decode('Cant.'), 1, 0, 'C', false);
+    $pdf->Cell(20, 5, utf8_decode('Código'), 1, 0, 'C', false);
 
-    $pdf->Cell(30, 5, utf8_decode('U.Medida'), 1, 0, 'C', false);
+    $pdf->Cell(25, 5, utf8_decode('Cantidad'), 1, 0, 'C', false);
 
-    $pdf->Cell(70, 5, utf8_decode('Producto'), 1, 0, 'C', false);
+    $pdf->Cell(90, 5, utf8_decode('Descripción'), 1, 0, 'C', false);
 
-    $pdf->Cell(35, 5, utf8_decode('Costo'), 1, 0, 'C', false);
+    $pdf->Cell(25, 5, utf8_decode('Precio Unitario'), 1, 0, 'C', false);
 
-    $pdf->Cell(35, 5, utf8_decode('Subtotal'), 1, 1, 'C', false);
+    $pdf->Cell(30, 5, utf8_decode('Subtotal'), 1, 1, 'C', false);
 
-
+    //$pdf->Cell(30, 5, utf8_decode('Subtotal'), 1, 1, 'C', false);
 
     foreach ($resultados as $re) {
 
         $pdf->SetFont('Arial', 'I', 8);
 
-        $pdf->Cell(20, 5, utf8_decode($re["cantidad"]), 1, 0, 'C', false);
+        $pdf->Cell(20, 5, utf8_decode($re["codigo"]), 1, 0, 'C', false);
 
-        $pdf->Cell(30, 5, utf8_decode($re["umedida"]), 1, 0, 'C', false);
+        $pdf->Cell(25, 5, utf8_decode($re["cantidad"]), 1, 0, 'C', false);
 
-        $pdf->Cell(70, 5, utf8_decode($re["producto"]), 1, 0, 'L', false);
+        $pdf->Cell(90, 5, utf8_decode($re["producto"]), 1, 0, 'L', false);
 
-        $pdf->Cell(35, 5, '$ ' . utf8_decode($re["precio"]), 1, 0, 'C', false);
+        $pdf->Cell(25, 5, '$ ' . utf8_decode($re["pvp"]), 1, 0, 'C', false);
 
-        $pdf->Cell(35, 5, '$ ' . utf8_decode(number_format($re["monto"], 2, ".", ",")), 1, 1, 'C', false);
+        $pdf->Cell(30, 5, '$ ' . utf8_decode(number_format($re["subtotal"], 2, ".", ",")), 1, 1, 'R', false);
 
+        $sum0 += $re["subtotal"];
 
+        $sum1 += $re["iva"];
 
-        $sum += $re["cantidad"] * $re["precio"];
+        $sum2 += $re["total"];
     }
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(135, 0, ' ', 0, 0, 'R', false);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(25, 6, 'SUBTOTAL  ', 1, 0, 'R', true);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(30, 6, '$ ' . number_format($sum0, 2, ".", ","), 1, 1, 'R', false);
+
 
     $pdf->SetFont('Arial', 'B', 10);
-
+    $pdf->Cell(135, 0, ' ', 0, 0, 'R', false);
     $pdf->SetTextColor(255, 255, 255);
-
-    $pdf->Cell(155, 6, 'TOTAL  ', 1, 0, 'R', true);
-
+    $pdf->Cell(25, 6, 'IVA  ', 1, 0, 'R', true);
     $pdf->SetFont('Arial', 'B', 9);
-
     $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(30, 6, '$ ' . number_format($sum1, 2, ".", ","), 1, 1, 'R', false);
 
-    $pdf->Cell(35, 6, '$ ' . number_format($sum, 2, ".", ","), 1, 1, 'C', false);
+
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(135, 0, ' ', 0, 0, 'R', false);
+    $pdf->SetTextColor(255, 255, 255);
+    $pdf->Cell(25, 6, 'TOTAL  ', 1, 0, 'R', true);
+    $pdf->SetFont('Arial', 'B', 9);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->Cell(30, 6, '$ ' . number_format($sum2, 2, ".", ","), 1, 1, 'R', false);
 }
 
-$IdSecuencial = (isset($_REQUEST['IdSecuencial'])) ? $_REQUEST['IdSecuencial'] : '';
+$IdSecuencial = (isset($_REQUEST['IdCabVenta'])) ? $_REQUEST['IdCabVenta'] : '';
 
-$sol_cred = $rep->ReporteCabOrdenEntrada($IdSecuencial);
+$sol_cred = $rep->ReporteCabFacturaIndividual($IdSecuencial);
 
 $pdf->SetFont('Arial', 'I', 10);
 
@@ -283,10 +290,11 @@ if ($sol_cred) {
 
     $DateAndTime = date('m-d-Y h:i:s a', time());
 
-    $pdf->Output('I', $sf . $sb . $sc["secuencial"] . $ext);
+    $pdf->Output('I', $sf . $sb . $sc["nro_factura"] . $ext);
 } else {
 
-    $alert = "No hay datos para el reporte!, revise la fecha y la Orden de entrada seleccionada";
+    $alert = "No hay datos para el reporte!, revise la fecha y la Orden de salida seleccionada";
+
 
     echo json_encode($alert);
 }

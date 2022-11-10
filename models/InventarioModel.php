@@ -20,12 +20,13 @@ class InventarioModel
 
     public function getProductosActivosxEmpresa($id_empresa)
     {
-        $consulta = "SELECT P.id_producto,C.producto
+        $consulta = "SELECT P.id_producto,CONCAT(C.codigo,' | ',C.producto) as producto
         FROM productos P
         INNER JOIN catalogo C 
         ON (P.id_catalogo=C.id_catalogo)
-        WHERE C.id_empresa='$id_empresa'
-        AND C.id_estado=1;";
+        WHERE C.id_empresa=1
+        AND C.id_estado=1
+        ORDER BY C.producto;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -34,7 +35,7 @@ class InventarioModel
 
     public function getStockProductos()
     {
-        $consulta = "SELECT PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
+        $consulta = "SELECT C.codigo, PR.id_producto, E.razon_social AS compania,C.producto AS nombre_producto, P.proveedor,B.bodega,UM.umedida, PR.cantidad, PR.precio, PR.cantidad*PR.pvp AS 'valorizacion' 
         , CASE WHEN PR.id_estado = '1' THEN 'Activo' ELSE 'Inactivo' END AS id_estado FROM productos PR
         INNER JOIN proveedores P ON P.id_proveedor = PR.id_proveedor
         INNER JOIN catalogo C ON C.id_catalogo = PR.id_catalogo
@@ -48,8 +49,8 @@ class InventarioModel
     }
     public function getStockProductosSum()
     {
-        $consulta = "SELECT SUM(cantidad) AS Cantidad, SUM(Precio) AS Precio, SUM(Utilidad) AS Utilidad 
-        FROM productos";
+        $consulta = "SELECT SUM(PR.cantidad) AS Cantidad, SUM(PR.cantidad*PR.precio) AS Precio,SUM(PR.cantidad*PR.pvp) AS Utilidad 
+        FROM productos PR;";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->execute();
         $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
@@ -87,6 +88,46 @@ class InventarioModel
             return false;
         }
         return true;
+    }
+
+    public function getDetalleOrdenSalida()
+    {
+        $consulta = "SELECT DOS.id_det_osalida, DOS.id_secuencial, DOS.id_umedida, UM.umedida, DOS.id_producto, C.producto,DOS.cantidad,  DOS.pvp, DOS.id_estado,
+        DATE_FORMAT(COSL.fecha_osalida ,'%d-%m-%Y') AS fecha,COSL.id_usuario
+        FROM det_osalida DOS
+        INNER JOIN cab_osalida COSL ON (DOS.id_secuencial=COSL.id_secuencial)
+        INNER JOIN productos PRD ON (PRD.id_producto=DOS.id_producto)
+        INNER JOIN catalogo C ON (C.id_catalogo=PRD.id_catalogo)
+        INNER JOIN unidad_medida UM ON (UM.id_umedida=DOS.id_umedida)
+        WHERE DOS.id_secuencial=(SELECT secuencial
+                FROM secuenciales
+                WHERE id_tipo = 2 AND id_estado =1);";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
+    }
+    public function getDetalleOrdenEntrada()
+    {
+        $consulta = "SELECT DOE.id_det_oentrada,DOE.id_secuencial,DOE.id_producto,C.producto,
+        DOE.id_umedida,UM.umedida,
+        DOE.cantidad,DOE.precio,
+        DATE_FORMAT(COE.fecha_compra ,'%d-%m-%Y') AS fecha,COE.nro_factura,
+        COE.id_proveedor,P.proveedor
+        FROM det_oentrada DOE 
+        INNER JOIN cab_oentrada COE ON (DOE.id_secuencial=COE.id_secuencial)
+        INNER JOIN proveedores P ON (P.id_proveedor=COE.id_proveedor)
+        INNER JOIN productos PRD ON (PRD.id_producto=DOE.id_producto)
+        INNER JOIN catalogo C ON (C.id_catalogo=PRD.id_catalogo)
+        INNER JOIN unidad_medida UM ON (UM.id_umedida=DOE.id_umedida)
+        WHERE DOE.id_secuencial=(SELECT secuencial
+        FROM secuenciales
+        WHERE id_tipo = 1 AND id_estado =1)
+        ORDER BY DOE.id_det_oentrada;";
+        $sentencia = $this->db->prepare($consulta);
+        $sentencia->execute();
+        $resultados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        return $resultados;
     }
     public function getOrdenesEntrada()
     {
@@ -187,14 +228,13 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $IdUMedida, $Cantidad, $Precio)
+    public function RegistroDetOrdenEntrada($CabIdSecuencial, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO det_oentrada (id_secuencial,id_producto,id_umedida,cantidad,precio)
-        VALUES(:id_secuencial,:id_producto,:id_umedida,:cantidad,:precio)";
+        VALUES(:id_secuencial,:id_producto,(SELECT id_umedida FROM productos WHERE id_producto='$IdProducto'),:cantidad,:precio)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
         $sentencia->bindParam(':id_producto', $IdProducto);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':precio', $Precio);
         $sentencia->execute();
@@ -203,13 +243,12 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdUMedida, $IdPercha, $IdProducto, $Cantidad, $Precio)
+    public function RegistroDetOrdenSalida($CabIdSecuencial, $IdPercha, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO det_osalida (id_secuencial,id_umedida,id_percha,id_producto,cantidad,pvp)
-        VALUES(:id_secuencial,:id_umedida,:id_percha,:id_producto,:cantidad,:pvp)";
+        VALUES(:id_secuencial,(SELECT id_umedida FROM productos WHERE id_producto='$IdProducto'),:id_percha,:id_producto,:cantidad,:pvp)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
         $sentencia->bindParam(':id_percha', $IdPercha);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':cantidad', $Cantidad);
@@ -220,14 +259,13 @@ class InventarioModel
         }
         return true;
     }
-    public function RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdUMedida, $IdProducto, $Cantidad, $Precio)
+    public function RegistroStockOrdenSalida($CabIdSecuencial, $IdPercha, $IdProducto, $Cantidad, $Precio)
     {
         $consulta = "INSERT INTO stock (id_secuencial,id_percha,id_umedida,id_producto,cantidad,pvp)
-        VALUES(:id_secuencial,:id_percha,:id_umedida,:id_producto,:cantidad,:pvp)";
+        VALUES(:id_secuencial,:id_percha,(SELECT id_umedida FROM productos WHERE id_producto='$IdProducto'),:id_producto,:cantidad,:pvp)";
         $sentencia = $this->db->prepare($consulta);
         $sentencia->bindParam(':id_secuencial', $CabIdSecuencial);
         $sentencia->bindParam(':id_percha', $IdPercha);
-        $sentencia->bindParam(':id_umedida', $IdUMedida);
         $sentencia->bindParam(':id_producto', $IdProducto);
         $sentencia->bindParam(':cantidad', $Cantidad);
         $sentencia->bindParam(':pvp', $Precio);

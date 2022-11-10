@@ -157,6 +157,29 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+
+    public function get_porc_renta()
+    {
+        $exito = $this->adm->getPorcentajeRenta();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
+    public function get_porc_IVA()
+    {
+        $exito = $this->adm->getPorcentajeIVA();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+
     public function get_empresa_id()
     {
         $IdEmpresa = (isset($_REQUEST['IdEmpresa'])) ? $_REQUEST['IdEmpresa'] : '';
@@ -221,8 +244,10 @@ class AdminController
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
+        $PorRetRenta = (isset($_REQUEST['PorRetRenta'])) ? $_REQUEST['PorRetRenta'] : '';
+        $PorRetIVA = (isset($_REQUEST['PorRetIVA'])) ? $_REQUEST['PorRetIVA'] : '';
         $IdEstado = (isset($_REQUEST['IdEstado'])) ? $_REQUEST['IdEstado'] : '';
-        $exito = $this->adm->ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $IdEstado);
+        $exito = $this->adm->ModificarCliente($IdCliente, $Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $PorRetRenta, $PorRetIVA, $IdEstado);
         if ($exito) {
             echo 1;
         } else {
@@ -278,7 +303,9 @@ class AdminController
         $Telefono = (isset($_REQUEST['Telefono'])) ? $_REQUEST['Telefono'] : '';
         $Email = (isset($_REQUEST['Email'])) ? $_REQUEST['Email'] : '';
         $Tiempocredito = (isset($_REQUEST['Tiempocredito'])) ? $_REQUEST['Tiempocredito'] : '';
-        $exito = $this->adm->RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito);
+        $IdPorRenta = (isset($_REQUEST['IdPorRenta'])) ? $_REQUEST['IdPorRenta'] : '';
+        $IdPorIVA = (isset($_REQUEST['IdPorIVA'])) ? $_REQUEST['IdPorIVA'] : '';
+        $exito = $this->adm->RegistroCliente($Ruc, $RazonSocial, $Direccion, $Telefono, $Email, $Tiempocredito, $IdPorRenta, $IdPorIVA);
         if ($exito) {
             echo 1;
         } else {
@@ -422,6 +449,17 @@ class AdminController
             echo json_encode($vacio);
         }
     }
+    public function get_empleados_sin_usuario()
+    {
+        $exito = $this->adm->getEmpleadosSinUsuario();
+        if ($exito) {
+            echo json_encode($exito);
+        } else {
+            $vacio = array('');
+            echo json_encode($vacio);
+        }
+    }
+    
 
     public function get_empleados_admin()
     {

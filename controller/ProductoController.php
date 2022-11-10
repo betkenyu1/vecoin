@@ -89,7 +89,7 @@ class ProductoController
 
     public function get_pmod_producto()
     {
-        $IdEmpresa = $_SESSION['idempresa'];
+        $IdEmpresa = 1;
         $IdProducto = (isset($_REQUEST['IdProducto'])) ? $_REQUEST['IdProducto'] : '';
         $exito = $this->prod->getPModificarProductos($IdProducto, $IdEmpresa);
         if ($exito) {
